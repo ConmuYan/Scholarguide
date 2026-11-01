@@ -37,7 +37,14 @@ TIMEOUT = 20
 
 
 def install_root() -> Path:
-    """Where installed releases live; mirrors the installer's layout."""
+    """Where installed releases live; mirrors the installer's layout.
+
+    ``SG_INSTALL_ROOT`` overrides it, which is what the tests and relocatable
+    installs use; the default matches the platform installer.
+    """
+    override = os.environ.get('SG_INSTALL_ROOT', '').strip()
+    if override:
+        return Path(override).expanduser()
     if os.name == 'nt':
         return Path(os.environ.get('LOCALAPPDATA') or Path.home() / 'AppData' / 'Local') / 'ScholarGuide'
     return Path(os.environ.get('XDG_DATA_HOME') or Path.home() / '.local' / 'share') / 'scholarguide'

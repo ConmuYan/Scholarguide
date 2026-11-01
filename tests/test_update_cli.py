@@ -34,6 +34,18 @@ class VersionTests(unittest.TestCase):
         for tag in ('latest', 'v1.0', '', 'v1.0.0;rm -rf /'):
             self.assertFalse(update_cli.newer(tag, 'v0.1.0'), tag)
 
+    def test_install_root_override_is_honoured(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old = os.environ.get('SG_INSTALL_ROOT')
+            os.environ['SG_INSTALL_ROOT'] = tmp
+            try:
+                self.assertEqual(update_cli.install_root(), Path(tmp).expanduser())
+            finally:
+                if old is None:
+                    os.environ.pop('SG_INSTALL_ROOT', None)
+                else:
+                    os.environ['SG_INSTALL_ROOT'] = old
+
     def test_version_marker_is_validated(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

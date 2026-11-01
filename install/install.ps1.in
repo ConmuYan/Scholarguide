@@ -40,14 +40,21 @@ try {
         if ($Expected -ne $Actual) { throw 'Release checksum mismatch; nothing was installed.' }
         $Tar = Get-Command tar.exe -ErrorAction SilentlyContinue
         if (-not $Tar) { throw 'Windows tar.exe is required to unpack the release archive.' }
-        $Entries = & $Tar.Source -tzf $Archive
-        if ($LASTEXITCODE -ne 0 -or ($Entries | Where-Object { $_ -match '(^/|(^|/)\.\.(\/|$)|^[A-Za-z]:)' })) {
-            throw 'Unsafe or invalid path in release archive.'
-        }
         $Unpack = Join-Path $Work 'unpacked'
         New-Item -ItemType Directory -Force $Unpack | Out-Null
-        & $Tar.Source -xzf $Archive -C $Unpack
-        if ($LASTEXITCODE -ne 0) { throw 'Unable to unpack release archive.' }
+        # Relative names only: GNU tar reads "C:\..." as a remote host and fails.
+        Push-Location $Work
+        try {
+            $Entries = & $Tar.Source -tzf $ArchiveName
+            if ($LASTEXITCODE -ne 0) { throw 'Unable to list the release archive.' }
+            if ($Entries | Where-Object { $_ -match '(^/|(^|/)\.\.(\/|$)|^[A-Za-z]:)' }) {
+                throw 'Unsafe path in release archive; nothing was installed.'
+            }
+            & $Tar.Source -xzf $ArchiveName -C 'unpacked'
+            if ($LASTEXITCODE -ne 0) { throw 'Unable to unpack release archive.' }
+        } finally {
+            Pop-Location
+        }
         $Source = Join-Path $Unpack "scholarguide-$Version"
         if (-not (Test-Path (Join-Path $Source 'app.py')) -or -not (Test-Path (Join-Path $Source 'requirements.txt'))) {
             throw 'Release archive is missing required files.'
