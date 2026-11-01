@@ -7,6 +7,7 @@ import sys
 import tempfile
 import threading
 import unittest
+import unittest.mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,6 +34,42 @@ class VersionTests(unittest.TestCase):
     def test_rejects_non_version_tags(self):
         for tag in ('latest', 'v1.0', '', 'v1.0.0;rm -rf /'):
             self.assertFalse(update_cli.newer(tag, 'v0.1.0'), tag)
+
+    def test_posix_layout_is_found_when_the_platform_root_is_empty(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            posix = Path(tmp) / '.local' / 'share' / 'scholarguide'
+            (posix / 'releases').mkdir(parents=True)
+            (posix / 'current-version').write_text('v0.3.0', encoding='ascii')
+            saved = {k: os.environ.get(k) for k in ('SG_INSTALL_ROOT', 'XDG_DATA_HOME', 'LOCALAPPDATA')}
+            os.environ.pop('SG_INSTALL_ROOT', None)
+            os.environ['XDG_DATA_HOME'] = str(Path(tmp) / '.local' / 'share')
+            os.environ['LOCALAPPDATA'] = str(Path(tmp) / 'appdata')
+            try:
+                self.assertEqual(update_cli.install_root(), posix)
+            finally:
+                for key, value in saved.items():
+                    if value is None:
+                        os.environ.pop(key, None)
+                    else:
+                        os.environ[key] = value
+
+    def test_data_dir_prefers_an_existing_shared_home(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            shared = Path(tmp) / '.scholarguide'
+            shared.mkdir()
+            saved = {k: os.environ.get(k) for k in ('SG_DATA_DIR', 'HOME', 'USERPROFILE')}
+            os.environ.pop('SG_DATA_DIR', None)
+            os.environ['HOME'] = tmp
+            os.environ['USERPROFILE'] = tmp
+            try:
+                with unittest.mock.patch.object(update_cli.Path, 'home', return_value=Path(tmp)):
+                    self.assertEqual(update_cli.data_dir(), shared)
+            finally:
+                for key, value in saved.items():
+                    if value is None:
+                        os.environ.pop(key, None)
+                    else:
+                        os.environ[key] = value
 
     def test_install_root_override_is_honoured(self):
         with tempfile.TemporaryDirectory() as tmp:

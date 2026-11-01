@@ -94,6 +94,8 @@ scholarguide update --yes
 
 Updates verify the release checksum and never touch `~/.scholarguide` — your keys, profiles, quota ledger and history survive every upgrade, and the old version stays on disk.
 
+On v0.1.0 or v0.1.1? `update` was added in v0.1.2 — install the current release once (the command above for your platform) and the one-command flow starts working. Your keys, profiles, quota ledger and history are untouched; see [`docs/INSTALL.md`](docs/INSTALL.md#upgrading-from-v010-or-v011).
+
 Keys are stored locally and never returned to the browser. Live runs bill **your** provider account; ScholarGuide ships no shared credits.
 
 ## Use it as an API

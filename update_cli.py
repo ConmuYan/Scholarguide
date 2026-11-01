@@ -36,22 +36,54 @@ TAG_RE = re.compile(r'v[0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?\Z')
 TIMEOUT = 20
 
 
-def install_root() -> Path:
-    """Where installed releases live; mirrors the installer's layout.
+def _posix_root() -> Path:
+    return Path(os.environ.get('XDG_DATA_HOME') or Path.home() / '.local' / 'share') / 'scholarguide'
 
-    ``SG_INSTALL_ROOT`` overrides it, which is what the tests and relocatable
-    installs use; the default matches the platform installer.
+
+def install_root() -> Path:
+    """Where installed releases live.
+
+    Order: ``SG_INSTALL_ROOT`` (exported by the launcher), the platform default,
+    then the POSIX layout. The last fallback matters on Windows when the user
+    installed through the shell installer (Git Bash / MSYS), which keeps
+    releases under ``~/.local/share/scholarguide``.
     """
     override = os.environ.get('SG_INSTALL_ROOT', '').strip()
     if override:
         return Path(override).expanduser()
     if os.name == 'nt':
-        return Path(os.environ.get('LOCALAPPDATA') or Path.home() / 'AppData' / 'Local') / 'ScholarGuide'
-    return Path(os.environ.get('XDG_DATA_HOME') or Path.home() / '.local' / 'share') / 'scholarguide'
+        platform_root = Path(os.environ.get('LOCALAPPDATA') or Path.home() / 'AppData' / 'Local') / 'ScholarGuide'
+    else:
+        platform_root = _posix_root()
+    if installed_version(platform_root):
+        return platform_root
+    posix = _posix_root()
+    if posix != platform_root and installed_version(posix):
+        return posix
+    return platform_root
 
 
 def data_dir() -> Path:
-    return Path(os.environ.get('SG_DATA_DIR') or Path.home() / '.scholarguide')
+    """User data directory; honours SG_DATA_DIR and the shared home layout.
+
+    ``Path.home()`` on Windows follows USERPROFILE, while a Git Bash install
+    exports HOME. Both are checked, preferring a directory that already holds
+    user data so an upgrade never reports (or creates) the wrong location.
+    """
+    override = os.environ.get('SG_DATA_DIR', '').strip()
+    if override:
+        return Path(override).expanduser()
+    candidates = [Path.home() / '.scholarguide']
+    for name in ('HOME', 'USERPROFILE'):
+        value = os.environ.get(name, '').strip()
+        if value:
+            candidate = Path(value) / '.scholarguide'
+            if candidate not in candidates:
+                candidates.append(candidate)
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return candidates[0]
 
 
 def installed_version(root: Path | None = None) -> str:

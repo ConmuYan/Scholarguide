@@ -184,6 +184,24 @@ python -m unittest discover -s tests -v
 
 欢迎 issue 与 PR。请保持这些不变量：不静默重试付费调用、不编造引用、证据标注必须诚实、离线测试必须通过。
 
+## 从 v0.1.0 / v0.1.1 升级
+
+`scholarguide update` 从 **v0.1.2** 才有。旧版本用一次当前安装器即可切换到新的发布轨道：
+
+```bash
+curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.3/install.sh | sh
+scholarguide update --check
+```
+
+Windows：
+
+```powershell
+irm https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.3/install.ps1 | iex
+scholarguide update --check
+```
+
+`~/.scholarguide` 里的 API key、模型配置、Lune 额度账本与计划、会话与运行历史全部保持不变；安装器只新增 `releases/vX.Y.Z/` 并改写 `current-version`，旧版本目录保留可回滚。详见 [`docs/INSTALL.md`](docs/INSTALL.md)。
+
 ## 许可
 
 原创代码 [MIT](LICENSE)。`vendor/gptr_arxiv.py` 保留上游 **Apache-2.0**，见 [NOTICE.md](NOTICE.md)。学术来源 logo 归各自权利人所有，**不在** MIT 授权范围内。

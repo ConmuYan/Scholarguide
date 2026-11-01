@@ -94,6 +94,7 @@ DATA="$HOME/.scholarguide"
 VERSION=$(cat "$BASE/current-version")
 APP="$BASE/releases/$VERSION"
 export SG_DATA_DIR="$DATA"
+export SG_INSTALL_ROOT="$BASE"
 export SG_RUNS_DIR="$DATA/runs"
 export SG_CACHE_DIR="$DATA/cache"
 export SG_MCP_RUN_DIR="$DATA/runs/mcp"

@@ -54,6 +54,26 @@ scholarguide update --yes      # install it
 
 Restart the service afterwards so the new build is loaded.
 
+## Upgrading from v0.1.0 or v0.1.1
+
+`scholarguide update` shipped in **v0.1.2**, so the first hop has to be a normal install. Run the current installer once; it adds the new version next to the old one and repoints the launcher:
+
+```bash
+curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.3/install.sh | sh
+scholarguide update --check     # from here on, updates are one command
+```
+
+Windows:
+
+```powershell
+irm https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.3/install.ps1 | iex
+scholarguide update --check
+```
+
+What stays exactly as it was: everything in `~/.scholarguide` (`%USERPROFILE%\.scholarguide`) — API keys, provider profiles, the Lune quota ledger and schedule, saved sessions and run history. The installer only adds `releases/vX.Y.Z/` and rewrites the `current-version` marker; the old version directory is left in place.
+
+> Windows users who installed v0.1.0–v0.1.2 with Git Bash: those releases looked for the install directory under `%LOCALAPPDATA%`, which does not match the shell installer's layout. v0.1.3 detects both layouts and exports `SG_INSTALL_ROOT` from the launcher, so `scholarguide update` works after this one install.
+
 ## Upgrade and data
 
 Each version is installed into a separate version directory; the launch wrapper points to the newly installed release. User settings and history stay under `~/.scholarguide` (Windows: `%USERPROFILE%\.scholarguide`) and are not removed by install or upgrade. The release installer refuses to overwrite an already installed version directory. To switch versions, rerun that version's installer; inspect and back up user data before manually removing old versions.
