@@ -131,6 +131,16 @@ SSE 的 `trace` 事件携带稳定的 `seq/event_id`、operation、session、tur
 
 `scripts/lune_oauth.py --open` 不打印一次性授权 URL；手动模式会显示该敏感 URL，应避免复制到日志或 AI 对话。自动 token 刷新在同一 token 文件路径上使用进程间协作锁，并以临时文件替换；这不能限制不使用该锁的其他客户端。注册/刷新响应体有大小上限，但慢速网络响应仍无严格的端到端硬墙钟保证。凭据保存失败或刷新结果未知时不得假定旧 token 仍有效或自动重复请求。
 
+### 每日额度窗口自动化（`lune_quota_schedule.py`）
+
+Lune 没有公开的余额查询接口。本模块只自动化**窗口**，不声称知道账户余额：
+
+- `python lune_quota_schedule.py --enable --mode assume_full_allowance_at_reset --reset-utc-hour 0`：在配置的 UTC 重置时刻开启新窗口，按文档日额度填写，到期取下一个重置时刻；Web 服务运行期间每 5 分钟检查一次。
+- 每次自动写入都带 `assumption` 标记；账本仍返回 `external_usage_unknown: true` 与 `account_remaining_known: false`，其他客户端当天已消耗的部分不可见。
+- `--mode manual`（默认）不自动确认，只报告窗口过期，等待人工核对后确认。
+- 存在未完成预留时刷新 fail closed，不会覆盖旧窗口。
+- 查看 `--status`、立即执行 `--run-now`、关闭 `--disable`。该模块不访问网络，也不读取密钥。
+
 Lune 的认证请求要求 HTTPS；既有 OAuth 或环境变量来源 key 不会自动发送到不同于已配置 MCP 服务器的 origin。使用已保存来源 key 时，变更端点须在同一次设置操作中重新输入或清除该 key；自定义端点和所输入 key 的归属由用户确认。DeepSeek Search 也只使用独立来源 key，不回退到模型 key；含凭据的调用要求 HTTPS，环境 key 只适用于官方 origin，向自定义 origin 发送保存的 key 需要在来源设置中对该目标重新输入并绑定。历史自定义端点与未绑定的旧 key 原样保留，但在重新确认前不发送；自定义 Search 端点的 key 不自动用于官方 Fetch。旧配置保留，不代表已验证其历史授权。MCP 不自动跟随重定向；其他来源与模型传输也拒绝跨 origin 重定向，可能需要将端点配置为最终地址。以上限制不改变或删除已保存配置。
 
 同样支持兼容的 `/api/sources` 路径。MiniMax 等模型配置独立于来源配置；切换生成模型不会将其 API key 发送给其他学术来源。Lune OAuth 使用用户目录中的既有凭据，token 不返回浏览器。来源也各自使用独立凭据：`S2_API_KEY`（Semantic Scholar，建议配置以降低匿名 429）、`OPENALEX_API_KEY`（可选）和 `DEEPSEEK_SEARCH_KEY`（必需，不再回退到模型 key）。这些值可以在 Sources 页面保存，也可以由环境变量或 `.env` 提供；API 只返回 `auth_configured`，不回传密钥。

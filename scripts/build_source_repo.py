@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TOP_LEVEL_FILES = ('app.py', 'app_mcp.py', 'activity.py', 'agent_runtime.py', 'agent_tools.py',
                    'api_schema.py', 'api_v1.py', 'common.py', 'controller.py', 'costing.py',
                    'deletion_lifecycle.py', 'demo.py', 'diagnosis.py', 'domain_skill_runtime.py',
-                   'execution_events.py', 'intent.py', 'llm.py', 'lune_quota.py', 'mcp_client.py',
+                   'execution_events.py', 'intent.py', 'llm.py', 'lune_quota.py', 'lune_quota_schedule.py', 'mcp_client.py',
                    'mcp_lune.py', 'mcp_lune_policy.py', 'mcp_plugin.py', 'mcp_skills.py',
                    'memory_context.py', 'memory_store.py', 'memory_view.py', 'model_identity.py',
                    'model_policy.py', 'native_tool_protocol.py', 'network.py', 'preflight.py',

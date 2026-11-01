@@ -76,6 +76,15 @@ python app.py web --open
 2. Optional: **Sources** for scholarly credentials (Semantic Scholar key recommended; arXiv needs none).
 3. Start with **Offline demo** — fixed fixtures, zero network calls — then switch to **Online search**.
 
+Lune is optional. Authorise it once with `python scripts/lune_oauth.py --port 8768 --open` (or set `LUNE_API_KEY`), then keep the daily allowance window rolling:
+
+```bash
+python lune_quota_schedule.py --enable --mode assume_full_allowance_at_reset --reset-utc-hour 0
+python lune_quota_schedule.py --status
+```
+
+The scheduler only manages the *window*: Lune exposes no balance endpoint, so each automatic entry is marked as an assumption and the ledger still reports `external_usage_unknown`. Use `--mode manual` if you prefer to confirm the number yourself.
+
 Keys are stored locally and never returned to the browser. Live runs bill **your** provider account; ScholarGuide ships no shared credits.
 
 ## Use it as an API

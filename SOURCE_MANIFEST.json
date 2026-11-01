@@ -1,5 +1,5 @@
 {
-  "files": 356,
+  "files": 358,
   "sha256": {
     ".env.example": "b0efb46d16a70ea255fe33bcb2886fef0a9514498f401c3fd5d445432ee05fb2",
     ".gitattributes": "786304835041b55ee5f6335a89a15eac1403e935351a6777f4e93313e2b4d2af",
@@ -8,7 +8,7 @@
     "LICENSE": "9f59b176f105b4ef23e43a4bb40ae765e3c80f711c0e84e52b96d1e742934607",
     "NOTICE.md": "e69e468b1f1b8d6528c58a681101d312e615b1565eb7b1dde5f00ee329f383ed",
     "PUBLIC_README.md": "ae9d3d9d6456a6df1755653462bdcc890b101a7c4808def5e7e97a042548a797",
-    "README.md": "c157acb7c158501ccd20be99d3f035b801a6f10bd424122e35765cde4b4e8fc0",
+    "README.md": "457596f035ad9eeb09add3550286bfae9037a91ece747db1d025c3b94ac1f7dd",
     "README.zh-CN.md": "a629fc698bca60b6250fa148b5311ad76460a278e8f90cd135bef96a884539f9",
     "UPSTREAM.md": "bb8d0aa10b7504e7c52650d74b8b3a90a4846d39df806929028135322c1da1bb",
     "VERIFICATION.md": "7e366374bbe4ad50882b09de22feab440dbd595ad6fd6d7e2100386c05076dc8",
@@ -27,7 +27,7 @@
     "diagnosis.py": "e563dc793ff44f1583f798ae01792c02360b894f138d9700cc5ebc40fffce88e",
     "docs/ADR-001-agent-runtime.md": "dc0045422598f236c2023e31f3631a35bf5b20f9e2b71493571df94dfc117390",
     "docs/AGENT_TRACE.md": "e8d3d4d2a9a5eee5db105d312c35b37a9828912a8c0848a348220caab63ba419",
-    "docs/API.md": "502c11b16cee52f46bb48ad77daee42dca5569b5a547e769455392d4a1151b51",
+    "docs/API.md": "ce3c12c8df263bb0cce885400907fc4c5cc080eabcc18f39137571fcdfb1c606",
     "docs/ARCHITECTURE.md": "a861c93a5cfb3eb11fac18840aa3a9000af9f8ca0f239261f489fd2f66b4a521",
     "docs/DESIGN_INVARIANTS.md": "5f2cf7c3b0d9a2d29f15b840f13ef4864f067b8329c0918e2efff60ba9d05017",
     "docs/DEVELOPMENT.md": "afcf2624951f26d0240042470c0c4f14ed6472305e1d51ebb9ae987e80294c14",
@@ -70,6 +70,7 @@
     "intent.py": "eeb185aa32f180306b183711ea2f8dfef26ac8482d24f805a6613c1009f5a559",
     "llm.py": "6aa6bf5dda7910c1f58e1d1addd061c71a0eae251baa284740d152ecb2be4ca1",
     "lune_quota.py": "8bbfaba09f3b7ff0dd41e6c95edf0c0a4dc5b44f5ec8907aebe26f3369ad267b",
+    "lune_quota_schedule.py": "d30eb45d74ce9c74af5aca6e22c8dd01617dc537c340331f2257a21fa122a838",
     "mcp_client.py": "3db6f07efe7cff5fc0a74b013d6552cd86865c0df53fb187c02ff96d54b623aa",
     "mcp_lune.py": "476aa3d9f92ea6c0476c7a4c921f62dfa1c633b504c9c25476aee3c4255f7940",
     "mcp_lune_policy.py": "8e8105d336fccc66d37e1ddfdd481cb83c651a68828d6fbffa8142d157d6990a",
@@ -99,8 +100,8 @@
     "research_specialist.py": "ace52fc924e637df3a8c44305a66e129f70057a24b602d43a3a4bd4218f92bc3",
     "retrieval.py": "138a414cb77b8d91a51cc81c38f3b44091c00023b56517644f77239e5d12d588",
     "reuse.py": "9d07d5d21e5fa7591c0507b40dd01590f0b43058d9c688b8b4d8356d402219c7",
-    "scripts/build_release.py": "babc23658a30d2df6a91725b96ac657de7eedb7488db7e50c4df62db82d9b73e",
-    "scripts/build_source_repo.py": "64e11fc16dcdf0b5f66957ab0a9ee4570e659836c3ebe17cefe1d1ac9970af2c",
+    "scripts/build_release.py": "fcfe6d509f355cdc4daf88dfd893b6f81188c41ca7723f350c1435359700ab9b",
+    "scripts/build_source_repo.py": "e4ca52ce9f51dd1e9e4987361a1eff864fc153198605a2f508bff12a9cb9bea2",
     "scripts/i18n_audit.py": "3c6eac029dc0fc31444b09f4be44a3f452ad424888f2037bd853e608e5e21fcf",
     "scripts/i18n_literal_inventory.py": "5a94ddffaccab3c55c39931cc78bc14ab7b9b9b49e1334e25b5fa46493c12294",
     "scripts/i18n_merge_shared.py": "af7fe1562512d3ace7912f1c4d9e13cc24131997bcd47d043ecfd02aa29130e3",
@@ -204,6 +205,7 @@
     "tests/test_lune_quota_api.py": "42e3030510d02af5e630c3f3d664a361856f808db3b6d692035c8d138b46b690",
     "tests/test_lune_quota_budget_wait.py": "6d85d5383ecba2426749061c6ade1c153f956fe7e80653490b6d3d2048c76465",
     "tests/test_lune_quota_integration.py": "843a870dcd143d50189de83ca0230facf0de25079a010334a60f220875a343c4",
+    "tests/test_lune_quota_schedule.py": "5338954dab9d628875c960536af1886e0695338b9ed34f620500a04137b61254",
     "tests/test_lune_response_accounting.py": "a10fb0c6287248d78efdc0f87bf0011859cc42d44270e3fda360f2e736d3cbeb",
     "tests/test_lune_search_outcomes.py": "e2e58708915da0803c408296f715f3f349cb9b6d5eb06a715a9c91d27160b883",
     "tests/test_mcp_client.py": "8ec0227a08fe42c353e82e9aec3ab4837492b10bc01116dac702b372f8b0538c",
@@ -355,7 +357,7 @@
     "web/theme.js": "f01b1da0a1e05aab0c44047b928c64ceb961c9ff40d15954be684f945a96f041",
     "web/trace.css": "76f04d205f284fa6b9cb2a7dcc932a1303eed7222fe4c815247e4a5401f0f332",
     "web/trace.js": "6fdcf7c457c85b79582c9e1dc2bce6b9272956295202d33032d990dda275e83a",
-    "webapp.py": "e16f7df9411af0898b520fe828e8599f3c79efc341730a79eafcbbb89688178a",
+    "webapp.py": "41e963ebe2dabb237ee71edb6f2714614bd9856537e0e52a6ba6df17170d8072",
     "workflow.py": "8a388d35ace9ac1d38fabc1be168f61900ffc9f0337778f155cfb7d385d447ab"
   }
 }

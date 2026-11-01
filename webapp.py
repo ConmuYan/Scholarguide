@@ -2599,7 +2599,10 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
             self._json(404, {'error': '接口不存在。'})
 
     class ProductServer(ThreadingHTTPServer):
+        shutdown_event = threading.Event()
+
         def server_close(self):
+            self.shutdown_event.set()
             super().server_close()
             chat.close()
             if own_sources:
@@ -2609,7 +2612,35 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
     server.daemon_threads = True
     server.product_api = product_api
     server.sources = sources
+    _start_quota_schedule(server.shutdown_event)
     return server
+
+
+def _start_quota_schedule(stop: threading.Event, interval: float = 300.0) -> None:
+    """Keep the Lune allowance window rolling while the service is up.
+
+    Pure local bookkeeping: it never contacts Lune, and it does nothing unless
+    the user enabled the schedule with ``lune_quota_schedule --enable``.
+    """
+    def loop():
+        try:
+            from lune_quota import LuneQuotaStore, default_quota_path
+            from lune_quota_schedule import read_config, tick
+        except Exception:
+            return
+        while not stop.is_set():
+            try:
+                config = read_config()
+                if config.get('enabled'):
+                    with LuneQuotaStore(default_quota_path()) as store:
+                        tick(store, config)
+            except Exception:
+                # A quota window failure must never take the web service down.
+                pass
+            stop.wait(interval)
+
+    thread = threading.Thread(target=loop, name='lune-quota-schedule', daemon=True)
+    thread.start()
 
 
 def serve(port: int = 8765, open_browser: bool = False, runs: Path | None = None) -> None:
