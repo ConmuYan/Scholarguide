@@ -10,7 +10,7 @@
 [![Release](https://img.shields.io/github/v/release/ConmuYan/Scholarguide)](https://github.com/ConmuYan/Scholarguide/releases)
 [![Release workflow](https://github.com/ConmuYan/Scholarguide/actions/workflows/release.yml/badge.svg)](https://github.com/ConmuYan/Scholarguide/actions/workflows/release.yml)
 
-ScholarGuide turns a research question into a **reading list you can check**:每篇推荐都附摘要引文、来源、出版信息和推荐理由，模型推断单独标注。它在本机运行，用自己的 API key，跑完一次检索你可以逐事件回看它做了什么。
+ScholarGuide turns a research question into a **reading list you can check**: every recommendation carries an abstract quote, its source, publication metadata and a stated reason — with model inference labelled separately. It runs on your machine, with your own API key, and you can replay every step it took.
 
 <img src="docs/assets/screenshots/landing.png" alt="ScholarGuide landing page" width="100%">
 
