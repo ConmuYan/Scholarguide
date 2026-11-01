@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "purpose": "Small offline engineering regression baseline; not a scientific benchmark",
+  "source_snapshot": {
+    "fixture": "evaluation/engineering_agent/fixtures/papers-baseline.json",
+    "active_fixture": "examples/papers.json",
+    "sha256": "6b2c8a404ea0c27a5ad2b679937cc9725b3605b63a69d54289db9715e515ea4e"
+  },
+  "cases": [
+    {"id": "dev-count", "split": "dev", "test": "test_quantity_continuous_product.QuantityProductTests.test_every_supported_count_survives_task_and_type_allocation", "dimension": "count_constraints"},
+    {"id": "dev-reject-invalid", "split": "dev", "test": "test_search_constraints.GuidedConstraintTests.test_constraint_validation_is_strict_and_does_not_spend_on_invalid_input", "dimension": "invalid_input_and_cost"},
+    {"id": "dev-feedback", "split": "dev", "test": "test_demo_feedback.DemoFeedbackTests.test_demo_chat_applies_explicit_exclusion_without_inventing_a_replacement", "dimension": "multi_turn_feedback"},
+    {"id": "dev-evidence", "split": "dev", "test": "test_brief_evidence_bank.EvidenceBankTests.test_single_paper_discards_invalid_cross_paper_theme_but_keeps_grounded_notes", "dimension": "evidence_support"},
+    {"id": "dev-recovery", "split": "dev", "test": "test_agent_runtime.GraphRuntimeTests.test_interrupted_graph_node_resumes_from_checkpoint", "dimension": "recovery"},
+    {"id": "dev-cancel", "split": "dev", "test": "test_cancellation.CancellationTests.test_token_is_idempotent_and_interrupts_retry_backoff", "dimension": "cancellation"},
+    {"id": "holdout-feedback", "split": "holdout", "test": "test_demo_feedback.DemoFeedbackTests.test_only_explicit_supported_actions_reference_delivered_papers", "dimension": "feedback_integrity"},
+    {"id": "holdout-session", "split": "holdout", "test": "test_agent_runtime.GraphRuntimeTests.test_graph_keeps_session_resumable", "dimension": "session_restoration"},
+    {"id": "holdout-evidence", "split": "holdout", "test": "test_brief_evidence_bank.EvidenceBankTests.test_fabricated_claim_reference_still_fails_after_one_repair", "dimension": "fabricated_evidence"},
+    {"id": "holdout-cancel", "split": "holdout", "test": "test_cancellation.CancellationTests.test_cancelled_source_retry_cannot_mark_provider_unhealthy", "dimension": "cancellation_and_source_health"}
+  ]
+}

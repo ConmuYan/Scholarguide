@@ -1,0 +1,3 @@
+# Live C1 evidence: ordinal feedback resolved against the delivered list.
+Recommend five RAG papers including one evaluation paper.
+Drop the third paper and keep the rest.

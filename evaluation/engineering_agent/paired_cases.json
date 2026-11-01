@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "fixture": "examples/papers.json",
+  "fixture_sha256": "6b2c8a404ea0c27a5ad2b679937cc9725b3605b63a69d54289db9715e515ea4e",
+  "budget": {"seconds": 30, "max_search_calls": 1, "max_model_calls": 2, "max_output_tokens": 3000},
+  "tool_allowlist": ["search", "assess"],
+  "references": {"cancellation": "tests.test_cancellation.CancellationTests.test_token_is_idempotent_and_interrupts_retry_backoff", "recovery": "tests.test_agent_runtime.GraphRuntimeTests.test_interrupted_graph_node_resumes_from_checkpoint", "session": "tests.test_agent_runtime.GraphRuntimeTests.test_graph_keeps_session_resumable"},
+  "cases": [
+    {"id": "dev-three", "split": "dev", "request": {"topic": "retrieval augmented generation", "query": "retrieval augmented generation", "target_count": 3, "category": "none", "minimum_category_count": 0}},
+    {"id": "dev-evaluation", "split": "dev", "request": {"topic": "retrieval augmented generation", "query": "retrieval augmented generation", "target_count": 5, "category": "evaluation", "minimum_category_count": 2}},
+    {"id": "holdout-four", "split": "holdout", "request": {"topic": "retrieval augmented generation", "query": "retrieval augmented generation", "target_count": 4, "category": "none", "minimum_category_count": 0}}
+  ]
+}

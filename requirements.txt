@@ -1,0 +1,5 @@
+# Core runtime and tests use the Python 3.11+ standard library plus the
+# orchestrator pinned below. The browser UI remains dependency-free.
+langgraph==1.2.16
+langgraph-checkpoint-sqlite==3.1.2
+jsonschema==4.25.1

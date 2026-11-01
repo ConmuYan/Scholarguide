@@ -1,0 +1,4 @@
+# Live three-turn transcript: request -> feedback (model asks a clarifying question) -> answer -> delivered list.
+Recommend five RAG papers including two evaluation papers.
+Actually I need them for writing a survey; add one survey paper.
+Keep the two evaluation papers, and add one survey paper.

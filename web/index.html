@@ -1,0 +1,2139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title data-i18n="Search · ScholarGuide">Search · ScholarGuide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b1b1b'/%3E%3Cpath d='M8 9h7l2 2h7v14h-7l-2-2H8z' fill='none' stroke='%23faf9f6' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/trace.css">
+  
+  <script type="application/json" id="sg-page-i18n">
+{
+"研究工作室": {
+    "en": "Research workspace",
+    "zh-Hant": "研究工作室"
+  },
+  "研究导航": {
+    "en": "Research navigation",
+    "zh-Hant": "研究導覽"
+  },
+  "研究路径": {
+    "en": "Your research",
+    "zh-Hant": "研究路徑"
+  },
+  "从问题找到论文": {
+    "en": "Find papers for your question",
+    "zh-Hant": "從問題找到論文"
+  },
+  "沿着证据继续": {
+    "en": "Continue with the evidence",
+    "zh-Hant": "沿著證據繼續"
+  },
+  "回看研究过程": {
+    "en": "Review your research",
+    "zh-Hant": "回顧研究過程"
+  },
+  "连接与配置": {
+    "en": "Connections",
+    "zh-Hant": "連接與設定"
+  },
+  "读论文，启新思。": {
+    "en": "Read. Connect. Discover.",
+    "zh-Hant": "讀論文，啟新思。"
+  },
+  "本地工作空间": {
+    "en": "Local workspace",
+    "zh-Hant": "本地工作空間"
+  },
+
+  "OpenReview展示类别": {
+    "en": "OpenReview presentation type",
+    "zh-Hant": "OpenReview 展示類別"
+  },
+  "ScholarGuide 首页": {
+    "en": "ScholarGuide home",
+    "zh-Hant": "ScholarGuide 首頁"
+  },
+  "{count} 个真实事件": {
+    "en": "{count} actual events",
+    "zh-Hant": "{count} 個實際事件"
+  },
+  "{label} {count} 篇": {
+    "en": "{label}: {count} papers",
+    "zh-Hant": "{label} {count} 篇"
+  },
+  "{label} · {state}": {
+    "en": "{label} · {state}",
+    "zh-Hant": "{label} · {state}"
+  },
+  "{label} · 已交付 {count}": {
+    "en": "{label} · delivered {count}",
+    "zh-Hant": "{label} · 已交付 {count}"
+  },
+  "{label}仍有缺口": {
+    "en": "{label}: gap remains",
+    "zh-Hant": "{label}仍有缺口"
+  },
+  "{paper}：{label}尚未由摘要建立。": {
+    "en": "{paper}: {label} is not established by the abstract.",
+    "zh-Hant": "{paper}：{label}尚未由摘要建立。"
+  },
+  "不限": {
+    "en": "Any",
+    "zh-Hant": "不限"
+  },
+  "不限会议或期刊": {
+    "en": "Any conference or journal",
+    "zh-Hant": "不限會議或期刊"
+  },
+  "不额外指定": {
+    "en": "No additional category",
+    "zh-Hant": "不額外指定"
+  },
+  "交付推荐结果": {
+    "en": "Delivering recommendations",
+    "zh-Hant": "交付推薦結果"
+  },
+  "仍有缺口": {
+    "en": "Gap remains",
+    "zh-Hant": "仍有缺口"
+  },
+  "从一个可编辑的需求开始": {
+    "en": "Start with an editable request",
+    "zh-Hant": "從可編輯的需求開始"
+  },
+  "从一个研究问题开始。": {
+    "en": "Start with a research question.",
+    "zh-Hant": "從一個研究問題開始。"
+  },
+  "以下实验、对照与衡量方式均为拟议建议，尚未执行；数据、代码和算力可得性需要另行检查。引用支持动机，不证明假设有效或新颖。": {
+    "en": "The experiments, baselines and measures below are proposals, not completed work. Data, code and compute availability must be checked separately. Citations support motivation, not validity or novelty.",
+    "zh-Hant": "以下實驗、對照與衡量方式均為擬議建議，尚未執行；資料、程式碼和運算資源可得性需要另行檢查。引用支持動機，不證明假設有效或新穎。"
+  },
+  "会议": {
+    "en": "Conference",
+    "zh-Hant": "會議"
+  },
+  "会议 / 期刊": {
+    "en": "Conference / journal",
+    "zh-Hant": "會議 / 期刊"
+  },
+  "会议论文": {
+    "en": "Conference paper",
+    "zh-Hant": "會議論文"
+  },
+  "何种结果会否定假设": {
+    "en": "What result would falsify the hypothesis",
+    "zh-Hant": "何種結果會否定假設"
+  },
+  "作者明确报告的局限": {
+    "en": "Limitations explicitly reported by authors",
+    "zh-Hant": "作者明確報告的限制"
+  },
+  "作者：{authors}": {
+    "en": "Authors: {authors}",
+    "zh-Hant": "作者：{authors}"
+  },
+  "作者：来源未提供": {
+    "en": "Authors: not provided by source",
+    "zh-Hant": "作者：來源未提供"
+  },
+  "例如：RAG 的评测方法，或用于 3D 场景重建的视觉模型": {
+    "en": "For example: RAG evaluation methods, or vision models for 3D scene reconstruction",
+    "zh-Hant": "例如：RAG 的評測方法，或用於 3D 場景重建的視覺模型"
+  },
+  "侧边导航": {
+    "en": "Sidebar navigation",
+    "zh-Hant": "側邊導覽"
+  },
+  "候选论文": {
+    "en": " candidate papers",
+    "zh-Hant": "候選論文"
+  },
+  "停止搜索": {
+    "en": "Stop search",
+    "zh-Hant": "停止搜尋"
+  },
+  "先体验离线演示": {
+    "en": "Try offline demo",
+    "zh-Hant": "先體驗離線示範"
+  },
+  "先找到值得读的几篇。": {
+    "en": "Find papers worth reading.",
+    "zh-Hant": "先找到值得讀的幾篇。"
+  },
+  "关闭结果提示": {
+    "en": "Dismiss results notification",
+    "zh-Hant": "關閉結果提示"
+  },
+  "其中至少": {
+    "en": "Including at least",
+    "zh-Hant": "其中至少"
+  },
+  "出版依据": {
+    "en": "Publication evidence",
+    "zh-Hant": "出版依據"
+  },
+  "出版偏好与录用要求": {
+    "en": "Publication and acceptance preferences",
+    "zh-Hant": "出版偏好與錄用要求"
+  },
+  "出版状态待核对": {
+    "en": "Publication status unverified",
+    "zh-Hant": "出版狀態待核對"
+  },
+  "出版类型": {
+    "en": "Publication type",
+    "zh-Hant": "出版類型"
+  },
+  "切换主题": {
+    "en": "Toggle theme",
+    "zh-Hant": "切換主題"
+  },
+  "制定查询": {
+    "en": "Planning queries",
+    "zh-Hant": "制定查詢"
+  },
+  "前沿 idea": {
+    "en": "Frontier ideas",
+    "zh-Hant": "前沿 idea"
+  },
+  "动机 · 模型推论": {
+    "en": "Rationale · model inference",
+    "zh-Hant": "動機 · 模型推論"
+  },
+  "发现论文": {
+    "en": "Discover papers",
+    "zh-Hant": "探索論文"
+  },
+  "只检索一轮": {
+    "en": "One search round only",
+    "zh-Hant": "只檢索一輪"
+  },
+  "可依据当前证据提出的假设：{found}/{requested}；未用无依据的设想补足数量。": {
+    "en": "Hypotheses grounded in current evidence: {found}/{requested}; unsupported ideas were not added to fill the quota.",
+    "zh-Hant": "可依目前證據提出的假設：{found}/{requested}；未用無依據的設想補足數量。"
+  },
+  "可继续反馈": {
+    "en": "Continue with feedback",
+    "zh-Hant": "可繼續回饋"
+  },
+  "可继续探索的问题 · 模型建议": {
+    "en": "Questions for further exploration · model suggestions",
+    "zh-Hant": "可繼續探索的問題 · 模型建議"
+  },
+  "可能的含义 · 模型推论": {
+    "en": "Possible implications · model inference",
+    "zh-Hant": "可能的含義 · 模型推論"
+  },
+  "回到需求，另开搜索": {
+    "en": "Edit request and start a new search",
+    "zh-Hant": "回到需求，另開搜尋"
+  },
+  "在 Activity 打开完整轨迹 →": {
+    "en": "Open full trace in Activity →",
+    "zh-Hant": "在 Activity 開啟完整軌跡 →"
+  },
+  "在 Chat 中继续 →": {
+    "en": "Continue in Chat →",
+    "zh-Hant": "在 Chat 中繼續 →"
+  },
+  "在线搜索": {
+    "en": "Online search",
+    "zh-Hant": "線上搜尋"
+  },
+  "场景": {
+    "en": "Scenario",
+    "zh-Hant": "場景"
+  },
+  "基于摘要的模型分类，用于检查阅读面的覆盖；不代表领域穷尽或论文结论已验证。": {
+    "en": "Model classification based on abstracts checks reading coverage; it does not imply exhaustive field coverage or validated conclusions.",
+    "zh-Hant": "基於摘要的模型分類，用於檢查閱讀面的涵蓋範圍；不代表領域窮盡或論文結論已驗證。"
+  },
+  "复制失败": {
+    "en": "Copy failed",
+    "zh-Hant": "複製失敗"
+  },
+  "复制引文": {
+    "en": "Copy quote",
+    "zh-Hant": "複製引文"
+  },
+  "复制引用": {
+    "en": "Copy citation",
+    "zh-Hant": "複製引用"
+  },
+  "复制清单": {
+    "en": "Copy list",
+    "zh-Hant": "複製清單"
+  },
+  "复用有效判断": {
+    "en": "Reusing valid assessments",
+    "zh-Hant": "重用有效判斷"
+  },
+  "完整研究需求": {
+    "en": "Full research request",
+    "zh-Hant": "完整研究需求"
+  },
+  "对话": {
+    "en": "Chat",
+    "zh-Hant": "對話"
+  },
+  "尚未记录": {
+    "en": "Not yet recorded",
+    "zh-Hant": "尚未記錄"
+  },
+  "展开引文": {
+    "en": "Expand quote",
+    "zh-Hant": "展開引文"
+  },
+  "工作区": {
+    "en": "Workspace",
+    "zh-Hant": "工作區"
+  },
+  "工具执行完成": {
+    "en": "Tool completed",
+    "zh-Hant": "工具執行完成"
+  },
+  "工具返回错误": {
+    "en": "Tool error",
+    "zh-Hant": "工具回傳錯誤"
+  },
+  "已关联论文": {
+    "en": "Papers linked",
+    "zh-Hant": "已連結論文"
+  },
+  "已发表": {
+    "en": "Published",
+    "zh-Hant": "已發表"
+  },
+  "已复制": {
+    "en": "Copied",
+    "zh-Hant": "已複製"
+  },
+  "已完成": {
+    "en": "Completed",
+    "zh-Hant": "已完成"
+  },
+  "已录用": {
+    "en": "Accepted",
+    "zh-Hant": "已錄用"
+  },
+  "已按你的要求停止，现有论文推荐保留。": {
+    "en": "Stopped as requested; existing recommendations remain available.",
+    "zh-Hant": "已依你的要求停止，現有論文推薦保留。"
+  },
+  "已撤稿": {
+    "en": "Withdrawn or retracted",
+    "zh-Hant": "已撤稿"
+  },
+  "已记录": {
+    "en": "Recorded",
+    "zh-Hant": "已記錄"
+  },
+  "已选论文没有可使用的摘要，无法据此生成研究综合。": {
+    "en": "The selected papers have no usable abstracts for synthesis.",
+    "zh-Hant": "已選論文沒有可使用的摘要，無法據此產生研究綜合。"
+  },
+  "年份需填写 1900–2100 之间的整数。": {
+    "en": "Enter an integer year between 1900 and 2100.",
+    "zh-Hant": "年份須填寫 1900–2100 之間的整數。"
+  },
+  "建立研究任务": {
+    "en": "Creating research task",
+    "zh-Hant": "建立研究任務"
+  },
+  "建议对照": {
+    "en": "Suggested baseline",
+    "zh-Hant": "建議對照"
+  },
+  "建议衡量方式": {
+    "en": "Suggested measure",
+    "zh-Hant": "建議衡量方式"
+  },
+  "建议阅读顺序 · 模型建议": {
+    "en": "Suggested reading order · model suggestion",
+    "zh-Hant": "建議閱讀順序 · 模型建議"
+  },
+  "开始年份不能晚于结束年份。": {
+    "en": "The start year cannot be later than the end year.",
+    "zh-Hant": "開始年份不能晚於結束年份。"
+  },
+  "引文为摘要文字匹配；路线归类仍是模型判断。": {
+    "en": "The quote matches the abstract; direction classification remains a model judgment.",
+    "zh-Hant": "引文為摘要文字匹配；路線歸類仍是模型判斷。"
+  },
+  "当前可推荐": {
+    "en": " currently eligible",
+    "zh-Hant": "目前可推薦"
+  },
+  "当前摘要证据不足以提出可追溯的实验假设。": {
+    "en": "Current abstract evidence is insufficient for a traceable experimental hypothesis.",
+    "zh-Hant": "目前摘要證據不足以提出可追溯的實驗假設。"
+  },
+  "当前来源未提供摘要。": {
+    "en": "The current source provides no abstract.",
+    "zh-Hant": "目前來源未提供摘要。"
+  },
+  "当前没有可供综合的已选论文。": {
+    "en": "No selected papers are available for synthesis.",
+    "zh-Hant": "目前沒有可供綜合的已選論文。"
+  },
+  "当前没有可展示的研究综合；论文推荐与已有证据不受影响。": {
+    "en": "No research synthesis is available; recommendations and existing evidence are unaffected.",
+    "zh-Hant": "目前沒有可顯示的研究綜合；論文推薦與已有證據不受影響。"
+  },
+  "当前没有可用的阅读顺序建议。": {
+    "en": "No reading order is currently available.",
+    "zh-Hant": "目前沒有可用的閱讀順序建議。"
+  },
+  "当前综合的证据范围无法确认，暂不展示内容。": {
+    "en": "The evidence scope cannot be confirmed; synthesis is withheld.",
+    "zh-Hant": "目前綜合的證據範圍無法確認，暫不顯示內容。"
+  },
+  "当前证据不足以归纳跨论文共同主题。": {
+    "en": "Current evidence is insufficient to identify cross-paper themes.",
+    "zh-Hant": "目前證據不足以歸納跨論文共同主題。"
+  },
+  "当前证据不足以提出有依据的开放问题。": {
+    "en": "Current evidence is insufficient to propose grounded open questions.",
+    "zh-Hant": "目前證據不足以提出有依據的開放問題。"
+  },
+  "当前证据无法关联到清单": {
+    "en": "Evidence cannot be linked to the current list",
+    "zh-Hant": "目前證據無法連結至清單"
+  },
+  "当前阶段详情": {
+    "en": "Current step details",
+    "zh-Hant": "目前階段詳情"
+  },
+  "待核对": {
+    "en": "To be checked",
+    "zh-Hant": "待核對"
+  },
+  "待检验研究假设 · 尚未验证": {
+    "en": "Research hypotheses · unverified",
+    "zh-Hant": "待檢驗研究假設 · 尚未驗證"
+  },
+  "待配置": {
+    "en": "Configuration required",
+    "zh-Hant": "待設定"
+  },
+  "打开导航": {
+    "en": "Open navigation",
+    "zh-Hant": "開啟導覽"
+  },
+  "执行中": {
+    "en": "Running",
+    "zh-Hant": "執行中"
+  },
+  "技术方法 · 摘要整理": {
+    "en": "Method · abstract summary",
+    "zh-Hant": "技術方法 · 摘要整理"
+  },
+  "技术路线与跨论文联系 · 模型归纳": {
+    "en": "Research directions and connections · model synthesis",
+    "zh-Hant": "技術路線與跨論文聯繫 · 模型歸納"
+  },
+  "技术路线仍有缺口：{facets}": {
+    "en": "Research directions still missing: {facets}",
+    "zh-Hant": "技術路線仍有缺口：{facets}"
+  },
+  "技术路线仍缺 {count} 条": {
+    "en": "{count} research directions still missing",
+    "zh-Hant": "技術路線仍缺 {count} 條"
+  },
+  "技术路线覆盖": {
+    "en": "Research direction coverage",
+    "zh-Hant": "技術路線涵蓋範圍"
+  },
+  "技术路线覆盖暂时无法核对": {
+    "en": "Research direction coverage cannot currently be checked",
+    "zh-Hant": "技術路線涵蓋範圍暫時無法核對"
+  },
+  "投稿中": {
+    "en": "Submitted",
+    "zh-Hant": "投稿中"
+  },
+  "拟议实验": {
+    "en": "Proposed experiment",
+    "zh-Hant": "擬議實驗"
+  },
+  "按来源筛选": {
+    "en": "Filter by source",
+    "zh-Hant": "按來源篩選"
+  },
+  "推荐 5 篇 RAG 论文，其中至少 2 篇主要提出评测方法或 benchmark。我准备设计实验，希望了解如何比较方法。": {
+    "en": "Recommend 5 RAG papers, including at least 2 on evaluation methods or benchmarks. I am designing experiments and want to compare methods.",
+    "zh-Hant": "推薦 5 篇 RAG 論文，其中至少 2 篇主要提出評測方法或 benchmark。我準備設計實驗，希望了解如何比較方法。"
+  },
+  "推荐数量": {
+    "en": "Recommendation count",
+    "zh-Hant": "推薦數量"
+  },
+  "推荐条件": {
+    "en": "Recommendation requirement",
+    "zh-Hant": "推薦條件"
+  },
+  "推荐清单": {
+    "en": "Reading list",
+    "zh-Hant": "推薦清單"
+  },
+  "推进研究步骤": {
+    "en": "Advancing research",
+    "zh-Hant": "推進研究步驟"
+  },
+  "搜索已中断，现有进展已保留": {
+    "en": "Search interrupted; existing progress saved",
+    "zh-Hant": "搜尋已中斷，現有進度已保留"
+  },
+  "摘要中没有可用的证据片段，无法据此生成研究综合。": {
+    "en": "The abstracts contain no usable evidence passages for synthesis.",
+    "zh-Hant": "摘要中沒有可用的證據片段，無法據此產生研究綜合。"
+  },
+  "摘要文字匹配；并非解释成立或实验可复现的证明。": {
+    "en": "The quote matches the abstract; this does not establish the interpretation or reproducibility.",
+    "zh-Hant": "摘要文字相符；並非解釋成立或實驗可重現的證明。"
+  },
+  "摘要未明确说明；不能据此断言论文没有这项内容。": {
+    "en": "Not explicit in the abstract; this does not mean the paper lacks it.",
+    "zh-Hant": "摘要未明確說明；不能據此斷言論文沒有這項內容。"
+  },
+  "摘要来源：{source}": {
+    "en": "Abstract source: {source}",
+    "zh-Hant": "摘要來源：{source}"
+  },
+  "摘要证据": {
+    "en": "Abstract evidence",
+    "zh-Hant": "摘要證據"
+  },
+  "收起引文": {
+    "en": "Collapse quote",
+    "zh-Hant": "收起引文"
+  },
+  "改用主题与类别": {
+    "en": "Use topic and category",
+    "zh-Hant": "改用主題與類別"
+  },
+  "改用完整需求": {
+    "en": "Use a full request instead",
+    "zh-Hant": "改用完整需求"
+  },
+  "整理与交付": {
+    "en": "Organize and deliver",
+    "zh-Hant": "整理與交付"
+  },
+  "整理研究综合": {
+    "en": "Preparing research synthesis",
+    "zh-Hant": "整理研究綜合"
+  },
+  "新手入门": {
+    "en": "Introduction",
+    "zh-Hant": "新手入門"
+  },
+  "方法对比": {
+    "en": "Compare methods",
+    "zh-Hant": "方法比較"
+  },
+  "更新研究需求": {
+    "en": "Updating research request",
+    "zh-Hant": "更新研究需求"
+  },
+  "最近可识别阶段：{stage}。阶段可能循环，不代表完成比例。": {
+    "en": "Latest recognized stage: {stage}. Stages may repeat and do not indicate percentage complete.",
+    "zh-Hant": "最近可識別階段：{stage}。階段可能循環，不代表完成比例。"
+  },
+  "最近阶段": {
+    "en": "Latest stage",
+    "zh-Hant": "最近階段"
+  },
+  "有缺口再补搜": {
+    "en": "Search again if needed",
+    "zh-Hant": "有缺口再補搜"
+  },
+  "期刊": {
+    "en": "Journal",
+    "zh-Hant": "期刊"
+  },
+  "期刊论文": {
+    "en": "Journal paper",
+    "zh-Hant": "期刊論文"
+  },
+  "未录用": {
+    "en": "Rejected",
+    "zh-Hant": "未錄用"
+  },
+  "未知": {
+    "en": "Unknown",
+    "zh-Hant": "未知"
+  },
+  "未知论文": {
+    "en": "Unknown paper",
+    "zh-Hant": "未知論文"
+  },
+  "未送审": {
+    "en": "Desk rejected",
+    "zh-Hant": "未送審"
+  },
+  "本轮剩余预算不足，现有论文推荐保留。": {
+    "en": "The remaining budget is insufficient; existing recommendations remain available.",
+    "zh-Hant": "本輪剩餘預算不足，現有論文推薦保留。"
+  },
+  "本轮新增候选": {
+    "en": " new candidates",
+    "zh-Hant": "本輪新增候選"
+  },
+  "本轮未生成研究综合": {
+    "en": "No synthesis generated for this run",
+    "zh-Hant": "本輪未產生研究綜合"
+  },
+  "本轮结束": {
+    "en": "Run finished",
+    "zh-Hant": "本輪結束"
+  },
+  "来源": {
+    "en": "Sources",
+    "zh-Hant": "來源"
+  },
+  "来源与搜索缓存": {
+    "en": "Sources and search cache",
+    "zh-Hant": "來源與搜尋快取"
+  },
+  "来源摘要存在不一致，相关解释需要进一步核对。": {
+    "en": "Source abstracts disagree; related interpretations need further checking.",
+    "zh-Hant": "來源摘要存在不一致，相關解釋需要進一步核對。"
+  },
+  "来源请求失败": {
+    "en": "Source request failed",
+    "zh-Hant": "來源請求失敗"
+  },
+  "来源返回结果": {
+    "en": "Source returned results",
+    "zh-Hant": "來源回傳結果"
+  },
+  "查看中断任务": {
+    "en": "View interrupted task",
+    "zh-Hant": "查看中斷任務"
+  },
+  "查看事件详情": {
+    "en": "View event details",
+    "zh-Hant": "查看事件詳情"
+  },
+  "查看优选研究池": {
+    "en": "View preferred research pool",
+    "zh-Hant": "查看優選研究池"
+  },
+  "查看将提交的需求": {
+    "en": "View request to be submitted",
+    "zh-Hant": "查看將提交的需求"
+  },
+  "查看或配置当前模型": {
+    "en": "View or configure current model",
+    "zh-Hant": "查看或設定目前模型"
+  },
+  "查看摘要与文献信息": {
+    "en": "View abstract and publication details",
+    "zh-Hant": "查看摘要與文獻資訊"
+  },
+  "查看摘要依据（{count} 篇）": {
+    "en": "View abstract evidence ({count} papers)",
+    "zh-Hant": "查看摘要依據（{count} 篇）"
+  },
+  "查看结果 ↓": {
+    "en": "View results ↓",
+    "zh-Hant": "查看結果 ↓"
+  },
+  "查看证据缺口（{count}）": {
+    "en": "View evidence gaps ({count})",
+    "zh-Hant": "查看證據缺口（{count}）"
+  },
+  "查看路线分类与摘要依据": {
+    "en": "View direction classifications and abstract evidence",
+    "zh-Hant": "查看路線分類與摘要依據"
+  },
+  "核对交付条件": {
+    "en": "Checking delivery requirements",
+    "zh-Hant": "核對交付條件"
+  },
+  "核对论文摘要": {
+    "en": "Checking abstracts",
+    "zh-Hant": "核對論文摘要"
+  },
+  "核对证据": {
+    "en": "Check evidence",
+    "zh-Hant": "核對證據"
+  },
+  "检查已有证据": {
+    "en": "Checking existing evidence",
+    "zh-Hant": "檢查已有證據"
+  },
+  "检查研究覆盖": {
+    "en": "Checking research coverage",
+    "zh-Hant": "檢查研究涵蓋範圍"
+  },
+  "检查路线覆盖": {
+    "en": "Checking direction coverage",
+    "zh-Hant": "檢查路線涵蓋範圍"
+  },
+  "检索": {
+    "en": "Search",
+    "zh-Hant": "檢索"
+  },
+  "检索论文": {
+    "en": "Searching papers",
+    "zh-Hant": "檢索論文"
+  },
+  "模型": {
+    "en": "Models",
+    "zh-Hant": "模型"
+  },
+  "模型与来源返回后，这里会逐步更新实际进展。": {
+    "en": "Actual progress will appear as models and sources respond.",
+    "zh-Hant": "模型與來源回傳後，這裡會逐步更新實際進度。"
+  },
+  "模型调用或综合输出校验未完成，现有论文推荐保留。": {
+    "en": "The model call or synthesis validation did not complete; existing recommendations remain available.",
+    "zh-Hant": "模型呼叫或綜合輸出驗證未完成，現有論文推薦保留。"
+  },
+  "次引文匹配": {
+    "en": " quote matches",
+    "zh-Hant": "次引文匹配"
+  },
+  "次摘要核对": {
+    "en": " abstract checks",
+    "zh-Hant": "次摘要核對"
+  },
+  "正在{label}": {
+    "en": "Running: {label}",
+    "zh-Hant": "正在執行：{label}"
+  },
+  "正在准备检索": {
+    "en": "Preparing search",
+    "zh-Hant": "正在準備檢索"
+  },
+  "正在发现…": {
+    "en": "Discovering…",
+    "zh-Hant": "正在探索…"
+  },
+  "正在整理研究脉络": {
+    "en": "Organizing research context",
+    "zh-Hant": "正在整理研究脈絡"
+  },
+  "正在检查…": {
+    "en": "Checking…",
+    "zh-Hant": "正在檢查…"
+  },
+  "正在检查模型配置…": {
+    "en": "Checking model configuration…",
+    "zh-Hant": "正在檢查模型設定…"
+  },
+  "正在检索": {
+    "en": "Searching",
+    "zh-Hant": "正在檢索"
+  },
+  "正在调用工具": {
+    "en": "Calling tool",
+    "zh-Hant": "正在呼叫工具"
+  },
+  "每次推荐支持 1–10 篇；请在需求中调整篇数。": {
+    "en": "Choose 1–10 papers per request.",
+    "zh-Hant": "每次推薦支援 1–10 篇；請在需求中調整篇數。"
+  },
+  "活动": {
+    "en": "Activity",
+    "zh-Hant": "活動"
+  },
+  "理解与规划": {
+    "en": "Understand and plan",
+    "zh-Hant": "理解與規劃"
+  },
+  "理解需求": {
+    "en": "Understanding request",
+    "zh-Hant": "理解需求"
+  },
+  "真实论文链接": {
+    "en": "Real paper links",
+    "zh-Hant": "真實論文連結"
+  },
+  "研究主题": {
+    "en": "Research topic",
+    "zh-Hant": "研究主題"
+  },
+  "研究综合": {
+    "en": "Research synthesis",
+    "zh-Hant": "研究綜合"
+  },
+  "研究综合 · 证据仍有缺口": {
+    "en": "Research synthesis · evidence gaps remain",
+    "zh-Hant": "研究綜合 · 證據仍有缺口"
+  },
+  "研究综合与待验证设想": {
+    "en": "Research synthesis and hypotheses",
+    "zh-Hant": "研究綜合與待驗證設想"
+  },
+  "研究综合已生成": {
+    "en": "Research synthesis generated",
+    "zh-Hant": "研究綜合已產生"
+  },
+  "研究综合暂未完成": {
+    "en": "Research synthesis incomplete",
+    "zh-Hant": "研究綜合暫未完成"
+  },
+  "研究论文": {
+    "en": "Research papers",
+    "zh-Hant": "研究論文"
+  },
+  "研究论文 / Research": {
+    "en": "Research paper",
+    "zh-Hant": "研究論文 / Research"
+  },
+  "离线演示": {
+    "en": "Offline demo",
+    "zh-Hant": "離線示範"
+  },
+  "等待实际运行事件。": {
+    "en": "Waiting for run events.",
+    "zh-Hant": "等待實際執行事件。"
+  },
+  "等待澄清": {
+    "en": "Waiting for clarification",
+    "zh-Hant": "等待釐清"
+  },
+  "等待真实运行事件；阶段可能循环，不代表完成比例。": {
+    "en": "Waiting for actual run events; stages may repeat and do not indicate percentage complete.",
+    "zh-Hant": "等待實際執行事件；階段可能循環，不代表完成比例。"
+  },
+  "类别最低篇数不能超过推荐总数，请调整数量或类别篇数。": {
+    "en": "The category minimum cannot exceed the total number of papers.",
+    "zh-Hant": "類別最低篇數不能超過推薦總數，請調整數量或類別篇數。"
+  },
+  "结束年份": {
+    "en": "To year",
+    "zh-Hant": "結束年份"
+  },
+  "结果不足": {
+    "en": "Insufficient results",
+    "zh-Hant": "結果不足"
+  },
+  "继续原任务 →": {
+    "en": "Resume task →",
+    "zh-Hant": "繼續原任務 →"
+  },
+  "综述": {
+    "en": "Survey",
+    "zh-Hant": "綜述"
+  },
+  "综述 / Survey": {
+    "en": "Survey",
+    "zh-Hant": "綜述 / Survey"
+  },
+  "自动判断": {
+    "en": "Automatic",
+    "zh-Hant": "自動判斷"
+  },
+  "自动规划 · 可用学术来源": {
+    "en": "Automatic · available academic sources",
+    "zh-Hant": "自動規劃 · 可用學術來源"
+  },
+  "补搜方式": {
+    "en": "Follow-up search",
+    "zh-Hant": "補搜方式"
+  },
+  "观察": {
+    "en": "Observe",
+    "zh-Hant": "觀察"
+  },
+  "规划研究路线": {
+    "en": "Planning research directions",
+    "zh-Hant": "規劃研究路線"
+  },
+  "让这份清单更适合你": {
+    "en": "Tailor this list to your needs",
+    "zh-Hant": "讓這份清單更適合你"
+  },
+  "论文 ID：{id}": {
+    "en": "Paper ID: {id}",
+    "zh-Hant": "論文 ID：{id}"
+  },
+  "论文数量少于请求，综合只覆盖实际交付的清单。": {
+    "en": "Fewer papers were delivered than requested; synthesis covers only the delivered list.",
+    "zh-Hant": "論文數量少於請求，綜合僅涵蓋實際交付的清單。"
+  },
+  "论文阅读目录": {
+    "en": "Paper reading index",
+    "zh-Hant": "論文閱讀目錄"
+  },
+  "证据无法关联到当前论文清单，暂不展示这一解释。": {
+    "en": "Evidence cannot be linked to the current paper list; this interpretation is withheld.",
+    "zh-Hant": "證據無法連結至目前論文清單，暫不顯示這項解釋。"
+  },
+  "证据范围：仅已选论文的摘要。作者报告、模型归纳与待验证设想分别展示；引文匹配只证明文字存在，不证明解释或实验结论。": {
+    "en": "Evidence scope: abstracts of selected papers only. Author reports, model synthesis, and unverified hypotheses are shown separately. Quote matching establishes only that the text exists, not the interpretation or experimental conclusions.",
+    "zh-Hant": "證據範圍：僅已選論文的摘要。作者報告、模型歸納與待驗證設想分別顯示；引文匹配只證明文字存在，不證明解釋或實驗結論。"
+  },
+  "评估候选": {
+    "en": "Assessing candidates",
+    "zh-Hant": "評估候選"
+  },
+  "评测 / Benchmark": {
+    "en": "Evaluation / Benchmark",
+    "zh-Hant": "評測 / Benchmark"
+  },
+  "请先填写研究主题，或选择一个示例。": {
+    "en": "Enter a research topic or choose an example.",
+    "zh-Hant": "請先填寫研究主題，或選擇一個範例。"
+  },
+  "请填写研究需求，说明主题和你希望读到什么。": {
+    "en": "Enter your research request, including the topic and what you want to read.",
+    "zh-Hant": "請填寫研究需求，說明主題和你希望讀到什麼。"
+  },
+  "请输入有效的年份。": {
+    "en": "Enter a valid year.",
+    "zh-Hant": "請輸入有效的年份。"
+  },
+  "读取模型配置": {
+    "en": "Reading model configuration",
+    "zh-Hant": "讀取模型設定"
+  },
+  "调整范围与检索偏好": {
+    "en": "Adjust scope and search preferences",
+    "zh-Hant": "調整範圍與檢索偏好"
+  },
+  "调用研究模型": {
+    "en": "Calling research model",
+    "zh-Hant": "呼叫研究模型"
+  },
+  "贡献 · 摘要整理": {
+    "en": "Contribution · abstract summary",
+    "zh-Hant": "貢獻 · 摘要整理"
+  },
+  "起始年份": {
+    "en": "From year",
+    "zh-Hant": "起始年份"
+  },
+  "跳到论文搜索": {
+    "en": "Skip to paper search",
+    "zh-Hant": "跳至論文搜尋"
+  },
+  "跳转阅读 · {count} 篇": {
+    "en": "Jump to paper · {count} papers",
+    "zh-Hant": "跳轉閱讀 · {count} 篇"
+  },
+  "运行信息与费用": {
+    "en": "Run details and cost",
+    "zh-Hant": "執行資訊與費用"
+  },
+  "运行模式": {
+    "en": "Run mode",
+    "zh-Hant": "執行模式"
+  },
+  "运行步骤": {
+    "en": "Run step",
+    "zh-Hant": "執行步驟"
+  },
+  "运行活动": {
+    "en": "Run activity",
+    "zh-Hant": "執行活動"
+  },
+  "运行演示": {
+    "en": "Run demo",
+    "zh-Hant": "執行示範"
+  },
+  "运行进度": {
+    "en": "Run progress",
+    "zh-Hant": "執行進度"
+  },
+  "返回 {count} 条记录": {
+    "en": "Returned {count} records",
+    "zh-Hant": "回傳 {count} 筆記錄"
+  },
+  "返回论文目录 ↑": {
+    "en": "Back to paper index ↑",
+    "zh-Hant": "返回論文目錄 ↑"
+  },
+  "这些问题由当前清单引出，不代表已检索完整领域或证明问题尚无人解决。": {
+    "en": "These questions arise from the current list; they do not establish exhaustive coverage or that the questions remain unsolved.",
+    "zh-Hant": "這些問題由目前清單引出，不代表已檢索完整領域或證明問題尚無人解決。"
+  },
+  "选择下一步": {
+    "en": "Choosing next step",
+    "zh-Hant": "選擇下一步"
+  },
+  "逐篇贡献、方法与证据边界": {
+    "en": "Contributions, methods and evidence limits",
+    "zh-Hant": "逐篇貢獻、方法與證據邊界"
+  },
+  "通用推荐": {
+    "en": "General recommendations",
+    "zh-Hant": "通用推薦"
+  },
+  "部分已选论文尚未有可用的阅读顺序建议。": {
+    "en": "Some selected papers lack a reading-order suggestion.",
+    "zh-Hant": "部分已選論文尚未有可用的閱讀順序建議。"
+  },
+  "部分摘要超出本轮输入上限，仅使用已提供的摘要片段。": {
+    "en": "Some abstracts exceeded the input limit; only provided excerpts were used.",
+    "zh-Hant": "部分摘要超出本輪輸入上限，僅使用已提供的摘要片段。"
+  },
+  "部分研究内容缺少摘要依据，未作补充推断。": {
+    "en": "Some research content lacks abstract evidence; no additional inference was made.",
+    "zh-Hant": "部分研究內容缺少摘要依據，未作補充推斷。"
+  },
+  "部分论文缺少可用的逐篇研究整理。": {
+    "en": "Some papers lack usable individual research notes.",
+    "zh-Hant": "部分論文缺少可用的逐篇研究整理。"
+  },
+  "配置模型 →": {
+    "en": "Configure model →",
+    "zh-Hant": "設定模型 →"
+  },
+  "重新检查配置": {
+    "en": "Check configuration again",
+    "zh-Hant": "重新檢查設定"
+  },
+  "重新连接": {
+    "en": "Reconnect",
+    "zh-Hant": "重新連線"
+  },
+  "重试": {
+    "en": "Retry",
+    "zh-Hant": "重試"
+  },
+  "阅读目的": {
+    "en": "Reading goal",
+    "zh-Hant": "閱讀目的"
+  },
+  "需注意": {
+    "en": "Needs attention",
+    "zh-Hant": "需注意"
+  },
+  "预印本": {
+    "en": "Preprint",
+    "zh-Hant": "預印本"
+  },
+  "额外类别要求": {
+    "en": "Additional category",
+    "zh-Hant": "額外類別要求"
+  },
+  "首轮满足": {
+    "en": "Satisfied in first round",
+    "zh-Hant": "首輪滿足"
+  },
+  "首轮缺一篇 → 补搜": {
+    "en": "One short → follow-up search",
+    "zh-Hant": "首輪缺一篇 → 補搜"
+  },
+  "自动规划 · 多学术源": {
+    "en": "Automatic planning · multiple academic sources",
+    "zh-Hant": "自動規劃 · 多個學術來源"
+  },
+  "arXiv · 预印本": {
+    "en": "arXiv · preprints",
+    "zh-Hant": "arXiv · 預印本"
+  },
+  "DBLP（仅元数据）": {
+    "en": "DBLP (metadata only)",
+    "zh-Hant": "DBLP（僅限中繼資料）"
+  },
+  "Lune · 顶会论文库": {
+    "en": "Lune · top-conference papers",
+    "zh-Hant": "Lune · 頂會論文庫"
+  },
+  "本地 · 课程项目": {
+    "en": "Local · course project",
+    "zh-Hant": "本機 · 課程專案"
+  },
+  "文献发现 · v2": {
+    "en": "Literature discovery · v2",
+    "zh-Hant": "文獻探索 · v2"
+  },
+  "说清你想了解什么，得到一份有摘要依据的论文清单。读完后，在 Chat 中继续筛选、排除或调整方向。": {
+    "en": "Describe what you want to learn to get a paper list grounded in abstracts. Continue in Chat to filter, exclude, or adjust the direction after reading.",
+    "zh-Hant": "說明你想了解什麼，取得一份有摘要依據的論文清單。讀完後，可在 Chat 中繼續篩選、排除或調整方向。"
+  },
+  "中英文均可。加入阅读目的或范围，推荐会更贴近你的任务。Ctrl / ⌘ + Enter 开始。": {
+    "en": "Chinese or English is fine. Add a reading goal or scope to tailor recommendations. Press Ctrl / ⌘ + Enter to start.",
+    "zh-Hant": "中英文皆可。加入閱讀目的或範圍，推薦會更貼近你的任務。按 Ctrl / ⌘ + Enter 開始。"
+  },
+  "推荐 5 篇 · 不限会议或期刊 · 不限年份": {
+    "en": "Recommend 5 papers · Any conference or journal · Any year",
+    "zh-Hant": "推薦 5 篇 · 不限會議或期刊 · 不限年份"
+  },
+  "在线搜索会调用当前模型和所选学术来源，可能产生 API 费用。": {
+    "en": "Online search uses the current model and selected academic sources; API fees may apply.",
+    "zh-Hant": "線上搜尋會呼叫目前模型與所選學術來源，可能產生 API 費用。"
+  },
+  "需求示例": {
+    "en": "Request examples",
+    "zh-Hant": "需求範例"
+  },
+  "点击仅填入，编辑后再搜索；不是固定演示结果。": {
+    "en": "Click to fill in a request, then edit it before searching; these are not fixed demo results.",
+    "zh-Hant": "點擊僅會填入需求，編輯後再搜尋；這些不是固定的示範結果。"
+  },
+  "设计 RAG 实验": {
+    "en": "Design a RAG experiment",
+    "zh-Hant": "設計 RAG 實驗"
+  },
+  "评测方法与 benchmark": {
+    "en": "Evaluation methods and benchmarks",
+    "zh-Hant": "評測方法與 benchmark"
+  },
+  "入门一个方向": {
+    "en": "Get started in a field",
+    "zh-Hant": "入門一個研究方向"
+  },
+  "LLM 工具使用与综述": {
+    "en": "LLM tool use and surveys",
+    "zh-Hant": "LLM 工具使用與綜述"
+  },
+  "追踪研究前沿": {
+    "en": "Explore the research frontier",
+    "zh-Hant": "追蹤研究前沿"
+  },
+  "3D 场景重建的新方法": {
+    "en": "New methods for 3D scene reconstruction",
+    "zh-Hant": "3D 場景重建的新方法"
+  },
+  "篇数直接写在需求里：支持 1–10 篇，未指定时推荐 5 篇。": {
+    "en": "Specify the number of papers in your request: 1–10 are supported, and the default is 5.",
+    "zh-Hant": "請直接在需求中指定篇數：支援 1–10 篇，未指定時預設推薦 5 篇。"
+  },
+  "1 篇": {
+    "en": "1 paper",
+    "zh-Hant": "1 篇"
+  },
+  "2 篇": {
+    "en": "2 papers",
+    "zh-Hant": "2 篇"
+  },
+  "3 篇": {
+    "en": "3 papers",
+    "zh-Hant": "3 篇"
+  },
+  "4 篇": {
+    "en": "4 papers",
+    "zh-Hant": "4 篇"
+  },
+  "5 篇": {
+    "en": "5 papers",
+    "zh-Hant": "5 篇"
+  },
+  "6 篇": {
+    "en": "6 papers",
+    "zh-Hant": "6 篇"
+  },
+  "7 篇": {
+    "en": "7 papers",
+    "zh-Hant": "7 篇"
+  },
+  "8 篇": {
+    "en": "8 papers",
+    "zh-Hant": "8 篇"
+  },
+  "9 篇": {
+    "en": "9 papers",
+    "zh-Hant": "9 篇"
+  },
+  "10 篇": {
+    "en": "10 papers",
+    "zh-Hant": "10 篇"
+  },
+  "类别篇数包含在推荐总数内，不是额外增加的论文。": {
+    "en": "The category minimum is included in the total recommendation count; it does not add extra papers.",
+    "zh-Hant": "類別篇數包含在推薦總數內，不會額外增加論文。"
+  },
+  "阅读目的会影响综述、评测与研究论文的搭配；结果会说明实际要求与缺口。": {
+    "en": "Your reading goal affects the mix of surveys, evaluation papers, and research papers; results will explain the requirements and any gaps.",
+    "zh-Hant": "閱讀目的會影響綜述、評測與研究論文的搭配；結果會說明實際要求與缺口。"
+  },
+  "检索范围": {
+    "en": "Search scope",
+    "zh-Hant": "檢索範圍"
+  },
+  "可选，留空即不限": {
+    "en": "Optional; leave blank for no restriction",
+    "zh-Hant": "選填，留白即不限"
+  },
+  "填写一个会议或期刊，如 CVPR；年份可只填一端。": {
+    "en": "Enter a conference or journal, such as CVPR; either year field may be left blank.",
+    "zh-Hant": "填寫會議或期刊名稱，例如 CVPR；年份可只填一端。"
+  },
+  "Venue偏好": {
+    "en": "Venue preference",
+    "zh-Hant": "出版場域偏好"
+  },
+  "综合相关性与出版信息": {
+    "en": "Balance relevance and publication information",
+    "zh-Hant": "綜合相關性與出版資訊"
+  },
+  "优选AI/CS研究池": {
+    "en": "Preferred AI/CS research pool",
+    "zh-Hant": "優選 AI/CS 研究池"
+  },
+  "仅限优选池（硬条件）": {
+    "en": "Preferred pool only (required)",
+    "zh-Hant": "僅限優選池（必要條件）"
+  },
+  "只看有录用或发表依据的论文": {
+    "en": "Only papers with evidence of acceptance or publication",
+    "zh-Hant": "只看有錄用或發表依據的論文"
+  },
+  "展示类别须有正式记录，选择多项表示任一类别。优选池是本系统公开的AI/CS venue集合，非客观排名；来源不支持时会说明缺口。": {
+    "en": "Presentation types require an official record; selecting multiple types means any one qualifies. The preferred pool is this system's public AI/CS venue collection, not an objective ranking; unsupported sources will be noted as a gap.",
+    "zh-Hant": "展示類別須有正式紀錄；選取多項表示符合任一類別。優選池是本系統公開的 AI/CS venue 集合，並非客觀排名；來源不支援時會說明缺口。"
+  },
+  "使用近期搜索缓存": {
+    "en": "Use recent search cache",
+    "zh-Hant": "使用近期搜尋快取"
+  },
+  "arXiv 提供预印本摘要；会议要求需要来源元数据支持。": {
+    "en": "arXiv provides preprint abstracts; conference requirements need supporting source metadata.",
+    "zh-Hant": "arXiv 提供預印本摘要；會議要求需要來源中繼資料支持。"
+  },
+  "使用固定的 RAG 论文样例与预设判断，不调用模型或学术 API。适合了解搜索、补搜和结果不足时的体验。": {
+    "en": "Uses fixed RAG paper examples and preset judgments without calling a model or academic API. Explore searching, follow-up searches, and insufficient-result scenarios.",
+    "zh-Hant": "使用固定的 RAG 論文範例與預設判斷，不會呼叫模型或學術 API。可體驗搜尋、補搜與結果不足時的流程。"
+  },
+  "在 Chat 继续 →": {
+    "en": "Continue in Chat →",
+    "zh-Hant": "在 Chat 繼續 →"
+  },
+  "选择上方示例并按自己的目的修改，或直接输入研究问题。每篇论文都会说明推荐理由，并保留可核对的摘要引文。": {
+    "en": "Choose an example above and adapt it to your goals, or enter a research question directly. Each paper includes a recommendation rationale and a verifiable abstract quote.",
+    "zh-Hant": "選擇上方範例並依照自己的目的修改，或直接輸入研究問題。每篇論文都會說明推薦理由，並保留可核對的摘要引文。"
+  },
+  "有已中断的搜索仍可查看；不会自动重试。": {
+    "en": "Interrupted searches remain available to view; they will not be retried automatically.",
+    "zh-Hant": "仍可查看已中斷的搜尋；不會自動重試。"
+  },
+  "无需配置，运行演示": {
+    "en": "Run demo without setup",
+    "zh-Hant": "無需設定，執行示範"
+  },
+  "进度可在右侧「运行活动」查看。": {
+    "en": "View progress under “Run activity” on the right.",
+    "zh-Hant": "可在右側「執行活動」查看進度。"
+  },
+  "先检索，再核对摘要与出版信息；候选数量不代表最终推荐数量。离开页面后可回来查看进展。": {
+    "en": "Search first, then verify abstracts and publication details. Candidate counts are not final recommendation counts. You can return to this page to check progress.",
+    "zh-Hant": "先檢索，再核對摘要與出版資訊；候選數量不代表最終推薦數量。離開頁面後可返回查看進度。"
+  },
+  "停止后保留已有结果；正在处理的请求可能需要先结束。": {
+    "en": "Existing results are kept after stopping; an in-flight request may need to finish first.",
+    "zh-Hant": "停止後會保留現有結果；正在處理的請求可能需要先結束。"
+  },
+  "暂时无法获取进度。": {
+    "en": "Progress is temporarily unavailable.",
+    "zh-Hant": "暫時無法取得進度。"
+  },
+  "在同一任务中排除读过的论文、调整目的，或围绕现有候选继续补搜。": {
+    "en": "Exclude papers you have read, adjust your goal, or search further around existing candidates within the same task.",
+    "zh-Hant": "可在同一任務中排除讀過的論文、調整目的，或圍繞現有候選繼續補搜。"
+  },
+  "检索、摘要核对、补充检索与交付步骤会显示在这里。": {
+    "en": "Searches, abstract checks, follow-up searches, and delivery steps will appear here.",
+    "zh-Hant": "檢索、摘要核對、補充檢索與交付步驟會顯示於此。"
+  },
+  "Search · ScholarGuide": {
+    "en": "Search · ScholarGuide",
+    "zh-Hant": "Search · ScholarGuide"
+  },
+  "不额外指定类别": {
+    "en": "No additional category specified",
+    "zh-Hant": "未額外指定類別"
+  },
+  "通用": {
+    "en": "General",
+    "zh-Hant": "通用"
+  },
+  "类型未知": {
+    "en": "Unknown type",
+    "zh-Hant": "類型未知"
+  },
+  "多源": {
+    "en": "Multiple sources",
+    "zh-Hant": "多來源"
+  },
+  "设置已更改，等待重新运行。": {
+    "en": "Settings changed; waiting to run again.",
+    "zh-Hant": "設定已變更，等待重新執行。"
+  },
+  "选择一个离线演示场景。": {
+    "en": "Select an offline demo scenario.",
+    "zh-Hant": "選擇一個離線示範情境。"
+  },
+  "准备在线搜索。": {
+    "en": "Ready for online search.",
+    "zh-Hant": "準備進行線上搜尋。"
+  },
+  "选择演示场景并点击运行。之前的结果仍保存在 Activity；切换不会自动执行。": {
+    "en": "Select a demo scenario and click Run. Previous results remain in Activity; switching does not run it automatically.",
+    "zh-Hant": "選擇示範情境並點擊執行。先前的結果仍保留在 Activity；切換不會自動執行。"
+  },
+  "填写研究需求后点击发现论文。之前的结果仍保存在 Activity；切换不会自动发起在线调用。": {
+    "en": "Enter your research requirements and click Discover Papers. Previous results remain in Activity; switching does not automatically make an online call.",
+    "zh-Hant": "填寫研究需求後點擊發現論文。先前的結果仍保留在 Activity；切換不會自動發起線上呼叫。"
+  },
+  "空闲": {
+    "en": "Idle",
+    "zh-Hant": "閒置"
+  },
+  "· 检索中": {
+    "en": "· Searching",
+    "zh-Hant": "· 搜尋中"
+  },
+  "暂时无法连接本地服务。请确认启动服务的终端仍在运行。": {
+    "en": "Unable to connect to the local service temporarily. Please confirm that the terminal running the service is still active.",
+    "zh-Hant": "暫時無法連線至本機服務。請確認啟動服務的終端機仍在執行。"
+  },
+  "服务返回了无法读取的响应。": {
+    "en": "The service returned an unreadable response.",
+    "zh-Hant": "服務傳回了無法讀取的回應。"
+  },
+  "请求未能完成。": {
+    "en": "The request could not be completed.",
+    "zh-Hant": "要求未能完成。"
+  },
+  "评测方法或 benchmark": {
+    "en": "Evaluation method or benchmark",
+    "zh-Hant": "評測方法或 benchmark"
+  },
+  "相关研究的综述（survey）": {
+    "en": "Survey of related research",
+    "zh-Hant": "相關研究的綜述（survey）"
+  },
+  "研究论文（research paper）": {
+    "en": "Research paper",
+    "zh-Hant": "研究論文（research paper）"
+  },
+  " 优先考虑本系统优选AI/CS研究池中的venue。": {
+    "en": " Prioritize venues in this system's curated AI/CS research pool.",
+    "zh-Hant": " 優先考慮本系統精選 AI/CS 研究池中的 venue。"
+  },
+  " 仅考虑本系统优选AI/CS研究池中的venue。": {
+    "en": " Consider only venues in this system's curated AI/CS research pool.",
+    "zh-Hant": " 僅考慮本系統精選 AI/CS 研究池中的 venue。"
+  },
+  " 需要可核验的录用或发表依据。": {
+    "en": " Verifiable evidence of acceptance or publication is required.",
+    "zh-Hant": " 需要可核驗的錄用或發表依據。"
+  },
+  "或": {
+    "en": "Or",
+    "zh-Hant": "或"
+  },
+  "自动判断阅读目的；按实际需求搭配论文类型。": {
+    "en": "Automatically determine the reading purpose; match paper types to the actual needs.",
+    "zh-Hant": "自動判斷閱讀目的；按實際需求搭配論文類型。"
+  },
+  "已手选「{0}」，将覆盖需求文本中的阅读目的。": {
+    "en": "Manually selected “{0}”; this will override the reading purpose in the requirements text.",
+    "zh-Hant": "已手動選取「{0}」，將覆蓋需求文字中的閱讀目的。"
+  },
+  "{0} 阅读目的影响排序；你指定的类别最低篇数是硬要求。": {
+    "en": "{0} The reading purpose affects ranking; the minimum number of papers in the specified category is a hard requirement.",
+    "zh-Hant": "{0} 閱讀目的會影響排序；你指定的類別最低篇數是硬性要求。"
+  },
+  "数量、类别和范围以完整需求文本为准；原表单筛选未叠加。Ctrl / ⌘ + Enter 开始。": {
+    "en": "Quantity, categories, and scope are determined by the complete requirements text; the original form filters are not applied on top. Press Ctrl / ⌘ + Enter to start.",
+    "zh-Hant": "數量、類別和範圍以完整需求文字為準；原表單篩選未疊加。按 Ctrl / ⌘ + Enter 開始。"
+  },
+  "中英文均可，篇数直接写在需求里，支持 1–10 篇，未指定默认 5 篇。Ctrl / ⌘ + Enter 开始。": {
+    "en": "Chinese or English is fine; write the number of papers directly in the request. 1–10 papers are supported; the default is 5 if unspecified. Press Ctrl / ⌘ + Enter to start.",
+    "zh-Hant": "中英文皆可，篇數直接寫在需求中，支援 1–10 篇，未指定時預設為 5 篇。按 Ctrl / ⌘ + Enter 開始。"
+  },
+  "来源：{0} · {1}": {
+    "en": "Source: {0} · {1}",
+    "zh-Hant": "來源：{0} · {1}"
+  },
+  "有缺口再补搜，最多两轮": {
+    "en": "Search again only if gaps remain, up to two rounds",
+    "zh-Hant": "有缺口時再補充搜尋，最多兩輪"
+  },
+  "年份条件无效，请修正": {
+    "en": "Invalid year condition; please correct it",
+    "zh-Hant": "年份條件無效，請修正"
+  },
+  "{0}–{1} 年": {
+    "en": "Years {0}–{1}",
+    "zh-Hant": "{0}–{1} 年"
+  },
+  "{0} 年及以后": {
+    "en": "{0} and later",
+    "zh-Hant": "{0} 年及以後"
+  },
+  "{0} 年及以前": {
+    "en": "{0} and earlier",
+    "zh-Hant": "{0} 年及以前"
+  },
+  "不限年份": {
+    "en": "No year limit",
+    "zh-Hant": "不限年份"
+  },
+  "数量、类别与检索范围按完整需求解析，原表单筛选未叠加。": {
+    "en": "Quantity, categories, and search scope are parsed from the complete request; the original form filters are not applied on top.",
+    "zh-Hant": "數量、類別與搜尋範圍按完整需求解析，原表單篩選未疊加。"
+  },
+  " · 其中至少 {0} 篇{1}": {
+    "en": " · at least {0} papers of type {1}",
+    "zh-Hant": " · 其中至少 {0} 篇{1}"
+  },
+  "推荐 {0} 篇（由需求解析，上限 10） · {1} · {2}{3}": {
+    "en": "Recommended {0} papers (parsed from the request, maximum 10) · {1} · {2}{3}",
+    "zh-Hant": "推薦 {0} 篇（由需求解析，上限 10） · {1} · {2}{3}"
+  },
+  "离线演示已就绪 · 固定 RAG 样例，无需配置模型": {
+    "en": "Offline demo ready · fixed RAG example; no model configuration required",
+    "zh-Hant": "離線示範已就緒 · 固定 RAG 範例，無需設定模型"
+  },
+  "{0} · {1} · 配置已就绪": {
+    "en": "{0} · {1} · Configuration ready",
+    "zh-Hant": "{0} · {1} · 設定已就緒"
+  },
+  "先在 Models 中配置一个模型，或使用离线演示。": {
+    "en": "First configure a model in Models, or use the offline demo.",
+    "zh-Hant": "請先在 Models 中設定一個模型，或使用離線示範。"
+  },
+  "演示不调用模型或学术 API；展示的判断由固定脚本产生。": {
+    "en": "The demo does not call models or academic APIs; the decisions shown are generated by a fixed script.",
+    "zh-Hant": "示範不會呼叫模型或學術 API；顯示的判斷由固定腳本產生。"
+  },
+  "在线搜索可能产生 API 费用 · {0} · 摘要级推荐": {
+    "en": "Online search may incur API charges · {0} · abstract-level recommendations",
+    "zh-Hant": "線上搜尋可能產生 API 費用 · {0} · 摘要級推薦"
+  },
+  "必要时补搜，最多两轮": {
+    "en": "Search again when necessary, up to two rounds",
+    "zh-Hant": "必要時補充搜尋，最多兩輪"
+  },
+  "调整阅读目的与检索偏好": {
+    "en": "Adjust reading purpose and search preferences",
+    "zh-Hant": "調整閱讀目的與搜尋偏好"
+  },
+  "调整数量、范围与检索偏好": {
+    "en": "Adjust quantity, scope, and search preferences",
+    "zh-Hant": "調整數量、範圍與搜尋偏好"
+  },
+  "{0} 项已调整": {
+    "en": "{0} items adjusted",
+    "zh-Hant": "已調整 {0} 項"
+  },
+  "可选": {
+    "en": "Optional",
+    "zh-Hant": "可選"
+  },
+  "优选研究池优先": {
+    "en": "Prioritize the curated research pool",
+    "zh-Hant": "優先使用精選研究池"
+  },
+  "仅限优选研究池": {
+    "en": "Curated research pool only",
+    "zh-Hant": "僅限精選研究池"
+  },
+  "需录用/发表依据": {
+    "en": "Acceptance/publication evidence required",
+    "zh-Hant": "需要錄用／發表依據"
+  },
+  "DBLP 主要提供元数据；缺少摘要的独立记录无法生成有证据的推荐。": {
+    "en": "DBLP primarily provides metadata; standalone records without abstracts cannot produce evidence-based recommendations.",
+    "zh-Hant": "DBLP 主要提供中繼資料；缺少摘要的獨立記錄無法產生有證據的推薦。"
+  },
+  "网页发现结果可能缺少摘要；可选多源搜索以补充学术记录。": {
+    "en": "Web discovery results may lack abstracts; choose multi-source search to supplement academic records.",
+    "zh-Hant": "網頁發現結果可能缺少摘要；可選多來源搜尋以補充學術記錄。"
+  },
+  "多个来源参与检索，覆盖更广，也可能增加等待时间。会议与年份要求仍需元数据支持。": {
+    "en": "Multiple sources participate in the search, providing broader coverage but potentially increasing wait time. Conference and year requirements still need metadata support.",
+    "zh-Hant": "多個來源參與搜尋，涵蓋範圍更廣，也可能增加等待時間。會議與年份要求仍需中繼資料支援。"
+  },
+  "arXiv 提供预印本摘要；arXiv 收录本身不代表会议录用。": {
+    "en": "arXiv provides preprint abstracts; inclusion in arXiv itself does not indicate conference acceptance.",
+    "zh-Hant": "arXiv 提供預印本摘要；arXiv 收錄本身不代表會議錄用。"
+  },
+  "根据来源返回的标题、摘要与元数据进行推荐；缺失的信息会明确标注。": {
+    "en": "Recommendations are based on titles, abstracts, and metadata returned by the sources; missing information is clearly marked.",
+    "zh-Hant": "根據來源返回的標題、摘要與中繼資料進行推薦；缺失的資訊會明確標註。"
+  },
+  "只基于已核验的论文整理方法脉络与开放问题。": {
+    "en": "Summarize methodological threads and open questions based only on verified papers.",
+    "zh-Hant": "僅根據已核驗的論文整理方法脈絡與開放問題。"
+  },
+  "研究整理已完成；没有依据的内容会保留为缺口。": {
+    "en": "Research synthesis is complete; content without supporting evidence will be retained as gaps.",
+    "zh-Hant": "研究整理已完成；沒有依據的內容會保留為缺口。"
+  },
+  "计划比较 {0} 条研究路线 · 摘要级分类": {
+    "en": "Plan to compare {0} research directions · abstract-level classification",
+    "zh-Hant": "計劃比較 {0} 條研究路線 · 摘要級分類"
+  },
+  "按当前主题确定检索范围": {
+    "en": "Determine the search scope based on the current topic",
+    "zh-Hant": "按目前主題確定搜尋範圍"
+  },
+  "已记录 {0} 篇候选的路线归类 · 继续核对推荐条件": {
+    "en": "Recorded the research-direction categorization of {0} candidates · continue checking recommendation criteria",
+    "zh-Hant": "已記錄 {0} 篇候選的路線分類 · 繼續核對推薦條件"
+  },
+  "目标 {0} · policy {1} · {2}": {
+    "en": "Target {0} · policy {1} · {2}",
+    "zh-Hant": "目標 {0} · policy {1} · {2}"
+  },
+  "{0} · {1} · {2} 个源请求": {
+    "en": "{0} · {1} · {2} source requests",
+    "zh-Hant": "{0} · {1} · {2} 個來源請求"
+  },
+  "返回 {0} 篇 · 新增 {1} 篇 · 共 {2} 篇候选": {
+    "en": "Returned {0} papers · {1} new · {2} candidates total",
+    "zh-Hant": "返回 {0} 篇 · 新增 {1} 篇 · 共 {2} 篇候選"
+  },
+  "本批检查 {0} 篇 · 已有 {1} 篇可推荐": {
+    "en": "Checked {0} papers in this batch · {1} are already recommendable",
+    "zh-Hant": "本批檢查 {0} 篇 · 已有 {1} 篇可推薦"
+  },
+  "当前清单满足已解析的数量与类别要求": {
+    "en": "The current list meets the parsed quantity and category requirements",
+    "zh-Hant": "目前清單符合已解析的數量與類別要求"
+  },
+  "按当前模型判断满足需求": {
+    "en": "Meets the requirements according to the current model's assessment",
+    "zh-Hant": "依目前模型判斷符合需求"
+  },
+  "返回已有结果与剩余缺口": {
+    "en": "Return the results already available and the remaining gaps",
+    "zh-Hant": "返回現有結果與剩餘缺口"
+  },
+  "没有找到足够依据的论文": {
+    "en": "No papers with sufficient supporting evidence were found",
+    "zh-Hant": "找不到具有足夠依據的論文"
+  },
+  "有暂不支持的需求": {
+    "en": "Some requirements are not currently supported",
+    "zh-Hant": "有目前尚不支援的需求"
+  },
+  "运行未完成": {
+    "en": "Run incomplete",
+    "zh-Hant": "執行未完成"
+  },
+  "本次执行已结束": {
+    "en": "This run has finished",
+    "zh-Hant": "本次執行已結束"
+  },
+  "来源：{0}": {
+    "en": "Source: {0}",
+    "zh-Hant": "來源：{0}"
+  },
+  "实际执行过程会持续更新。": {
+    "en": "The actual execution process will continue to update.",
+    "zh-Hant": "實際執行過程會持續更新。"
+  },
+  "已复制到剪贴板：{0}": {
+    "en": "Copied to clipboard: {0}",
+    "zh-Hant": "已複製到剪貼簿：{0}"
+  },
+  "无法使用剪贴板，可展开摘要后手动选择文字，或下载完整报告。": {
+    "en": "The clipboard is unavailable. Expand the summary to select the text manually, or download the full report.",
+    "zh-Hant": "無法使用剪貼簿，可展開摘要後手動選取文字，或下載完整報告。"
+  },
+  "ScholarGuide · 离线演示清单（预设判断）": {
+    "en": "ScholarGuide · Offline demo list (preset assessment)",
+    "zh-Hant": "ScholarGuide · 離線示範清單（預設判斷）"
+  },
+  "ScholarGuide · 推荐清单": {
+    "en": "ScholarGuide · Recommendation list",
+    "zh-Hant": "ScholarGuide · 推薦清單"
+  },
+  "研究需求：": {
+    "en": "Research requirements:",
+    "zh-Hant": "研究需求："
+  },
+  "推荐依据为摘要级模型判断；引文校验仅表示文字出现在摘要中。": {
+    "en": "Recommendations are based on model judgments at the abstract level; citation verification only indicates that the text appears in the abstract.",
+    "zh-Hant": "推薦依據為摘要層級的模型判斷；引文驗證僅表示文字出現在摘要中。"
+  },
+  "\\n摘要引文：“": {
+    "en": "\\nAbstract citation: “",
+    "zh-Hant": "\\n摘要引文：「"
+  },
+  "仅元数据": {
+    "en": "Metadata only",
+    "zh-Hant": "僅有中繼資料"
+  },
+  "来源摘要不一致": {
+    "en": "Source abstracts do not match",
+    "zh-Hant": "來源摘要不一致"
+  },
+  "OA 全文": {
+    "en": "OA full text",
+    "zh-Hant": "OA 全文"
+  },
+  " 等": {
+    "en": " etc.",
+    "zh-Hant": " 等"
+  },
+  "为什么推荐 · ": {
+    "en": "Why recommended · ",
+    "zh-Hant": "推薦原因 · "
+  },
+  "暂无推荐理由。": {
+    "en": "No recommendation rationale available.",
+    "zh-Hant": "目前沒有推薦理由。"
+  },
+  "缺少可核验引文：这篇论文未通过摘要引文检查，未计入推荐依据。可调整主题或回到检索重试。": {
+    "en": "No verifiable citation: This paper did not pass the abstract citation check and was not counted as supporting evidence for the recommendation. You can adjust the topic or return to search and try again.",
+    "zh-Hant": "缺少可驗證的引文：這篇論文未通過摘要引文檢查，因此未納入推薦依據。可調整主題或返回檢索後重試。"
+  },
+  "模型判断": {
+    "en": "Model assessment",
+    "zh-Hant": "模型判斷"
+  },
+  "类别待确认": {
+    "en": "Category to be confirmed",
+    "zh-Hant": "類別待確認"
+  },
+  "其他相关论文": {
+    "en": "Other relevant papers",
+    "zh-Hant": "其他相關論文"
+  },
+  "引文已校验": {
+    "en": "Citation verified",
+    "zh-Hant": "引文已驗證"
+  },
+  "引文未校验": {
+    "en": "Citation not verified",
+    "zh-Hant": "引文未驗證"
+  },
+  "已交付 {0}/{1}": {
+    "en": "Delivered {0}/{1}",
+    "zh-Hant": "已交付 {0}/{1}"
+  },
+  " · 目标 {0}": {
+    "en": " · target {0}",
+    "zh-Hant": " · 目標 {0}"
+  },
+  " · 仍有 {0} 项缺口": {
+    "en": " · {0} gaps remain",
+    "zh-Hant": " · 尚有 {0} 項缺口"
+  },
+  "目标策略：{0}": {
+    "en": "Target strategy: {0}",
+    "zh-Hant": "目標策略：{0}"
+  },
+  "· {0} 篇": {
+    "en": "· {0} papers",
+    "zh-Hant": "· {0} 篇"
+  },
+  "· {0}/{1} 篇": {
+    "en": "· {0}/{1} papers",
+    "zh-Hant": "· {0}/{1} 篇"
+  },
+  "该来源下没有论文；切换“全部来源”查看其余结果。": {
+    "en": "There are no papers from this source; switch to “All sources” to view the remaining results.",
+    "zh-Hant": "此來源下沒有論文；切換至「全部來源」查看其餘結果。"
+  },
+  "显示全部来源：{0}/{1} 篇 · 排序编号保持原清单顺序。复制与下载始终包含完整的 {1} 篇。": {
+    "en": "Showing all sources: {0}/{1} papers · Numbering remains in the original list order. Copying and downloading always include all {1} papers.",
+    "zh-Hant": "顯示全部來源：{0}/{1} 篇 · 排序編號維持原清單順序。複製與下載一律包含完整的 {1} 篇。"
+  },
+  "当前显示来源「{0}」：{1}/{2} 篇 · 排序编号保持原清单顺序。复制与下载始终包含完整的 {2} 篇。": {
+    "en": "Currently showing source “{0}”: {1}/{2} papers · Numbering remains in the original list order. Copying and downloading always include all {2} papers.",
+    "zh-Hant": "目前顯示來源「{0}」：{1}/{2} 篇 · 排序編號維持原清單順序。複製與下載一律包含完整的 {2} 篇。"
+  },
+  "全部来源 ({0})": {
+    "en": "All sources ({0})",
+    "zh-Hant": "全部來源 ({0})"
+  },
+  "可在 Chat 中体验排除第一篇；其他反馈使用预设流程，不保证改变清单。": {
+    "en": "In Chat, you can try excluding the first paper; other feedback follows a preset flow and is not guaranteed to change the list.",
+    "zh-Hant": "可在 Chat 中體驗排除第一篇；其他意見回饋會依預設流程處理，不保證會改變清單。"
+  },
+  "演示已完成，清单按预设判断生成。": {
+    "en": "Demo complete. The list was generated using preset assessments.",
+    "zh-Hant": "示範已完成，清單依預設判斷產生。"
+  },
+  "本次检索已完成，以下清单满足模型判定的数量与类别要求。": {
+    "en": "This search is complete. The list below meets the quantity and category requirements as determined by the model.",
+    "zh-Hant": "本次檢索已完成，以下清單符合模型判定的數量與類別要求。"
+  },
+  "已返回可用论文，部分条件仍未满足。": {
+    "en": "Available papers have been returned, but some requirements are still unmet.",
+    "zh-Hant": "已返回可用論文，但仍有部分條件未符合。"
+  },
+  "本轮没有找到可推荐的论文。可以简化主题后重试。": {
+    "en": "No recommendable papers were found in this round. Try again with a simpler topic.",
+    "zh-Hant": "本輪找不到可推薦的論文。可簡化主題後重試。"
+  },
+  "这次需求包含暂不支持的条件，请调整后重试。": {
+    "en": "This request includes conditions that are not currently supported. Please adjust them and try again.",
+    "zh-Hant": "此需求包含目前尚不支援的條件，請調整後重試。"
+  },
+  "本次运行未完成，具体原因见下方。": {
+    "en": "This run did not complete. See below for details.",
+    "zh-Hant": "本次執行未完成，具體原因請見下方。"
+  },
+  "搜索已停止，已获取的结果保留在下方。": {
+    "en": "Search stopped. Results retrieved so far are shown below.",
+    "zh-Hant": "搜尋已停止，已取得的結果保留在下方。"
+  },
+  "离线演示 · 固定元数据与预设判断，无 API 调用。": {
+    "en": "Offline demo · Fixed metadata and preset assessments; no API calls.",
+    "zh-Hant": "離線示範 · 固定中繼資料與預設判斷，不呼叫 API。"
+  },
+  "已按你的要求停止搜索，保留当前可用结果。": {
+    "en": "Search stopped as requested. Currently available results have been retained.",
+    "zh-Hant": "已依照你的要求停止搜尋，並保留目前可用的結果。"
+  },
+  "诊断：": {
+    "en": "Diagnostics:",
+    "zh-Hant": "診斷："
+  },
+  " 未交付候选：": {
+    "en": " Candidates not delivered:",
+    "zh-Hant": " 未交付的候選項："
+  },
+  " 建议：": {
+    "en": " Recommendation:",
+    "zh-Hant": " 建議："
+  },
+  "使用搜索缓存": {
+    "en": "Use search cache",
+    "zh-Hant": "使用搜尋快取"
+  },
+  "在线检索": {
+    "en": "Online search",
+    "zh-Hant": "線上檢索"
+  },
+  "轮搜索": {
+    "en": "search rounds",
+    "zh-Hant": "輪搜尋"
+  },
+  "秒": {
+    "en": "seconds",
+    "zh-Hant": "秒"
+  },
+  "次模型调用": {
+    "en": "model calls",
+    "zh-Hant": "次模型呼叫"
+  },
+  "费用": {
+    "en": "Cost",
+    "zh-Hant": "費用"
+  },
+  "成本 · ": {
+    "en": "Cost · ",
+    "zh-Hant": "成本 · "
+  },
+  "主题 ": {
+    "en": "Topic ",
+    "zh-Hant": "主題 "
+  },
+  "剩余缺口：": {
+    "en": "Remaining gaps:",
+    "zh-Hant": "剩餘缺口："
+  },
+  "没有可展示的推荐。请查看缺口与执行轨迹，再调整主题。": {
+    "en": "No recommendations are available to display. Review the gaps and execution trace, then adjust your topic.",
+    "zh-Hant": "目前沒有可顯示的推薦。請查看缺口與執行軌跡，再調整主題。"
+  },
+  "正在停止…": {
+    "en": "Stopping…",
+    "zh-Hant": "正在停止…"
+  },
+  "已请求停止。正在处理的调用结束后，会保存已有结果。": {
+    "en": "Stop requested. The in-progress call will finish, and the results collected so far will be saved.",
+    "zh-Hant": "已要求停止。正在處理的呼叫結束後，將儲存目前已有的結果。"
+  },
+  "服务重启后发现未完成搜索。确认后可继续；当前不会自动调用模型或来源。": {
+    "en": "An unfinished search was found after the service restarted. Confirm to resume; no model or source will be called automatically.",
+    "zh-Hant": "服務重新啟動後發現尚未完成的搜尋。確認後即可繼續；目前不會自動呼叫模型或來源。"
+  },
+  " 页面重连不会重复提交任务。": {
+    "en": " Reconnecting to the page will not resubmit the task.",
+    "zh-Hant": " 頁面重新連線不會重複提交任務。"
+  },
+  "在线搜索需要先完成模型配置。可以打开 Models，或切换离线演示。": {
+    "en": "Online search requires model configuration first. Open Models, or switch to the offline demo.",
+    "zh-Hant": "線上搜尋需先完成模型設定。您可以開啟 Models，或切換至離線示範。"
+  },
+  "准备中": {
+    "en": "Preparing",
+    "zh-Hant": "準備中"
+  },
+  "正在运行演示": {
+    "en": "Running demo",
+    "zh-Hant": "正在執行示範"
+  },
+  "请稍候，可在执行轨迹中查看进度。": {
+    "en": "Please wait. You can track progress in the execution trace.",
+    "zh-Hant": "請稍候，可在執行軌跡中查看進度。"
+  },
+  "正在读取中断任务": {
+    "en": "Reading interrupted task",
+    "zh-Hant": "正在讀取中斷的任務"
+  },
+  "只读取已保存的进展；继续执行需要另行确认。": {
+    "en": "Only saved progress will be read; continuing execution requires separate confirmation.",
+    "zh-Hant": "只會讀取已儲存的進度；繼續執行需另行確認。"
+  },
+  "重试停止": {
+    "en": "Retry stop request",
+    "zh-Hant": "重試停止"
+  },
+  "停止请求未能送达：": {
+    "en": "The stop request could not be delivered:",
+    "zh-Hant": "停止請求未能送達："
+  },
+  " 当前搜索仍可能在运行。": {
+    "en": " The current search may still be running.",
+    "zh-Hant": " 目前的搜尋仍可能正在執行。"
+  },
+  "正在继续原任务": {
+    "en": "Resuming the original task",
+    "zh-Hant": "正在繼續原任務"
+  },
+  "已完成的调用将从记录复用，继续未完成的阶段。": {
+    "en": "Completed calls will be reused from the record, and the unfinished stages will continue.",
+    "zh-Hant": "已完成的呼叫將從記錄中重用，並繼續尚未完成的階段。"
+  },
+  "恢复未能启动：": {
+    "en": "Resume could not be started:",
+    "zh-Hant": "無法啟動恢復程序："
+  },
+  " 已保存结果仍保留，可以重试。": {
+    "en": " Saved results are retained; you can retry.",
+    "zh-Hant": " 已儲存的結果仍會保留，您可以重試。"
+  },
+  "推荐 5 篇 RAG 论文，其中至少 2 篇主要提出评测方法或 benchmark。我准备设计实验，希望比较不同评测方案。": {
+    "en": "Recommend 5 papers on RAG, including at least 2 that primarily introduce evaluation methods or benchmarks. I am planning an experiment and want to compare different evaluation approaches.",
+    "zh-Hant": "推薦 5 篇 RAG 論文，其中至少 2 篇主要提出評測方法或 benchmark。我準備設計實驗，希望比較不同的評測方案。"
+  },
+  "我刚开始研究大语言模型的工具使用，推荐 5 篇适合建立整体理解的论文，其中至少 1 篇是综述。": {
+    "en": "I am just beginning to study tool use in large language models. Recommend 5 papers that provide a broad understanding of the topic, including at least 1 survey.",
+    "zh-Hant": "我剛開始研究大型語言模型的工具使用，請推薦 5 篇適合建立整體理解的論文，其中至少 1 篇是綜述。"
+  },
+  "推荐 5 篇关于 3D 场景重建的研究论文。我希望了解最近的方法与开放问题，寻找值得探索的研究方向。": {
+    "en": "Recommend 5 research papers on 3D scene reconstruction. I want to learn about recent methods and open problems, and find research directions worth exploring.",
+    "zh-Hant": "推薦 5 篇關於 3D 場景重建的研究論文。我希望了解近期的方法與尚待解決的問題，尋找值得探索的研究方向。"
+  },
+  "正在读取研究池…": {
+    "en": "Loading research pool…",
+    "zh-Hant": "正在讀取研究池…"
+  },
+  "尚未配置 API": {
+    "en": "API not configured",
+    "zh-Hant": "尚未設定 API"
+  },
+  "暂时无法读取模型配置。可重新检查，或先体验离线演示；你的需求已保留。": {
+    "en": "Unable to read the model configuration right now. You can check again, or try the offline demo first; your request has been retained.",
+    "zh-Hant": "目前暫時無法讀取模型設定。您可以重新檢查，或先體驗離線示範；您的需求已保留。"
+  },
+  "本地服务未连接": {
+    "en": "Local service not connected",
+    "zh-Hant": "本機服務未連線"
+  },
+  "成本 · {0}": {
+    "en": "Cost · {0}",
+    "zh-Hant": "成本 · {0}"
+  },
+  "未交付候选：": {
+    "en": "Undelivered candidates:",
+    "zh-Hant": "未交付候選："
+  },
+  "建议：": {
+    "en": "Suggestions:",
+    "zh-Hant": "建議："
+  },
+  "Source health：": {
+    "en": "Source health:",
+    "zh-Hant": "來源狀態："
+  }
+}
+  </script>
+<script src="/theme.js" defer></script>
+  <script src="/research.js" defer></script>
+  <script src="/trace.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body class="search-workspace">
+  <a class="skip-link" href="#search-heading" data-i18n="跳到论文搜索">跳到论文搜索</a>
+  <aside class="sidebar" id="sidebar" aria-label="侧边导航" data-i18n-aria-label="侧边导航">
+    <a class="brand" href="/" aria-label="ScholarGuide 首页" data-i18n-aria-label="ScholarGuide 首页">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6l4 4h6v12h-6l-4-4H4V4Z"/><path d="M10 4v12M14 8v12"/></svg></span><span class="brand-copy"><span class="brand-name">ScholarGuide<span class="brand-period">.</span></span><span class="brand-caption" data-i18n="研究工作室">研究工作室</span></span>
+    </a>
+    <nav class="side-nav" aria-label="研究导航" data-i18n-aria-label="研究导航">
+      <span class="side-label" data-i18n="研究路径">研究路径</span>
+      <div class="side-primary">
+        <a class="side-link active" aria-current="page" href="/search"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13Z"/><path d="m16 16 4.5 4.5"/><path d="M8 8.5h5M8 11.5h3"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="检索">检索</span><span class="nav-description" data-i18n="从问题找到论文">从问题找到论文</span></span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+        <a class="side-link" href="/chat"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="对话">对话</span><span class="nav-description" data-i18n="沿着证据继续">沿着证据继续</span></span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+        <a class="side-link" href="/activity"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18h16"/><path d="m9 14 4-5 4 3 4-7"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="活动">活动</span><span class="nav-description" data-i18n="回看研究过程">回看研究过程</span></span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+      </div>
+      <div class="side-connections">
+        <span class="side-label" data-i18n="连接与配置">连接与配置</span>
+        <div class="side-tools">
+        <a class="side-link side-utility" href="/sources"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h4v4H6zM14 14h4v4h-4z"/><path d="M10 8h6v6M8 10v6h6"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="来源">来源</span></span></a>
+        <a class="side-link side-utility" href="/settings"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18M18 3v18M3 8h6M15 16h6"/><path d="M10 3h4v18h-4z"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="模型">模型</span></span></a>
+        </div>
+      </div>
+    </nav>
+    <div class="side-bottom">
+      <p class="sidebar-local"><span class="local-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H4z"/><path d="M9 20h6M12 16v4"/></svg></span><span data-i18n="本地工作空间">本地工作空间</span></p>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="topbar">
+      <button type="button" class="menu-btn" id="menu-toggle" aria-label="打开导航" data-i18n-aria-label="打开导航" aria-expanded="false">☰</button>
+      <div class="top-actions">
+        <a class="model-pill model-pill-stack" id="model-label" href="/settings" aria-label="查看或配置当前模型" data-i18n-aria-label="查看或配置当前模型" data-i18n="读取模型配置">读取模型配置</a>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="切换主题" data-i18n-aria-label="切换主题">☀</button>
+        <span class="avatar" aria-hidden="true">S</span>
+      </div>
+    </header>
+
+    <main class="page">
+      <header class="page-head">
+        <p class="page-label">Search</p>
+        <h1 class="page-title" data-i18n="从一个研究问题开始。">从一个研究问题开始。</h1>
+        <p class="page-sub" data-i18n="说清你想了解什么，得到一份有摘要依据的论文清单。读完后，在 Chat 中继续筛选、排除或调整方向。">说清你想了解什么，得到一份有摘要依据的论文清单。读完后，在 Chat 中继续筛选、排除或调整方向。</p>
+      </header>
+
+      <div class="content-split">
+        <div class="main-col">
+          <section class="card search-card" aria-labelledby="search-heading">
+            <div class="search-top">
+              <h2 id="search-heading" class="search-title" tabindex="-1" data-i18n="发现论文">发现论文</h2>
+              <div class="seg" role="group" aria-label="运行模式" data-i18n-aria-label="运行模式">
+                <button type="button" class="seg-btn active" id="live-tab" aria-pressed="true" data-i18n="在线搜索">在线搜索</button>
+                <button type="button" class="seg-btn" id="demo-tab" aria-pressed="false" data-i18n="离线演示">离线演示</button>
+              </div>
+            </div>
+
+            <div id="search-readiness" class="readiness" role="status" aria-live="polite" data-i18n="正在检查模型配置…">正在检查模型配置…</div>
+            <div id="readiness-actions" class="readiness-actions" hidden><button id="retry-config" class="btn-text" type="button" data-i18n="重新检查配置">重新检查配置</button><a class="btn-text" href="/settings" data-i18n="配置模型 →">配置模型 →</a><button id="readiness-demo" class="btn-text" type="button" data-i18n="先体验离线演示">先体验离线演示</button></div>
+            <form id="search-form" novalidate>
+              <fieldset id="form-fields">
+                <div id="live-fields">
+                  <div class="field-label">
+                    <label id="topic-label" for="topic" data-i18n="研究主题">研究主题</label>
+                    <button class="btn-text" id="toggle-input" type="button" aria-expanded="false" aria-controls="natural-fields" data-i18n="改用完整需求">改用完整需求</button>
+                  </div>
+                  <div class="search-row">
+                    <span class="search-icon" aria-hidden="true">⌕</span>
+                    <div class="grow" id="guided-fields">
+                      <textarea id="topic" rows="2" maxlength="500" aria-labelledby="topic-label" aria-describedby="topic-help input-feedback" placeholder="例如：RAG 的评测方法，或用于 3D 场景重建的视觉模型" data-i18n-placeholder="例如：RAG 的评测方法，或用于 3D 场景重建的视觉模型"></textarea>
+                    </div>
+                    <div class="grow" id="natural-fields" hidden>
+                      <textarea id="request" rows="3" maxlength="2000" aria-labelledby="topic-label" aria-describedby="topic-help input-feedback" placeholder="推荐 5 篇 RAG 论文，其中至少 2 篇主要提出评测方法或 benchmark。我准备设计实验，希望了解如何比较方法。" data-i18n-placeholder="推荐 5 篇 RAG 论文，其中至少 2 篇主要提出评测方法或 benchmark。我准备设计实验，希望了解如何比较方法。"></textarea>
+                    </div>
+                  </div>
+                  <p class="field-help" id="topic-help" data-i18n="中英文均可。加入阅读目的或范围，推荐会更贴近你的任务。Ctrl / ⌘ + Enter 开始。">中英文均可。加入阅读目的或范围，推荐会更贴近你的任务。Ctrl / ⌘ + Enter 开始。</p>
+                  <p id="search-scope-summary" class="search-scope-summary" role="status" aria-live="polite" data-i18n="推荐 5 篇 · 不限会议或期刊 · 不限年份">推荐 5 篇 · 不限会议或期刊 · 不限年份</p>
+                  <p id="input-feedback" class="field-help" role="status" aria-live="polite"></p>
+                  <div id="search-primary-slot"><div class="search-actions">
+                  <p class="search-note" id="mode-note" data-i18n="在线搜索会调用当前模型和所选学术来源，可能产生 API 费用。">在线搜索会调用当前模型和所选学术来源，可能产生 API 费用。</p>
+                  <button class="btn btn-primary" id="submit-button" type="submit"><span id="submit-text" data-i18n="发现论文">发现论文</span><span aria-hidden="true">→</span></button>
+                </div></div>
+
+                  <p id="examples-help" class="examples-help"><span data-i18n="需求示例">需求示例</span> <span data-i18n="点击仅填入，编辑后再搜索；不是固定演示结果。">点击仅填入，编辑后再搜索；不是固定演示结果。</span></p>
+                  <div class="search-examples" aria-label="从一个可编辑的需求开始" data-i18n-aria-label="从一个可编辑的需求开始">
+                    <button class="example-card" type="button" data-example="evaluation"><strong data-i18n="设计 RAG 实验">设计 RAG 实验</strong><span data-i18n="评测方法与 benchmark">评测方法与 benchmark</span></button>
+                    <button class="example-card" type="button" data-example="orientation"><strong data-i18n="入门一个方向">入门一个方向</strong><span data-i18n="LLM 工具使用与综述">LLM 工具使用与综述</span></button>
+                    <button class="example-card" type="button" data-example="frontier"><strong data-i18n="追踪研究前沿">追踪研究前沿</strong><span data-i18n="3D 场景重建的新方法">3D 场景重建的新方法</span></button>
+                  </div>
+
+                  <details id="advanced-settings" class="settings search-advanced">
+                    <summary><span id="advanced-label" data-i18n="调整范围与检索偏好">调整范围与检索偏好</span><span id="advanced-count" class="advanced-count"></span></summary>
+                    <div class="settings-body">
+                  <div class="search-options">
+                    <p class="field-help" data-i18n="篇数直接写在需求里：支持 1–10 篇，未指定时推荐 5 篇。">篇数直接写在需求里：支持 1–10 篇，未指定时推荐 5 篇。</p>
+                    <span class="pill-field guided-option"><label for="category" data-i18n="额外类别要求">额外类别要求</label>
+                      <select id="category">
+                        <option value="none" selected data-i18n="不额外指定">不额外指定</option>
+                        <option value="evaluation" data-i18n="评测 / Benchmark">评测 / Benchmark</option>
+                        <option value="survey" data-i18n="综述 / Survey">综述 / Survey</option>
+                        <option value="research" data-i18n="研究论文 / Research">研究论文 / Research</option>
+                      </select>
+                    </span>
+                    <span class="pill-field guided-option" id="minimum-field" hidden><label for="minimum" data-i18n="其中至少">其中至少</label>
+                      <select id="minimum" aria-describedby="quota-help input-feedback">
+                        <option value="1" data-i18n="1 篇">1 篇</option><option value="2" data-i18n="2 篇">2 篇</option>
+                        <option value="3" data-i18n="3 篇">3 篇</option><option value="4" data-i18n="4 篇">4 篇</option><option value="5" data-i18n="5 篇">5 篇</option>
+                        <option value="6" data-i18n="6 篇">6 篇</option><option value="7" data-i18n="7 篇">7 篇</option><option value="8" data-i18n="8 篇">8 篇</option><option value="9" data-i18n="9 篇">9 篇</option><option value="10" data-i18n="10 篇">10 篇</option>
+                      </select>
+                    </span>
+                    <span class="pill-field"><label for="method" data-i18n="补搜方式">补搜方式</label>
+                      <select id="method">
+                        <option value="A" data-i18n="有缺口再补搜">有缺口再补搜</option><option value="S" data-i18n="只检索一轮">只检索一轮</option>
+                      </select>
+                    </span>
+                    <span class="pill-field"><label for="reading-goal" data-i18n="阅读目的">阅读目的</label>
+                      <select id="reading-goal" aria-describedby="goal-help">
+                        <option value="auto" selected data-i18n="自动判断">自动判断</option>
+                        <option value="orientation" data-i18n="新手入门">新手入门</option>
+                        <option value="comparison" data-i18n="方法对比">方法对比</option>
+                        <option value="frontier" data-i18n="前沿 idea">前沿 idea</option>
+                        <option value="general" data-i18n="通用推荐">通用推荐</option>
+                      </select>
+                    </span>
+                  </div>
+                  <p id="quota-help" class="field-help" hidden data-i18n="类别篇数包含在推荐总数内，不是额外增加的论文。">类别篇数包含在推荐总数内，不是额外增加的论文。</p>
+                  <p id="goal-help" class="field-help" data-i18n="阅读目的会影响综述、评测与研究论文的搭配；结果会说明实际要求与缺口。">阅读目的会影响综述、评测与研究论文的搭配；结果会说明实际要求与缺口。</p>
+                  <div class="search-scope guided-option">
+                    <p class="scope-label"><span data-i18n="检索范围">检索范围</span> <span data-i18n="可选，留空即不限">可选，留空即不限</span></p>
+                    <div class="scope-fields">
+                      <div class="scope-field scope-venue"><label for="venue" data-i18n="会议 / 期刊">会议 / 期刊</label><input id="venue" type="text" maxlength="120" placeholder="不限会议或期刊" data-i18n-placeholder="不限会议或期刊" aria-describedby="scope-help"></div>
+                      <div class="scope-field"><label for="year-from" data-i18n="起始年份">起始年份</label><input id="year-from" type="number" min="1900" max="2100" placeholder="不限" data-i18n-placeholder="不限" aria-describedby="scope-help input-feedback"></div>
+                      <div class="scope-field"><label for="year-to" data-i18n="结束年份">结束年份</label><input id="year-to" type="number" min="1900" max="2100" placeholder="不限" data-i18n-placeholder="不限" aria-describedby="scope-help input-feedback"></div>
+                    </div>
+                    <p id="scope-help" class="field-help" data-i18n="填写一个会议或期刊，如 CVPR；年份可只填一端。">填写一个会议或期刊，如 CVPR；年份可只填一端。</p>
+                  </div>
+
+                  <details id="research-settings" class="settings guided-option">
+                    <summary data-i18n="出版偏好与录用要求">出版偏好与录用要求</summary>
+                    <div class="settings-body">
+                      <div class="inline-row">
+                        <span class="pill-field"><label for="venue-scope" data-i18n="Venue偏好">Venue偏好</label><select id="venue-scope"><option value="any" data-i18n="综合相关性与出版信息">综合相关性与出版信息</option><option value="preferred" data-i18n="优选AI/CS研究池">优选AI/CS研究池</option><option value="preferred_only" data-i18n="仅限优选池（硬条件）">仅限优选池（硬条件）</option></select></span>
+                        <span class="pill-field"><label for="publication-type" data-i18n="出版类型">出版类型</label><select id="publication-type"><option value="any" data-i18n="不限">不限</option><option value="conference" data-i18n="会议论文">会议论文</option><option value="journal" data-i18n="期刊论文">期刊论文</option><option value="preprint" data-i18n="预印本">预印本</option></select></span>
+                      </div>
+                      <label class="checkbox"><input id="accepted-only" type="checkbox"><span data-i18n="只看有录用或发表依据的论文">只看有录用或发表依据的论文</span></label>
+                      <div class="inline-row" role="group" aria-label="OpenReview展示类别" data-i18n-aria-label="OpenReview展示类别">
+                        <label class="checkbox"><input id="presentation-oral" type="checkbox">Oral</label>
+                        <label class="checkbox"><input id="presentation-spotlight" type="checkbox">Spotlight</label>
+                        <label class="checkbox"><input id="presentation-poster" type="checkbox">Poster</label>
+                      </div>
+                      <p class="field-help" data-i18n="展示类别须有正式记录，选择多项表示任一类别。优选池是本系统公开的AI/CS venue集合，非客观排名；来源不支持时会说明缺口。">展示类别须有正式记录，选择多项表示任一类别。优选池是本系统公开的AI/CS venue集合，非客观排名；来源不支持时会说明缺口。</p>
+                      <details id="venue-catalog" class="settings"><summary data-i18n="查看优选研究池">查看优选研究池</summary><p id="catalog-notice" class="field-help"></p><ul id="catalog-list" class="venue-catalog"></ul></details>
+                    </div>
+                  </details>
+
+                  <details id="source-settings" class="settings">
+                    <summary data-i18n="来源与搜索缓存">来源与搜索缓存</summary>
+                    <div class="settings-body">
+                      <div id="live-settings" class="inline-row">
+                        <span class="pill-field"><label for="source" data-i18n="来源">来源</label>
+                          <select id="source">
+                            <option value="multi" selected data-i18n="自动规划 · 多学术源">自动规划 · 多学术源</option>
+                            <option value="arxiv" data-i18n="arXiv · 预印本">arXiv · 预印本</option>
+                            <option value="openalex">OpenAlex</option>
+                            <option value="semantic_scholar">Semantic Scholar</option>
+                            <option value="dblp" data-i18n="DBLP（仅元数据）">DBLP（仅元数据）</option>
+                            <option value="openreview">OpenReview</option>
+                            <option value="acl_anthology">ACL Anthology</option>
+                            <option value="deepseek">DeepSeek Search</option>
+                            <option value="lune" data-i18n="Lune · 顶会论文库">Lune · 顶会论文库</option>
+                                    </select>
+                        </span>
+                        <label class="checkbox"><input id="cache" type="checkbox" checked><span data-i18n="使用近期搜索缓存">使用近期搜索缓存</span></label>
+                      </div>
+                      <p id="source-help" class="field-help" data-i18n="arXiv 提供预印本摘要；会议要求需要来源元数据支持。">arXiv 提供预印本摘要；会议要求需要来源元数据支持。</p>
+                    </div>
+                  </details>
+                    </div>
+                  </details>
+                </div>
+
+                <div id="demo-fields" hidden>
+                  <div class="note-inline" data-i18n="使用固定的 RAG 论文样例与预设判断，不调用模型或学术 API。适合了解搜索、补搜和结果不足时的体验。">使用固定的 RAG 论文样例与预设判断，不调用模型或学术 API。适合了解搜索、补搜和结果不足时的体验。</div>
+                  <span class="pill-field"><label for="scenario" data-i18n="场景">场景</label>
+                    <select id="scenario">
+                      <option value="followup" data-i18n="首轮缺一篇 → 补搜">首轮缺一篇 → 补搜</option>
+                      <option value="satisfied" data-i18n="首轮满足">首轮满足</option>
+                      <option value="insufficient" data-i18n="结果不足">结果不足</option>
+                    </select>
+                  </span>
+                </div>
+
+                <div id="demo-primary-slot"></div>
+                <details id="request-preview" class="request-preview" hidden><summary data-i18n="查看将提交的需求">查看将提交的需求</summary><p id="request-preview-text"></p></details>
+
+              </fieldset>
+            </form>
+            <div class="form-error-row" id="form-error-row" hidden>
+              <div class="error-message" id="form-error" role="alert"></div>
+              <button type="button" class="btn btn-inline" id="retry-search" data-i18n="重试">重试</button>
+            </div>
+          </section>
+
+          <section class="card results-card" aria-labelledby="results-heading">
+            <div class="results-top">
+              <div>
+                <p class="card-label">Reading list</p>
+                <h2 id="results-heading" tabindex="-1"><span data-i18n="推荐清单">推荐清单</span> <span class="result-count" id="result-count">—</span></h2>
+              </div>
+              <div class="downloads" id="downloads" hidden>
+                <button id="copy-reading-list" class="btn-text" type="button" data-i18n="复制清单">复制清单</button>
+                <a id="download-md" class="btn btn-text" download>Markdown ↓</a>
+                <a id="download-json" class="btn-text" download>JSON</a>
+                <a id="download-bib" class="btn-text" download>BibTeX</a>
+                <a id="open-chat-result" class="btn-text" href="/chat" hidden data-i18n="在 Chat 继续 →">在 Chat 继续 →</a>
+              </div>
+            </div>
+
+            <div id="empty-state" class="empty-state">
+              <h3 id="empty-title" data-i18n="先找到值得读的几篇。">先找到值得读的几篇。</h3>
+              <p id="empty-description" data-i18n="选择上方示例并按自己的目的修改，或直接输入研究问题。每篇论文都会说明推荐理由，并保留可核对的摘要引文。">选择上方示例并按自己的目的修改，或直接输入研究问题。每篇论文都会说明推荐理由，并保留可核对的摘要引文。</p>
+              <p id="detached-recovery-note" class="field-help" hidden><span data-i18n="有已中断的搜索仍可查看；不会自动重试。">有已中断的搜索仍可查看；不会自动重试。</span> <button id="open-interrupted-search" class="btn-text" type="button" data-i18n="查看中断任务">查看中断任务</button></p>
+              <p class="empty-cta" id="empty-demo-action"><button id="try-demo" class="btn" type="button"><span data-i18n="无需配置，运行演示">无需配置，运行演示</span> <span aria-hidden="true">→</span></button></p>
+              <div class="empty-features"><span data-i18n="真实论文链接">真实论文链接</span><span data-i18n="摘要证据">摘要证据</span><span data-i18n="可继续反馈">可继续反馈</span></div>
+            </div>
+
+            <section id="running-state" class="running-state" role="status" aria-live="polite" hidden>
+              <div class="running-top"><h3 id="running-title" data-i18n="正在准备检索">正在准备检索</h3><span class="elapsed" id="elapsed" aria-hidden="true">0s</span></div>
+              <p class="running-detail" id="running-detail" data-i18n="进度可在右侧「运行活动」查看。">进度可在右侧「运行活动」查看。</p>
+              <div id="search-progress"></div>
+              <p class="field-help running-expectation" data-i18n="先检索，再核对摘要与出版信息；候选数量不代表最终推荐数量。离开页面后可回来查看进展。">先检索，再核对摘要与出版信息；候选数量不代表最终推荐数量。离开页面后可回来查看进展。</p>
+              <div class="running-actions"><button id="cancel-search" type="button" class="btn-text" data-i18n="停止搜索">停止搜索</button><span id="cancel-note" class="field-help" data-i18n="停止后保留已有结果；正在处理的请求可能需要先结束。">停止后保留已有结果；正在处理的请求可能需要先结束。</span></div>
+              <p class="stage-caption" id="stage-caption" data-i18n="等待真实运行事件；阶段可能循环，不代表完成比例。">等待真实运行事件；阶段可能循环，不代表完成比例。</p>
+              <div class="stagebar" id="stagebar" aria-hidden="true">
+                <div class="stage" data-stage="plan"><b>01</b><span class="stage-label" data-i18n="理解与规划">理解与规划</span><small class="stage-state" data-i18n="尚未记录">尚未记录</small></div>
+                <div class="stage" data-stage="search"><b>02</b><span class="stage-label" data-i18n="检索论文">检索论文</span><small class="stage-state" data-i18n="尚未记录">尚未记录</small></div>
+                <div class="stage" data-stage="assess"><b>03</b><span class="stage-label" data-i18n="核对证据">核对证据</span><small class="stage-state" data-i18n="尚未记录">尚未记录</small></div>
+                <div class="stage" data-stage="done"><b>04</b><span class="stage-label" data-i18n="整理与交付">整理与交付</span><small class="stage-state" data-i18n="尚未记录">尚未记录</small></div>
+              </div>
+            </section>
+
+            <div id="reconnect" class="notice amber" hidden>
+              <span id="reconnect-text" data-i18n="暂时无法获取进度。">暂时无法获取进度。</span>
+              <button id="retry-poll" type="button" class="btn-text" data-i18n="重新连接">重新连接</button>
+            </div>
+
+            <section id="job-recovery" class="notice amber job-recovery" role="status" hidden>
+              <strong data-i18n="搜索已中断，现有进展已保留">搜索已中断，现有进展已保留</strong>
+              <p id="job-recovery-message"></p>
+              <p id="job-recovery-progress" class="field-help"></p>
+              <div class="running-actions"><button id="resume-search" class="btn btn-inline" type="button" hidden data-i18n="继续原任务 →">继续原任务 →</button><button id="edit-interrupted-search" class="btn-text" type="button" data-i18n="回到需求，另开搜索">回到需求，另开搜索</button></div>
+            </section>
+            <div id="result-section" hidden>
+              <div id="outcome" class="notice" role="status"></div>
+              <p id="result-request" class="topic-line"></p>
+              <div id="task-continuity" class="task-continuity" hidden><div><strong data-i18n="让这份清单更适合你">让这份清单更适合你</strong><p data-i18n="在同一任务中排除读过的论文、调整目的，或围绕现有候选继续补搜。">在同一任务中排除读过的论文、调整目的，或围绕现有候选继续补搜。</p></div><a id="continue-chat" class="btn btn-primary btn-inline" href="/chat" data-i18n="在 Chat 中继续 →">在 Chat 中继续 →</a></div>
+              <div id="diagnosis-section" class="notice amber" hidden></div>
+              <details id="run-details" class="settings"><summary data-i18n="运行信息与费用">运行信息与费用</summary><div class="metrics" id="metrics"></div><p id="cost-details" class="cost-breakdown"></p></details>
+              <div id="coverage-status" class="coverage-status" hidden></div>
+              <div id="gap-section" class="notice amber" hidden></div>
+              <div id="warning-section" class="notice amber" hidden></div>
+              <div id="source-filter" class="source-filter" aria-label="按来源筛选" data-i18n-aria-label="按来源筛选" hidden></div>
+              <p id="filter-feedback" class="filter-feedback" role="status" aria-live="polite" hidden></p>
+              <div id="paper-list" class="paper-list"></div>
+              <p class="result-foot">Reasons and categories are model judgements from abstracts. Quote verification only proves the sentence exists; arXiv listing does not imply venue acceptance.</p>
+            </div>
+          </section>
+        </div>
+
+        <aside class="side-col">
+          <section class="card trace-card" aria-labelledby="trace-heading">
+            <div class="trace-head"><h2 id="trace-heading" data-i18n="运行活动">运行活动</h2><span class="trace-count" id="trace-count">Idle</span></div>
+            <p class="trace-placeholder" id="trace-placeholder" data-i18n="检索、摘要核对、补充检索与交付步骤会显示在这里。">检索、摘要核对、补充检索与交付步骤会显示在这里。</p>
+            <ol id="trace-list" class="timeline" aria-live="polite" aria-relevant="additions"></ol>
+            <footer class="trace-foot">
+              <a id="open-activity-link" href="/activity" data-i18n="在 Activity 打开完整轨迹 →">在 Activity 打开完整轨迹 →</a>
+              <span class="trace-foot-id">ScholarGuide · COMP7608B</span>
+            </footer>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+  <p id="copy-status" class="sr-only" role="status" aria-live="polite"></p></body>
+</html>

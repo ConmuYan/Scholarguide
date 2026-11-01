@@ -1,0 +1,12 @@
+{
+  "servers": {
+    "lune": {
+      "url": "https://fixture.invalid/mcp",
+      "headers": {"Authorization": "Bearer ${LUNE_API_KEY}"},
+      "timeout": 15,
+      "protocol": "2025-11-25",
+      "allow": ["search_papers", "search_papers_many", "search_related_papers", "get_paper_fulltext", "get_paper_citations", "list_conferences"],
+      "allow_prompts": []
+    }
+  }
+}

@@ -1,0 +1,315 @@
+{
+  "当前没有可供综合的已选论文。": {"en":"No selected papers are available for synthesis.","zh-Hant":"目前沒有可供綜合的已選論文。"},
+  "已选论文没有可使用的摘要，无法据此生成研究综合。": {"en":"The selected papers have no usable abstracts for synthesis.","zh-Hant":"已選論文沒有可使用的摘要，無法據此產生研究綜合。"},
+  "摘要中没有可用的证据片段，无法据此生成研究综合。": {"en":"The abstracts contain no usable evidence passages for synthesis.","zh-Hant":"摘要中沒有可用的證據片段，無法據此產生研究綜合。"},
+  "已按你的要求停止，现有论文推荐保留。": {"en":"Stopped as requested; existing recommendations remain available.","zh-Hant":"已依你的要求停止，現有論文推薦保留。"},
+  "本轮剩余预算不足，现有论文推荐保留。": {"en":"The remaining budget is insufficient; existing recommendations remain available.","zh-Hant":"本輪剩餘預算不足，現有論文推薦保留。"},
+  "模型调用或综合输出校验未完成，现有论文推荐保留。": {"en":"The model call or synthesis validation did not complete; existing recommendations remain available.","zh-Hant":"模型呼叫或綜合輸出驗證未完成，現有論文推薦保留。"},
+  "贡献 · 摘要整理": {"en":"Contribution · abstract summary","zh-Hant":"貢獻 · 摘要整理"},
+  "技术方法 · 摘要整理": {"en":"Method · abstract summary","zh-Hant":"技術方法 · 摘要整理"},
+  "作者明确报告的局限": {"en":"Limitations explicitly reported by authors","zh-Hant":"作者明確報告的限制"},
+  "可能的含义 · 模型推论": {"en":"Possible implications · model inference","zh-Hant":"可能的含義 · 模型推論"},
+  "查看摘要依据（{count} 篇）": {"en":"View abstract evidence ({count} papers)","zh-Hant":"查看摘要依據（{count} 篇）"},
+  "当前证据无法关联到清单": {"en":"Evidence cannot be linked to the current list","zh-Hant":"目前證據無法連結至清單"},
+  "摘要文字匹配；并非解释成立或实验可复现的证明。": {"en":"The quote matches the abstract; this does not establish the interpretation or reproducibility.","zh-Hant":"摘要文字相符；並非解釋成立或實驗可重現的證明。"},
+  "摘要未明确说明；不能据此断言论文没有这项内容。": {"en":"Not explicit in the abstract; this does not mean the paper lacks it.","zh-Hant":"摘要未明確說明；不能據此斷言論文沒有這項內容。"},
+  "证据无法关联到当前论文清单，暂不展示这一解释。": {"en":"Evidence cannot be linked to the current paper list; this interpretation is withheld.","zh-Hant":"證據無法連結至目前論文清單，暫不顯示這項解釋。"},
+  "可依据当前证据提出的假设：{found}/{requested}；未用无依据的设想补足数量。": {"en":"Hypotheses grounded in current evidence: {found}/{requested}; unsupported ideas were not added to fill the quota.","zh-Hant":"可依目前證據提出的假設：{found}/{requested}；未用無依據的設想補足數量。"},
+  "{paper}：{label}尚未由摘要建立。": {"en":"{paper}: {label} is not established by the abstract.","zh-Hant":"{paper}：{label}尚未由摘要建立。"},
+  "论文数量少于请求，综合只覆盖实际交付的清单。": {"en":"Fewer papers were delivered than requested; synthesis covers only the delivered list.","zh-Hant":"論文數量少於請求，綜合僅涵蓋實際交付的清單。"},
+  "来源摘要存在不一致，相关解释需要进一步核对。": {"en":"Source abstracts disagree; related interpretations need further checking.","zh-Hant":"來源摘要存在不一致，相關解釋需要進一步核對。"},
+  "部分摘要超出本轮输入上限，仅使用已提供的摘要片段。": {"en":"Some abstracts exceeded the input limit; only provided excerpts were used.","zh-Hant":"部分摘要超出本輪輸入上限，僅使用已提供的摘要片段。"},
+  "部分已选论文尚未有可用的阅读顺序建议。": {"en":"Some selected papers lack a reading-order suggestion.","zh-Hant":"部分已選論文尚未有可用的閱讀順序建議。"},
+  "当前证据不足以归纳跨论文共同主题。": {"en":"Current evidence is insufficient to identify cross-paper themes.","zh-Hant":"目前證據不足以歸納跨論文共同主題。"},
+  "当前证据不足以提出有依据的开放问题。": {"en":"Current evidence is insufficient to propose grounded open questions.","zh-Hant":"目前證據不足以提出有依據的開放問題。"},
+  "部分论文缺少可用的逐篇研究整理。": {"en":"Some papers lack usable individual research notes.","zh-Hant":"部分論文缺少可用的逐篇研究整理。"},
+  "部分研究内容缺少摘要依据，未作补充推断。": {"en":"Some research content lacks abstract evidence; no additional inference was made.","zh-Hant":"部分研究內容缺少摘要依據，未作補充推斷。"},
+  "证据范围：仅已选论文的摘要。作者报告、模型归纳与待验证设想分别展示；引文匹配只证明文字存在，不证明解释或实验结论。": {"en":"Evidence scope: abstracts of selected papers only. Author reports, model synthesis, and unverified hypotheses are shown separately. Quote matching establishes only that the text exists, not the interpretation or experimental conclusions.","zh-Hant":"證據範圍：僅已選論文的摘要。作者報告、模型歸納與待驗證設想分別顯示；引文匹配只證明文字存在，不證明解釋或實驗結論。"},
+  "当前没有可展示的研究综合；论文推荐与已有证据不受影响。": {"en":"No research synthesis is available; recommendations and existing evidence are unaffected.","zh-Hant":"目前沒有可顯示的研究綜合；論文推薦與已有證據不受影響。"},
+  "当前综合的证据范围无法确认，暂不展示内容。": {"en":"The evidence scope cannot be confirmed; synthesis is withheld.","zh-Hant":"目前綜合的證據範圍無法確認，暫不顯示內容。"},
+  "这些问题由当前清单引出，不代表已检索完整领域或证明问题尚无人解决。": {"en":"These questions arise from the current list; they do not establish exhaustive coverage or that the questions remain unsolved.","zh-Hant":"這些問題由目前清單引出，不代表已檢索完整領域或證明問題尚無人解決。"},
+  "以下实验、对照与衡量方式均为拟议建议，尚未执行；数据、代码和算力可得性需要另行检查。引用支持动机，不证明假设有效或新颖。": {"en":"The experiments, baselines and measures below are proposals, not completed work. Data, code and compute availability must be checked separately. Citations support motivation, not validity or novelty.","zh-Hant":"以下實驗、對照與衡量方式均為擬議建議，尚未執行；資料、程式碼和運算資源可得性需要另行檢查。引用支持動機，不證明假設有效或新穎。"},
+  "动机 · 模型推论": {"en":"Rationale · model inference","zh-Hant":"動機 · 模型推論"},
+  "拟议实验": {"en":"Proposed experiment","zh-Hant":"擬議實驗"},
+  "建议对照": {"en":"Suggested baseline","zh-Hant":"建議對照"},
+  "建议衡量方式": {"en":"Suggested measure","zh-Hant":"建議衡量方式"},
+  "何种结果会否定假设": {"en":"What result would falsify the hypothesis","zh-Hant":"何種結果會否定假設"},
+  "当前摘要证据不足以提出可追溯的实验假设。": {"en":"Current abstract evidence is insufficient for a traceable experimental hypothesis.","zh-Hant":"目前摘要證據不足以提出可追溯的實驗假設。"},
+  "当前没有可用的阅读顺序建议。": {"en":"No reading order is currently available.","zh-Hant":"目前沒有可用的閱讀順序建議。"},
+  "查看证据缺口（{count}）": {"en":"View evidence gaps ({count})","zh-Hant":"查看證據缺口（{count}）"},
+  "会议": {"en":"Conference","zh-Hant":"會議"},
+  "期刊": {"en":"Journal","zh-Hant":"期刊"},
+  "预印本": {"en":"Preprint","zh-Hant":"預印本"},
+  "已录用": {"en":"Accepted","zh-Hant":"已錄用"},
+  "已发表": {"en":"Published","zh-Hant":"已發表"},
+  "投稿中": {"en":"Submitted","zh-Hant":"投稿中"},
+  "未录用": {"en":"Rejected","zh-Hant":"未錄用"},
+  "已撤稿": {"en":"Withdrawn or retracted","zh-Hant":"已撤稿"},
+  "未送审": {"en":"Desk rejected","zh-Hant":"未送審"},
+  "出版状态待核对": {"en":"Publication status unverified","zh-Hant":"出版狀態待核對"},
+  "出版依据": {"en":"Publication evidence","zh-Hant":"出版依據"},
+  "基于摘要的模型分类，用于检查阅读面的覆盖；不代表领域穷尽或论文结论已验证。": {"en":"Model classification based on abstracts checks reading coverage; it does not imply exhaustive field coverage or validated conclusions.","zh-Hant":"基於摘要的模型分類，用於檢查閱讀面的涵蓋範圍；不代表領域窮盡或論文結論已驗證。"},
+  "{label} · {state}": {"en":"{label} · {state}","zh-Hant":"{label} · {state}"},
+  "已关联论文": {"en":"Papers linked","zh-Hant":"已連結論文"},
+  "仍有缺口": {"en":"Gap remains","zh-Hant":"仍有缺口"},
+  "待核对": {"en":"To be checked","zh-Hant":"待核對"},
+  "查看路线分类与摘要依据": {"en":"View direction classifications and abstract evidence","zh-Hant":"查看路線分類與摘要依據"},
+  "引文为摘要文字匹配；路线归类仍是模型判断。": {"en":"The quote matches the abstract; direction classification remains a model judgment.","zh-Hant":"引文為摘要文字匹配；路線歸類仍是模型判斷。"},
+  "当前来源未提供摘要。": {"en":"The current source provides no abstract.","zh-Hant":"目前來源未提供摘要。"},
+  "作者：{authors}": {"en":"Authors: {authors}","zh-Hant":"作者：{authors}"},
+  "作者：来源未提供": {"en":"Authors: not provided by source","zh-Hant":"作者：來源未提供"},
+  "摘要来源：{source}": {"en":"Abstract source: {source}","zh-Hant":"摘要來源：{source}"},
+  "论文 ID：{id}": {"en":"Paper ID: {id}","zh-Hant":"論文 ID：{id}"},
+  "未知": {"en":"Unknown","zh-Hant":"未知"},
+  "本轮新增候选": {"en":" new candidates","zh-Hant":"本輪新增候選"},
+  "候选论文": {"en":" candidate papers","zh-Hant":"候選論文"},
+  "次摘要核对": {"en":" abstract checks","zh-Hant":"次摘要核對"},
+  "当前可推荐": {"en":" currently eligible","zh-Hant":"目前可推薦"},
+  "次引文匹配": {"en":" quote matches","zh-Hant":"次引文匹配"},
+  "模型与来源返回后，这里会逐步更新实际进展。": {"en":"Actual progress will appear as models and sources respond.","zh-Hant":"模型與來源回傳後，這裡會逐步更新實際進度。"},
+  "跳转阅读 · {count} 篇": {"en":"Jump to paper · {count} papers","zh-Hant":"跳轉閱讀 · {count} 篇"},
+  "未知论文": {"en":"Unknown paper","zh-Hant":"未知論文"},
+  "技术路线仍有缺口：{facets}": {"en":"Research directions still missing: {facets}","zh-Hant":"技術路線仍有缺口：{facets}"},
+  "技术路线仍缺 {count} 条": {"en":"{count} research directions still missing","zh-Hant":"技術路線仍缺 {count} 條"},
+  "技术路线覆盖暂时无法核对": {"en":"Research direction coverage cannot currently be checked","zh-Hant":"技術路線涵蓋範圍暫時無法核對"},
+  "推荐数量": {"en":"Recommendation count","zh-Hant":"推薦數量"},
+  "评测 / Benchmark": {"en":"Evaluation / Benchmark","zh-Hant":"評測 / Benchmark"},
+  "综述": {"en":"Survey","zh-Hant":"綜述"},
+  "研究论文": {"en":"Research papers","zh-Hant":"研究論文"},
+  "推荐条件": {"en":"Recommendation requirement","zh-Hant":"推薦條件"},
+  "{label} · 已交付 {count}": {"en":"{label} · delivered {count}","zh-Hant":"{label} · 已交付 {count}"},
+  "{label} {count} 篇": {"en":"{label}: {count} papers","zh-Hant":"{label} {count} 篇"},
+  "{label}仍有缺口": {"en":"{label}: gap remains","zh-Hant":"{label}仍有缺口"},
+  "正在调用工具": {
+    "en": "Calling tool",
+    "zh-Hant": "正在呼叫工具"
+  },
+  "工具执行完成": {
+    "en": "Tool completed",
+    "zh-Hant": "工具執行完成"
+  },
+  "工具返回错误": {
+    "en": "Tool error",
+    "zh-Hant": "工具回傳錯誤"
+  },
+  "读取模型配置": {
+    "en": "Reading model configuration",
+    "zh-Hant": "讀取模型設定"
+  },
+  "建立研究任务": {
+    "en": "Creating research task",
+    "zh-Hant": "建立研究任務"
+  },
+  "更新研究需求": {
+    "en": "Updating research request",
+    "zh-Hant": "更新研究需求"
+  },
+  "规划研究路线": {
+    "en": "Planning research directions",
+    "zh-Hant": "規劃研究路線"
+  },
+  "检查研究覆盖": {
+    "en": "Checking research coverage",
+    "zh-Hant": "檢查研究涵蓋範圍"
+  },
+  "检索论文": {
+    "en": "Searching papers",
+    "zh-Hant": "檢索論文"
+  },
+  "核对论文摘要": {
+    "en": "Checking abstracts",
+    "zh-Hant": "核對論文摘要"
+  },
+  "检查已有证据": {
+    "en": "Checking existing evidence",
+    "zh-Hant": "檢查已有證據"
+  },
+  "复用有效判断": {
+    "en": "Reusing valid assessments",
+    "zh-Hant": "重用有效判斷"
+  },
+  "选择下一步": {
+    "en": "Choosing next step",
+    "zh-Hant": "選擇下一步"
+  },
+  "推进研究步骤": {
+    "en": "Advancing research",
+    "zh-Hant": "推進研究步驟"
+  },
+  "核对交付条件": {
+    "en": "Checking delivery requirements",
+    "zh-Hant": "核對交付條件"
+  },
+  "交付推荐结果": {
+    "en": "Delivering recommendations",
+    "zh-Hant": "交付推薦結果"
+  },
+  "等待澄清": {
+    "en": "Waiting for clarification",
+    "zh-Hant": "等待釐清"
+  },
+  "本轮结束": {
+    "en": "Run finished",
+    "zh-Hant": "本輪結束"
+  },
+  "整理研究综合": {
+    "en": "Preparing research synthesis",
+    "zh-Hant": "整理研究綜合"
+  },
+  "理解需求": {
+    "en": "Understanding request",
+    "zh-Hant": "理解需求"
+  },
+  "制定查询": {
+    "en": "Planning queries",
+    "zh-Hant": "制定查詢"
+  },
+  "评估候选": {
+    "en": "Assessing candidates",
+    "zh-Hant": "評估候選"
+  },
+  "检查路线覆盖": {
+    "en": "Checking direction coverage",
+    "zh-Hant": "檢查路線涵蓋範圍"
+  },
+  "调用研究模型": {
+    "en": "Calling research model",
+    "zh-Hant": "呼叫研究模型"
+  },
+  "正在检索": {
+    "en": "Searching",
+    "zh-Hant": "正在檢索"
+  },
+  "来源请求失败": {
+    "en": "Source request failed",
+    "zh-Hant": "來源請求失敗"
+  },
+  "来源返回结果": {
+    "en": "Source returned results",
+    "zh-Hant": "來源回傳結果"
+  },
+  "正在整理研究脉络": {
+    "en": "Organizing research context",
+    "zh-Hant": "正在整理研究脈絡"
+  },
+  "运行步骤": {
+    "en": "Run step",
+    "zh-Hant": "執行步驟"
+  },
+  "运行进度": {
+    "en": "Run progress",
+    "zh-Hant": "執行進度"
+  },
+  "返回 {count} 条记录": {
+    "en": "Returned {count} records",
+    "zh-Hant": "回傳 {count} 筆記錄"
+  },
+  "执行中": {
+    "en": "Running",
+    "zh-Hant": "執行中"
+  },
+  "需注意": {
+    "en": "Needs attention",
+    "zh-Hant": "需注意"
+  },
+  "已完成": {
+    "en": "Completed",
+    "zh-Hant": "已完成"
+  },
+  "已记录": {
+    "en": "Recorded",
+    "zh-Hant": "已記錄"
+  },
+  "当前阶段详情": {
+    "en": "Current step details",
+    "zh-Hant": "目前階段詳情"
+  },
+  "查看事件详情": {
+    "en": "View event details",
+    "zh-Hant": "查看事件詳情"
+  },
+  "等待实际运行事件。": {
+    "en": "Waiting for run events.",
+    "zh-Hant": "等待實際執行事件。"
+  },
+  "自动规划 · 可用学术来源": {
+    "en": "Automatic · available academic sources",
+    "zh-Hant": "自動規劃 · 可用學術來源"
+  },
+  "待配置": {
+    "en": "Configuration required",
+    "zh-Hant": "待設定"
+  },
+  "研究综合与待验证设想": {
+    "en": "Research synthesis and hypotheses",
+    "zh-Hant": "研究綜合與待驗證設想"
+  },
+  "研究综合已生成": {
+    "en": "Research synthesis generated",
+    "zh-Hant": "研究綜合已產生"
+  },
+  "研究综合 · 证据仍有缺口": {
+    "en": "Research synthesis · evidence gaps remain",
+    "zh-Hant": "研究綜合 · 證據仍有缺口"
+  },
+  "本轮未生成研究综合": {
+    "en": "No synthesis generated for this run",
+    "zh-Hant": "本輪未產生研究綜合"
+  },
+  "研究综合暂未完成": {
+    "en": "Research synthesis incomplete",
+    "zh-Hant": "研究綜合暫未完成"
+  },
+  "研究综合": {
+    "en": "Research synthesis",
+    "zh-Hant": "研究綜合"
+  },
+  "逐篇贡献、方法与证据边界": {
+    "en": "Contributions, methods and evidence limits",
+    "zh-Hant": "逐篇貢獻、方法與證據邊界"
+  },
+  "技术路线与跨论文联系 · 模型归纳": {
+    "en": "Research directions and connections · model synthesis",
+    "zh-Hant": "技術路線與跨論文聯繫 · 模型歸納"
+  },
+  "可继续探索的问题 · 模型建议": {
+    "en": "Questions for further exploration · model suggestions",
+    "zh-Hant": "可繼續探索的問題 · 模型建議"
+  },
+  "待检验研究假设 · 尚未验证": {
+    "en": "Research hypotheses · unverified",
+    "zh-Hant": "待檢驗研究假設 · 尚未驗證"
+  },
+  "建议阅读顺序 · 模型建议": {
+    "en": "Suggested reading order · model suggestion",
+    "zh-Hant": "建議閱讀順序 · 模型建議"
+  },
+  "技术路线覆盖": {
+    "en": "Research direction coverage",
+    "zh-Hant": "技術路線涵蓋範圍"
+  },
+  "查看摘要与文献信息": {
+    "en": "View abstract and publication details",
+    "zh-Hant": "查看摘要與文獻資訊"
+  },
+  "返回论文目录 ↑": {
+    "en": "Back to paper index ↑",
+    "zh-Hant": "返回論文目錄 ↑"
+  },
+  "查看结果 ↓": {
+    "en": "View results ↓",
+    "zh-Hant": "查看結果 ↓"
+  },
+  "正在{label}": {
+    "en": "Running: {label}",
+    "zh-Hant": "正在執行：{label}"
+  },
+  "论文阅读目录": {
+    "en": "Paper reading index",
+    "zh-Hant": "論文閱讀目錄"
+  },
+  "关闭结果提示": {
+    "en": "Dismiss results notification",
+    "zh-Hant": "關閉結果提示"
+  }
+}

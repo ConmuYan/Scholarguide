@@ -1,0 +1,3 @@
+# Live ASK path: the first message cannot name a topic, so the program asks before spending a search.
+Recommend five papers for my project.
+The topic is retrieval augmented generation for question answering, including one evaluation paper.

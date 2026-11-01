@@ -1,0 +1,112 @@
+#!/usr/bin/env sh
+set -eu
+
+REPOSITORY='@REPOSITORY@'
+VERSION='@VERSION@'
+ARCHIVE="scholarguide-${VERSION}.tar.gz"
+RELEASE_URL="https://github.com/${REPOSITORY}/releases/download/${VERSION}"
+
+case "$REPOSITORY" in
+  */*) ;;
+  *) printf '%s\n' 'Invalid release repository; expected OWNER/REPO.' >&2; exit 2 ;;
+esac
+case "$VERSION" in
+  v[0-9]*.[0-9]*.[0-9]*) ;;
+  *) printf '%s\n' 'Invalid release version.' >&2; exit 2 ;;
+esac
+
+if ! command -v curl >/dev/null 2>&1; then
+  printf '%s\n' 'curl is required.' >&2; exit 1
+fi
+PYTHON=''
+for candidate in python3 python; do
+  if command -v "$candidate" >/dev/null 2>&1 && "$candidate" -c 'import sys; raise SystemExit(sys.version_info < (3, 11))' >/dev/null 2>&1; then
+    PYTHON=$(command -v "$candidate")
+    break
+  fi
+done
+if [ -z "$PYTHON" ]; then
+  printf '%s\n' 'Python 3.11 or newer is required. Install Python and rerun this installer.' >&2
+  exit 1
+fi
+
+BASE="${XDG_DATA_HOME:-$HOME/.local/share}/scholarguide"
+DATA="$HOME/.scholarguide"
+TARGET="$BASE/releases/$VERSION"
+BIN="$HOME/.local/bin"
+mkdir -p "$BASE/releases" "$DATA/runs" "$DATA/cache" "$BIN"
+WORK=$(mktemp -d "$BASE/.install.XXXXXX")
+trap 'rm -rf "$WORK"' EXIT HUP INT TERM
+
+if [ -e "$TARGET" ]; then
+  printf 'Version %s is already installed at %s\n' "$VERSION" "$TARGET"
+else
+  curl --fail --location --silent --show-error --proto '=https' --tlsv1.2 \
+    "$RELEASE_URL/$ARCHIVE" -o "$WORK/$ARCHIVE"
+  curl --fail --location --silent --show-error --proto '=https' --tlsv1.2 \
+    "$RELEASE_URL/SHA256SUMS" -o "$WORK/SHA256SUMS"
+  EXPECTED=$(awk -v name="$ARCHIVE" '$2 == name || $2 == "*" name {print $1}' "$WORK/SHA256SUMS" | tr -d '\\' | tr 'A-F' 'a-f')
+  if [ -z "$EXPECTED" ]; then
+    printf '%s\n' 'Release checksum is missing; nothing was installed.' >&2; exit 1
+  fi
+  if command -v sha256sum >/dev/null 2>&1; then
+    ACTUAL=$(sha256sum "$WORK/$ARCHIVE" | awk '{print $1}' | tr -d '\\')
+  elif command -v shasum >/dev/null 2>&1; then
+    ACTUAL=$(shasum -a 256 "$WORK/$ARCHIVE" | awk '{print $1}' | tr -d '\\')
+  else
+    printf '%s\n' 'sha256sum or shasum is required.' >&2; exit 1
+  fi
+  if [ "$EXPECTED" != "$ACTUAL" ]; then
+    printf '%s\n' 'Release checksum mismatch; nothing was installed.' >&2; exit 1
+  fi
+  if tar -tzf "$WORK/$ARCHIVE" | awk 'substr($0,1,1)=="/" || $0 ~ /(^|\/)\.\.(\/|$)/ {bad=1} END {exit bad}'; then :; else
+    printf '%s\n' 'Unsafe path in release archive; nothing was installed.' >&2; exit 1
+  fi
+  mkdir -p "$WORK/unpacked"
+  tar -xzf "$WORK/$ARCHIVE" -C "$WORK/unpacked"
+  SOURCE="$WORK/unpacked/scholarguide-$VERSION"
+  if [ ! -f "$SOURCE/app.py" ] || [ ! -f "$SOURCE/requirements.txt" ]; then
+    printf '%s\n' 'Release archive is missing required files.' >&2; exit 1
+  fi
+  "$PYTHON" -m venv "$SOURCE/.venv"
+  if [ -x "$SOURCE/.venv/bin/python" ]; then
+    VENV_PYTHON="$SOURCE/.venv/bin/python"
+  elif [ -x "$SOURCE/.venv/Scripts/python.exe" ]; then
+    # Git Bash / MSYS on Windows creates Scripts/ instead of bin/.
+    VENV_PYTHON="$SOURCE/.venv/Scripts/python.exe"
+  else
+    printf '%s\n' 'Python virtual environment did not produce an interpreter.' >&2; exit 1
+  fi
+  "$VENV_PYTHON" -m pip install --disable-pip-version-check -r "$SOURCE/requirements.txt"
+  mv "$SOURCE" "$TARGET"
+fi
+
+if [ ! -f "$DATA/.env" ] && [ -f "$TARGET/.env.example" ]; then
+  cp "$TARGET/.env.example" "$DATA/.env"
+fi
+printf '%s\n' "$VERSION" > "$BASE/current-version.tmp"
+mv "$BASE/current-version.tmp" "$BASE/current-version"
+cat > "$BIN/scholarguide" <<'LAUNCHER'
+#!/usr/bin/env sh
+set -eu
+BASE="${XDG_DATA_HOME:-$HOME/.local/share}/scholarguide"
+DATA="$HOME/.scholarguide"
+VERSION=$(cat "$BASE/current-version")
+APP="$BASE/releases/$VERSION"
+export SG_DATA_DIR="$DATA"
+export SG_RUNS_DIR="$DATA/runs"
+export SG_CACHE_DIR="$DATA/cache"
+export SG_MCP_RUN_DIR="$DATA/runs/mcp"
+export SG_ENV_FILE="$DATA/.env"
+if [ "$#" -eq 0 ]; then set -- web --open; fi
+PYTHON="$APP/.venv/bin/python"
+if [ ! -x "$PYTHON" ]; then PYTHON="$APP/.venv/Scripts/python.exe"; fi
+exec "$PYTHON" "$APP/app.py" "$@"
+LAUNCHER
+chmod 755 "$BIN/scholarguide"
+
+printf '\nScholarGuide %s is installed.\n' "$VERSION"
+printf 'Run: %s\n' "$BIN/scholarguide web --open"
+case ":$PATH:" in *":$BIN:"*) ;; *) printf 'Add %s to PATH to use `scholarguide` directly.\n' "$BIN" ;; esac
+printf 'Your settings and local history are kept in %s\n' "$DATA"
+printf 'Configure your own model key in the local Models page.\n'

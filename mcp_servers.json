@@ -1,0 +1,29 @@
+{
+  "servers": {
+    "lune": {
+      "url": "https://mcp.luneresearch.com",
+      "headers": {
+        "Authorization": "Bearer ${LUNE_API_KEY}"
+      },
+      "timeout": 60,
+      "protocol": "2025-11-25",
+      "allow": [
+        "search_papers",
+        "search_papers_many",
+        "get_paper_fulltext",
+        "search_related_papers",
+        "get_paper_fulltext",
+        "get_paper_citations",
+        "list_conferences"
+      ],
+      "allow_prompts": [
+        "literature_review",
+        "find_related_work",
+        "compare_papers",
+        "verify_draft",
+        "trace_citations",
+        "research_methodology"
+      ]
+    }
+  }
+}

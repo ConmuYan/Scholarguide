@@ -1,0 +1,686 @@
+{
+  "预印本摘要与 PDF。适合发现最新工作，但不代表会议录用。": {
+    "en": "Preprint abstracts and PDFs. Useful for discovering recent work, but not proof of conference acceptance.",
+    "zh-Hant": "預印本摘要與 PDF。適合發現最新工作，但不代表會議錄用。"
+  },
+  "学术元数据与出版信息，可用于会议、期刊和年份核对。": {
+    "en": "Academic metadata and publication information for checking venues, journals, and years.",
+    "zh-Hant": "學術中繼資料與出版資訊，可用於會議、期刊和年份核對。"
+  },
+  "独立学术索引，提供摘要、出版信息与开放获取链接。": {
+    "en": "Independent academic index providing abstracts, publication details, and open-access links.",
+    "zh-Hant": "獨立學術索引，提供摘要、出版資訊與開放取用連結。"
+  },
+  "书目元数据为主，通常不含摘要。访问受上游防护影响时会明确失败。": {
+    "en": "Primarily bibliographic metadata, usually without abstracts. Upstream access protection is reported as a failure.",
+    "zh-Hant": "以書目中繼資料為主，通常不含摘要。存取受上游防護影響時會明確失敗。"
+  },
+  "ICLR / NeurIPS / ICML 等会议的官方评审与录用记录。": {
+    "en": "Official review and acceptance records for ICLR, NeurIPS, ICML and other conferences.",
+    "zh-Hant": "ICLR / NeurIPS / ICML 等會議的官方審查與錄用紀錄。"
+  },
+  "ACL / EMNLP / NAACL 等 NLP 会议的官方论文页。": {
+    "en": "Official paper pages for NLP conferences including ACL, EMNLP and NAACL.",
+    "zh-Hant": "ACL / EMNLP / NAACL 等 NLP 會議的官方論文頁。"
+  },
+  "网页发现来源，只提供 snippet；不会自动升级为摘要或全文证据。": {
+    "en": "Web discovery source providing snippets only; these are not automatically treated as abstract or full-text evidence.",
+    "zh-Hant": "網頁發現來源，只提供 snippet；不會自動升級為摘要或全文證據。"
+  },
+  "A/A* 会议论文库与 MCP 工具；书目信息不等于录用或展示类别证明。": {
+    "en": "A/A* conference paper database and MCP tools; bibliographic data does not prove acceptance or presentation type.",
+    "zh-Hant": "A/A* 會議論文庫與 MCP 工具；書目資訊不等於錄用或展示類別證明。"
+  },
+  "摘要": {
+    "en": "Abstract",
+    "zh-Hant": "摘要"
+  },
+  "出版信息": {
+    "en": "Publication details",
+    "zh-Hant": "出版資訊"
+  },
+  "展示类别": {
+    "en": "Presentation type",
+    "zh-Hant": "展示類別"
+  },
+  "全文": {
+    "en": "Full text",
+    "zh-Hant": "全文"
+  },
+  "相关论文": {
+    "en": "Related papers",
+    "zh-Hant": "相關論文"
+  },
+  "引用": {
+    "en": "Citations",
+    "zh-Hant": "引用"
+  },
+  "MCP 工具": {
+    "en": "MCP tools",
+    "zh-Hant": "MCP 工具"
+  },
+  "会议": {
+    "en": "Venue",
+    "zh-Hant": "會議"
+  },
+  "年份": {
+    "en": "Year",
+    "zh-Hant": "年份"
+  },
+  "出版类型": {
+    "en": "Publication type",
+    "zh-Hant": "出版類型"
+  },
+  "录用状态": {
+    "en": "Acceptance status",
+    "zh-Hant": "錄用狀態"
+  },
+  "可用": {
+    "en": "Available",
+    "zh-Hant": "可用"
+  },
+  "可用 · 空结果": {
+    "en": "Available · no results",
+    "zh-Hant": "可用 · 空結果"
+  },
+  "有错误": {
+    "en": "Error",
+    "zh-Hant": "有錯誤"
+  },
+  "缓存命中": {
+    "en": "Cache hit",
+    "zh-Hant": "快取命中"
+  },
+  "未检测": {
+    "en": "Not checked",
+    "zh-Hant": "未檢測"
+  },
+  "网站要求浏览器验证": {
+    "en": "Browser verification required",
+    "zh-Hant": "網站要求瀏覽器驗證"
+  },
+  "请求过多，已进入冷却": {
+    "en": "Rate limited; cooling down",
+    "zh-Hant": "請求過多，已進入冷卻"
+  },
+  "请求超时": {
+    "en": "Request timed out",
+    "zh-Hant": "請求逾時"
+  },
+  "DNS 解析失败": {
+    "en": "DNS resolution failed",
+    "zh-Hant": "DNS 解析失敗"
+  },
+  "连接失败": {
+    "en": "Connection failed",
+    "zh-Hant": "連線失敗"
+  },
+  "网络传输失败": {
+    "en": "Network transport failed",
+    "zh-Hant": "網路傳輸失敗"
+  },
+  "认证失败": {
+    "en": "Authentication failed",
+    "zh-Hant": "驗證失敗"
+  },
+  "额度不足": {
+    "en": "Quota exhausted",
+    "zh-Hant": "額度不足"
+  },
+  "尚未确认额度快照": {
+    "en": "Quota snapshot not confirmed",
+    "zh-Hant": "尚未確認額度快照"
+  },
+  "额度快照已过期": {
+    "en": "Quota snapshot expired",
+    "zh-Hant": "額度快照已過期"
+  },
+  "存在未完成的额度预留": {
+    "en": "Outstanding quota reservation",
+    "zh-Hant": "存在未完成的額度預留"
+  },
+  "额度账本损坏": {
+    "en": "Quota ledger corrupted",
+    "zh-Hant": "額度帳本損壞"
+  },
+  "额度账本不可用": {
+    "en": "Quota ledger unavailable",
+    "zh-Hant": "額度帳本不可用"
+  },
+  "额度账本已关闭": {
+    "en": "Quota ledger closed",
+    "zh-Hant": "額度帳本已關閉"
+  },
+  "响应格式异常": {
+    "en": "Invalid response format",
+    "zh-Hant": "回應格式異常"
+  },
+  "来源请求失败": {
+    "en": "Source request failed",
+    "zh-Hant": "來源請求失敗"
+  },
+  "上游站点返回了反机器人验证页；这是外部限制，换网络出口或停用该来源。再次测试会解除当前冷却。": {
+    "en": "The upstream site returned an anti-bot challenge. This is an external restriction; change network egress or disable the source. Testing again clears the current cooldown.",
+    "zh-Hant": "上游網站返回了反機器人驗證頁；這是外部限制，請切換網路出口或停用該來源。再次測試會解除目前冷卻。"
+  },
+  "匿名或当前额度触发限流；配置来源 API key 可降低概率，冷却结束后会再试。": {
+    "en": "Anonymous access or the current quota triggered rate limiting. A source API key may help; retry after cooldown.",
+    "zh-Hant": "匿名或目前額度觸發限流；設定來源 API key 可降低機率，冷卻結束後會再試。"
+  },
+  "请求超时；上游可能已经产生调用，不会伪造成功。": {
+    "en": "Request timed out; the upstream call may already have occurred. Success will not be fabricated.",
+    "zh-Hant": "請求逾時；上游可能已經產生呼叫，不會偽造成功。"
+  },
+  "本机无法解析上游域名，请检查网络或代理。": {
+    "en": "Cannot resolve the upstream domain; check the network or proxy.",
+    "zh-Hant": "本機無法解析上游網域，請檢查網路或代理。"
+  },
+  "连接上游失败，请检查网络或代理。": {
+    "en": "Could not connect upstream; check the network or proxy.",
+    "zh-Hant": "連接上游失敗，請檢查網路或代理。"
+  },
+  "网络传输中断，未拿到完整响应。": {
+    "en": "Network transport was interrupted before the full response arrived.",
+    "zh-Hant": "網路傳輸中斷，未取得完整回應。"
+  },
+  "来源凭据无效或已过期，请在配置面板更新。": {
+    "en": "Source credentials are invalid or expired; update them in settings.",
+    "zh-Hant": "來源憑證無效或已過期，請在設定面板更新。"
+  },
+  "本机确认的额度已用尽；账户实际余额需另行核对。": {
+    "en": "Locally confirmed quota is exhausted; verify the actual account balance separately.",
+    "zh-Hant": "本機確認的額度已用盡；帳戶實際餘額需另行核對。"
+  },
+  "未确认账户剩余额度，已在发送前暂停；核对其他客户端后确认快照。": {
+    "en": "Remaining account quota is unconfirmed; requests are paused before sending. Check other clients before confirming a snapshot.",
+    "zh-Hant": "未確認帳戶剩餘額度，已在傳送前暫停；核對其他用戶端後確認快照。"
+  },
+  "本机快照已过期，须重新核对账户额度；不会自动假设重置。": {
+    "en": "The local snapshot expired; verify account quota again. A reset is not assumed.",
+    "zh-Hant": "本機快照已過期，須重新核對帳戶額度；不會自動假設重置。"
+  },
+  "仍有未完成的预留；仅在确认所属进程已结束时可标记未知。": {
+    "en": "There are outstanding reservations; mark them unknown only after confirming their processes have stopped.",
+    "zh-Hant": "仍有未完成的預留；僅在確認所屬程序已結束時可標記未知。"
+  },
+  "本机额度账本无法读取；请求已暂停，请保留账本以便排查。": {
+    "en": "The local quota ledger cannot be read; requests are paused. Preserve the ledger for investigation.",
+    "zh-Hant": "本機額度帳本無法讀取；請求已暫停，請保留帳本以便排查。"
+  },
+  "本机额度账本暂不可用，请求已暂停。": {
+    "en": "The local quota ledger is temporarily unavailable; requests are paused.",
+    "zh-Hant": "本機額度帳本暫不可用，請求已暫停。"
+  },
+  "本机额度账本已关闭，请求已暂停。": {
+    "en": "The local quota ledger is closed; requests are paused.",
+    "zh-Hant": "本機額度帳本已關閉，請求已暫停。"
+  },
+  "上游返回了无法解析的内容，未计为成功。": {
+    "en": "The upstream response could not be parsed and was not counted as successful.",
+    "zh-Hant": "上游返回了無法解析的內容，未計為成功。"
+  },
+  "未知": {
+    "en": "Unknown",
+    "zh-Hant": "未知"
+  },
+  "已停用": {
+    "en": "Disabled",
+    "zh-Hant": "已停用"
+  },
+  "待配置": {
+    "en": "Setup required",
+    "zh-Hant": "待設定"
+  },
+  "需处理": {
+    "en": "Needs attention",
+    "zh-Hant": "需處理"
+  },
+  "正常": {
+    "en": "Healthy",
+    "zh-Hant": "正常"
+  },
+  "尚未测试": {
+    "en": "Not tested",
+    "zh-Hant": "尚未測試"
+  },
+  "尚未观测": {
+    "en": "Not observed",
+    "zh-Hant": "尚未觀測"
+  },
+  "请在此页配置来源凭据。": {
+    "en": "Configure source credentials on this page.",
+    "zh-Hant": "請在此頁設定來源憑證。"
+  },
+  "匿名访问可用，但可能被限流；建议配置来源 API key。": {
+    "en": "Anonymous access is available but may be rate limited; a source API key is recommended.",
+    "zh-Hant": "匿名存取可用，但可能被限流；建議設定來源 API key。"
+  },
+  "来源凭据已配置。": {
+    "en": "Source credentials configured.",
+    "zh-Hant": "來源憑證已設定。"
+  },
+  "待确认": {
+    "en": "Unconfirmed",
+    "zh-Hant": "待確認"
+  },
+  "快照已过期": {
+    "en": "Snapshot expired",
+    "zh-Hant": "快照已過期"
+  },
+  "请求超时。": {
+    "en": "Request timed out.",
+    "zh-Hant": "請求逾時。"
+  },
+  "无法连接本地服务。": {
+    "en": "Cannot connect to the local service.",
+    "zh-Hant": "無法連線至本機服務。"
+  },
+  "来源": {
+    "en": "Sources",
+    "zh-Hant": "來源"
+  },
+  "已登记来源": {
+    "en": "Registered sources",
+    "zh-Hant": "已登記來源"
+  },
+  "最近一次有成功或空结果": {
+    "en": "Latest request succeeded or returned no results",
+    "zh-Hant": "最近一次成功或回傳空結果"
+  },
+  "凭据缺失或最近失败": {
+    "en": "Missing credentials or recent failure",
+    "zh-Hant": "憑證缺失或最近失敗"
+  },
+  "在途": {
+    "en": "In flight",
+    "zh-Hant": "進行中"
+  },
+  "当前实际请求": {
+    "en": "Current active requests",
+    "zh-Hant": "目前實際請求"
+  },
+  "暂无可用来源": {
+    "en": "No available sources",
+    "zh-Hant": "暫無可用來源"
+  },
+  "全部": {
+    "en": "All",
+    "zh-Hant": "全部"
+  },
+  "没有符合此能力筛选的来源。": {
+    "en": "No sources match this capability filter.",
+    "zh-Hant": "沒有符合此能力篩選的來源。"
+  },
+  "服务端尚未返回来源配置。": {
+    "en": "The server has not returned source configuration.",
+    "zh-Hant": "伺服器尚未回傳來源設定。"
+  },
+  "来源说明未知。": {
+    "en": "Source description unavailable.",
+    "zh-Hant": "來源說明未知。"
+  },
+  "能力未知": {
+    "en": "Capabilities unknown",
+    "zh-Hant": "能力未知"
+  },
+  "最近观测": {
+    "en": "Last observed",
+    "zh-Hant": "最近觀測"
+  },
+  "响应": {
+    "en": "Response",
+    "zh-Hant": "回應"
+  },
+  "并发": {
+    "en": "Concurrency",
+    "zh-Hant": "並行"
+  },
+  "来源额度": {
+    "en": "Source quota",
+    "zh-Hant": "來源額度"
+  },
+  "优先级": {
+    "en": "Priority",
+    "zh-Hant": "優先級"
+  },
+  "凭据": {
+    "en": "Credentials",
+    "zh-Hant": "憑證"
+  },
+  "已配置": {
+    "en": "Configured",
+    "zh-Hant": "已設定"
+  },
+  "需要独立 key": {
+    "en": "Separate key required",
+    "zh-Hant": "需要獨立 key"
+  },
+  "无需": {
+    "en": "Not required",
+    "zh-Hant": "不需要"
+  },
+  "arXiv API 返回 429 / Rate exceeded。它不是配置错误；通常需要等待 15–60 分钟、切换网络出口，或在 Sources 里点“测试连接”重新探测。": {
+    "en": "The arXiv API returned 429 / Rate exceeded. This is not a configuration error; wait 15–60 minutes, change network egress, or select Test connection in Sources to probe again.",
+    "zh-Hant": "arXiv API 返回 429 / Rate exceeded。這不是設定錯誤；通常需要等待 15–60 分鐘、切換網路出口，或在 Sources 點選「測試連線」重新探測。"
+  },
+  "最近调用失败。": {
+    "en": "Latest call failed.",
+    "zh-Hant": "最近呼叫失敗。"
+  },
+  "测试连接": {
+    "en": "Test connection",
+    "zh-Hant": "測試連線"
+  },
+  "配置": {
+    "en": "Configure",
+    "zh-Hant": "設定"
+  },
+  "已启用": {
+    "en": "Enabled",
+    "zh-Hant": "已啟用"
+  },
+  "测试查询需为 1–128 字符。": {
+    "en": "The test query must be 1–128 characters.",
+    "zh-Hant": "測試查詢須為 1–128 個字元。"
+  },
+  "测试中…": {
+    "en": "Testing…",
+    "zh-Hant": "測試中…"
+  },
+  "真实请求进行中，最长约 90 秒…": {
+    "en": "Live request in progress, up to about 90 seconds…",
+    "zh-Hant": "實際請求進行中，最長約 90 秒…"
+  },
+  "检查失败": {
+    "en": "Check failed",
+    "zh-Hant": "檢查失敗"
+  },
+  "当前来源有未保存的修改。切换将放弃这些修改，是否继续？": {
+    "en": "This source has unsaved changes. Switching will discard them. Continue?",
+    "zh-Hant": "目前來源有未儲存的修改。切換將放棄這些修改，是否繼續？"
+  },
+  "配置来源": {
+    "en": "Configure source",
+    "zh-Hant": "設定來源"
+  },
+  "必需": {
+    "en": "Required",
+    "zh-Hant": "必需"
+  },
+  "推荐": {
+    "en": "Recommended",
+    "zh-Hant": "建議"
+  },
+  "可选": {
+    "en": "Optional",
+    "zh-Hant": "可選"
+  },
+  "密钥已配置；留空保留现有密钥。": {
+    "en": "A key is configured; leave blank to keep it.",
+    "zh-Hant": "金鑰已設定；留空以保留現有金鑰。"
+  },
+  "该来源需要独立 key；配置后才会进入默认多源。": {
+    "en": "This source requires a separate key before joining the default multi-source route.",
+    "zh-Hant": "此來源需要獨立 key；設定後才會進入預設多來源。"
+  },
+  "未配置也能匿名访问，但更容易触发 429；建议配置。": {
+    "en": "Anonymous access works without a key but is more likely to trigger 429; configuring one is recommended.",
+    "zh-Hant": "未設定也能匿名存取，但更容易觸發 429；建議設定。"
+  },
+  "此来源通常不需要密钥。": {
+    "en": "This source usually does not require a key.",
+    "zh-Hant": "此來源通常不需要金鑰。"
+  },
+  "优先级需要是 0–100 的整数。": {
+    "en": "Priority must be an integer from 0 to 100.",
+    "zh-Hant": "優先級須為 0–100 的整數。"
+  },
+  "正在读取 Lune 会议目录…": {
+    "en": "Loading the Lune conference catalog…",
+    "zh-Hant": "正在讀取 Lune 會議目錄…"
+  },
+  "目录接口已响应，但没有可识别的会议记录。": {
+    "en": "The catalog responded, but no recognizable conference records were found.",
+    "zh-Hant": "目錄介面已回應，但沒有可識別的會議紀錄。"
+  },
+  "其他": {
+    "en": "Other",
+    "zh-Hant": "其他"
+  },
+  "未命名会议": {
+    "en": "Untitled conference",
+    "zh-Hant": "未命名會議"
+  },
+  "远端已完成，本地审计未确认；不要自动重试。": {
+    "en": "The remote operation completed but local audit is unconfirmed; do not retry automatically.",
+    "zh-Hant": "遠端已完成，本機稽核未確認；不要自動重試。"
+  },
+  "服务端未返回可用工具。工具状态未知，不代表来源不可用。": {
+    "en": "The server returned no tools. Tool status is unknown; this does not mean the source is unavailable.",
+    "zh-Hant": "伺服器未回傳可用工具。工具狀態未知，不代表來源不可用。"
+  },
+  "检索论文": {
+    "en": "Search papers",
+    "zh-Hant": "檢索論文"
+  },
+  "寻找相似论文": {
+    "en": "Find related papers",
+    "zh-Hant": "尋找相似論文"
+  },
+  "读取论文全文": {
+    "en": "Read full text",
+    "zh-Hant": "讀取論文全文"
+  },
+  "追踪引用": {
+    "en": "Trace citations",
+    "zh-Hant": "追蹤引用"
+  },
+  "查看会议覆盖": {
+    "en": "View conference coverage",
+    "zh-Hant": "查看會議涵蓋範圍"
+  },
+  "按需调用 Lune 的 MCP 工具。": {
+    "en": "Call a Lune MCP tool on demand.",
+    "zh-Hant": "按需呼叫 Lune 的 MCP 工具。"
+  },
+  "例如 lune UUID 或 DOI": {
+    "en": "For example, a Lune UUID or DOI",
+    "zh-Hant": "例如 lune UUID 或 DOI"
+  },
+  "多个值用逗号分隔": {
+    "en": "Separate multiple values with commas",
+    "zh-Hant": "多個值以逗號分隔"
+  },
+  "执行": {
+    "en": "Run",
+    "zh-Hant": "執行"
+  },
+  "参数已更改，上次结果不再显示；请重新执行。": {
+    "en": "Parameters changed; the previous result is hidden. Run again.",
+    "zh-Hant": "參數已更改，上次結果不再顯示；請重新執行。"
+  },
+  "执行中…": {
+    "en": "Running…",
+    "zh-Hant": "執行中…"
+  },
+  "真实 MCP 调用进行中，最长约 90 秒…": {
+    "en": "Live MCP call in progress, up to about 90 seconds…",
+    "zh-Hant": "實際 MCP 呼叫進行中，最長約 90 秒…"
+  },
+  "未命名论文": {
+    "en": "Untitled paper",
+    "zh-Hant": "未命名論文"
+  },
+  "全文预览（前 1600 字符）": {
+    "en": "Full-text preview (first 1,600 characters)",
+    "zh-Hant": "全文預覽（前 1600 個字元）"
+  },
+  "展开完整返回": {
+    "en": "Expand full response",
+    "zh-Hant": "展開完整回應"
+  },
+  "操作完成。完整响应如下，可展开查看。": {
+    "en": "Operation completed. The full response is shown below.",
+    "zh-Hant": "操作完成。完整回應如下，可展開查看。"
+  },
+  "尚未确认额度快照，Lune 请求已暂停。": {
+    "en": "No quota snapshot confirmed; Lune requests are paused.",
+    "zh-Hant": "尚未確認額度快照，Lune 請求已暫停。"
+  },
+  "额度快照已过期，Lune 请求已暂停。": {
+    "en": "The quota snapshot expired; Lune requests are paused.",
+    "zh-Hant": "額度快照已過期，Lune 請求已暫停。"
+  },
+  "标记为未知": {
+    "en": "Mark as unknown",
+    "zh-Hant": "標記為未知"
+  },
+  "请确认该请求已不再运行。标记为未知不会返还额度，是否继续？": {
+    "en": "Confirm that this request is no longer running. Marking it unknown will not restore quota. Continue?",
+    "zh-Hant": "請確認該請求已不再執行。標記為未知不會返還額度，是否繼續？"
+  },
+  "请核对剩余次数、有效时间和确认选项。": {
+    "en": "Check the remaining requests, expiry, and acknowledgment.",
+    "zh-Hant": "請核對剩餘次數、有效時間和確認選項。"
+  },
+  "正在读取来源配置…": {
+    "en": "Loading source configuration…",
+    "zh-Hant": "正在讀取來源設定…"
+  },
+  "来源状态与工具清单已读取。测试和目录请求由你主动发起。": {
+    "en": "Source status and tool list loaded. Tests and catalog requests are initiated by you.",
+    "zh-Hant": "來源狀態與工具清單已讀取。測試和目錄請求由你主動發起。"
+  },
+  "正在刷新来源状态…": {
+    "en": "Refreshing source status…",
+    "zh-Hant": "正在重新整理來源狀態…"
+  },
+  "来源状态已刷新。": {
+    "en": "Source status refreshed.",
+    "zh-Hant": "來源狀態已重新整理。"
+  },
+  "配置已保存。": {
+    "en": "Configuration saved.",
+    "zh-Hant": "設定已儲存。"
+  },
+  "本机快照 {0} 次": {
+    "en": "Local snapshot: {0} requests",
+    "zh-Hant": "本機快照 {0} 次"
+  },
+  "剩余 {0}": {
+    "en": "Remaining: {0}",
+    "zh-Hant": "剩餘 {0}"
+  },
+  "已用 {0}": {
+    "en": "Used: {0}",
+    "zh-Hant": "已用 {0}"
+  },
+  "{0} / {1} 在途": {
+    "en": "{0} / {1} in flight",
+    "zh-Hant": "{0} / {1} 進行中"
+  },
+  "请求失败（{0}）": {
+    "en": "Request failed ({0})",
+    "zh-Hant": "請求失敗（{0}）"
+  },
+  " 冷却中：{0}。": {
+    "en": " Cooling down: {0}.",
+    "zh-Hant": " 冷卻中：{0}。"
+  },
+  "multi 当前顺序：{0}。冷却、停用或未配置的来源会被跳过；显式选择单源时不会自动扩展。{1}": {
+    "en": "Current multi order: {0}. Sources that are cooling down, disabled, or unconfigured are skipped; explicitly selecting one source does not automatically expand to others.{1}",
+    "zh-Hant": "multi 目前順序：{0}。冷卻、停用或未設定的來源會被跳過；明確選擇單一來源時不會自動擴展。{1}"
+  },
+  "{0} / {1} 个来源{2}": {
+    "en": "{0} / {1} sources{2}",
+    "zh-Hant": "{0} / {1} 個來源{2}"
+  },
+  "启用 {0}": {
+    "en": "Enable {0}",
+    "zh-Hant": "啟用 {0}"
+  },
+  "真实调用成功 · {0} · {1} 条结果": {
+    "en": "Live call succeeded · {0} · {1} results",
+    "zh-Hant": "實際呼叫成功 · {0} · {1} 筆結果"
+  },
+  "真实调用未成功 · {0}": {
+    "en": "Live call failed · {0}",
+    "zh-Hant": "實際呼叫未成功 · {0}"
+  },
+  "测试失败：{0}": {
+    "en": "Test failed: {0}",
+    "zh-Hant": "測試失敗：{0}"
+  },
+  "配置 · {0}": {
+    "en": "Configure · {0}",
+    "zh-Hant": "設定 · {0}"
+  },
+  "{0} 个会议": {
+    "en": "{0} conferences",
+    "zh-Hant": "{0} 個會議"
+  },
+  "{0} 篇索引论文": {
+    "en": "{0} indexed papers",
+    "zh-Hant": "{0} 篇索引論文"
+  },
+  "目录读取失败：{0}": {
+    "en": "Failed to load catalog: {0}",
+    "zh-Hant": "目錄讀取失敗：{0}"
+  },
+  "{0} · 必填": {
+    "en": "{0} · required",
+    "zh-Hant": "{0} · 必填"
+  },
+  "操作失败：{0}": {
+    "en": "Operation failed: {0}",
+    "zh-Hant": "操作失敗：{0}"
+  },
+  "返回 {0} 篇": {
+    "en": "Returned {0} papers",
+    "zh-Hant": "回傳 {0} 篇"
+  },
+  "工具读取失败：{0}": {
+    "en": "Failed to load tools: {0}",
+    "zh-Hant": "工具讀取失敗：{0}"
+  },
+  "本机可用 {0} 次 · 快照有效至 {1}": {
+    "en": "Locally available: {0} requests · snapshot valid until {1}",
+    "zh-Hant": "本機可用 {0} 次 · 快照有效至 {1}"
+  },
+  "未确认结果 · {0} · {1}": {
+    "en": "Unconfirmed result · {0} · {1}",
+    "zh-Hant": "未確認結果 · {0} · {1}"
+  },
+  "读取额度失败：{0}": {
+    "en": "Failed to load quota: {0}",
+    "zh-Hant": "讀取額度失敗：{0}"
+  },
+  "确认失败：{0}": {
+    "en": "Confirmation failed: {0}",
+    "zh-Hant": "確認失敗：{0}"
+  },
+  "部分读取失败：{0}": {
+    "en": "Some data failed to load: {0}",
+    "zh-Hant": "部分讀取失敗：{0}"
+  },
+  "保存失败：{0}": {
+    "en": "Save failed: {0}",
+    "zh-Hant": "儲存失敗：{0}"
+  },
+  "{0}原生": {
+    "en": "{0} (native)",
+    "zh-Hant": "{0}原生"
+  },
+  "{0}本地筛选": {
+    "en": "{0} (local filter)",
+    "zh-Hant": "{0}本地篩選"
+  },
+  " · 必填": {
+    "en": " · required",
+    "zh-Hant": " · 必填"
+  },
+  "{0} 篇": {
+    "en": "{0} papers",
+    "zh-Hant": "{0} 篇"
+  }
+}

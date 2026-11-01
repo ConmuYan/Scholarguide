@@ -1,0 +1,3 @@
+# Offline transcript: initial request, then feedback that adds a quota.
+Recommend five RAG papers including one evaluation paper.
+Add one survey paper as well.

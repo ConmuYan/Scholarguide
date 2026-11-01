@@ -1,0 +1,99 @@
+$ErrorActionPreference = 'Stop'
+$Repository = '@REPOSITORY@'
+$Version = '@VERSION@'
+$ArchiveName = "scholarguide-$Version.tar.gz"
+$ReleaseUrl = "https://github.com/$Repository/releases/download/$Version"
+
+if ($Repository -notmatch '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$') { throw 'Invalid release repository.' }
+if ($Version -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+([.-][A-Za-z0-9.-]+)?$') { throw 'Invalid release version.' }
+
+$PythonCommand = Get-Command py -ErrorAction SilentlyContinue
+$PythonPrefix = @()
+if ($PythonCommand) {
+    $PythonExe = $PythonCommand.Source
+    $PythonPrefix = @('-3')
+} else {
+    $PythonCommand = Get-Command python -ErrorAction SilentlyContinue
+    if (-not $PythonCommand) { throw 'Python 3.11 or newer is required. Install Python and rerun this installer.' }
+    $PythonExe = $PythonCommand.Source
+}
+& $PythonExe @PythonPrefix -c 'import sys; raise SystemExit(0 if sys.version_info >= (3,11) else 1)'
+if ($LASTEXITCODE -ne 0) { throw 'Python 3.11 or newer is required.' }
+
+$Base = Join-Path $env:LOCALAPPDATA 'ScholarGuide'
+$Data = Join-Path $HOME '.scholarguide'
+$Target = Join-Path (Join-Path $Base 'releases') $Version
+$Bin = Join-Path $Base 'bin'
+New-Item -ItemType Directory -Force -Path (Join-Path $Base 'releases'), $Data, (Join-Path $Data 'runs'), (Join-Path $Data 'cache'), $Bin | Out-Null
+$Work = Join-Path $Base ('.install-' + [System.Guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Force -Path $Work | Out-Null
+try {
+    if (-not (Test-Path $Target)) {
+        $Archive = Join-Path $Work $ArchiveName
+        $Checksums = Join-Path $Work 'SHA256SUMS'
+        Invoke-WebRequest -UseBasicParsing "$ReleaseUrl/$ArchiveName" -OutFile $Archive
+        Invoke-WebRequest -UseBasicParsing "$ReleaseUrl/SHA256SUMS" -OutFile $Checksums
+        $Line = Get-Content $Checksums | Where-Object { $_ -match "\s\*?$([regex]::Escape($ArchiveName))$" } | Select-Object -First 1
+        if (-not $Line) { throw 'Release checksum is missing; nothing was installed.' }
+        $Expected = ($Line -split '\s+')[0].ToLowerInvariant()
+        $Actual = (Get-FileHash -Algorithm SHA256 $Archive).Hash.ToLowerInvariant()
+        if ($Expected -ne $Actual) { throw 'Release checksum mismatch; nothing was installed.' }
+        $Tar = Get-Command tar.exe -ErrorAction SilentlyContinue
+        if (-not $Tar) { throw 'Windows tar.exe is required to unpack the release archive.' }
+        $Entries = & $Tar.Source -tzf $Archive
+        if ($LASTEXITCODE -ne 0 -or ($Entries | Where-Object { $_ -match '(^/|(^|/)\.\.(\/|$)|^[A-Za-z]:)' })) {
+            throw 'Unsafe or invalid path in release archive.'
+        }
+        $Unpack = Join-Path $Work 'unpacked'
+        New-Item -ItemType Directory -Force $Unpack | Out-Null
+        & $Tar.Source -xzf $Archive -C $Unpack
+        if ($LASTEXITCODE -ne 0) { throw 'Unable to unpack release archive.' }
+        $Source = Join-Path $Unpack "scholarguide-$Version"
+        if (-not (Test-Path (Join-Path $Source 'app.py')) -or -not (Test-Path (Join-Path $Source 'requirements.txt'))) {
+            throw 'Release archive is missing required files.'
+        }
+        & $PythonExe @PythonPrefix -m venv (Join-Path $Source '.venv')
+        if ($LASTEXITCODE -ne 0) { throw 'Unable to create Python virtual environment.' }
+        $VenvPython = Join-Path $Source '.venv\Scripts\python.exe'
+        & $VenvPython -m pip install --disable-pip-version-check -r (Join-Path $Source 'requirements.txt')
+        if ($LASTEXITCODE -ne 0) { throw 'Unable to install ScholarGuide dependencies.' }
+        $Stage = Join-Path $Base ('stage-' + [System.Guid]::NewGuid().ToString('N'))
+        Move-Item -Path $Source -Destination $Stage
+        try { Move-Item -Path $Stage -Destination $Target }
+        catch { Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $Stage; throw }
+    } else {
+        Write-Host "ScholarGuide $Version is already installed."
+    }
+    $EnvExample = Join-Path $Target '.env.example'
+    if (-not (Test-Path (Join-Path $Data '.env')) -and (Test-Path $EnvExample)) {
+        Copy-Item $EnvExample (Join-Path $Data '.env')
+    }
+    Set-Content -Path (Join-Path $Base 'current-version') -Value $Version -NoNewline -Encoding ascii
+    $Launcher = @'
+@echo off
+setlocal
+set "BASE=%LOCALAPPDATA%\ScholarGuide"
+set /p SG_VERSION=<"%BASE%\current-version"
+set "APP=%BASE%\releases\%SG_VERSION%"
+set "SG_DATA_DIR=%USERPROFILE%\.scholarguide"
+set "SG_RUNS_DIR=%SG_DATA_DIR%\runs"
+set "SG_CACHE_DIR=%SG_DATA_DIR%\cache"
+set "SG_MCP_RUN_DIR=%SG_DATA_DIR%\runs\mcp"
+set "SG_ENV_FILE=%SG_DATA_DIR%\.env"
+if "%*"=="" set "ARGS=web --open" else set "ARGS=%*"
+"%APP%\.venv\Scripts\python.exe" "%APP%\app.py" %ARGS%
+'@
+    Set-Content -Path (Join-Path $Bin 'scholarguide.cmd') -Value $Launcher -Encoding ascii
+    $UserPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+    $Parts = @($UserPath -split ';' | Where-Object { $_ })
+    if ($Parts -notcontains $Bin) {
+        [Environment]::SetEnvironmentVariable('Path', (($Parts + $Bin) -join ';'), 'User')
+    }
+    $env:Path = "$Bin;$env:Path"
+    Write-Host "ScholarGuide $Version is installed."
+    Write-Host 'Run: scholarguide web --open'
+    Write-Host "Your settings and local history are kept in $Data"
+    Write-Host 'Configure your own model key in the local Models page.'
+  } finally {
+    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $Work
+  }

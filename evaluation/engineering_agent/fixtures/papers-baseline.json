@@ -1,0 +1,148 @@
+{
+  "notice": "Real metadata; fixture ordering and demo decisions are scripted.",
+  "papers": [
+    {
+      "id": "arxiv:2005.11401",
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "abstract": "Large pre-trained language models have been shown to store factual knowledge in their parameters, and achieve state-of-the-art results when fine-tuned on downstream NLP tasks. However, their ability to access and precisely manipulate knowledge is still limited, and hence on knowledge-intensive tasks, their performance lags behind task-specific architectures. Additionally, providing provenance for their decisions and updating their world knowledge remain open research problems. Pre-trained models with a differentiable access mechanism to explicit non-parametric memory can overcome this issue, but have so far been only investigated for extractive downstream tasks. We explore a general-purpose fine-tuning recipe for retrieval-augmented generation (RAG) -- models which combine pre-trained parametric and non-parametric memory for language generation. We introduce RAG models where the parametric memory is a pre-trained seq2seq model and the non-parametric memory is a dense vector index of Wikipedia, accessed with a pre-trained neural retriever. We compare two RAG formulations, one which conditions on the same retrieved passages across the whole generated sequence, the other can use different passages per token. We fine-tune and evaluate our models on a wide range of knowledge-intensive NLP tasks and set the state-of-the-art on three open domain QA tasks, outperforming parametric seq2seq models and task-specific retrieve-and-extract architectures. For language generation tasks, we find that RAG models generate more specific, diverse and factual language than a state-of-the-art parametric-only seq2seq baseline.",
+      "url": "https://arxiv.org/abs/2005.11401",
+      "year": 2020,
+      "authors": [
+        "Patrick Lewis",
+        "Ethan Perez",
+        "Aleksandra Piktus",
+        "Fabio Petroni",
+        "Vladimir Karpukhin",
+        "Naman Goyal",
+        "Heinrich Küttler",
+        "Mike Lewis",
+        "Wen-tau Yih",
+        "Tim Rocktäschel",
+        "Sebastian Riedel",
+        "Douwe Kiela"
+      ],
+      "doi": "",
+      "arxiv_id": "2005.11401",
+      "sources": [
+        "arxiv"
+      ],
+      "from_query": [
+        "fixture: exact ID fetch"
+      ],
+      "fetched_at": "2026-10-06T14:44:01.702261+00:00"
+    },
+    {
+      "id": "arxiv:2004.04906",
+      "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+      "abstract": "Open-domain question answering relies on efficient passage retrieval to select candidate contexts, where traditional sparse vector space models, such as TF-IDF or BM25, are the de facto method. In this work, we show that retrieval can be practically implemented using dense representations alone, where embeddings are learned from a small number of questions and passages by a simple dual-encoder framework. When evaluated on a wide range of open-domain QA datasets, our dense retriever outperforms a strong Lucene-BM25 system largely by 9%-19% absolute in terms of top-20 passage retrieval accuracy, and helps our end-to-end QA system establish new state-of-the-art on multiple open-domain QA benchmarks.",
+      "url": "https://arxiv.org/abs/2004.04906",
+      "year": 2020,
+      "authors": [
+        "Vladimir Karpukhin",
+        "Barlas Oğuz",
+        "Sewon Min",
+        "Patrick Lewis",
+        "Ledell Wu",
+        "Sergey Edunov",
+        "Danqi Chen",
+        "Wen-tau Yih"
+      ],
+      "doi": "",
+      "arxiv_id": "2004.04906",
+      "sources": [
+        "arxiv"
+      ],
+      "from_query": [
+        "fixture: exact ID fetch"
+      ],
+      "fetched_at": "2026-10-06T14:44:01.702295+00:00"
+    },
+    {
+      "id": "arxiv:2007.01282",
+      "title": "Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering",
+      "abstract": "Generative models for open domain question answering have proven to be competitive, without resorting to external knowledge. While promising, this approach requires to use models with billions of parameters, which are expensive to train and query. In this paper, we investigate how much these models can benefit from retrieving text passages, potentially containing evidence. We obtain state-of-the-art results on the Natural Questions and TriviaQA open benchmarks. Interestingly, we observe that the performance of this method significantly improves when increasing the number of retrieved passages. This is evidence that generative models are good at aggregating and combining evidence from multiple passages.",
+      "url": "https://arxiv.org/abs/2007.01282",
+      "year": 2020,
+      "authors": [
+        "Gautier Izacard",
+        "Edouard Grave"
+      ],
+      "doi": "",
+      "arxiv_id": "2007.01282",
+      "sources": [
+        "arxiv"
+      ],
+      "from_query": [
+        "fixture: exact ID fetch"
+      ],
+      "fetched_at": "2026-10-06T14:44:01.702307+00:00"
+    },
+    {
+      "id": "arxiv:2002.08909",
+      "title": "REALM: Retrieval-Augmented Language Model Pre-Training",
+      "abstract": "Language model pre-training has been shown to capture a surprising amount of world knowledge, crucial for NLP tasks such as question answering. However, this knowledge is stored implicitly in the parameters of a neural network, requiring ever-larger networks to cover more facts. To capture knowledge in a more modular and interpretable way, we augment language model pre-training with a latent knowledge retriever, which allows the model to retrieve and attend over documents from a large corpus such as Wikipedia, used during pre-training, fine-tuning and inference. For the first time, we show how to pre-train such a knowledge retriever in an unsupervised manner, using masked language modeling as the learning signal and backpropagating through a retrieval step that considers millions of documents. We demonstrate the effectiveness of Retrieval-Augmented Language Model pre-training (REALM) by fine-tuning on the challenging task of Open-domain Question Answering (Open-QA). We compare against state-of-the-art models for both explicit and implicit knowledge storage on three popular Open-QA benchmarks, and find that we outperform all previous methods by a significant margin (4-16% absolute accuracy), while also providing qualitative benefits such as interpretability and modularity.",
+      "url": "https://arxiv.org/abs/2002.08909",
+      "year": 2020,
+      "authors": [
+        "Kelvin Guu",
+        "Kenton Lee",
+        "Zora Tung",
+        "Panupong Pasupat",
+        "Ming-Wei Chang"
+      ],
+      "doi": "",
+      "arxiv_id": "2002.08909",
+      "sources": [
+        "arxiv"
+      ],
+      "from_query": [
+        "fixture: exact ID fetch"
+      ],
+      "fetched_at": "2026-10-06T14:44:01.702314+00:00"
+    },
+    {
+      "id": "arxiv:2309.15217",
+      "title": "Ragas: Automated Evaluation of Retrieval Augmented Generation",
+      "abstract": "We introduce Ragas (Retrieval Augmented Generation Assessment), a framework for reference-free evaluation of Retrieval Augmented Generation (RAG) pipelines. RAG systems are composed of a retrieval and an LLM based generation module, and provide LLMs with knowledge from a reference textual database, which enables them to act as a natural language layer between a user and textual databases, reducing the risk of hallucinations. Evaluating RAG architectures is, however, challenging because there are several dimensions to consider: the ability of the retrieval system to identify relevant and focused context passages, the ability of the LLM to exploit such passages in a faithful way, or the quality of the generation itself. With Ragas, we put forward a suite of metrics which can be used to evaluate these different dimensions \\textit{without having to rely on ground truth human annotations}. We posit that such a framework can crucially contribute to faster evaluation cycles of RAG architectures, which is especially important given the fast adoption of LLMs.",
+      "url": "https://arxiv.org/abs/2309.15217",
+      "year": 2023,
+      "authors": [
+        "Shahul Es",
+        "Jithin James",
+        "Luis Espinosa-Anke",
+        "Steven Schockaert"
+      ],
+      "doi": "",
+      "arxiv_id": "2309.15217",
+      "sources": [
+        "arxiv"
+      ],
+      "from_query": [
+        "fixture: exact ID fetch"
+      ],
+      "fetched_at": "2026-10-06T14:44:01.702321+00:00"
+    },
+    {
+      "id": "arxiv:2311.09476",
+      "title": "ARES: An Automated Evaluation Framework for Retrieval-Augmented Generation Systems",
+      "abstract": "Evaluating retrieval-augmented generation (RAG) systems traditionally relies on hand annotations for input queries, passages to retrieve, and responses to generate. We introduce ARES, an Automated RAG Evaluation System, for evaluating RAG systems along the dimensions of context relevance, answer faithfulness, and answer relevance. By creating its own synthetic training data, ARES finetunes lightweight LM judges to assess the quality of individual RAG components. To mitigate potential prediction errors, ARES utilizes a small set of human-annotated datapoints for prediction-powered inference (PPI). Across eight different knowledge-intensive tasks in KILT, SuperGLUE, and AIS, ARES accurately evaluates RAG systems while using only a few hundred human annotations during evaluation. Furthermore, ARES judges remain effective across domain shifts, proving accurate even after changing the type of queries and/or documents used in the evaluated RAG systems. We make our code and datasets publicly available on Github.",
+      "url": "https://arxiv.org/abs/2311.09476",
+      "year": 2023,
+      "authors": [
+        "Jon Saad-Falcon",
+        "Omar Khattab",
+        "Christopher Potts",
+        "Matei Zaharia"
+      ],
+      "doi": "",
+      "arxiv_id": "2311.09476",
+      "sources": [
+        "arxiv"
+      ],
+      "from_query": [
+        "fixture: exact ID fetch"
+      ],
+      "fetched_at": "2026-10-06T14:44:01.702327+00:00"
+    }
+  ]
+}

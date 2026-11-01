@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title data-i18n="模型设置 · ScholarGuide">模型设置 · ScholarGuide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b1b1b'/%3E%3Cpath d='M8 9h7l2 2h7v14h-7l-2-2H8z' fill='none' stroke='%23faf9f6' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/memory.css">
+
+  <script type="application/json" id="sg-page-i18n">
+{
+"研究工作室": {
+    "en": "Research workspace",
+    "zh-Hant": "研究工作室"
+  },
+  "研究导航": {
+    "en": "Research navigation",
+    "zh-Hant": "研究導覽"
+  },
+  "研究路径": {
+    "en": "Your research",
+    "zh-Hant": "研究路徑"
+  },
+  "从问题找到论文": {
+    "en": "Find papers for your question",
+    "zh-Hant": "從問題找到論文"
+  },
+  "沿着证据继续": {
+    "en": "Continue with the evidence",
+    "zh-Hant": "沿著證據繼續"
+  },
+  "回看研究过程": {
+    "en": "Review your research",
+    "zh-Hant": "回顧研究過程"
+  },
+  "连接与配置": {
+    "en": "Connections",
+    "zh-Hant": "連接與設定"
+  },
+  "读论文，启新思。": {
+    "en": "Read. Connect. Discover.",
+    "zh-Hant": "讀論文，啟新思。"
+  },
+  "本地工作空间": {
+    "en": "Local workspace",
+    "zh-Hant": "本地工作空間"
+  },
+
+  "跳到模型设置": {
+    "en": "Skip to model settings",
+    "zh-Hant": "跳至模型設定"
+  },
+  "侧边导航": {
+    "en": "Sidebar navigation",
+    "zh-Hant": "側邊導覽"
+  },
+  "ScholarGuide 首页": {
+    "en": "ScholarGuide home",
+    "zh-Hant": "ScholarGuide 首頁"
+  },
+  "工作区": {
+    "en": "Workspace",
+    "zh-Hant": "工作區"
+  },
+  "检索": {
+    "en": "Search",
+    "zh-Hant": "檢索"
+  },
+  "对话": {
+    "en": "Chat",
+    "zh-Hant": "對話"
+  },
+  "来源": {
+    "en": "Sources",
+    "zh-Hant": "來源"
+  },
+  "模型": {
+    "en": "Models",
+    "zh-Hant": "模型"
+  },
+  "观察": {
+    "en": "Observe",
+    "zh-Hant": "觀察"
+  },
+  "活动": {
+    "en": "Activity",
+    "zh-Hant": "活動"
+  },
+  "本地 · 课程项目": {
+    "en": "Local · course project",
+    "zh-Hant": "本機 · 課程專案"
+  },
+  "文献发现 · v2": {
+    "en": "Literature discovery · v2",
+    "zh-Hant": "文獻探索 · v2"
+  },
+  "打开导航": {
+    "en": "Open navigation",
+    "zh-Hant": "開啟導覽"
+  },
+  "切换主题": {
+    "en": "Toggle theme",
+    "zh-Hant": "切換主題"
+  },
+  "模型供应商": {
+    "en": "Model providers",
+    "zh-Hant": "模型供應商"
+  },
+  "加载中…": {
+    "en": "Loading…",
+    "zh-Hant": "載入中…"
+  },
+  "配置": {
+    "en": "Configure",
+    "zh-Hant": "設定"
+  },
+  "连接你的研究模型。": {
+    "en": "Connect your research models.",
+    "zh-Hant": "連接你的研究模型。"
+  },
+  "配置一次，供后续检索与对话使用。连接测试只发送一个小型请求；保存配置和切换模型不会自动启动研究任务。": {
+    "en": "Configure once for future search and chat. Connection tests send one small request; saving or switching models does not start a research task.",
+    "zh-Hant": "設定一次，供後續檢索與對話使用。連線測試只傳送一個小型請求；儲存設定和切換模型不會自動啟動研究任務。"
+  },
+  "供应商配置": {
+    "en": "Provider profiles",
+    "zh-Hant": "供應商設定"
+  },
+  "配置列表": {
+    "en": "Profiles",
+    "zh-Hant": "設定列表"
+  },
+  "接口": {
+    "en": "Endpoints",
+    "zh-Hant": "端點"
+  },
+  "＋ 新建": {
+    "en": "+ New",
+    "zh-Hant": "＋ 新增"
+  },
+  "选择已有配置，或新建兼容接口。": {
+    "en": "Select a profile or create a compatible endpoint.",
+    "zh-Hant": "選擇現有設定，或新增相容端點。"
+  },
+  "读取服务器的": {
+    "en": "reads the server’s",
+    "zh-Hant": "讀取伺服器的"
+  },
+  "设置；密钥仅保存在本机服务端。": {
+    "en": "settings; keys are stored only on the local server.",
+    "zh-Hant": "設定；金鑰僅儲存在本機伺服器。"
+  },
+  "价格是每百万 token 的估算值。工具和检索费用依据记录的来源信息另计；缺失的用量显示为未知。": {
+    "en": "Prices are estimates per 1M tokens. Tool and search costs are added separately from recorded provenance; missing usage is shown as unknown.",
+    "zh-Hant": "價格是每百萬 token 的估算值。工具和檢索費用依記錄的來源資訊另計；缺失的用量顯示為未知。"
+  },
+  "编辑供应商配置": {
+    "en": "Edit provider profile",
+    "zh-Hant": "編輯供應商設定"
+  },
+  "编辑器": {
+    "en": "Editor",
+    "zh-Hant": "編輯器"
+  },
+  "新建供应商": {
+    "en": "New provider",
+    "zh-Hant": "新增供應商"
+  },
+  "自定义": {
+    "en": "custom",
+    "zh-Hant": "自訂"
+  },
+  "环境 / 默认配置是只读的": {
+    "en": "Environment / default is the read-only",
+    "zh-Hant": "環境 / 預設設定是唯讀的"
+  },
+  "后备配置（此处为 DeepSeek / deepseek-flash）。你可以": {
+    "en": "fallback (DeepSeek / deepseek-flash in this setup). You can",
+    "zh-Hant": "備援設定（此處為 DeepSeek / deepseek-flash）。你可以"
+  },
+  "启用": {
+    "en": "Activate",
+    "zh-Hant": "啟用"
+  },
+  "它，但编辑或删除需要自定义配置。": {
+    "en": "it, but edit/delete requires a custom profile.",
+    "zh-Hant": "它，但編輯或刪除需要自訂設定。"
+  },
+  "放弃这份草稿": {
+    "en": "Discard this draft",
+    "zh-Hant": "放棄這份草稿"
+  },
+  "显示名称": {
+    "en": "Display name",
+    "zh-Hant": "顯示名稱"
+  },
+  "我的 OpenAI 接口": {
+    "en": "My OpenAI endpoint",
+    "zh-Hant": "我的 OpenAI 端點"
+  },
+  "协议": {
+    "en": "Protocol",
+    "zh-Hant": "協定"
+  },
+  "基础 URL": {
+    "en": "Base URL",
+    "zh-Hant": "基礎 URL"
+  },
+  "Chat Completions 附加": {
+    "en": "Chat Completions appends",
+    "zh-Hant": "Chat Completions 附加"
+  },
+  "；Responses 附加": {
+    "en": "; Responses appends",
+    "zh-Hant": "；Responses 附加"
+  },
+  "。也接受以任一路径结尾的完整端点。": {
+    "en": ". A full endpoint ending in either path is accepted.",
+    "zh-Hant": "。也接受以任一路徑結尾的完整端點。"
+  },
+  "供应商提供的准确模型名称": {
+    "en": "Exact model name provided by the provider",
+    "zh-Hant": "供應商提供的準確模型名稱"
+  },
+  "API 密钥": {
+    "en": "API key",
+    "zh-Hant": "API 金鑰"
+  },
+  "留空以保留已存储的密钥": {
+    "en": "Leave blank to keep the stored key",
+    "zh-Hant": "留空以保留已儲存的金鑰"
+  },
+  "显示": {
+    "en": "Show",
+    "zh-Hant": "顯示"
+  },
+  "隐藏": {
+    "en": "Hide",
+    "zh-Hant": "隱藏"
+  },
+  "仅存储在服务端。": {
+    "en": "Stored server-side only.",
+    "zh-Hant": "僅儲存在伺服器端。"
+  },
+  "输入价格 / 百万 token": {
+    "en": "Input price / 1M",
+    "zh-Hant": "輸入價格 / 百萬 token"
+  },
+  "输出价格 / 百万 token": {
+    "en": "Output price / 1M",
+    "zh-Hant": "輸出價格 / 百萬 token"
+  },
+  "可选": {
+    "en": "Optional",
+    "zh-Hant": "可選"
+  },
+  "最大输出 token 数": {
+    "en": "Max output tokens",
+    "zh-Hant": "最大輸出 token 數"
+  },
+  "货币": {
+    "en": "Currency",
+    "zh-Hant": "貨幣"
+  },
+  "保存后设为当前配置": {
+    "en": "Make active after save",
+    "zh-Hant": "儲存後設為目前設定"
+  },
+  "保存配置": {
+    "en": "Save profile",
+    "zh-Hant": "儲存設定"
+  },
+  "测试连接": {
+    "en": "Test connection",
+    "zh-Hant": "測試連線"
+  },
+  "删除": {
+    "en": "Delete",
+    "zh-Hant": "刪除"
+  },
+  "开始检索 →": {
+    "en": "Start searching →",
+    "zh-Hant": "開始檢索 →"
+  },
+  "继续对话": {
+    "en": "Continue chat",
+    "zh-Hant": "繼續對話"
+  },
+  "本机偏好": {
+    "en": "Local preferences",
+    "zh-Hant": "本機偏好"
+  },
+  "偏好默认不应用。授权近期偏好后，可在当前会话中主动选择仅调整显示顺序；不会改变任务或发送到模型。删除只影响本机偏好，不删除历史或远端数据。": {
+    "en": "Preferences are not applied by default. After authorizing recency, you can choose to adjust only the display order in the current session; this does not change the task or send data to the model. Deletion affects only local preferences, not history or remote data.",
+    "zh-Hant": "預設不套用偏好。授權近期偏好後，可在目前工作階段中主動選擇僅調整顯示順序；不會改變任務或傳送至模型。刪除只影響本機偏好，不刪除歷史或遠端資料。"
+  },
+  "正在读取本机偏好...": {
+    "en": "Loading local preferences...",
+    "zh-Hant": "正在讀取本機偏好..."
+  },
+  "阅读目标": {
+    "en": "Reading goal",
+    "zh-Hant": "閱讀目標"
+  },
+  "状态未知": {
+    "en": "Status unknown",
+    "zh-Hant": "狀態未知"
+  },
+  "选择偏好": {
+    "en": "Choose preference",
+    "zh-Hant": "選擇偏好"
+  },
+  "请选择": {
+    "en": "Please select",
+    "zh-Hant": "請選擇"
+  },
+  "入门了解": {
+    "en": "Get oriented",
+    "zh-Hant": "入門了解"
+  },
+  "比较方法": {
+    "en": "Compare methods",
+    "zh-Hant": "比較方法"
+  },
+  "追踪前沿": {
+    "en": "Follow the frontier",
+    "zh-Hant": "追蹤前沿"
+  },
+  "一般阅读": {
+    "en": "General reading",
+    "zh-Hant": "一般閱讀"
+  },
+  "失效时间（本地时间）": {
+    "en": "Expiry time (local time)",
+    "zh-Hant": "失效時間（本地時間）"
+  },
+  "同意未来新会话使用此偏好，且可能发送到所选模型；可随时撤回，对旧历史无影响。当前尚未启用应用功能。": {
+    "en": "Consent to use this preference in future new sessions, potentially sending it to the selected model; revoke anytime without affecting old history. Applying it is not yet enabled.",
+    "zh-Hant": "同意未來新工作階段使用此偏好，且可能傳送至所選模型；可隨時撤回，不影響舊歷史。目前尚未啟用套用功能。"
+  },
+  "保存授权": {
+    "en": "Save consent",
+    "zh-Hant": "儲存授權"
+  },
+  "撤回授权": {
+    "en": "Revoke consent",
+    "zh-Hant": "撤回授權"
+  },
+  "删除本机偏好": {
+    "en": "Delete local preference",
+    "zh-Hant": "刪除本機偏好"
+  },
+  "偏好近期论文": {
+    "en": "Prefer recent papers",
+    "zh-Hant": "偏好近期論文"
+  },
+  "是（true）": {
+    "en": "Yes (true)",
+    "zh-Hant": "是（true）"
+  },
+  "否（false）": {
+    "en": "No (false)",
+    "zh-Hant": "否（false）"
+  },
+  "是": {
+    "en": "Yes",
+    "zh-Hant": "是"
+  },
+  "否": {
+    "en": "No",
+    "zh-Hant": "否"
+  },
+  "同意在我主动选择时，用此偏好仅调整当前会话已交付论文的本机显示顺序；不会改变检索或发送到模型，可随时撤回。": {
+    "en": "Consent, when I choose, to use this preference only to reorder locally displayed papers already delivered in the current session; it will not change search or be sent to the model and can be revoked anytime.",
+    "zh-Hant": "同意在我主動選擇時，用此偏好僅調整目前工作階段已交付論文的本機顯示順序；不會改變檢索或傳送至模型，可隨時撤回。"
+  },
+  "环境配置为只读": {
+    "en": "Env profile is read-only",
+    "zh-Hant": "環境設定為唯讀"
+  },
+  "配置草稿已保留在此标签页；密钥不会写入浏览器存储，刷新后需重新输入。": {
+    "en": "Draft retained in this tab; the key is not stored in the browser and must be re-entered after refresh.",
+    "zh-Hant": "設定草稿已保留在此分頁；金鑰不會寫入瀏覽器儲存空間，重新整理後需重新輸入。"
+  },
+  "已恢复未保存的配置草稿。密钥仅暂存在本页，刷新后需重新输入。": {
+    "en": "Unsaved draft restored. The key remains only on this page and must be re-entered after refresh.",
+    "zh-Hant": "已還原未儲存的設定草稿。金鑰僅暫存在本頁，重新整理後需重新輸入。"
+  },
+  "无法连接本地服务。": {
+    "en": "Cannot connect to the local service.",
+    "zh-Hant": "無法連接本機服務。"
+  },
+  "请求失败（{status}）": {
+    "en": "Request failed ({status})",
+    "zh-Hant": "請求失敗（{status}）"
+  },
+  "未知": {
+    "en": "unknown",
+    "zh-Hant": "未知"
+  },
+  "已存储密钥 · {key}（留空以保留）": {
+    "en": "Stored key · {key} (leave blank to keep)",
+    "zh-Hant": "已儲存金鑰 · {key}（留空以保留）"
+  },
+  "接口不需要密钥时请留空": {
+    "en": "Leave blank if the endpoint requires no key",
+    "zh-Hant": "端點不需要金鑰時請留空"
+  },
+  "密钥存储在服务端；不会在此显示。": {
+    "en": "A key is stored server-side; it is never shown here.",
+    "zh-Hant": "金鑰儲存在伺服器端；不會在此顯示。"
+  },
+  "此配置未存储密钥。": {
+    "en": "No key stored for this profile.",
+    "zh-Hant": "此設定未儲存金鑰。"
+  },
+  "环境 · 只读": {
+    "en": "env · read-only",
+    "zh-Hant": "環境 · 唯讀"
+  },
+  "当前": {
+    "en": "active",
+    "zh-Hant": "目前"
+  },
+  "已存储密钥": {
+    "en": "key stored",
+    "zh-Hant": "已儲存金鑰"
+  },
+  "无密钥": {
+    "en": "no key",
+    "zh-Hant": "無金鑰"
+  },
+  "价格未知": {
+    "en": "price unknown",
+    "zh-Hant": "價格未知"
+  },
+  "暂无供应商配置。": {
+    "en": "No provider profiles yet.",
+    "zh-Hant": "尚無供應商設定。"
+  },
+  "未配置模型": {
+    "en": "No model configured",
+    "zh-Hant": "未設定模型"
+  },
+  "Environment / default 是只读配置；请新建自定义配置。": {
+    "en": "Environment / default is read-only; create a custom profile.",
+    "zh-Hant": "Environment / default 是唯讀設定；請新增自訂設定。"
+  },
+  "正在保存配置…": {
+    "en": "Saving profile…",
+    "zh-Hant": "正在儲存設定…"
+  },
+  "请创建自定义配置 ID。": {
+    "en": "Create a custom profile id.",
+    "zh-Hant": "請建立自訂設定 ID。"
+  },
+  "已保存并设为当前模型；可以开始检索或继续对话。": {
+    "en": "Saved and activated; start searching or continue chatting.",
+    "zh-Hant": "已儲存並設為目前模型；可以開始檢索或繼續對話。"
+  },
+  "配置已保存，点击启用后供后续任务使用。": {
+    "en": "Profile saved; activate it for future tasks.",
+    "zh-Hant": "設定已儲存，點擊啟用後供後續任務使用。"
+  },
+  "正在服务端测试接口，发送小型结构化请求，可能产生少量费用。": {
+    "en": "Testing endpoint on the server with a small structured request; a small charge may apply.",
+    "zh-Hant": "正在伺服器端測試端點，傳送小型結構化請求，可能產生少量費用。"
+  },
+  "接口可访问。": {
+    "en": "Endpoint reachable.",
+    "zh-Hant": "端點可存取。"
+  },
+  "接口测试失败。": {
+    "en": "Endpoint test failed.",
+    "zh-Hant": "端點測試失敗。"
+  },
+  "检查 API key 和该模型的访问权限。": {
+    "en": "Check the API key and model access.",
+    "zh-Hant": "檢查 API key 和該模型的存取權限。"
+  },
+  "检查模型名称、接口地址及所选协议。": {
+    "en": "Check the model name, endpoint and protocol.",
+    "zh-Hant": "檢查模型名稱、端點地址及所選協定。"
+  },
+  "请求超时；配置和草稿已保留，可检查地址后再试。": {
+    "en": "Request timed out; your profile and draft are retained. Check the address and retry.",
+    "zh-Hant": "請求逾時；設定和草稿已保留，可檢查地址後再試。"
+  },
+  "无法连接该地址；检查本机服务或网络。": {
+    "en": "Cannot connect to the address; check the local service or network.",
+    "zh-Hant": "無法連接該地址；檢查本機服務或網路。"
+  },
+  "接口已响应，但结构化输出格式不兼容；检查协议或换一个模型。": {
+    "en": "The endpoint responded but its structured output is incompatible; check the protocol or try another model.",
+    "zh-Hant": "端點已回應，但結構化輸出格式不相容；檢查協定或更換模型。"
+  },
+  "配置仍保留，检查接口信息后可再次测试。": {
+    "en": "Profile retained; check endpoint details and retry.",
+    "zh-Hant": "設定仍保留，檢查端點資訊後可再次測試。"
+  },
+  "当前供应商已更改，新任务将使用它。": {
+    "en": "Active provider changed. New jobs will use it.",
+    "zh-Hant": "目前供應商已變更，新任務將使用它。"
+  },
+  "确认删除此供应商配置？API 密钥将从本机删除。": {
+    "en": "Delete this provider profile? The API key will be removed from this machine.",
+    "zh-Hant": "確認刪除此供應商設定？API 金鑰將從本機刪除。"
+  },
+  "配置已删除。": {
+    "en": "Profile deleted.",
+    "zh-Hant": "設定已刪除。"
+  },
+  "状态": {
+    "en": "status",
+    "zh-Hant": "狀態"
+  },
+  "用量": {
+    "en": "usage",
+    "zh-Hant": "用量"
+  },
+  "输入": {
+    "en": "in",
+    "zh-Hant": "輸入"
+  },
+  "输出": {
+    "en": "out",
+    "zh-Hant": "輸出"
+  },
+  "测试费用": {
+    "en": "probe cost",
+    "zh-Hant": "測試費用"
+  },
+  "未授权": {
+    "en": "Not authorized",
+    "zh-Hant": "未授權"
+  },
+  "已授权": {
+    "en": "Authorized",
+    "zh-Hant": "已授權"
+  },
+  "已过期": {
+    "en": "Expired",
+    "zh-Hant": "已過期"
+  },
+  "已撤回": {
+    "en": "Revoked",
+    "zh-Hant": "已撤回"
+  },
+  "已删除": {
+    "en": "Deleted",
+    "zh-Hant": "已刪除"
+  },
+  "无": {
+    "en": "None",
+    "zh-Hant": "無"
+  },
+  "修订号": {
+    "en": "Revision",
+    "zh-Hant": "修訂號"
+  },
+  "失效时间": {
+    "en": "Expiry",
+    "zh-Hant": "失效時間"
+  },
+  "当前值": {
+    "en": "Current value",
+    "zh-Hant": "目前值"
+  },
+  "无法读取本机偏好，状态未知；请刷新页面后重试。": {
+    "en": "Cannot load local preferences; status unknown. Refresh and retry.",
+    "zh-Hant": "無法讀取本機偏好，狀態未知；請重新整理頁面後重試。"
+  },
+  "正在更新本机偏好...": {
+    "en": "Updating local preferences...",
+    "zh-Hant": "正在更新本機偏好..."
+  },
+  "版本冲突：已刷新当前状态，未重放操作；请检查后重新操作。": {
+    "en": "Version conflict: current state refreshed, action not replayed. Check and retry.",
+    "zh-Hant": "版本衝突：已重新整理目前狀態，未重播操作；請檢查後重新操作。"
+  },
+  "本机偏好已更新；近期偏好可由你主动用于当前结果的显示排序。": {
+    "en": "Local preferences updated; you may choose to use recency to reorder current results.",
+    "zh-Hant": "本機偏好已更新；近期偏好可由你主動用於目前結果的顯示排序。"
+  },
+  "操作结果未知，未自动重试；请刷新页面查看当前状态。": {
+    "en": "Operation result unknown; not automatically retried. Refresh to check the current state.",
+    "zh-Hant": "操作結果未知，未自動重試；請重新整理頁面查看目前狀態。"
+  },
+  "请选择有效偏好、明确同意并输入未来的失效时间。": {
+    "en": "Choose a valid preference, give consent and enter a future expiry time.",
+    "zh-Hant": "請選擇有效偏好、明確同意並輸入未來的失效時間。"
+  },
+  "确认撤回此项授权？旧历史不受影响。": {
+    "en": "Revoke this consent? Old history is unaffected.",
+    "zh-Hant": "確認撤回此項授權？舊歷史不受影響。"
+  },
+  "确认删除此项本机偏好？不会删除历史或远端数据。": {
+    "en": "Delete this local preference? History and remote data will not be deleted.",
+    "zh-Hant": "確認刪除此項本機偏好？不會刪除歷史或遠端資料。"
+  },
+  "已读取本机偏好；不会自动授权。": {
+    "en": "Local preferences loaded; consent is not automatic.",
+    "zh-Hant": "已讀取本機偏好；不會自動授權。"
+  },
+  "聊天补全（Chat Completions）": {"en":"Chat Completions", "zh-Hant":"聊天補全（Chat Completions）"},
+  "OpenAI 响应接口": {"en":"OpenAI Responses", "zh-Hant":"OpenAI 回應介面"},
+  "接口地址示例：https://your-provider.example/v1": {"en":"Endpoint example: https://your-provider.example/v1", "zh-Hant":"端點地址範例：https://your-provider.example/v1"},
+  "模型设置 · ScholarGuide": {
+    "en": "Models · ScholarGuide",
+    "zh-Hant": "模型設定 · ScholarGuide"
+  }
+}
+  </script>
+  <script src="/theme.js" defer></script>
+  <script src="/settings.js" defer></script>
+  <script src="/memory.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content" data-i18n="跳到模型设置">跳到模型设置</a>
+  <aside class="sidebar" id="sidebar" aria-label="侧边导航" data-i18n-aria-label="侧边导航">
+    <a class="brand" href="/" aria-label="ScholarGuide 首页" data-i18n-aria-label="ScholarGuide 首页">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6l4 4h6v12h-6l-4-4H4V4Z"/><path d="M10 4v12M14 8v12"/></svg></span><span class="brand-copy"><span class="brand-name">ScholarGuide<span class="brand-period">.</span></span><span class="brand-caption" data-i18n="研究工作室">研究工作室</span></span>
+    </a>
+    <nav class="side-nav" aria-label="研究导航" data-i18n-aria-label="研究导航">
+      <span class="side-label" data-i18n="研究路径">研究路径</span>
+      <div class="side-primary">
+        <a class="side-link" href="/search"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13Z"/><path d="m16 16 4.5 4.5"/><path d="M8 8.5h5M8 11.5h3"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="检索">检索</span><span class="nav-description" data-i18n="从问题找到论文">从问题找到论文</span></span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+        <a class="side-link" href="/chat"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="对话">对话</span><span class="nav-description" data-i18n="沿着证据继续">沿着证据继续</span></span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+        <a class="side-link" href="/activity"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18h16"/><path d="m9 14 4-5 4 3 4-7"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="活动">活动</span><span class="nav-description" data-i18n="回看研究过程">回看研究过程</span></span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+      </div>
+      <div class="side-connections">
+        <span class="side-label" data-i18n="连接与配置">连接与配置</span>
+        <div class="side-tools">
+        <a class="side-link side-utility" href="/sources"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h4v4H6zM14 14h4v4h-4z"/><path d="M10 8h6v6M8 10v6h6"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="来源">来源</span></span></a>
+        <a class="side-link side-utility active" aria-current="page" href="/settings"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18M18 3v18M3 8h6M15 16h6"/><path d="M10 3h4v18h-4z"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="模型">模型</span></span></a>
+        </div>
+      </div>
+    </nav>
+    <div class="side-bottom">
+      <p class="sidebar-local"><span class="local-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H4z"/><path d="M9 20h6M12 16v4"/></svg></span><span data-i18n="本地工作空间">本地工作空间</span></p>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="topbar">
+      <button type="button" class="menu-btn" id="menu-toggle" aria-label="打开导航" data-i18n-aria-label="打开导航" aria-expanded="false">☰</button>
+      <div class="top-actions">
+        <span class="model-pill model-pill-stack" id="active-model-label" data-i18n="加载中…">加载中…</span>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="切换主题" data-i18n-aria-label="切换主题">☀</button>
+        <span class="avatar" aria-hidden="true">S</span>
+      </div>
+    </header>
+
+    <main id="main-content" class="page settings-page" tabindex="-1">
+      <header class="page-head">
+        <p class="page-label" data-i18n="配置">配置</p>
+        <h1 class="page-title" data-i18n="连接你的研究模型。">连接你的研究模型。</h1>
+        <p class="page-sub" data-i18n="配置一次，供后续检索与对话使用。连接测试只发送一个小型请求；保存配置和切换模型不会自动启动研究任务。">配置一次，供后续检索与对话使用。连接测试只发送一个小型请求；保存配置和切换模型不会自动启动研究任务。</p>
+      </header>
+
+      <div class="settings-shell">
+        <section class="card settings-list" aria-label="供应商配置" data-i18n-aria-label="供应商配置">
+          <div class="settings-list-head">
+            <div><p class="page-label" data-i18n="配置列表">配置列表</p><h2 data-i18n="接口">接口</h2></div>
+            <button type="button" class="btn-text" id="new-provider" data-i18n="＋ 新建">＋ 新建</button>
+          </div>
+          <p class="settings-note"><span data-i18n="选择已有配置，或新建兼容接口。">选择已有配置，或新建兼容接口。</span> <code>env</code> <span data-i18n="读取服务器的">读取服务器的</span> <code>SG_*</code> <span data-i18n="设置；密钥仅保存在本机服务端。">设置；密钥仅保存在本机服务端。</span></p>
+          <ol id="provider-list" class="provider-list" aria-live="polite"></ol>
+          <p class="settings-note" data-i18n="价格是每百万 token 的估算值。工具和检索费用依据记录的来源信息另计；缺失的用量显示为未知。">价格是每百万 token 的估算值。工具和检索费用依据记录的来源信息另计；缺失的用量显示为未知。</p>
+        </section>
+
+        <section class="card settings-editor" aria-label="编辑供应商配置" data-i18n-aria-label="编辑供应商配置">
+          <div class="settings-editor-head">
+            <div><p class="page-label" data-i18n="编辑器">编辑器</p><h2 id="editor-title" data-i18n="新建供应商">新建供应商</h2></div>
+            <span class="badge" id="editor-badge" data-i18n="自定义">自定义</span>
+          </div>
+          <p id="readonly-note" class="settings-readonly" hidden><span data-i18n="环境 / 默认配置是只读的">环境 / 默认配置是只读的</span> <code>SG_*</code> <span data-i18n="后备配置（此处为 DeepSeek / deepseek-flash）。你可以">后备配置（此处为 DeepSeek / deepseek-flash）。你可以</span> <b data-i18n="启用">启用</b> <span data-i18n="它，但编辑或删除需要自定义配置。">它，但编辑或删除需要自定义配置。</span></p>
+          <p id="provider-draft-status" class="settings-draft" role="status" hidden></p>
+          <button type="button" id="discard-provider-draft" class="btn-text" hidden data-i18n="放弃这份草稿">放弃这份草稿</button>
+          <form id="provider-form" autocomplete="off">
+            <input type="hidden" id="provider-id">
+            <div class="settings-grid">
+              <div class="field">
+                <label for="provider-name" data-i18n="显示名称">显示名称</label>
+                <input id="provider-name" maxlength="80" required placeholder="我的 OpenAI 接口" data-i18n-placeholder="我的 OpenAI 接口">
+              </div>
+              <div class="field">
+                <label for="provider-protocol" data-i18n="协议">协议</label>
+                <select id="provider-protocol">
+                  <option value="chat_completions" data-i18n="聊天补全（Chat Completions）">聊天补全（Chat Completions）</option>
+                  <option value="responses" data-i18n="OpenAI 响应接口">OpenAI 响应接口</option>
+                </select>
+              </div>
+              <div class="field settings-wide">
+                <label for="provider-url" data-i18n="基础 URL">基础 URL</label>
+                <input id="provider-url" type="url" required spellcheck="false" placeholder="接口地址示例：https://your-provider.example/v1" data-i18n-placeholder="接口地址示例：https://your-provider.example/v1">
+                <p class="field-help"><span data-i18n="Chat Completions 附加">Chat Completions 附加</span> <code>/chat/completions</code><span data-i18n="；Responses 附加">；Responses 附加</span> <code>/responses</code><span data-i18n="。也接受以任一路径结尾的完整端点。">。也接受以任一路径结尾的完整端点。</span></p>
+              </div>
+              <div class="field">
+                <label for="provider-model" data-i18n="模型">模型</label>
+                <input id="provider-model" maxlength="200" required spellcheck="false" placeholder="供应商提供的准确模型名称" data-i18n-placeholder="供应商提供的准确模型名称">
+              </div>
+              <div class="field">
+                <label for="provider-key" data-i18n="API 密钥">API 密钥</label>
+                <div class="key-input"><input id="provider-key" type="password" autocomplete="new-password" spellcheck="false" aria-describedby="key-hint" placeholder="留空以保留已存储的密钥" data-i18n-placeholder="留空以保留已存储的密钥"><button type="button" id="toggle-provider-key" class="btn-text" aria-pressed="false" data-i18n="显示">显示</button></div>
+                <p class="field-help" id="key-hint" data-i18n="仅存储在服务端。">仅存储在服务端。</p>
+              </div>
+              <div class="field">
+                <label for="provider-input-price" data-i18n="输入价格 / 百万 token">输入价格 / 百万 token</label>
+                <input id="provider-input-price" type="number" min="0" step="0.000001" placeholder="可选" data-i18n-placeholder="可选">
+              </div>
+              <div class="field">
+                <label for="provider-output-price" data-i18n="输出价格 / 百万 token">输出价格 / 百万 token</label>
+                <input id="provider-output-price" type="number" min="0" step="0.000001" placeholder="可选" data-i18n-placeholder="可选">
+              </div>
+              <div class="field">
+                <label for="provider-max-tokens" data-i18n="最大输出 token 数">最大输出 token 数</label>
+                <input id="provider-max-tokens" type="number" min="256" max="100000" step="1" value="3000">
+              </div>
+              <div class="field">
+                <label for="provider-currency" data-i18n="货币">货币</label>
+                <input id="provider-currency" value="CNY" maxlength="3" pattern="[A-Za-z]{3}">
+              </div>
+              <label class="settings-check"><input id="provider-activate" type="checkbox" checked> <span data-i18n="保存后设为当前配置">保存后设为当前配置</span></label>
+            </div>
+            <div class="settings-actions">
+              <button type="submit" class="btn btn-primary" id="save-provider" data-i18n="保存配置">保存配置</button>
+              <button type="button" class="btn" id="test-provider" data-i18n="测试连接">测试连接</button>
+              <button type="button" class="btn-text" id="activate-provider" data-i18n="启用">启用</button>
+              <button type="button" class="btn-text" id="delete-provider" data-i18n="删除">删除</button>
+            </div>
+            <p id="settings-status" class="settings-status" role="status" aria-live="polite"></p>
+            <div id="test-result" class="test-result" hidden></div>
+            <div id="provider-ready-actions" class="readiness-actions" hidden><a class="btn" href="/search" data-i18n="开始检索 →">开始检索 →</a><a class="btn-text" href="/chat" data-i18n="继续对话">继续对话</a></div>
+          </form>
+        </section>
+      </div>
+      <section id="memory-section" class="memory-section" aria-labelledby="memory-title">
+        <p class="page-label" data-i18n="本机偏好">本机偏好</p>
+        <h2 id="memory-title" data-i18n="本机偏好">本机偏好</h2>
+        <p class="memory-intro" data-i18n="偏好默认不应用。授权近期偏好后，可在当前会话中主动选择仅调整显示顺序；不会改变任务或发送到模型。删除只影响本机偏好，不删除历史或远端数据。">偏好默认不应用。授权近期偏好后，可在当前会话中主动选择仅调整显示顺序；不会改变任务或发送到模型。删除只影响本机偏好，不删除历史或远端数据。</p>
+        <p id="memory-status" class="memory-status" role="status" aria-live="polite" data-i18n="正在读取本机偏好...">正在读取本机偏好...</p>
+        <div class="memory-items">
+          <form class="memory-item" data-key="reading_goal">
+            <h3 data-i18n="阅读目标">阅读目标</h3>
+            <p class="memory-current" aria-live="polite" data-i18n="状态未知">状态未知</p>
+            <label for="memory-reading-value" data-i18n="选择偏好">选择偏好</label>
+            <select id="memory-reading-value" name="value" required>
+              <option value="" data-i18n="请选择">请选择</option><option value="orientation" data-i18n="入门了解">入门了解</option><option value="comparison" data-i18n="比较方法">比较方法</option><option value="frontier" data-i18n="追踪前沿">追踪前沿</option><option value="general" data-i18n="一般阅读">一般阅读</option>
+            </select>
+            <label for="memory-reading-expiry" data-i18n="失效时间（本地时间）">失效时间（本地时间）</label>
+            <input id="memory-reading-expiry" name="expiry" type="datetime-local" required>
+            <label class="memory-consent"><input name="consent" type="checkbox" required> <span data-i18n="同意未来新会话使用此偏好，且可能发送到所选模型；可随时撤回，对旧历史无影响。当前尚未启用应用功能。">同意未来新会话使用此偏好，且可能发送到所选模型；可随时撤回，对旧历史无影响。当前尚未启用应用功能。</span></label>
+            <div class="memory-actions"><button class="btn btn-primary" type="submit" data-i18n="保存授权">保存授权</button><button class="btn" type="button" data-action="revoke" data-i18n="撤回授权">撤回授权</button><button class="btn" type="button" data-action="delete" data-i18n="删除本机偏好">删除本机偏好</button></div>
+          </form>
+          <form class="memory-item" data-key="prefer_recent">
+            <h3 data-i18n="偏好近期论文">偏好近期论文</h3>
+            <p class="memory-current" aria-live="polite" data-i18n="状态未知">状态未知</p>
+            <label for="memory-recent-value" data-i18n="选择偏好">选择偏好</label>
+            <select id="memory-recent-value" name="value" required>
+              <option value="" data-i18n="请选择">请选择</option><option value="true" data-i18n="是（true）">是（true）</option><option value="false" data-i18n="否（false）">否（false）</option>
+            </select>
+            <label for="memory-recent-expiry" data-i18n="失效时间（本地时间）">失效时间（本地时间）</label>
+            <input id="memory-recent-expiry" name="expiry" type="datetime-local" required>
+            <label class="memory-consent"><input name="consent" type="checkbox" required> <span data-i18n="同意在我主动选择时，用此偏好仅调整当前会话已交付论文的本机显示顺序；不会改变检索或发送到模型，可随时撤回。">同意在我主动选择时，用此偏好仅调整当前会话已交付论文的本机显示顺序；不会改变检索或发送到模型，可随时撤回。</span></label>
+            <div class="memory-actions"><button class="btn btn-primary" type="submit" data-i18n="保存授权">保存授权</button><button class="btn" type="button" data-action="revoke" data-i18n="撤回授权">撤回授权</button><button class="btn" type="button" data-action="delete" data-i18n="删除本机偏好">删除本机偏好</button></div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "source": "lune",
+  "server": "lune",
+  "generated_from": "https://luneresearch.com/docs/mcp (prompts table), 2026-10-24",
+  "prompts": [
+    {
+      "name": "literature_review",
+      "description": "Survey a topic: main themes, foundational vs recent work, open gaps.",
+      "arguments": [
+        {"name": "topic", "required": true, "description": "Research topic or question."},
+        {"name": "venues", "required": false, "description": "Comma-separated venue short names, e.g. NeurIPS,ICML."},
+        {"name": "since_year", "required": false, "description": "Only consider papers from this year onward."}
+      ]
+    },
+    {
+      "name": "find_related_work",
+      "description": "From an abstract, find and group prior work to cite and how yours differs.",
+      "arguments": [
+        {"name": "abstract", "required": true, "description": "Your abstract."},
+        {"name": "venues", "required": false, "description": "Comma-separated venue short names."}
+      ]
+    },
+    {
+      "name": "compare_papers",
+      "description": "Build a structured comparison table read from each paper's full text.",
+      "arguments": [
+        {"name": "topic", "required": true, "description": "A topic or a list of paper titles."},
+        {"name": "columns", "required": false, "description": "Comma-separated columns, e.g. dataset,metric,result."}
+      ]
+    },
+    {
+      "name": "verify_draft",
+      "description": "Check each claim in a draft against the corpus, with a quote where one exists.",
+      "arguments": [
+        {"name": "draft", "required": true, "description": "Draft text or a list of claims."}
+      ]
+    },
+    {
+      "name": "trace_citations",
+      "description": "Trace a paper's lineage: what it built on, what built on it, adjacent work.",
+      "arguments": [
+        {"name": "paper", "required": true, "description": "Paper title, id, or DOI."}
+      ]
+    },
+    {
+      "name": "research_methodology",
+      "description": "Grounded advice on experiment design, ablations, evaluation, rebuttals, venue choice.",
+      "arguments": [
+        {"name": "question", "required": true, "description": "The methodology question."}
+      ]
+    }
+  ]
+}

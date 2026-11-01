@@ -1,0 +1,9 @@
+{
+  "user_input": "推荐 5 篇 RAG 论文，其中至少 2 篇主要讨论评测或 benchmark。",
+  "topic": "retrieval augmented generation",
+  "category": "evaluation",
+  "minimum_category_count": 2,
+  "target_count": 5,
+  "unsupported": [],
+  "query": "retrieval augmented generation"
+}

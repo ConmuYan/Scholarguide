@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" data-i18n-content="ScholarGuide 是围绕论文证据工作的研究 Agent：从研究问题出发，规划多源检索、依据摘要筛选、综合研究，并在 Chat 中继续迭代。" content="ScholarGuide 是围绕论文证据工作的研究 Agent：从研究问题出发，规划多源检索、依据摘要筛选、综合研究，并在 Chat 中继续迭代。">
+  <title data-i18n="ScholarGuide · 让研究，向前一步">ScholarGuide · 让研究，向前一步</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b1b1b'/%3E%3Cpath d='M8 9h7l2 2h7v14h-7l-2-2H8z' fill='none' stroke='%23faf9f6' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/landing.css">
+  <link rel="stylesheet" href="/landing-demo.css">
+  <script type="application/json" id="sg-page-i18n">
+  {
+    "从预印本与论文摘要出发，发现近期相关工作。":{"en":"Discover recent work through preprints and paper abstracts.","zh-Hant":"從預印本與論文摘要出發，發現近期相關工作。"},
+    "核对期刊、发表年份与作者书目信息。":{"en":"Check journals, publication years, and author bibliographies.","zh-Hant":"核對期刊、發表年份與作者書目資訊。"},
+    "研究预览":{"en":"Research preview","zh-Hant":"研究預覽"},
+    "候选论文":{"en":"Candidates","zh-Hant":"候選論文"},
+    "A / 摘要依据":{"en":"A / Abstract evidence","zh-Hant":"A / 摘要依據"},
+    "研究助手":{"en":"Research assistant","zh-Hant":"研究助手"},
+    "研究流程":{"en":"Research workflow","zh-Hant":"研究流程"},
+    "从你的问题出发，检索论文、梳理脉络，在对话中找到下一步。": {"en":"Start with your question. Find papers, connect ideas, and shape your next step in conversation.","zh-Hant":"從你的問題出發，檢索論文、梳理脈絡，在對話中找到下一步。"},
+    "研究流程演示 · 虚拟样例": {"en":"Research workflow · Illustrative examples","zh-Hant":"研究流程示範 · 虛擬範例"},
+    "按研究问题选择来源，连接论文、出版信息与全文。": {"en":"Choose sources for your question, connecting papers, publication records, and full text.","zh-Hant":"依研究問題選擇來源，連接論文、出版資訊與全文。"},
+    "核对会议录用与 Oral / Spotlight / Poster 记录。": {"en":"Check conference acceptance and Oral / Spotlight / Poster records.","zh-Hant":"核對會議錄用與 Oral / Spotlight / Poster 記錄。"},
+    "顶会论文与全文": {"en":"Conference papers and full text","zh-Hant":"頂會論文與全文"},
+    "检索顶会论文，按需阅读全文与相关工作。": {"en":"Search conference papers and explore full text and related work on demand.","zh-Hant":"檢索頂會論文，按需閱讀全文與相關工作。"},
+    "来源标识归各自权利人所有。": {"en":"Source marks belong to their respective owners.","zh-Hant":"來源標識歸各自權利人所有。"},
+    "每一份推荐，": {"en":"Every recommendation,","zh-Hant":"每一份推薦，"},
+    "都有线索可循。": {"en":"a trail to follow.","zh-Hant":"都有線索可循。"},
+    "沿着摘要引文回到论文，将阅读发现连接为下一步问题。": {"en":"Follow abstract quotes back to the papers, then turn what you read into your next question.","zh-Hant":"沿著摘要引文回到論文，將閱讀發現連接為下一步問題。"},
+    "出版信息，随论文呈现。": {"en":"Publication context alongside each paper.","zh-Hant":"出版資訊，隨論文呈現。"},
+    "结合官方录用记录与期刊元数据，展示会议、年份与出版身份。": {"en":"See venue, year, and publication status from official acceptance records and journal metadata.","zh-Hant":"結合官方錄用記錄與期刊中繼資料，呈現會議、年份與出版身分。"},
+    "围绕你的研究目的筛选。": {"en":"Find papers for your research goal.","zh-Hant":"圍繞你的研究目的篩選。"},
+    "结合主题相关性、阅读目的与发表时间，找到值得深入的论文。": {"en":"Bring relevance, reading goals, and publication dates together to find papers worth exploring.","zh-Hant":"結合主題相關性、閱讀目的與發表時間，找到值得深入的論文。"},
+    "从研究脉络，走向实验问题。": {"en":"From research connections to experiment questions.","zh-Hant":"從研究脈絡，走向實驗問題。"},
+    "基于所选论文摘要，整理技术路线、阅读顺序与待验证假设。": {"en":"Use the selected abstracts to map approaches, plan your reading, and frame hypotheses to test.","zh-Hant":"依據所選論文摘要，整理技術路線、閱讀順序與待驗證假設。"},
+    "ScholarGuide 是围绕论文证据工作的研究 Agent：从研究问题出发，规划多源检索、依据摘要筛选、综合研究，并在 Chat 中继续迭代。": {
+      "en": "ScholarGuide is a research agent grounded in paper evidence: plan multi-source searches, screen abstracts, synthesize research, and continue in Chat.",
+      "zh-Hant": "ScholarGuide 是圍繞論文證據工作的研究 Agent：從研究問題出發，規劃多來源檢索、依據摘要篩選、綜合研究，並在 Chat 中繼續迭代。"
+    },
+    "跳到主要内容": {
+      "en": "Skip to main content",
+      "zh-Hant": "跳至主要內容"
+    },
+    "ScholarGuide 首页": {
+      "en": "ScholarGuide home",
+      "zh-Hant": "ScholarGuide 首頁"
+    },
+    "主要导航": {
+      "en": "Main navigation",
+      "zh-Hant": "主要導覽"
+    },
+    "页脚导航": {
+      "en": "Footer navigation",
+      "zh-Hant": "頁尾導覽"
+    },
+    "工作方式": {
+      "en": "How it works",
+      "zh-Hant": "運作方式"
+    },
+    "对话": {
+      "en": "Chat",
+      "zh-Hant": "對話"
+    },
+    "来源": {
+      "en": "Sources",
+      "zh-Hant": "來源"
+    },
+    "模型": {
+      "en": "Models",
+      "zh-Hant": "模型"
+    },
+    "活动": {
+      "en": "Activity",
+      "zh-Hant": "活動"
+    },
+    "检索": {
+      "en": "Search",
+      "zh-Hant": "檢索"
+    },
+    "从一份文献清单，到下一步研究。": {
+      "en": "From a reading list to your next research step.",
+      "zh-Hant": "從一份文獻清單，到下一步研究。"
+    },
+    "演示使用固定样例，不调用模型或学术 API。": {
+      "en": "The demo uses fixed examples; it calls no models or academic APIs.",
+      "zh-Hant": "示範使用固定範例，不呼叫模型或學術 API。"
+    },
+    "暂停操作演示": {
+      "en": "Pause demonstration",
+      "zh-Hant": "暫停操作示範"
+    },
+    "继续播放操作演示": {
+      "en": "Resume demonstration",
+      "zh-Hant": "繼續播放操作示範"
+    },
+    "流程演示播放控制": {
+      "en": "Demonstration playback controls",
+      "zh-Hant": "流程示範播放控制"
+    },
+    "可检索的学术来源": {
+      "en": "Searchable academic sources",
+      "zh-Hant": "可檢索的學術來源"
+    },
+    "推荐 5 篇 RAG 评测论文，比较评测方法与开放问题。": {
+      "en": "Recommend 5 RAG evaluation papers; compare methods and open questions.",
+      "zh-Hant": "推薦 5 篇 RAG 評測論文，比較評測方法與開放問題。"
+    },
+    "只保留可比较的评测方法，指出各自的适用边界。": {
+      "en": "Keep only comparable evaluation methods and identify their limits.",
+      "zh-Hant": "只保留可比較的評測方法，指出各自的適用邊界。"
+    },
+    "继续追问，收敛研究方向…": {
+      "en": "Ask a follow-up to refine your research…",
+      "zh-Hant": "繼續追問，收斂研究方向…"
+    },
+    "理解研究目的": {
+      "en": "Understanding the research goal",
+      "zh-Hant": "理解研究目的"
+    },
+    "准备定向检索": {
+      "en": "Preparing targeted search",
+      "zh-Hant": "準備定向檢索"
+    },
+    "检索与出版信息核对": {
+      "en": "Searching and checking publication details",
+      "zh-Hant": "檢索與出版資訊核對"
+    },
+    "展开摘要依据": {
+      "en": "Reviewing abstract evidence",
+      "zh-Hant": "展開摘要依據"
+    },
+    "整理贡献与技术路线": {
+      "en": "Organizing contributions and approaches",
+      "zh-Hant": "整理貢獻與技術路線"
+    },
+    "拟议实验 · 尚未验证": {
+      "en": "Proposed experiment · unverified",
+      "zh-Hant": "擬議實驗 · 尚未驗證"
+    },
+    "继续调整研究范围": {
+      "en": "Refining the research scope",
+      "zh-Hant": "繼續調整研究範圍"
+    },
+    "保留条件与证据缺口": {
+      "en": "Keeping conditions and evidence gaps",
+      "zh-Hant": "保留條件與證據缺口"
+    },
+    "从一个具体问题开始，明确你准备怎样使用这些论文。": {
+      "en": "Start with a specific question and how you plan to use the papers.",
+      "zh-Hant": "從一個具體問題開始，明確你準備怎樣使用這些論文。"
+    },
+    "阅读目的与关注内容，成为下一步检索的条件。": {
+      "en": "Your reading goal and interests guide the search.",
+      "zh-Hant": "閱讀目的與關注內容，成為下一步檢索的條件。"
+    },
+    "按任务选择信源，再对照正式出版记录与摘要内容。": {
+      "en": "Choose sources for the task, then check publication records and abstracts.",
+      "zh-Hant": "按任務選擇信源，再對照正式出版紀錄與摘要內容。"
+    },
+    "展开推荐依据，检查这篇论文为何适合当前问题。": {
+      "en": "Review the evidence for why this paper fits the question.",
+      "zh-Hant": "展開推薦依據，檢查這篇論文為何適合當前問題。"
+    },
+    "把已选论文连起来，形成可以继续阅读的研究脉络。": {
+      "en": "Connect selected papers into a reading path.",
+      "zh-Hant": "把已選論文連起來，形成可以繼續閱讀的研究脈絡。"
+    },
+    "区分摘要事实、模型归纳和待检验的下一步设想。": {
+      "en": "Distinguish abstract facts, model synthesis and untested ideas.",
+      "zh-Hant": "區分摘要事實、模型歸納和待檢驗的下一步設想。"
+    },
+    "带着新的限制继续追问，沿用已有证据。": {
+      "en": "Follow up with new constraints using the existing evidence.",
+      "zh-Hant": "帶著新的限制繼續追問，沿用已有證據。"
+    },
+    "把方向收敛到一个可继续比较、验证的问题。": {
+      "en": "Narrow the direction to a question for comparison and validation.",
+      "zh-Hant": "把方向收斂到一個可繼續比較、驗證的問題。"
+    },
+    "ScholarGuide · 让研究，向前一步": {
+      "en": "ScholarGuide · Move research forward",
+      "zh-Hant": "ScholarGuide · 讓研究，向前一步"
+    },
+    "切换主题": {
+      "en": "Toggle theme",
+      "zh-Hant": "切換主題"
+    },
+    "进入工作台": {
+      "en": "Open workspace",
+      "zh-Hant": "進入工作台"
+    },
+    "把问题展开，": {
+      "en": "Unpack the question,",
+      "zh-Hant": "把問題展開，"
+    },
+    "把研究": {
+      "en": "move research ",
+      "zh-Hant": "把研究"
+    },
+    "推进。": {
+      "en": "forward.",
+      "zh-Hant": "推進。"
+    },
+    "让 Agent 理解你的阅读目的，规划多源检索，依据摘要筛选与综合论文。你专注于问题，在对话中逐步收敛方向。": {
+      "en": "Let the Agent understand your reading goal, plan searches across sources, and screen and synthesize papers using abstracts. Focus on your question and refine your direction through conversation.",
+      "zh-Hant": "讓 Agent 理解你的閱讀目的，規劃多來源檢索，依據摘要篩選與綜合論文。你專注於問題，在對話中逐步收斂方向。"
+    },
+    "开始一次研究": {
+      "en": "Start researching",
+      "zh-Hant": "開始一次研究"
+    },
+    "先看离线演示": {
+      "en": "View offline demo",
+      "zh-Hant": "先看離線示範"
+    },
+    "问题驱动": {
+      "en": "Question-driven",
+      "zh-Hant": "問題驅動"
+    },
+    "证据可查": {
+      "en": "Traceable evidence",
+      "zh-Hant": "證據可查"
+    },
+    "持续迭代": {
+      "en": "Continuous iteration",
+      "zh-Hant": "持續迭代"
+    },
+    "LOOP / 循环演示": {
+      "en": "LOOP / DEMO",
+      "zh-Hant": "LOOP / 循環示範"
+    },
+    "示意": {
+      "en": "Illustration",
+      "zh-Hant": "示意"
+    },
+    "演示第一幕：说明研究问题": {
+      "en": "Demo scene 1: Define the research question",
+      "zh-Hant": "示範第一幕：說明研究問題"
+    },
+    "工作台": {
+      "en": "Workspace",
+      "zh-Hant": "工作台"
+    },
+    "新研究": {
+      "en": "New research",
+      "zh-Hant": "新研究"
+    },
+    "下一步，想研究什么？": {
+      "en": "What will you research next?",
+      "zh-Hant": "下一步，想研究什麼？"
+    },
+    "把问题交给 Agent，把判断留给自己。": {
+      "en": "Give the Agent the question; keep the judgment for yourself.",
+      "zh-Hant": "把問題交給 Agent，把判斷留給自己。"
+    },
+    "研究问题": {
+      "en": "Research question",
+      "zh-Hant": "研究問題"
+    },
+    "如何为 RAG 设计更合适的评测？": {
+      "en": "How can we design better evaluations for RAG?",
+      "zh-Hant": "如何為 RAG 設計更合適的評測？"
+    },
+    "研究上下文": {
+      "en": "Research context",
+      "zh-Hant": "研究脈絡"
+    },
+    "阅读目的": {
+      "en": "Reading goal",
+      "zh-Hant": "閱讀目的"
+    },
+    "实验设计": {
+      "en": "Experiment design",
+      "zh-Hant": "實驗設計"
+    },
+    "关注内容": {
+      "en": "Focus",
+      "zh-Hant": "關注內容"
+    },
+    "评测方法": {
+      "en": "Evaluation methods",
+      "zh-Hant": "評測方法"
+    },
+    "从问题出发，规划检索。": {
+      "en": "Plan searches around your question.",
+      "zh-Hant": "從問題出發，規劃檢索。"
+    },
+    "开始研究": {
+      "en": "Start research",
+      "zh-Hant": "開始研究"
+    },
+    "问题驱动的研究，始于清晰的目的。": {
+      "en": "Question-driven research starts with a clear goal.",
+      "zh-Hant": "問題驅動的研究，始於清晰的目的。"
+    },
+    "演示第二幕：检索和摘要核查": {
+      "en": "Demo scene 2: Search and abstract checks",
+      "zh-Hant": "示範第二幕：檢索和摘要核查"
+    },
+    "RAG 评测": {
+      "en": "RAG evaluation",
+      "zh-Hant": "RAG 評測"
+    },
+    "摘要筛选": {
+      "en": "Abstract screening",
+      "zh-Hant": "摘要篩選"
+    },
+    "让每个推荐，有据可查。": {
+      "en": "Make every recommendation traceable.",
+      "zh-Hant": "讓每個推薦，有據可查。"
+    },
+    "候选样例": {
+      "en": "Sample candidates",
+      "zh-Hant": "候選範例"
+    },
+    "定向检索": {
+      "en": "Targeted search",
+      "zh-Hant": "定向檢索"
+    },
+    "候选论文 A": {
+      "en": "Candidate paper A",
+      "zh-Hant": "候選論文 A"
+    },
+    "摘要依据 ↗": {
+      "en": "Abstract evidence ↗",
+      "zh-Hant": "摘要依據 ↗"
+    },
+    "评测方法 · 固定样例": {
+      "en": "Evaluation methods · fixed example",
+      "zh-Hant": "評測方法 · 固定範例"
+    },
+    "区分检索与生成评测，适合梳理实验维度。": {
+      "en": "Separates retrieval and generation evaluation, useful for organizing experimental dimensions.",
+      "zh-Hant": "區分檢索與生成評測，適合梳理實驗維度。"
+    },
+    "候选论文 B": {
+      "en": "Candidate paper B",
+      "zh-Hant": "候選論文 B"
+    },
+    "出版身份待核对": {
+      "en": "Publication status to be checked",
+      "zh-Hant": "出版身分待核對"
+    },
+    "Benchmark · 固定样例": {
+      "en": "Benchmark · fixed example",
+      "zh-Hant": "Benchmark · 固定範例"
+    },
+    "任务设定不同，可比性需进一步确认。": {
+      "en": "Task settings differ; comparability needs further verification.",
+      "zh-Hant": "任務設定不同，可比性需進一步確認。"
+    },
+    "A / 摘要依据示意": {
+      "en": "A / illustrative abstract evidence",
+      "zh-Hant": "A / 摘要依據示意"
+    },
+    "分别评估检索证据与生成回答": {
+      "en": "Evaluate retrieved evidence and generated answers separately",
+      "zh-Hant": "分別評估檢索證據與生成回答"
+    },
+    "，并说明各自的评价维度。": {
+      "en": ", and describe the evaluation dimensions for each.",
+      "zh-Hant": "，並說明各自的評價維度。"
+    },
+    "原文依据与推荐理由对应呈现": {
+      "en": "Source evidence is shown alongside the recommendation rationale",
+      "zh-Hant": "原文依據與推薦理由對應呈現"
+    },
+    "围绕研究目的，核对摘要与来源。": {
+      "en": "Check abstracts and sources against the research goal.",
+      "zh-Hant": "圍繞研究目的，核對摘要與來源。"
+    },
+    "演示第三幕：研究综合与待验证设想": {
+      "en": "Demo scene 3: Research synthesis and unverified ideas",
+      "zh-Hant": "示範第三幕：研究綜合與待驗證設想"
+    },
+    "研究综合": {
+      "en": "Research synthesis",
+      "zh-Hant": "研究綜合"
+    },
+    "基于当前摘要": {
+      "en": "Based on current abstracts",
+      "zh-Hant": "基於目前摘要"
+    },
+    "从阅读脉络，到下一步。": {
+      "en": "From a reading path to the next step.",
+      "zh-Hant": "從閱讀脈絡，到下一步。"
+    },
+    "建议阅读脉络": {
+      "en": "Suggested reading path",
+      "zh-Hant": "建議閱讀脈絡"
+    },
+    "模型归纳": {
+      "en": "Model synthesis",
+      "zh-Hant": "模型歸納"
+    },
+    "拆分评测维度": {
+      "en": "Separate evaluation dimensions",
+      "zh-Hant": "拆分評測維度"
+    },
+    "检索 / 生成": {
+      "en": "Retrieval / generation",
+      "zh-Hant": "檢索 / 生成"
+    },
+    "对齐任务设定": {
+      "en": "Align task settings",
+      "zh-Hant": "對齊任務設定"
+    },
+    "数据 / 指标": {
+      "en": "Data / metrics",
+      "zh-Hant": "資料 / 指標"
+    },
+    "一个可以继续的实验问题": {
+      "en": "An experimental question to pursue",
+      "zh-Hant": "一個可以繼續的實驗問題"
+    },
+    "尚未验证": {
+      "en": "Unverified",
+      "zh-Hant": "尚未驗證"
+    },
+    "固定生成模型，改变检索证据质量，": {
+      "en": "Hold the generation model fixed and vary retrieved evidence quality;",
+      "zh-Hant": "固定生成模型，改變檢索證據品質，"
+    },
+    "回答质量会如何变化？": {
+      "en": "how does answer quality change?",
+      "zh-Hant": "回答品質會如何變化？"
+    },
+    "对照": {
+      "en": "Control",
+      "zh-Hant": "對照"
+    },
+    "同一问题集": {
+      "en": "Same question set",
+      "zh-Hant": "同一問題集"
+    },
+    "观察": {
+      "en": "Observe",
+      "zh-Hant": "觀察"
+    },
+    "引用忠实性": {
+      "en": "Citation faithfulness",
+      "zh-Hant": "引用忠實性"
+    },
+    "实验设想尚未执行，有效性与新颖性仍需验证。": {
+      "en": "The experiment has not been run; validity and novelty remain to be verified.",
+      "zh-Hant": "實驗設想尚未執行，有效性與新穎性仍需驗證。"
+    },
+    "作者报告、研究归纳、待验证设想，分别呈现。": {
+      "en": "Author reports, research synthesis, and unverified ideas are presented separately.",
+      "zh-Hant": "作者報告、研究歸納、待驗證設想，分別呈現。"
+    },
+    "演示第四幕：继续追问": {
+      "en": "Demo scene 4: Ask a follow-up",
+      "zh-Hant": "示範第四幕：繼續追問"
+    },
+    "研究上下文已接续": {
+      "en": "Research context carried forward",
+      "zh-Hant": "研究脈絡已接續"
+    },
+    "沿着证据，继续追问。": {
+      "en": "Follow the evidence and keep asking.",
+      "zh-Hant": "沿著證據，繼續追問。"
+    },
+    "基于当前样例": {
+      "en": "Based on current examples",
+      "zh-Hant": "基於目前範例"
+    },
+    "先对齐任务、数据与指标，再比较方法。": {
+      "en": "Align tasks, data, and metrics before comparing methods.",
+      "zh-Hant": "先對齊任務、資料與指標，再比較方法。"
+    },
+    "保留": {
+      "en": "Keep",
+      "zh-Hant": "保留"
+    },
+    "可按相同维度比较": {
+      "en": "Comparable along the same dimensions",
+      "zh-Hant": "可按相同維度比較"
+    },
+    "待核对": {
+      "en": "Check",
+      "zh-Hant": "待核對"
+    },
+    "任务设定尚未对齐": {
+      "en": "Task settings not yet aligned",
+      "zh-Hant": "任務設定尚未對齊"
+    },
+    "缺少共同条件时，先说明差异，再补充证据。": {
+      "en": "When common conditions are missing, explain the differences before adding evidence.",
+      "zh-Hant": "缺少共同條件時，先說明差異，再補充證據。"
+    },
+    "只保留可比较的评测方法": {
+      "en": "Keep only comparable evaluation methods",
+      "zh-Hant": "只保留可比較的評測方法"
+    },
+    "你的下一问，就是研究的下一步。": {
+      "en": "Your next question is the next step in your research.",
+      "zh-Hant": "你的下一問，就是研究的下一步。"
+    },
+    "说清研究目的，Agent 从这里开始。": {
+      "en": "State your research goal; the Agent starts here.",
+      "zh-Hant": "說清研究目的，Agent 從這裡開始。"
+    },
+    "流程示意": {
+      "en": "Workflow illustration",
+      "zh-Hant": "流程示意"
+    },
+    "播放流程演示": {
+      "en": "Play workflow demo",
+      "zh-Hant": "播放流程示範"
+    },
+    "纯代码流程演示；候选 A / B 为虚拟样例，并非实际检索结果。": {
+      "en": "Code-only workflow demo; candidates A / B are fictional examples, not actual search results.",
+      "zh-Hant": "純程式碼流程示範；候選 A / B 為虛構範例，並非實際檢索結果。"
+    },
+    "从不同来源，拼起研究脉络。": {
+      "en": "Build a research picture from different sources.",
+      "zh-Hant": "從不同來源，拼起研究脈絡。"
+    },
+    "每个来源只贡献它自己能证明的那部分事实。Agent 按研究目的分配它们，而不是把所有来源都调用一遍。": {
+      "en": "Each source contributes only the facts it can establish. The Agent selects sources for the research goal rather than querying them all.",
+      "zh-Hant": "每個來源只貢獻它自己能證明的那部分事實。Agent 按研究目的分配它們，而不是把所有來源都呼叫一遍。"
+    },
+    "前沿与开放获取": {
+      "en": "Frontiers and open access",
+      "zh-Hant": "前沿與開放取用"
+    },
+    "先弄清谁提出了什么、摘要说了什么，再判断值不值得读全文。": {
+      "en": "First establish who proposed what and what the abstract says, then decide whether to read the full text.",
+      "zh-Hant": "先弄清誰提出了什麼、摘要說了什麼，再判斷值不值得讀全文。"
+    },
+    "会议与展示类别": {
+      "en": "Venues and presentation types",
+      "zh-Hant": "會議與展示類別"
+    },
+    "「是否正式录用、是 oral 还是 poster」只能由官方记录回答，不接受推测。": {
+      "en": "Only official records can establish acceptance or whether a presentation is oral or poster; guesses are not accepted.",
+      "zh-Hant": "「是否正式錄用、是 oral 還是 poster」只能由官方紀錄回答，不接受推測。"
+    },
+    "出版与书目": {
+      "en": "Publication and bibliography",
+      "zh-Hant": "出版與書目"
+    },
+    "期刊、卷期与作者书目：说清一篇成形论文的来处。": {
+      "en": "Journal, volume, issue, and author bibliography: establish where a published paper comes from.",
+      "zh-Hant": "期刊、卷期與作者書目：說清一篇成形論文的來處。"
+    },
+    "顶会全文检索": {
+      "en": "Top-venue full-text search",
+      "zh-Hant": "頂會全文檢索"
+    },
+    "按自然语言检索 A/A* 顶会全文，通过 MCP 工具调用返回带出处的记录。": {
+      "en": "Search full texts from A/A* conferences in natural language and retrieve records with sources via MCP tools.",
+      "zh-Hant": "以自然語言檢索 A/A* 頂會全文，透過 MCP 工具呼叫回傳附有出處的紀錄。"
+    },
+    "上列为各来源的官方标识，仅用于指代该来源，版权归各自权利人。标识不是证据：录用、出版与引文结论仍以各来源的原始记录为准。": {
+      "en": "The logos above identify their respective sources; copyright belongs to their owners. Logos are not evidence: acceptance, publication, and citation claims must be checked against original records.",
+      "zh-Hant": "上列為各來源的官方標識，僅用於指代該來源，版權歸各自權利人。標識不是證據：錄用、出版與引文結論仍以各來源的原始紀錄為準。"
+    },
+    "不止找到论文。": {
+      "en": "More than finding papers.",
+      "zh-Hant": "不只找到論文。"
+    },
+    "让每一步，都接得上下一步。": {
+      "en": "Connect each step to the next.",
+      "zh-Hant": "讓每一步，都接得上下一步。"
+    },
+    "Agent 承接检索与整理，": {
+      "en": "The Agent handles search and organization;",
+      "zh-Hant": "Agent 承接檢索與整理，"
+    },
+    "你始终掌握问题与方向。": {
+      "en": "you stay in control of the question and direction.",
+      "zh-Hant": "你始終掌握問題與方向。"
+    },
+    "说明研究问题": {
+      "en": "Define your research question",
+      "zh-Hant": "說明研究問題"
+    },
+    "给出主题、阅读目的，以及会议、年份或类别要求。": {
+      "en": "Provide a topic, reading goal, and any venue, year, or category requirements.",
+      "zh-Hant": "給出主題、閱讀目的，以及會議、年份或類別要求。"
+    },
+    "规划多源检索": {
+      "en": "Plan multi-source search",
+      "zh-Hant": "規劃多來源檢索"
+    },
+    "按需求选择学术来源，有缺口时再补充检索。": {
+      "en": "Choose academic sources as needed and search further when gaps remain.",
+      "zh-Hant": "按需求選擇學術來源，有缺口時再補充檢索。"
+    },
+    "依据摘要筛选": {
+      "en": "Screen using abstracts",
+      "zh-Hant": "依據摘要篩選"
+    },
+    "查看推荐理由、摘要依据，以及出版要求的满足情况。": {
+      "en": "Review recommendation rationales, abstract evidence, and compliance with publication requirements.",
+      "zh-Hant": "查看推薦理由、摘要依據，以及出版要求的滿足情況。"
+    },
+    "形成研究综合": {
+      "en": "Build a research synthesis",
+      "zh-Hant": "形成研究綜合"
+    },
+    "连接贡献与技术路线，整理阅读顺序与待验证假设。": {
+      "en": "Connect contributions and approaches; organize a reading order and hypotheses to test.",
+      "zh-Hant": "連接貢獻與技術路線，整理閱讀順序與待驗證假設。"
+    },
+    "在对话中迭代": {
+      "en": "Iterate in conversation",
+      "zh-Hant": "在對話中迭代"
+    },
+    "比较、排除或调整方向，沿着已有证据继续追问。": {
+      "en": "Compare, rule out, or adjust directions and follow up using existing evidence.",
+      "zh-Hant": "比較、排除或調整方向，沿著已有證據繼續追問。"
+    },
+    "看见推荐的理由，": {
+      "en": "See the reasons behind recommendations,",
+      "zh-Hant": "看見推薦的理由，"
+    },
+    "也看清证据的边界。": {
+      "en": "and the limits of the evidence.",
+      "zh-Hant": "也看清證據的邊界。"
+    },
+    "研究需要判断。ScholarGuide 把来源、依据与未知放在一起，让你有据可查地继续。": {
+      "en": "Research requires judgment. ScholarGuide brings sources, evidence, and unknowns together so you can proceed with traceable support.",
+      "zh-Hant": "研究需要判斷。ScholarGuide 把來源、依據與未知放在一起，讓你有據可查地繼續。"
+    },
+    "探索研究工作台": {
+      "en": "Explore the research workspace",
+      "zh-Hant": "探索研究工作台"
+    },
+    "出版身份，回到来源核对。": {
+      "en": "Verify publication status at the source.",
+      "zh-Hant": "出版身分，回到來源核對。"
+    },
+    "通过 OpenReview 核对录用与 Oral / Spotlight / Poster 记录；结合 OpenAlex、Semantic Scholar 的期刊元数据，识别 AI Review（Artificial Intelligence Review）等期刊身份。信息不足时明确保留未知。": {
+      "en": "Check acceptance and Oral / Spotlight / Poster records on OpenReview; use journal metadata from OpenAlex and Semantic Scholar to identify journals such as AI Review (Artificial Intelligence Review). Mark unknowns when information is insufficient.",
+      "zh-Hant": "透過 OpenReview 核對錄用與 Oral / Spotlight / Poster 紀錄；結合 OpenAlex、Semantic Scholar 的期刊中繼資料，識別 AI Review（Artificial Intelligence Review）等期刊身分。資訊不足時明確保留未知。"
+    },
+    "先看相关性，再结合出版与时间。": {
+      "en": "Consider relevance first, then publication and timing.",
+      "zh-Hant": "先看相關性，再結合出版與時間。"
+    },
+    "围绕主题和阅读目的筛选，结合新近性与出版信息。录用、展示类别或期刊身份是筛选条件与背景信息，不能单独证明论文适合你的问题。": {
+      "en": "Screen for topic and reading goal, considering recency and publication details. Acceptance, presentation type, and journal identity are filters and context, not proof that a paper fits your question.",
+      "zh-Hant": "圍繞主題和閱讀目的篩選，結合新近性與出版資訊。錄用、展示類別或期刊身分是篩選條件與背景資訊，不能單獨證明論文適合你的問題。"
+    },
+    "让归纳与假设，各有位置。": {
+      "en": "Keep synthesis and hypotheses distinct.",
+      "zh-Hant": "讓歸納與假設，各有位置。"
+    },
+    "综合仅基于已选论文摘要，区分作者报告、模型归纳与待验证设想。摘要引文可回查；实验建议尚未执行，也不代表有效性或新颖性已获验证。": {
+      "en": "Synthesis is based only on selected abstracts and separates author reports, model synthesis, and ideas to test. Abstract quotations are traceable; proposed experiments have not been run and their validity or novelty is not established.",
+      "zh-Hant": "綜合僅基於已選論文摘要，區分作者報告、模型歸納與待驗證設想。摘要引文可回查；實驗建議尚未執行，也不代表有效性或新穎性已獲驗證。"
+    },
+    "带着一个问题来。": {
+      "en": "Come with a question.",
+      "zh-Hant": "帶著一個問題來。"
+    },
+    "带着下一步离开。": {
+      "en": "Leave with a next step.",
+      "zh-Hant": "帶著下一步離開。"
+    },
+    "开始你的研究": {
+      "en": "Start your research",
+      "zh-Hant": "開始你的研究"
+    },
+    "或先体验离线演示": {
+      "en": "Or try the offline demo first",
+      "zh-Hant": "或先體驗離線示範"
+    },
+    "从一个认真的问题开始，走到更清楚的下一步。": {
+      "en": "Start with a thoughtful question and find a clearer next step.",
+      "zh-Hant": "從一個認真的問題開始，走到更清楚的下一步。"
+    },
+    "研究辅助 · 以摘要与来源元数据为依据": {
+      "en": "Research assistance · grounded in abstracts and source metadata",
+      "zh-Hant": "研究輔助 · 以摘要與來源中繼資料為依據"
+    },
+    "arXiv 官方标识": {
+      "en": "arXiv official logo",
+      "zh-Hant": "arXiv 官方標識"
+    },
+    "OpenReview 官方标识": {
+      "en": "OpenReview official logo",
+      "zh-Hant": "OpenReview 官方標識"
+    },
+    "OpenAlex 官方标识": {
+      "en": "OpenAlex official logo",
+      "zh-Hant": "OpenAlex 官方標識"
+    },
+    "Semantic Scholar 官方标识": {
+      "en": "Semantic Scholar official logo",
+      "zh-Hant": "Semantic Scholar 官方標識"
+    },
+    "DBLP 官方标识": {
+      "en": "DBLP official logo",
+      "zh-Hant": "DBLP 官方標識"
+    },
+    "ACL Anthology 官方标识": {
+      "en": "ACL Anthology official logo",
+      "zh-Hant": "ACL Anthology 官方標識"
+    },
+    "Lune Research 官方标识": {
+      "en": "Lune Research official logo",
+      "zh-Hant": "Lune Research 官方標識"
+    }
+  }
+  </script>
+  <script src="/theme.js" defer></script>
+  <script src="/landing.js" defer></script>
+</head>
+<body class="landing-page">
+  <a class="lp-skip" href="#landing-main" data-i18n="跳到主要内容">跳到主要内容</a>
+  <header class="lp-header">
+    <div class="lp-shell lp-header-inner">
+      <a class="lp-brand" href="/" aria-label="ScholarGuide 首页" data-i18n-aria-label="ScholarGuide 首页">
+        <span class="lp-brand-mark" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none"><path d="M5 6h7l3 3h8v14h-8l-3-3H5z" stroke="currentColor" stroke-width="1.5"/><path d="M12 6v14M15 9v14" stroke="currentColor" stroke-width="1.2"/></svg></span>
+        <span>ScholarGuide<span class="lp-brand-dot">.</span></span>
+      </a>
+      <nav class="lp-nav" id="landing-nav" aria-label="主要导航" data-i18n-aria-label="主要导航">
+        <a href="#workflow" data-i18n="工作方式">工作方式</a>
+        <a href="/chat" data-i18n="对话">对话</a>
+        <a href="/sources" data-i18n="来源">来源</a>
+        <a href="/settings" data-i18n="模型">模型</a>
+        <a href="/activity" data-i18n="活动">活动</a>
+      </nav>
+      <div class="lp-header-actions">
+        <button class="lp-theme" type="button" id="theme-toggle" aria-label="切换主题" data-i18n-aria-label="切换主题">☀</button>
+        <a class="lp-nav-cta" href="/search"><span data-i18n="进入工作台">进入工作台</span> <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="landing-main">
+    <section class="lp-hero lp-shell" aria-labelledby="hero-title">
+      <div class="lp-hero-copy">
+        <p class="lp-eyebrow"><span class="lp-live-dot" aria-hidden="true"></span> AN AGENT FOR YOUR NEXT QUESTION</p>
+        <h1 id="hero-title"><span data-i18n="把问题展开，">把问题展开，</span><br><span data-i18n="把研究">把研究</span><span class="lp-accent"><span data-i18n="推进。">推进。</span></span></h1>
+        <p class="lp-hero-deck" data-i18n="从一份文献清单，到下一步研究。">从一份文献清单，到下一步研究。</p>
+        <p class="lp-hero-description"><span data-i18n="从你的问题出发，检索论文、梳理脉络，在对话中找到下一步。">从你的问题出发，检索论文、梳理脉络，在对话中找到下一步。</span></p>
+        <div class="lp-hero-actions">
+          <a class="lp-button lp-button-primary" id="start-research" href="/search"><span data-i18n="开始一次研究">开始一次研究</span> <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a class="lp-demo-link" id="try-demo" href="/search?demo=followup"><span class="lp-play" aria-hidden="true">▷</span> <span data-i18n="先看离线演示">先看离线演示</span></a>
+        </div>
+        <div class="lp-hero-signature"><span class="lp-signature-line" aria-hidden="true"></span><span><span data-i18n="问题驱动">问题驱动</span> <i>·</i> <span data-i18n="证据可查">证据可查</span> <i>·</i> <span data-i18n="持续迭代">持续迭代</span></span></div>
+      </div>
+
+      <figure class="lp-preview" id="research-film" aria-labelledby="preview-caption">
+        <div class="lp-preview-paper" aria-hidden="true"></div>
+        <div class="sg-film" data-scene="compose" data-playing="false">
+          <div class="sg-film-masthead"><span><i aria-hidden="true"></i> A QUESTION, IN MOTION</span><span><span data-i18n="LOOP / 循环演示">LOOP / 循环演示</span></span></div>
+          <div class="sg-film-viewport" id="film-viewport">
+            <div class="sg-film-windowbar"><span class="sg-window-lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="sg-window-title"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 3h4l2 2h4v8H9l-2-2H3zM7 3v8M9 5v8" stroke="currentColor"/></svg> ScholarGuide <span>/</span> Research</span><span class="sg-demo-stamp"><span data-i18n="研究预览">研究预览</span></span></div>
+            <div class="sg-film-app" id="film-app">
+              <aside class="sg-film-rail" aria-hidden="true"><span class="sg-rail-brand">S<span>.</span></span><span class="sg-rail-item sg-rail-search"><svg viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="4.8"/><path d="m12 12 4 4"/></svg></span><span class="sg-rail-item sg-rail-reading"><svg viewBox="0 0 20 20" fill="none"><path d="M4 4h5l2 2h5v11h-5l-2-2H4zM9 4v11"/></svg></span><span class="sg-rail-item sg-rail-chat"><svg viewBox="0 0 20 20" fill="none"><path d="M4 4h12v9H9l-5 3z"/><path d="M7 7h6M7 10h4"/></svg></span><span class="sg-rail-bottom">SG</span></aside>
+              <div class="sg-film-stage">
+                <section class="sg-film-screen sg-compose" id="film-compose" aria-label="演示第一幕：说明研究问题" data-i18n-aria-label="演示第一幕：说明研究问题">
+                  <div class="sg-screen-top"><span class="sg-breadcrumb"><span class="sg-inline-copy" data-i18n="工作台">工作台</span> <span>/</span> <span class="sg-inline-copy" data-i18n="新研究">新研究</span></span><span class="sg-private"><span aria-hidden="true">◇</span> YOUR WORKSPACE</span></div>
+                  <div class="sg-compose-content"><p class="sg-kicker">START WITH A QUESTION</p><h2><span data-i18n="下一步，想研究什么？">下一步，想研究什么？</span></h2><p class="sg-screen-intro"><span data-i18n="把问题交给 Agent，把判断留给自己。">把问题交给 Agent，把判断留给自己。</span></p>
+                    <div class="sg-question-box"><span class="sg-field-label"><span data-i18n="研究问题">研究问题</span></span><p class="sg-typed-line"><span id="film-input" data-i18n="如何为 RAG 设计更合适的评测？">如何为 RAG 设计更合适的评测？</span><span class="sg-type-caret" aria-hidden="true"></span></p><div class="sg-input-footer"><span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 8.5V5a3 3 0 0 1 6 0v6a4 4 0 0 1-8 0V6" stroke="currentColor"/></svg> <span data-i18n="研究上下文">研究上下文</span></span><span>↵</span></div></div>
+                    <div class="sg-preferences"><span><span data-i18n="阅读目的">阅读目的</span> <b><span data-i18n="实验设计">实验设计</span></b><i>⌄</i></span><span><span data-i18n="关注内容">关注内容</span> <b><span data-i18n="评测方法">评测方法</span></b><i>⌄</i></span></div>
+                    <div class="sg-compose-action"><span class="sg-quiet-note"><span data-i18n="从问题出发，规划检索。">从问题出发，规划检索。</span></span><span class="sg-search-action" id="film-search-button"><span data-i18n="开始研究">开始研究</span> <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3"/></svg></span></div>
+                  </div>
+                  <div class="sg-stage-footer"><span class="sg-agent-mark" aria-hidden="true">✳</span><span><span data-i18n="问题驱动的研究，始于清晰的目的。">问题驱动的研究，始于清晰的目的。</span></span><span class="sg-footer-id">01 / 04</span></div>
+                </section>
+                <section class="sg-film-screen sg-results" id="film-results" aria-label="演示第二幕：检索和摘要核查" data-i18n-aria-label="演示第二幕：检索和摘要核查" hidden>
+                  <div class="sg-screen-top"><span class="sg-breadcrumb"><span class="sg-inline-copy" data-i18n="工作台">工作台</span> <span>/</span> <span class="sg-inline-copy" data-i18n="RAG 评测">RAG 评测</span></span><span class="sg-page-tag"><span data-i18n="摘要筛选">摘要筛选</span></span></div>
+                  <div class="sg-results-heading"><div><p class="sg-kicker">FOLLOW THE EVIDENCE</p><h2><span data-i18n="让每个推荐，有据可查。">让每个推荐，有据可查。</span></h2></div><span class="sg-mini-count"><span data-i18n="候选论文">候选论文</span> <b>02</b></span></div>
+                  <div class="sg-source-routing" data-reveal="sources" data-visible="false"><span class="sg-routing-label"><i aria-hidden="true"></i> <span data-i18n="定向检索">定向检索</span></span><span id="film-source-openreview">OpenReview</span><span id="film-source-openalex">OpenAlex</span><span id="film-source-s2">S2</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 8 3 3 5-6" stroke="currentColor" stroke-width="1.5"/></svg></div>
+                  <div class="sg-paper-list"><article class="sg-film-paper sg-paper-selected" id="film-paper-a" data-reveal="paper-a" data-visible="false"><span class="sg-paper-index">A</span><div class="sg-paper-copy"><div class="sg-paper-title"><h3><span data-i18n="候选论文 A">候选论文 A</span></h3><span class="sg-evidence-tag"><span data-i18n="摘要依据 ↗">摘要依据 ↗</span></span></div><p class="sg-paper-meta"><span data-i18n="评测方法">评测方法</span></p><p class="sg-paper-reason"><span data-i18n="区分检索与生成评测，适合梳理实验维度。">区分检索与生成评测，适合梳理实验维度。</span></p></div><span class="sg-paper-check" aria-hidden="true">✓</span></article><article class="sg-film-paper" data-reveal="paper-b" data-visible="false"><span class="sg-paper-index">B</span><div class="sg-paper-copy"><div class="sg-paper-title"><h3><span data-i18n="候选论文 B">候选论文 B</span></h3><span class="sg-unknown-tag"><span data-i18n="出版身份待核对">出版身份待核对</span></span></div><p class="sg-paper-meta"><span>Benchmark</span></p><p class="sg-paper-reason"><span data-i18n="任务设定不同，可比性需进一步确认。">任务设定不同，可比性需进一步确认。</span></p></div><span class="sg-paper-check sg-paper-check-empty" aria-hidden="true"></span></article></div>
+                  <div class="sg-evidence-excerpt" id="film-quote" data-reveal="quote" data-visible="false"><span class="sg-excerpt-label"><span data-i18n="A / 摘要依据">A / 摘要依据</span></span><p><mark><span data-i18n="分别评估检索证据与生成回答">分别评估检索证据与生成回答</span></mark><span data-i18n="，并说明各自的评价维度。">，并说明各自的评价维度。</span></p><span class="sg-excerpt-origin"><span class="sg-inline-copy" data-i18n="原文依据与推荐理由对应呈现">原文依据与推荐理由对应呈现</span> <span aria-hidden="true">↗</span></span></div>
+                  <div class="sg-stage-footer"><span class="sg-agent-mark" aria-hidden="true">✳</span><span id="film-agent-status" data-i18n="围绕研究目的，核对摘要与来源。">围绕研究目的，核对摘要与来源。</span><span class="sg-footer-id">02 / 04</span></div>
+                </section>
+                <section class="sg-film-screen sg-synthesis" id="film-synthesis" aria-label="演示第三幕：研究综合与待验证设想" data-i18n-aria-label="演示第三幕：研究综合与待验证设想" hidden>
+                  <div class="sg-screen-top"><span class="sg-breadcrumb"><span class="sg-inline-copy" data-i18n="RAG 评测">RAG 评测</span> <span>/</span> <span class="sg-inline-copy" data-i18n="研究综合">研究综合</span></span><span class="sg-page-tag"><span data-i18n="基于当前摘要">基于当前摘要</span></span></div>
+                  <div class="sg-synthesis-heading"><p class="sg-kicker">CONNECT, THEN QUESTION</p><h2><span data-i18n="从阅读脉络，到下一步。">从阅读脉络，到下一步。</span></h2></div>
+                  <div class="sg-reading-map" data-reveal="synthesis" data-visible="false"><div class="sg-map-heading"><span><span data-i18n="建议阅读脉络">建议阅读脉络</span></span><span><span data-i18n="模型归纳">模型归纳</span></span></div><div class="sg-map-steps"><div><span class="sg-map-letter">A</span><b><span data-i18n="拆分评测维度">拆分评测维度</span></b><small><span data-i18n="检索 / 生成">检索 / 生成</span></small></div><svg viewBox="0 0 46 16" fill="none" aria-hidden="true"><path d="M1 8h40M35 3l6 5-6 5" stroke="currentColor"/></svg><div><span class="sg-map-letter">B</span><b><span data-i18n="对齐任务设定">对齐任务设定</span></b><small><span data-i18n="数据 / 指标">数据 / 指标</span></small></div></div></div>
+                  <div class="sg-hypothesis" id="film-hypothesis" data-reveal="hypothesis" data-visible="false"><div class="sg-hypothesis-heading"><span class="sg-hypothesis-icon" aria-hidden="true">↗</span><h3><span data-i18n="一个可以继续的实验问题">一个可以继续的实验问题</span></h3><span><span data-i18n="尚未验证">尚未验证</span></span></div><p><span data-i18n="固定生成模型，改变检索证据质量，">固定生成模型，改变检索证据质量，</span><br><span data-i18n="回答质量会如何变化？">回答质量会如何变化？</span></p><div class="sg-hypothesis-method"><span><b><span data-i18n="对照">对照</span></b> <span data-i18n="同一问题集">同一问题集</span></span><span><b><span data-i18n="观察">观察</span></b> <span data-i18n="引用忠实性">引用忠实性</span></span></div></div>
+                  <div class="sg-stage-footer"><span class="sg-agent-mark" aria-hidden="true">✳</span><span><span data-i18n="作者报告、研究归纳、待验证设想，分别呈现。">作者报告、研究归纳、待验证设想，分别呈现。</span></span><span class="sg-footer-id">03 / 04</span></div>
+                </section>
+                <section class="sg-film-screen sg-chat" id="film-chat" aria-label="演示第四幕：继续追问" data-i18n-aria-label="演示第四幕：继续追问" hidden>
+                  <div class="sg-screen-top"><span class="sg-breadcrumb"><span class="sg-inline-copy" data-i18n="RAG 评测">RAG 评测</span> <span>/</span> Chat</span><span class="sg-page-tag sg-tag-sage"><i aria-hidden="true"></i> <span data-i18n="研究上下文已接续">研究上下文已接续</span></span></div>
+                  <div class="sg-chat-heading"><p class="sg-kicker">KEEP THE QUESTION MOVING</p><h2><span data-i18n="沿着证据，继续追问。">沿着证据，继续追问。</span></h2></div>
+                  <div class="sg-chat-thread"><div class="sg-chat-message" data-reveal="chat-message" data-visible="false"><span class="sg-chat-avatar" aria-hidden="true">Y</span><p><span data-i18n="只保留可比较的评测方法，指出各自的适用边界。">只保留可比较的评测方法，指出各自的适用边界。</span></p></div><div class="sg-chat-answer" data-reveal="chat-answer" data-visible="false"><span class="sg-answer-mark" aria-hidden="true">✳</span><div><span class="sg-answer-name">ScholarGuide <i><span data-i18n="研究助手">研究助手</span></i></span><p><span data-i18n="先对齐任务、数据与指标，再比较方法。">先对齐任务、数据与指标，再比较方法。</span></p><div class="sg-chat-comparison"><span><b>A</b> <span data-i18n="保留">保留</span> <small><span data-i18n="可按相同维度比较">可按相同维度比较</span></small></span><span><b>B</b> <span data-i18n="待核对">待核对</span> <small><span data-i18n="任务设定尚未对齐">任务设定尚未对齐</span></small></span></div><p class="sg-chat-caution"><span data-i18n="缺少共同条件时，先说明差异，再补充证据。">缺少共同条件时，先说明差异，再补充证据。</span></p></div></div></div>
+                  <div class="sg-chat-composer"><span id="film-chat-input" data-placeholder="继续追问，收敛研究方向…" data-i18n="只保留可比较的评测方法">只保留可比较的评测方法</span><span class="sg-type-caret" aria-hidden="true"></span><span id="film-chat-send" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M8 13V3M4 7l4-4 4 4" stroke="currentColor" stroke-width="1.5"/></svg></span></div>
+                  <div class="sg-stage-footer"><span class="sg-agent-mark" aria-hidden="true">↳</span><span><span data-i18n="你的下一问，就是研究的下一步。">你的下一问，就是研究的下一步。</span></span><span class="sg-footer-id">04 / 04</span></div>
+                </section>
+              </div>
+            </div>
+            <div class="sg-film-cursor" id="film-cursor" aria-hidden="true" data-visible="false"><span class="sg-cursor-pulse"></span><svg viewBox="0 0 24 28" fill="none"><path d="M3 2v20l5-5 4 9 4-2-4-8h8L3 2Z" fill="var(--sg-cursor-fill)" stroke="var(--sg-cursor-stroke)" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="sg-film-caption"><span class="sg-caption-step" aria-hidden="true">✳</span><p id="film-caption-text" data-i18n="说清研究目的，Agent 从这里开始。">说清研究目的，Agent 从这里开始。</p><span class="sg-caption-kind"><span data-i18n="研究流程">研究流程</span></span><div class="sg-film-controls" id="film-controls" role="group" aria-label="流程演示播放控制" data-i18n-aria-label="流程演示播放控制" hidden><button type="button" id="film-play" data-state="paused" aria-label="播放流程演示" data-i18n-aria-label="播放流程演示"><svg data-icon="play" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m5 3 8 5-8 5V3Z" fill="currentColor"/></svg><svg data-icon="pause" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 3v10M11 3v10" stroke="currentColor" stroke-width="2"/></svg></button></div>
+          </div>
+        </div>
+        <figcaption id="preview-caption"><span>FIG. 01</span> <span data-i18n="研究流程演示 · 虚拟样例">研究流程演示 · 虚拟样例</span></figcaption>
+      </figure>
+    </section>
+
+    <section class="lp-sources" aria-labelledby="sources-title">
+      <div class="lp-shell">
+        <header class="lp-source-head">
+          <div class="lp-source-headline">
+            <p class="lp-eyebrow">SEVEN SOURCES · ONE RESEARCH THREAD</p>
+            <h2 id="sources-title"><span data-i18n="从不同来源，拼起研究脉络。">从不同来源，拼起研究脉络。</span></h2>
+          </div>
+          <p class="lp-source-intro"><span data-i18n="按研究问题选择来源，连接论文、出版信息与全文。">按研究问题选择来源，连接论文、出版信息与全文。</span></p>
+        </header>
+      </div>
+
+      <div class="lp-rail" id="source-rail" role="group" aria-label="可检索的学术来源" data-i18n-aria-label="可检索的学术来源">
+          <ul class="lp-rail-track">
+            <li class="lp-rail-item lp-plate-arxiv"><img src="/assets/logos/arxiv-logo.svg" alt="arXiv 官方标识" data-i18n-alt="arXiv 官方标识" width="247" height="111" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-openreview"><img src="/assets/logos/openreview-logo.png" alt="OpenReview 官方标识" data-i18n-alt="OpenReview 官方标识" width="512" height="512" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-openalex"><img src="/assets/logos/openalex-lockup.png" alt="OpenAlex 官方标识" data-i18n-alt="OpenAlex 官方标识" width="3026" height="551" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-s2"><img src="/assets/logos/s2-mark.svg" alt="Semantic Scholar 官方标识" data-i18n-alt="Semantic Scholar 官方标识" width="125" height="81" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-dblp"><img src="/assets/logos/dblp-mark.png" alt="DBLP 官方标识" data-i18n-alt="DBLP 官方标识" width="128" height="128" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-acl"><img src="/assets/logos/acl-logo.svg" alt="ACL Anthology 官方标识" data-i18n-alt="ACL Anthology 官方标识" width="68" height="46" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-lune"><img src="/assets/logos/lune-logo-text.svg" alt="Lune Research 官方标识" data-i18n-alt="Lune Research 官方标识" width="885" height="276" loading="lazy" decoding="async"></li>
+          </ul>
+          <ul class="lp-rail-track" aria-hidden="true">
+            <li class="lp-rail-item lp-plate-arxiv"><img src="/assets/logos/arxiv-logo.svg" alt="arXiv 官方标识" data-i18n-alt="arXiv 官方标识" width="247" height="111" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-openreview"><img src="/assets/logos/openreview-logo.png" alt="OpenReview 官方标识" data-i18n-alt="OpenReview 官方标识" width="512" height="512" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-openalex"><img src="/assets/logos/openalex-lockup.png" alt="OpenAlex 官方标识" data-i18n-alt="OpenAlex 官方标识" width="3026" height="551" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-s2"><img src="/assets/logos/s2-mark.svg" alt="Semantic Scholar 官方标识" data-i18n-alt="Semantic Scholar 官方标识" width="125" height="81" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-dblp"><img src="/assets/logos/dblp-mark.png" alt="DBLP 官方标识" data-i18n-alt="DBLP 官方标识" width="128" height="128" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-acl"><img src="/assets/logos/acl-logo.svg" alt="ACL Anthology 官方标识" data-i18n-alt="ACL Anthology 官方标识" width="68" height="46" loading="lazy" decoding="async"></li>
+            <li class="lp-rail-item lp-plate-lune"><img src="/assets/logos/lune-logo-text.svg" alt="Lune Research 官方标识" data-i18n-alt="Lune Research 官方标识" width="885" height="276" loading="lazy" decoding="async"></li>
+          </ul>
+      </div>
+
+      <div class="lp-shell">
+        <div class="lp-register">
+          <section class="lp-register-group">
+            <div class="lp-register-role"><span class="lp-register-index">01</span><h3><span data-i18n="前沿与开放获取">前沿与开放获取</span></h3></div>
+            <div class="lp-register-body">
+              <p class="lp-register-sources"><b>arXiv</b><i>·</i><b>Semantic Scholar</b></p>
+              <p><span data-i18n="从预印本与论文摘要出发，发现近期相关工作。">从预印本与论文摘要出发，发现近期相关工作。</span></p>
+            </div>
+          </section>
+          <section class="lp-register-group">
+            <div class="lp-register-role"><span class="lp-register-index">02</span><h3><span data-i18n="会议与展示类别">会议与展示类别</span></h3></div>
+            <div class="lp-register-body">
+              <p class="lp-register-sources"><b>OpenReview</b><i>·</i><b>ACL Anthology</b></p>
+              <p><span data-i18n="核对会议录用与 Oral / Spotlight / Poster 记录。">核对会议录用与 Oral / Spotlight / Poster 记录。</span></p>
+            </div>
+          </section>
+          <section class="lp-register-group">
+            <div class="lp-register-role"><span class="lp-register-index">03</span><h3><span data-i18n="出版与书目">出版与书目</span></h3></div>
+            <div class="lp-register-body">
+              <p class="lp-register-sources"><b>OpenAlex</b><i>·</i><b>DBLP</b></p>
+              <p><span data-i18n="核对期刊、发表年份与作者书目信息。">核对期刊、发表年份与作者书目信息。</span></p>
+            </div>
+          </section>
+          <section class="lp-register-group">
+            <div class="lp-register-role"><span class="lp-register-index">04</span><h3><span data-i18n="顶会论文与全文">顶会论文与全文</span></h3></div>
+            <div class="lp-register-body">
+              <p class="lp-register-sources"><b>Lune Research</b><i>·</i><b>MCP</b></p>
+              <p><span data-i18n="检索顶会论文，按需阅读全文与相关工作。">检索顶会论文，按需阅读全文与相关工作。</span></p>
+            </div>
+          </section>
+        </div>
+
+        <p class="lp-source-note"><span data-i18n="来源标识归各自权利人所有。">来源标识归各自权利人所有。</span></p>
+      </div>
+    </section>
+
+    <section class="lp-workflow lp-shell" id="workflow" aria-labelledby="workflow-title">
+      <header class="lp-section-header"><div><p class="lp-eyebrow">A CONTINUOUS RESEARCH LOOP</p><h2 id="workflow-title"><span data-i18n="不止找到论文。">不止找到论文。</span><br><span data-i18n="让每一步，都接得上下一步。">让每一步，都接得上下一步。</span></h2></div><p class="lp-section-intro"><span data-i18n="Agent 承接检索与整理，">Agent 承接检索与整理，</span><br><span data-i18n="你始终掌握问题与方向。">你始终掌握问题与方向。</span></p></header>
+      <ol class="lp-path">
+        <li><div class="lp-path-top"><span>01</span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.2"/></svg></div><h3><span data-i18n="说明研究问题">说明研究问题</span></h3><p><span data-i18n="给出主题、阅读目的，以及会议、年份或类别要求。">给出主题、阅读目的，以及会议、年份或类别要求。</span></p></li>
+        <li><div class="lp-path-top"><span>02</span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.2"/></svg></div><h3><span data-i18n="规划多源检索">规划多源检索</span></h3><p><span data-i18n="按需求选择学术来源，有缺口时再补充检索。">按需求选择学术来源，有缺口时再补充检索。</span></p></li>
+        <li><div class="lp-path-top"><span>03</span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.2"/></svg></div><h3><span data-i18n="依据摘要筛选">依据摘要筛选</span></h3><p><span data-i18n="查看推荐理由、摘要依据，以及出版要求的满足情况。">查看推荐理由、摘要依据，以及出版要求的满足情况。</span></p></li>
+        <li><div class="lp-path-top"><span>04</span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.2"/></svg></div><h3><span data-i18n="形成研究综合">形成研究综合</span></h3><p><span data-i18n="连接贡献与技术路线，整理阅读顺序与待验证假设。">连接贡献与技术路线，整理阅读顺序与待验证假设。</span></p></li>
+        <li><div class="lp-path-top"><span>05</span><span class="lp-loop-symbol" aria-hidden="true">↻</span></div><h3><span data-i18n="在对话中迭代">在对话中迭代</span></h3><p><span data-i18n="比较、排除或调整方向，沿着已有证据继续追问。">比较、排除或调整方向，沿着已有证据继续追问。</span></p></li>
+      </ol>
+    </section>
+
+    <section class="lp-evidence-section lp-shell" aria-labelledby="boundaries-title">
+      <div class="lp-evidence-heading"><p class="lp-eyebrow">FOLLOW THE EVIDENCE</p><h2 id="boundaries-title"><span data-i18n="每一份推荐，">每一份推荐，</span><br><span data-i18n="都有线索可循。">都有线索可循。</span></h2><p><span data-i18n="沿着摘要引文回到论文，将阅读发现连接为下一步问题。">沿着摘要引文回到论文，将阅读发现连接为下一步问题。</span></p><a class="lp-text-link" href="/search"><span data-i18n="探索研究工作台">探索研究工作台</span> <span aria-hidden="true">↗</span></a></div>
+      <div class="lp-evidence-points">
+        <article><span class="lp-point-index" aria-hidden="true">01 /</span><div><h3><span data-i18n="出版信息，随论文呈现。">出版信息，随论文呈现。</span></h3><p><span data-i18n="结合官方录用记录与期刊元数据，展示会议、年份与出版身份。">结合官方录用记录与期刊元数据，展示会议、年份与出版身份。</span></p></div></article>
+        <article><span class="lp-point-index" aria-hidden="true">02 /</span><div><h3><span data-i18n="围绕你的研究目的筛选。">围绕你的研究目的筛选。</span></h3><p><span data-i18n="结合主题相关性、阅读目的与发表时间，找到值得深入的论文。">结合主题相关性、阅读目的与发表时间，找到值得深入的论文。</span></p></div></article>
+        <article><span class="lp-point-index" aria-hidden="true">03 /</span><div><h3><span data-i18n="从研究脉络，走向实验问题。">从研究脉络，走向实验问题。</span></h3><p><span data-i18n="基于所选论文摘要，整理技术路线、阅读顺序与待验证假设。">基于所选论文摘要，整理技术路线、阅读顺序与待验证假设。</span></p></div></article>
+      </div>
+    </section>
+
+    <section class="lp-closing lp-shell" aria-labelledby="closing-title"><div class="lp-closing-inner"><div><p class="lp-eyebrow">YOUR NEXT QUESTION STARTS HERE</p><h2 id="closing-title"><span data-i18n="带着一个问题来。">带着一个问题来。</span><br><span data-i18n="带着下一步离开。">带着下一步离开。</span></h2></div><div class="lp-closing-actions"><a class="lp-button lp-button-primary" href="/search"><span data-i18n="开始你的研究">开始你的研究</span> <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.5"/></svg></a><a class="lp-text-link" href="/search?demo=followup"><span data-i18n="或先体验离线演示">或先体验离线演示</span> <span aria-hidden="true">↗</span></a></div><svg class="lp-closing-ornament" viewBox="0 0 220 220" fill="none" aria-hidden="true"><circle cx="110" cy="110" r="90"/><circle cx="110" cy="110" r="65"/><path d="M20 110h180M110 20v180M46 46l128 128M46 174 174 46"/></svg></div></section>
+  </main>
+
+  <footer class="lp-footer lp-shell"><a class="lp-footer-brand" href="/">ScholarGuide<span class="lp-brand-dot">.</span></a><p><span data-i18n="从一个认真的问题开始，走到更清楚的下一步。">从一个认真的问题开始，走到更清楚的下一步。</span></p><nav aria-label="页脚导航" data-i18n-aria-label="页脚导航"><a href="/search" data-i18n="检索">检索</a><a href="/chat" data-i18n="对话">对话</a><a href="/settings" data-i18n="模型">模型</a><a href="/activity" data-i18n="活动">活动</a></nav><span class="lp-footer-note"><span data-i18n="研究辅助 · 以摘要与来源元数据为依据">研究辅助 · 以摘要与来源元数据为依据</span></span></footer>
+</body>
+</html>

@@ -1,0 +1,3 @@
+# Offline transcript: the assistant asks one clarifying question, then resumes.
+Find RAG reading-list papers for me; I am not sure whether for a survey.
+It is for a survey, include one survey paper.

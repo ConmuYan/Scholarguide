@@ -1,0 +1,7 @@
+{
+  "cases": [
+    {"id":"case1","task":{"required_claims":1},"snapshot":{"revision":1,"papers":[{"id":"P1","abstract":"The synthetic device uses a blue sensor."}],"evidence":[{"id":"E1","paper_id":"P1","quote":"uses a blue sensor"}]},"claims":[{"claim_id":"C1","text":"The device uses a sensor.","evidence_ids":["E1"]}],"verdict":"retain"},
+    {"id":"case2","task":{"required_claims":1},"snapshot":{"revision":2,"papers":[{"id":"P2","abstract":"A fictional study reports a limited simulated gain."}],"evidence":[{"id":"E2","paper_id":"P2","quote":"limited simulated gain"}]},"claims":[{"claim_id":"C2","text":"A simulated gain was reported.","evidence_ids":["E2"]}],"verdict":"qualify"},
+    {"id":"case3","task":{"required_claims":1},"snapshot":{"revision":3,"papers":[{"id":"P3","abstract":"An imaginary benchmark showed no measured improvement."}],"evidence":[{"id":"E3","paper_id":"P3","quote":"no measured improvement"}]},"claims":[{"claim_id":"C3","text":"The benchmark improved.","evidence_ids":["E3"]}],"verdict":"drop"}
+  ]
+}

@@ -1,0 +1,1060 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title data-i18n="Activity · ScholarGuide">Activity · ScholarGuide</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b1b1b'/%3E%3Cpath d='M8 9h7l2 2h7v14h-7l-2-2H8z' fill='none' stroke='%23faf9f6' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/trace.css">
+  
+  <script type="application/json" id="sg-page-i18n">
+{
+"研究工作室": {
+    "en": "Research workspace",
+    "zh-Hant": "研究工作室"
+  },
+  "研究导航": {
+    "en": "Research navigation",
+    "zh-Hant": "研究導覽"
+  },
+  "研究路径": {
+    "en": "Your research",
+    "zh-Hant": "研究路徑"
+  },
+  "从问题找到论文": {
+    "en": "Find papers for your question",
+    "zh-Hant": "從問題找到論文"
+  },
+  "沿着证据继续": {
+    "en": "Continue with the evidence",
+    "zh-Hant": "沿著證據繼續"
+  },
+  "回看研究过程": {
+    "en": "Review your research",
+    "zh-Hant": "回顧研究過程"
+  },
+  "连接与配置": {
+    "en": "Connections",
+    "zh-Hant": "連接與設定"
+  },
+  "读论文，启新思。": {
+    "en": "Read. Connect. Discover.",
+    "zh-Hant": "讀論文，啟新思。"
+  },
+  "本地工作空间": {
+    "en": "Local workspace",
+    "zh-Hant": "本地工作空間"
+  },
+
+  "跳到活动记录": {
+    "en": "Skip to activity",
+    "zh-Hant": "跳至活動記錄"
+  },
+  "侧边导航": {
+    "en": "Sidebar navigation",
+    "zh-Hant": "側邊導覽"
+  },
+  "ScholarGuide 首页": {
+    "en": "ScholarGuide home",
+    "zh-Hant": "ScholarGuide 首頁"
+  },
+  "工作区": {
+    "en": "Workspace",
+    "zh-Hant": "工作區"
+  },
+  "检索": {
+    "en": "Search",
+    "zh-Hant": "檢索"
+  },
+  "对话": {
+    "en": "Chat",
+    "zh-Hant": "對話"
+  },
+  "来源": {
+    "en": "Sources",
+    "zh-Hant": "來源"
+  },
+  "模型": {
+    "en": "Models",
+    "zh-Hant": "模型"
+  },
+  "观察": {
+    "en": "Observe",
+    "zh-Hant": "觀察"
+  },
+  "活动": {
+    "en": "Activity",
+    "zh-Hant": "活動"
+  },
+  "本地 · 课程项目": {
+    "en": "Local · Course project",
+    "zh-Hant": "本地 · 課程專案"
+  },
+  "文献发现 · v2": {
+    "en": "Literature discovery · v2",
+    "zh-Hant": "文獻發現 · v2"
+  },
+  "打开导航": {
+    "en": "Open navigation",
+    "zh-Hant": "開啟導覽"
+  },
+  "切换主题": {
+    "en": "Change theme",
+    "zh-Hant": "切換主題"
+  },
+  "研究活动": {
+    "en": "Research activity",
+    "zh-Hant": "研究活動"
+  },
+  "只读": {
+    "en": "Read only",
+    "zh-Hant": "唯讀"
+  },
+  "研究活动记录。": {
+    "en": "Research activity.",
+    "zh-Hant": "研究活動記錄。"
+  },
+  "从真实事件回看一轮研究：任务如何被理解，Agent 选出什么动作，来源与模型实际调用了多久，最后为什么交付或停止。": {
+    "en": "Review a research round through real events: how the task was understood, which actions the agent chose, how long sources and models took, and why it delivered or stopped.",
+    "zh-Hant": "從真實事件回顧一輪研究：任務如何被理解，Agent 選出什麼動作，來源與模型實際呼叫了多久，最後為什麼交付或停止。"
+  },
+  "概览": {
+    "en": "Overview",
+    "zh-Hant": "概覽"
+  },
+  "会话": {
+    "en": "Sessions",
+    "zh-Hant": "會話"
+  },
+  "单次运行": {
+    "en": "Runs",
+    "zh-Hant": "單次執行"
+  },
+  "事件": {
+    "en": "Events",
+    "zh-Hant": "事件"
+  },
+  "已完成": {
+    "en": "Completed",
+    "zh-Hant": "已完成"
+  },
+  "运行与会话": {
+    "en": "Runs and sessions",
+    "zh-Hant": "執行與會話"
+  },
+  "记录类型": {
+    "en": "Record type",
+    "zh-Hant": "記錄類型"
+  },
+  "运行": {
+    "en": "Runs",
+    "zh-Hant": "執行"
+  },
+  "搜索记录": {
+    "en": "Search records",
+    "zh-Hant": "搜尋記錄"
+  },
+  "按标题、消息或 ID 搜索…": {
+    "en": "Search by title, message or ID…",
+    "zh-Hant": "依標題、訊息或 ID 搜尋…"
+  },
+  "按模式筛选": {
+    "en": "Filter by mode",
+    "zh-Hant": "依模式篩選"
+  },
+  "全部模式": {
+    "en": "All modes",
+    "zh-Hant": "全部模式"
+  },
+  "还没有记录。先运行一次检索，或在对话中发一轮。": {
+    "en": "No records yet. Run a search or start a chat.",
+    "zh-Hant": "還沒有記錄。先執行一次檢索，或在對話中發起一輪。"
+  },
+  "查看本地": {
+    "en": "View local",
+    "zh-Hant": "查看本地"
+  },
+  "与 SQLite 事件；删除需单独确认。": {
+    "en": "and SQLite events; deletion requires separate confirmation.",
+    "zh-Hant": "與 SQLite 事件；刪除需個別確認。"
+  },
+  "选择一条记录。": {
+    "en": "Select a record.",
+    "zh-Hant": "選擇一筆記錄。"
+  },
+  "会话展示任务更新、检索、评估、复用与交付；单次检索展示执行轨迹和资源用量。": {
+    "en": "Sessions show task updates, search, assessment, reuse and delivery; runs show execution traces and resource usage.",
+    "zh-Hant": "會話顯示任務更新、檢索、評估、複用與交付；單次檢索顯示執行軌跡和資源用量。"
+  },
+  "在 Chat 查看与继续 →": {
+    "en": "View and continue in Chat →",
+    "zh-Hant": "在 Chat 查看與繼續 →"
+  },
+  "删除本地记录": {
+    "en": "Delete local record",
+    "zh-Hant": "刪除本地記錄"
+  },
+  "正在跟踪": {
+    "en": "Following",
+    "zh-Hant": "正在追蹤"
+  },
+  "TRACE · 模型提议与约束": {
+    "en": "TRACE · Model proposals and constraints",
+    "zh-Hant": "TRACE · 模型提議與約束"
+  },
+  "事件树": {
+    "en": "Event tree",
+    "zh-Hant": "事件樹"
+  },
+  "选择一行查看输入、输出与状态": {
+    "en": "Select a row to inspect input, output and status",
+    "zh-Hant": "選擇一列查看輸入、輸出與狀態"
+  },
+  "选择一个事件，查看实际输入、工具结果与状态。": {
+    "en": "Select an event to inspect its input, tool result and status.",
+    "zh-Hant": "選擇一個事件，查看實際輸入、工具結果與狀態。"
+  },
+  "原始事件流": {
+    "en": "Raw event stream",
+    "zh-Hant": "原始事件流"
+  },
+  "审计用 · 展开查看全部事件": {
+    "en": "For audit · expand to view all events",
+    "zh-Hant": "供稽核使用 · 展開查看全部事件"
+  },
+  "按动作筛选": {
+    "en": "Filter by action",
+    "zh-Hant": "依動作篩選"
+  },
+  "完成": {
+    "en": "Complete",
+    "zh-Hant": "完成"
+  },
+  "无结果": {
+    "en": "No results",
+    "zh-Hant": "無結果"
+  },
+  "错误": {
+    "en": "Error",
+    "zh-Hant": "錯誤"
+  },
+  "失败": {
+    "en": "Failed",
+    "zh-Hant": "失敗"
+  },
+  "已停止": {
+    "en": "Stopped",
+    "zh-Hant": "已停止"
+  },
+  "运行中": {
+    "en": "Running",
+    "zh-Hant": "執行中"
+  },
+  "排队中": {
+    "en": "Queued",
+    "zh-Hant": "排隊中"
+  },
+  "部分完成": {
+    "en": "Partial",
+    "zh-Hant": "部分完成"
+  },
+  "未知": {
+    "en": "Unknown",
+    "zh-Hant": "未知"
+  },
+  "实时": {
+    "en": "Live",
+    "zh-Hant": "即時"
+  },
+  "演示": {
+    "en": "Demo",
+    "zh-Hant": "示範"
+  },
+  "离线": {
+    "en": "Offline",
+    "zh-Hant": "離線"
+  },
+  "多源": {
+    "en": "Multiple sources",
+    "zh-Hant": "多來源"
+  },
+  "单次检索": {
+    "en": "Search run",
+    "zh-Hant": "單次檢索"
+  },
+  "全部": {
+    "en": "All",
+    "zh-Hant": "全部"
+  },
+  "任务": {
+    "en": "Task",
+    "zh-Hant": "任務"
+  },
+  "工具": {
+    "en": "Tools",
+    "zh-Hant": "工具"
+  },
+  "评估": {
+    "en": "Assessment",
+    "zh-Hant": "評估"
+  },
+  "复用": {
+    "en": "Reuse",
+    "zh-Hant": "複用"
+  },
+  "交付": {
+    "en": "Delivery",
+    "zh-Hant": "交付"
+  },
+  "澄清": {
+    "en": "Clarification",
+    "zh-Hant": "釐清"
+  },
+  "异常": {
+    "en": "Errors",
+    "zh-Hant": "異常"
+  },
+  "删除本机会话": {
+    "en": "Delete local session",
+    "zh-Hant": "刪除本地會話"
+  },
+  "删除本地运行": {
+    "en": "Delete local run",
+    "zh-Hant": "刪除本地執行"
+  },
+  "删除这条本地记录？不会删除远端数据、备份或已发出的请求。": {
+    "en": "Delete this local record? Remote data, backups and requests already sent will not be deleted.",
+    "zh-Hant": "刪除這筆本地記錄？不會刪除遠端資料、備份或已發出的請求。"
+  },
+  "运行中的记录不能删除；请先停止并等待结束。": {
+    "en": "A running record cannot be deleted; stop it and wait for it to finish first.",
+    "zh-Hant": "執行中的記錄無法刪除；請先停止並等待結束。"
+  },
+  "删除失败。": {
+    "en": "Deletion failed.",
+    "zh-Hant": "刪除失敗。"
+  },
+  "删除失败；本地记录状态未知。": {
+    "en": "Deletion failed; the local record status is unknown.",
+    "zh-Hant": "刪除失敗；本地記錄狀態未知。"
+  },
+  "本地记录已删除。": {
+    "en": "Local record deleted.",
+    "zh-Hant": "本地記錄已刪除。"
+  },
+  "本地记录已删除，但列表刷新失败；请稍后刷新。": {
+    "en": "Local record deleted, but the list could not be refreshed; refresh later.",
+    "zh-Hant": "本地記錄已刪除，但清單重新整理失敗；請稍後重新整理。"
+  },
+  "正在读取这条记录…": {
+    "en": "Loading this record…",
+    "zh-Hant": "正在讀取這筆記錄…"
+  },
+  "正在筛选记录…": {
+    "en": "Filtering records…",
+    "zh-Hant": "正在篩選記錄…"
+  },
+  "没有符合当前筛选的记录。": {
+    "en": "No records match the current filters.",
+    "zh-Hant": "沒有符合目前篩選條件的記錄。"
+  },
+  "没有符合当前筛选的记录。请尝试清除搜索或切换模式。": {
+    "en": "No records match. Clear the search or change mode.",
+    "zh-Hant": "沒有符合目前篩選條件的記錄。請清除搜尋或切換模式。"
+  },
+  "还没有会话记录。先到 Chat 发起一轮对话。": {
+    "en": "No sessions yet. Start a conversation in Chat.",
+    "zh-Hant": "還沒有會話記錄。先到 Chat 發起對話。"
+  },
+  "还没有单次运行记录。先到 Search 发起一次检索。": {
+    "en": "No runs yet. Start a search in Search.",
+    "zh-Hant": "還沒有單次執行記錄。先到 Search 發起檢索。"
+  },
+  "正在跟踪这次运行": {
+    "en": "Following this run",
+    "zh-Hant": "正在追蹤這次執行"
+  },
+  "正在跟踪这一轮": {
+    "en": "Following this turn",
+    "zh-Hant": "正在追蹤這一輪"
+  },
+  "原始事件 JSON": {
+    "en": "Raw event JSON",
+    "zh-Hant": "原始事件 JSON"
+  },
+  "查看原始事件": {
+    "en": "View raw event",
+    "zh-Hant": "查看原始事件"
+  },
+  "这个事件没有公开的结构化字段。": {
+    "en": "This event has no public structured fields.",
+    "zh-Hant": "這個事件沒有公開的結構化欄位。"
+  },
+  "出现错误": {
+    "en": "Error",
+    "zh-Hant": "發生錯誤"
+  },
+  "进行中": {
+    "en": "In progress",
+    "zh-Hant": "進行中"
+  },
+  "已记录": {
+    "en": "Recorded",
+    "zh-Hant": "已記錄"
+  },
+  "检索执行": {
+    "en": "Search execution",
+    "zh-Hant": "檢索執行"
+  },
+  "会话执行": {
+    "en": "Session execution",
+    "zh-Hant": "會話執行"
+  },
+  "输入": {
+    "en": "Input",
+    "zh-Hant": "輸入"
+  },
+  "规划": {
+    "en": "Planning",
+    "zh-Hant": "規劃"
+  },
+  "需求与任务": {
+    "en": "Requirements and task",
+    "zh-Hant": "需求與任務"
+  },
+  "用户输入、解析与任务状态": {
+    "en": "User input, parsing and task state",
+    "zh-Hant": "使用者輸入、解析與任務狀態"
+  },
+  "Agent 行动": {
+    "en": "Agent actions",
+    "zh-Hant": "Agent 行動"
+  },
+  "决策、门控与复用": {
+    "en": "Decisions, gates and reuse",
+    "zh-Hant": "決策、閘控與複用"
+  },
+  "来源与工具": {
+    "en": "Sources and tools",
+    "zh-Hant": "來源與工具"
+  },
+  "真实模型、HTTP 与检索调用": {
+    "en": "Actual model, HTTP and search calls",
+    "zh-Hant": "實際模型、HTTP 與檢索呼叫"
+  },
+  "导入记录": {
+    "en": "Imported records",
+    "zh-Hant": "匯入記錄"
+  },
+  "Search 原始轨迹": {
+    "en": "Raw Search trace",
+    "zh-Hant": "Search 原始軌跡"
+  },
+  "交付与结果": {
+    "en": "Delivery and results",
+    "zh-Hant": "交付與結果"
+  },
+  "证据检查与最终清单": {
+    "en": "Evidence checks and final list",
+    "zh-Hant": "證據檢查與最終清單"
+  },
+  "{count}/{total} 条匹配": {
+    "en": "{count}/{total} matches",
+    "zh-Hant": "{count}/{total} 筆符合"
+  },
+  "显示 {count}/{total} 条": {
+    "en": "Showing {count}/{total}",
+    "zh-Hant": "顯示 {count}/{total} 筆"
+  },
+  "{count} 条事件": {
+    "en": "{count} events",
+    "zh-Hant": "{count} 筆事件"
+  },
+  "{count} 轮": {
+    "en": "{count} turns",
+    "zh-Hant": "{count} 輪"
+  },
+  "{count} 事件": {
+    "en": "{count} events",
+    "zh-Hant": "{count} 事件"
+  },
+  "{count} 篇": {
+    "en": "{count} papers",
+    "zh-Hant": "{count} 篇"
+  },
+  "第 {count} 版": {
+    "en": "Revision {count}",
+    "zh-Hant": "第 {count} 版"
+  },
+  "会话 {id}": {
+    "en": "Session {id}",
+    "zh-Hant": "會話 {id}"
+  },
+  "运行 {id}": {
+    "en": "Run {id}",
+    "zh-Hant": "執行 {id}"
+  },
+  "时间显示：本地时间（{zone}）· 数据源为 UTC 时间戳": {
+    "en": "Times shown locally ({zone}) · source timestamps are UTC",
+    "zh-Hant": "時間顯示：本地時間（{zone}）· 資料來源為 UTC 時間戳"
+  },
+  "初始化任务": {
+    "en": "Initialize task",
+    "zh-Hant": "初始化任務"
+  },
+  "更新任务": {
+    "en": "Update task",
+    "zh-Hant": "更新任務"
+  },
+  "解析需求": {
+    "en": "Parse requirements",
+    "zh-Hant": "解析需求"
+  },
+  "阅读目标策略": {
+    "en": "Read goal and policy",
+    "zh-Hant": "讀取目標策略"
+  },
+  "动作决策": {
+    "en": "Action decision",
+    "zh-Hant": "動作決策"
+  },
+  "拒绝动作": {
+    "en": "Reject action",
+    "zh-Hant": "拒絕動作"
+  },
+  "复用检查": {
+    "en": "Reuse check",
+    "zh-Hant": "複用檢查"
+  },
+  "规划研究路线": {
+    "en": "Plan research directions",
+    "zh-Hant": "規劃研究路線"
+  },
+  "核对路线覆盖": {
+    "en": "Check research coverage",
+    "zh-Hant": "核對路線覆蓋"
+  },
+  "Agent 节点": {
+    "en": "Agent node",
+    "zh-Hant": "Agent 節點"
+  },
+  "候选结果": {
+    "en": "Candidate results",
+    "zh-Hant": "候選結果"
+  },
+  "评估候选": {
+    "en": "Assess candidates",
+    "zh-Hant": "評估候選"
+  },
+  "覆盖检查": {
+    "en": "Coverage check",
+    "zh-Hant": "覆蓋檢查"
+  },
+  "交付检查": {
+    "en": "Delivery check",
+    "zh-Hant": "交付檢查"
+  },
+  "交付结果": {
+    "en": "Deliver results",
+    "zh-Hant": "交付結果"
+  },
+  "结束本轮": {
+    "en": "Finish turn",
+    "zh-Hant": "結束本輪"
+  },
+  "停止本轮": {
+    "en": "Stop turn",
+    "zh-Hant": "停止本輪"
+  },
+  "生成补搜查询": {
+    "en": "Generate follow-up query",
+    "zh-Hant": "產生補充搜尋查詢"
+  },
+  "导入 Search 轨迹": {
+    "en": "Import Search trace",
+    "zh-Hant": "匯入 Search 軌跡"
+  },
+  "请求澄清": {
+    "en": "Request clarification",
+    "zh-Hant": "請求釐清"
+  },
+  "模型配置": {
+    "en": "Model configuration",
+    "zh-Hant": "模型設定"
+  },
+  "研究综合": {
+    "en": "Research synthesis",
+    "zh-Hant": "研究綜合"
+  },
+  "来源排队": {
+    "en": "Source queued",
+    "zh-Hant": "來源排隊"
+  },
+  "来源就绪": {
+    "en": "Source ready",
+    "zh-Hant": "來源就緒"
+  },
+  "状态": {
+    "en": "Status",
+    "zh-Hant": "狀態"
+  },
+  "耗时": {
+    "en": "Duration",
+    "zh-Hant": "耗時"
+  },
+  "类别": {
+    "en": "Category",
+    "zh-Hant": "類別"
+  },
+  "尝试": {
+    "en": "Attempt",
+    "zh-Hant": "嘗試"
+  },
+  "返回": {
+    "en": "Returned",
+    "zh-Hant": "返回"
+  },
+  "原因": {
+    "en": "Reason",
+    "zh-Hant": "原因"
+  },
+  "节点": {
+    "en": "Node",
+    "zh-Hant": "節點"
+  },
+  "查询": {
+    "en": "Query",
+    "zh-Hant": "查詢"
+  },
+  "决策": {
+    "en": "Decision",
+    "zh-Hant": "決策"
+  },
+  "字段变更": {
+    "en": "Field changes",
+    "zh-Hant": "欄位變更"
+  },
+  "合法动作": {
+    "en": "Legal actions",
+    "zh-Hant": "合法動作"
+  },
+  "缺口": {
+    "en": "Gaps",
+    "zh-Hant": "缺口"
+  },
+  "计划": {
+    "en": "Plan",
+    "zh-Hant": "計畫"
+  },
+  "用量": {
+    "en": "Usage",
+    "zh-Hant": "用量"
+  },
+  "导入事件": {
+    "en": "Imported events",
+    "zh-Hant": "匯入事件"
+  },
+  "主题": {
+    "en": "Topic",
+    "zh-Hant": "主題"
+  },
+  "用途": {
+    "en": "Purpose",
+    "zh-Hant": "用途"
+  },
+  "排除": {
+    "en": "Excluded",
+    "zh-Hant": "排除"
+  },
+  "超范围": {
+    "en": "Out of scope",
+    "zh-Hant": "超出範圍"
+  },
+  "模式": {
+    "en": "Mode",
+    "zh-Hant": "模式"
+  },
+  "方法": {
+    "en": "Method",
+    "zh-Hant": "方法"
+  },
+  "论文": {
+    "en": "Papers",
+    "zh-Hant": "論文"
+  },
+  "成本估算": {
+    "en": "Estimated cost",
+    "zh-Hant": "成本估算"
+  },
+  "工具开始与结束按 span_id 合并为一次操作。模型调用显示实际阶段，来源请求显示来源与耗时；展开原始事件可核对完整载荷。": {
+    "en": "Tool starts and ends are merged by span_id. Model calls show actual stages; source requests show sources and duration. Expand raw events to inspect the full payload.",
+    "zh-Hant": "工具開始與結束依 span_id 合併為一次操作。模型呼叫顯示實際階段，來源請求顯示來源與耗時；展開原始事件可核對完整載荷。"
+  },
+  "单次检索 · {mode}": {
+    "en": "Search run · {mode}",
+    "zh-Hant": "單次檢索 · {mode}"
+  },
+  "会话 · 继承 Search": {
+    "en": "Session · imported Search",
+    "zh-Hant": "會話 · 繼承 Search"
+  },
+  "会话 · 有状态执行": {
+    "en": "Session · stateful execution",
+    "zh-Hant": "會話 · 有狀態執行"
+  },
+  "{count} 个工具操作": {
+    "en": "{count} tool operations",
+    "zh-Hant": "{count} 個工具操作"
+  },
+  "{count} 次模型调用": {
+    "en": "{count} model calls",
+    "zh-Hant": "{count} 次模型呼叫"
+  },
+  "{count} 次来源请求": {
+    "en": "{count} source requests",
+    "zh-Hant": "{count} 次來源請求"
+  },
+  "{count} 个错误": {
+    "en": "{count} errors",
+    "zh-Hant": "{count} 個錯誤"
+  },
+  "模型调用 · {stage}": {
+    "en": "Model call · {stage}",
+    "zh-Hant": "模型呼叫 · {stage}"
+  },
+  "检索 · {source}": {
+    "en": "Search · {source}",
+    "zh-Hant": "檢索 · {source}"
+  },
+  "HTTP 请求 · {source}": {
+    "en": "HTTP request · {source}",
+    "zh-Hant": "HTTP 請求 · {source}"
+  },
+  "{tool} · {source}": {
+    "en": "{tool} · {source}",
+    "zh-Hant": "{tool} · {source}"
+  },
+  "工具调用": {
+    "en": "Tool call",
+    "zh-Hant": "工具呼叫"
+  },
+  "执行中；页面随真实事件更新。": {
+    "en": "In progress; the page updates with real events.",
+    "zh-Hant": "執行中；頁面會隨真實事件更新。"
+  },
+  "返回 {count}": {
+    "en": "Returned {count}",
+    "zh-Hant": "返回 {count}"
+  },
+  "HTTP {status}": {
+    "en": "HTTP {status}",
+    "zh-Hant": "HTTP {status}"
+  },
+  "节点 · {node}": {
+    "en": "Node · {node}",
+    "zh-Hant": "節點 · {node}"
+  },
+  "动作 · {decision}": {
+    "en": "Action · {decision}",
+    "zh-Hant": "動作 · {decision}"
+  },
+  "未记录": {
+    "en": "Not recorded",
+    "zh-Hant": "未記錄"
+  },
+  "更新 {count} 个字段": {
+    "en": "Updated {count} fields",
+    "zh-Hant": "更新 {count} 個欄位"
+  },
+  "已建立结构化任务状态": {
+    "en": "Structured task state initialized",
+    "zh-Hant": "已建立結構化任務狀態"
+  },
+  "已解析需求": {
+    "en": "Requirements parsed",
+    "zh-Hant": "已解析需求"
+  },
+  "{count} 条研究路线": {
+    "en": "{count} research directions",
+    "zh-Hant": "{count} 條研究路線"
+  },
+  "复用 {reused} 篇 · 失效 {stale} 篇": {
+    "en": "Reused {reused} · stale {stale}",
+    "zh-Hant": "複用 {reused} 篇 · 失效 {stale} 篇"
+  },
+  "运行节点": {
+    "en": "Runtime node",
+    "zh-Hant": "執行節點"
+  },
+  " · 返回 {count} 篇": {
+    "en": " · returned {count}",
+    "zh-Hant": " · 返回 {count} 篇"
+  },
+  "返回 {returned} 篇 · 新增 {added} 篇": {
+    "en": "Returned {returned} · added {added}",
+    "zh-Hant": "返回 {returned} 篇 · 新增 {added} 篇"
+  },
+  "检查 {count} 篇": {
+    "en": "Checked {count}",
+    "zh-Hant": "檢查 {count} 篇"
+  },
+  "{count} 篇 · {gaps} 项缺口": {
+    "en": "{count} · {gaps} gaps",
+    "zh-Hant": "{count} 篇 · {gaps} 項缺口"
+  },
+  "交付检查通过": {
+    "en": "Delivery check passed",
+    "zh-Hant": "交付檢查通過"
+  },
+  "交付被拒绝": {
+    "en": "Delivery rejected",
+    "zh-Hant": "交付遭拒"
+  },
+  "交付 {count} 篇": {
+    "en": "Delivered {count}",
+    "zh-Hant": "交付 {count} 篇"
+  },
+  "已按用户请求停止": {
+    "en": "Stopped at the user's request",
+    "zh-Hant": "已依使用者要求停止"
+  },
+  "运行错误": {
+    "en": "Runtime error",
+    "zh-Hant": "執行錯誤"
+  },
+  "导入 0 条事件": {
+    "en": "Imported 0 events",
+    "zh-Hant": "匯入 0 筆事件"
+  },
+  "导入 {events} 条事件 · {searches} 轮检索": {
+    "en": "Imported {events} events · {searches} searches",
+    "zh-Hant": "匯入 {events} 筆事件 · {searches} 輪檢索"
+  },
+  " · {count} 次评估": {
+    "en": " · {count} assessments",
+    "zh-Hant": " · {count} 次評估"
+  },
+  "Activity · ScholarGuide": {
+    "en": "Activity · ScholarGuide",
+    "zh-Hant": "Activity · ScholarGuide"
+  },
+  "生成": {
+    "en": "Generate",
+    "zh-Hant": "產生"
+  },
+  "批量评估候选": {
+    "en": "Assess candidate batch",
+    "zh-Hant": "批次評估候選"
+  },
+  "理解需求": {
+    "en": "Understand requirements",
+    "zh-Hant": "理解需求"
+  },
+  "选择下一步": {
+    "en": "Choose next action",
+    "zh-Hant": "選擇下一步"
+  },
+  "整理研究综合": {
+    "en": "Prepare research synthesis",
+    "zh-Hant": "整理研究綜合"
+  },
+  "连接测试": {
+    "en": "Test connection",
+    "zh-Hant": "連線測試"
+  },
+  "准备状态": {
+    "en": "Prepare state",
+    "zh-Hant": "準備狀態"
+  },
+  "执行检索": {
+    "en": "Run search",
+    "zh-Hant": "執行檢索"
+  },
+  "检查缺口": {
+    "en": "Check gaps",
+    "zh-Hant": "檢查缺口"
+  },
+  "核对交付": {
+    "en": "Verify delivery",
+    "zh-Hant": "核對交付"
+  },
+  "收尾": {
+    "en": "Finalize",
+    "zh-Hant": "收尾"
+  },
+  "准备上下文": {
+    "en": "Prepare context",
+    "zh-Hant": "準備上下文"
+  },
+  "被门控": {
+    "en": "Blocked by gate",
+    "zh-Hant": "遭閘控阻擋"
+  },
+  "PROPOSAL": {
+    "en": "PROPOSAL",
+    "zh-Hant": "PROPOSAL"
+  },
+  "CONTRACT": {
+    "en": "CONTRACT",
+    "zh-Hant": "CONTRACT"
+  },
+  "NODE": {
+    "en": "NODE",
+    "zh-Hant": "NODE"
+  },
+  "TOOL": {
+    "en": "TOOL",
+    "zh-Hant": "TOOL"
+  },
+  "GATE": {
+    "en": "GATE",
+    "zh-Hant": "GATE"
+  },
+  "ERROR": {
+    "en": "ERROR",
+    "zh-Hant": "ERROR"
+  },
+  "IMPORT": {
+    "en": "IMPORT",
+    "zh-Hant": "IMPORT"
+  }
+}
+  </script>
+<script src="/theme.js" defer></script>
+  <script src="/activity-story.js" defer></script>
+  <script src="/trace.js" defer></script>
+  <script src="/activity.js" defer></script></head>
+<body>
+  <a class="skip-link" href="#main-content"><span data-i18n="跳到活动记录">跳到活动记录</span></a>
+  <aside class="sidebar" id="sidebar" aria-label="侧边导航" data-i18n-aria-label="侧边导航">
+    <a class="brand" href="/" aria-label="ScholarGuide 首页" data-i18n-aria-label="ScholarGuide 首页">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6l4 4h6v12h-6l-4-4H4V4Z"/><path d="M10 4v12M14 8v12"/></svg></span><span class="brand-copy"><span class="brand-name">ScholarGuide<span class="brand-period">.</span></span><span class="brand-caption" data-i18n="研究工作室">研究工作室</span></span>
+    </a>
+    <nav class="side-nav" aria-label="研究导航" data-i18n-aria-label="研究导航">
+      <span class="side-label" data-i18n="研究路径">研究路径</span>
+      <div class="side-primary">
+        <a class="side-link" href="/search"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13Z"/><path d="m16 16 4.5 4.5"/><path d="M8 8.5h5M8 11.5h3"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="检索">检索</span><span class="nav-description" data-i18n="从问题找到论文">从问题找到论文</span></span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+        <a class="side-link" href="/chat"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="对话">对话</span><span class="nav-description" data-i18n="沿着证据继续">沿着证据继续</span></span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+        <a class="side-link active" aria-current="page" href="/activity"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18h16"/><path d="m9 14 4-5 4 3 4-7"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="活动">活动</span><span class="nav-description" data-i18n="回看研究过程">回看研究过程</span></span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+      </div>
+      <div class="side-connections">
+        <span class="side-label" data-i18n="连接与配置">连接与配置</span>
+        <div class="side-tools">
+        <a class="side-link side-utility" href="/sources"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h4v4H6zM14 14h4v4h-4z"/><path d="M10 8h6v6M8 10v6h6"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="来源">来源</span></span></a>
+        <a class="side-link side-utility" href="/settings"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18M18 3v18M3 8h6M15 16h6"/><path d="M10 3h4v18h-4z"/></svg></span><span class="nav-copy"><span class="nav-title" data-i18n="模型">模型</span></span></a>
+        </div>
+      </div>
+    </nav>
+    <div class="side-bottom">
+      <p class="sidebar-local"><span class="local-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H4z"/><path d="M9 20h6M12 16v4"/></svg></span><span data-i18n="本地工作空间">本地工作空间</span></p>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="topbar">
+      <button type="button" class="menu-btn" id="menu-toggle" aria-label="打开导航" data-i18n-aria-label="打开导航" aria-expanded="false">☰</button>
+      <div class="top-actions">
+        <span class="model-pill"><span data-i18n="只读">只读</span></span>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="切换主题" data-i18n-aria-label="切换主题">☀</button>
+        <span class="avatar" aria-hidden="true">S</span>
+      </div>
+    </header>
+
+    <main id="main-content" class="page" tabindex="-1">
+      <header class="page-head">
+        <p class="page-label"><span data-i18n="观察">观察</span></p>
+        <h1 class="page-title"><span data-i18n="研究活动记录。">研究活动记录。</span></h1>
+        <p class="page-sub"><span data-i18n="从真实事件回看一轮研究：任务如何被理解，Agent 选出什么动作，来源与模型实际调用了多久，最后为什么交付或停止。">从真实事件回看一轮研究：任务如何被理解，Agent 选出什么动作，来源与模型实际调用了多久，最后为什么交付或停止。</span></p>
+        <p id="activity-tz" class="act-timezone"></p>
+      </header>
+
+      <section class="stats" aria-label="概览" data-i18n-aria-label="概览">
+        <div class="card stat"><span><span data-i18n="会话">会话</span></span><b id="stat-sessions">—</b></div>
+        <div class="card stat"><span><span data-i18n="单次运行">单次运行</span></span><b id="stat-runs">—</b></div>
+        <div class="card stat"><span><span data-i18n="事件">事件</span></span><b id="stat-events">—</b></div>
+        <div class="card stat"><span><span data-i18n="已完成">已完成</span></span><b id="stat-complete">—</b></div>
+      </section>
+
+      <div class="activity-shell">
+        <section class="card list-panel" aria-label="运行与会话" data-i18n-aria-label="运行与会话">
+          <div class="act-tabs" role="tablist" aria-label="记录类型" data-i18n-aria-label="记录类型">
+            <button type="button" class="act-tab active" id="tab-sessions" role="tab" aria-selected="true" aria-controls="activity-panel" tabindex="0"><span data-i18n="会话">会话</span></button>
+            <button type="button" class="act-tab" id="tab-runs" role="tab" aria-selected="false" aria-controls="activity-panel" tabindex="-1"><span data-i18n="运行">运行</span></button>
+          </div>
+          <div id="activity-panel" role="tabpanel" aria-labelledby="tab-sessions">
+          <label class="sr-only" for="activity-search"><span data-i18n="搜索记录">搜索记录</span></label>
+          <div class="act-filter-row">
+            <input id="activity-search" class="act-search" type="search" placeholder="按标题、消息或 ID 搜索…" data-i18n-placeholder="按标题、消息或 ID 搜索…">
+            <select id="activity-mode" class="act-mode" aria-label="按模式筛选" data-i18n-aria-label="按模式筛选">
+              <option value="all"><span data-i18n="全部模式">全部模式</span></option>
+              <option value="live">Live</option>
+              <option value="demo">Demo</option>
+            </select>
+          </div>
+          <ol id="activity-list" class="act-list" aria-live="polite"></ol>
+          <p id="activity-range" class="act-range"></p>
+          <p id="activity-empty" class="act-empty" hidden><span data-i18n="还没有记录。先运行一次检索，或在对话中发一轮。">还没有记录。先运行一次检索，或在对话中发一轮。</span></p>
+          <p class="side-note"><span data-i18n="查看本地">查看本地</span> <code>runs/</code> <span data-i18n="与 SQLite 事件；删除需单独确认。">与 SQLite 事件；删除需单独确认。</span></p>
+          </div>
+        </section>
+
+        <section class="card detail-panel" aria-live="polite">
+          <div id="activity-placeholder" class="empty-chat">
+            <b><span data-i18n="选择一条记录。">选择一条记录。</span></b>
+            <span data-i18n="会话展示任务更新、检索、评估、复用与交付；单次检索展示执行轨迹和资源用量。">会话展示任务更新、检索、评估、复用与交付；单次检索展示执行轨迹和资源用量。</span>
+          </div>
+          <div id="activity-detail" hidden>
+            <header class="act-head">
+              <div>
+                <p class="page-label" id="activity-kind"><span data-i18n="会话">会话</span></p>
+                <h2 id="activity-title" tabindex="-1">—</h2>
+              </div>
+              <div class="act-head-meta">
+                <a id="activity-continue" class="btn btn-inline" href="/chat" hidden><span data-i18n="在 Chat 查看与继续 →">在 Chat 查看与继续 →</span></a>
+                <button id="activity-delete" class="btn-text" type="button" hidden><span data-i18n="删除本地记录">删除本地记录</span></button>
+                <span id="activity-follow" class="act-follow" hidden aria-live="polite"><i aria-hidden="true"></i><span id="activity-follow-text"><span data-i18n="正在跟踪">正在跟踪</span></span></span>
+                <span id="activity-status" class="badge">—</span>
+                <span id="activity-cost" class="act-cost"></span>
+              </div>
+            </header>
+            <div id="activity-task" class="act-kv"></div>
+            <div id="activity-cost-breakdown" class="act-cost-breakdown" hidden></div>
+            <section id="activity-story" class="act-story" aria-label="Agent trace" hidden>
+              <div class="act-story-head">
+                <p class="page-label"><span data-i18n="TRACE · 模型提议与约束">TRACE · 模型提议与约束</span></p>
+                <span id="activity-story-runtime" class="act-story-runtime"></span>
+              </div>
+              <div id="activity-trace-summary" class="act-trace-summary"></div>
+              <div id="activity-graph" class="act-graph" aria-label="Execution graph"></div>
+              <div class="act-trace-layout">
+                <div class="act-trace-main">
+                  <div class="act-trace-toolbar">
+                    <span><span data-i18n="事件树">事件树</span></span>
+                    <span class="act-trace-hint"><span data-i18n="选择一行查看输入、输出与状态">选择一行查看输入、输出与状态</span></span>
+                  </div>
+                  <ol id="activity-trace-tree" class="act-trace-tree" aria-label="Trace tree"></ol>
+                </div>
+                <aside id="activity-span-inspector" class="act-span-inspector">
+                  <p class="act-span-placeholder"><span data-i18n="选择一个事件，查看实际输入、工具结果与状态。">选择一个事件，查看实际输入、工具结果与状态。</span></p>
+                </aside>
+              </div>
+              <p id="activity-story-foot" class="act-story-foot"></p>
+            </section>
+            <div id="activity-history" class="act-history" hidden></div>
+            <details class="act-raw-stream">
+              <summary><span data-i18n="原始事件流">原始事件流</span> <span class="act-raw-note"><span data-i18n="审计用 · 展开查看全部事件">审计用 · 展开查看全部事件</span></span></summary>
+              <div class="act-toolbar">
+                <div id="activity-filters" class="act-filters" role="group" aria-label="按动作筛选" data-i18n-aria-label="按动作筛选"></div>
+                <span id="activity-count" class="act-count"></span>
+              </div>
+              <ol id="activity-timeline" class="act-timeline"></ol>
+            </details>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

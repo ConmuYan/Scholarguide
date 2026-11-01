@@ -1,0 +1,4 @@
+-r requirements.txt
+# Optional development dependency for real Chrome interaction tests and screenshots.
+# Verified with the delivery runner; Chrome/Chromedriver must also be available.
+selenium==4.50.0
