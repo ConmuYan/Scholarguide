@@ -85,6 +85,15 @@ python lune_quota_schedule.py --status
 
 The scheduler only manages the *window*: Lune exposes no balance endpoint, so each automatic entry is marked as an assumption and the ledger still reports `external_usage_unknown`. Use `--mode manual` if you prefer to confirm the number yourself.
 
+Keep it current:
+
+```bash
+scholarguide update --check
+scholarguide update --yes
+```
+
+Updates verify the release checksum and never touch `~/.scholarguide` — your keys, profiles, quota ledger and history survive every upgrade, and the old version stays on disk.
+
 Keys are stored locally and never returned to the browser. Live runs bill **your** provider account; ScholarGuide ships no shared credits.
 
 ## Use it as an API

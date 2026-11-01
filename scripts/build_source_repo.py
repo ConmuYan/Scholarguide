@@ -30,7 +30,7 @@ TOP_LEVEL_FILES = ('app.py', 'app_mcp.py', 'activity.py', 'agent_runtime.py', 'a
                    'research_runtime.py', 'research_specialist.py', 'retrieval.py', 'reuse.py',
                    'session.py', 'source.py', 'source_parallel.py', 'source_scheduler.py',
                    'source_store.py', 'specialist_pilot.py', 'state.py', 'tool_governance.py',
-                   'tools.py', 'webapp.py', 'workflow.py',
+                   'tools.py', 'update_cli.py', 'webapp.py', 'workflow.py',
                    'README.md', 'README.zh-CN.md', 'PUBLIC_README.md', 'UPSTREAM.md', 'VERIFICATION.md',
                    'LICENSE', 'NOTICE.md', '.gitattributes', 'requirements.txt', 'requirements-dev.txt',
                    '.gitignore', '.env.example', 'state_schema.sql', 'mcp_servers.json',

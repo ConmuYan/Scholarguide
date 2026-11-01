@@ -38,6 +38,22 @@ The local Web/API binds to loopback only. Configure a model and optional source 
 
 The CLI entry point also accepts existing commands, for example `scholarguide doctor` and `scholarguide demo --scenario satisfied`.
 
+## Upgrade
+
+```bash
+scholarguide update --check    # report the latest release, change nothing
+scholarguide update --yes      # install it
+```
+
+`update` downloads that release's own installer, verifies its SHA-256 against the release `SHA256SUMS`, and runs it. The installer keeps every version in its own directory and only moves the `current-version` marker, so:
+
+- keys, provider profiles, the quota ledger, the quota schedule and all run history live in `~/.scholarguide` (`%USERPROFILE%\.scholarguide`) and are **not** read, rewritten or deleted by an update;
+- the previously installed version stays on disk, which makes a manual rollback possible;
+- nothing is upgraded unless you pass `--yes`; a network failure or checksum mismatch leaves the current version running;
+- running `update` from a source checkout is refused with a hint to use `git pull` instead.
+
+Restart the service afterwards so the new build is loaded.
+
 ## Upgrade and data
 
 Each version is installed into a separate version directory; the launch wrapper points to the newly installed release. User settings and history stay under `~/.scholarguide` (Windows: `%USERPROFILE%\.scholarguide`) and are not removed by install or upgrade. The release installer refuses to overwrite an already installed version directory. To switch versions, rerun that version's installer; inspect and back up user data before manually removing old versions.

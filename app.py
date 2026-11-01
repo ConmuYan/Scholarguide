@@ -55,6 +55,10 @@ def build_parser() -> argparse.ArgumentParser:
                       help='Enable research discovery and synthesis; --no-research-mode overrides the environment.')
     chat.add_argument('--no-cache', action='store_true')
     chat.add_argument('--timeout', type=float)
+    update = sub.add_parser('update', help='Check for or install a newer release; user data is preserved.')
+    update.add_argument('--check', action='store_true', help='only report; change nothing')
+    update.add_argument('--yes', action='store_true', help='install without asking')
+    update.add_argument('--version', default='', help='install this tag instead of the latest')
     return parser
 
 
@@ -222,6 +226,16 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.reconfigure(encoding='utf-8')
         sys.stderr.reconfigure(encoding='utf-8')
     args = build_parser().parse_args(argv)
+    if args.command == 'update':
+        from update_cli import main as update_main
+        forwarded = []
+        if args.check:
+            forwarded.append('--check')
+        if args.yes:
+            forwarded.append('--yes')
+        if args.version:
+            forwarded.extend(['--version', args.version])
+        return update_main(forwarded)
     if args.command == 'web':
         try:
             if args.background:

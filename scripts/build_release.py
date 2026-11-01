@@ -28,7 +28,7 @@ MODULES = (
     'report.py', 'research_brief.py', 'research_landscape.py', 'research_policy.py',
     'research_runtime.py', 'research_specialist.py', 'retrieval.py', 'reuse.py',
     'session.py', 'source.py', 'source_parallel.py', 'source_scheduler.py',
-    'source_store.py', 'state.py', 'tool_governance.py', 'tools.py', 'webapp.py', 'workflow.py',
+    'source_store.py', 'state.py', 'tool_governance.py', 'tools.py', 'update_cli.py', 'webapp.py', 'workflow.py',
 )
 FILES = ('.gitignore', 'requirements.txt', '.env.example', 'mcp_servers.json', 'mcp_skills_lune.json',
          'state_schema.sql', 'LICENSE', 'NOTICE.md', 'docs/API.md', 'docs/INSTALL.md', 'examples/papers.json')
