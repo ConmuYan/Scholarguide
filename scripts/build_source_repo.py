@@ -31,7 +31,7 @@ TOP_LEVEL_FILES = ('app.py', 'app_mcp.py', 'activity.py', 'agent_runtime.py', 'a
                    'session.py', 'source.py', 'source_parallel.py', 'source_scheduler.py',
                    'source_store.py', 'specialist_pilot.py', 'state.py', 'tool_governance.py',
                    'tools.py', 'webapp.py', 'workflow.py',
-                   'README.md', 'PUBLIC_README.md', 'UPSTREAM.md', 'VERIFICATION.md',
+                   'README.md', 'README.zh-CN.md', 'PUBLIC_README.md', 'UPSTREAM.md', 'VERIFICATION.md',
                    'LICENSE', 'NOTICE.md', '.gitattributes', 'requirements.txt', 'requirements-dev.txt',
                    '.gitignore', '.env.example', 'state_schema.sql', 'mcp_servers.json',
                    'mcp_skills_lune.json')
@@ -81,6 +81,9 @@ def included(relative: Path, all_docs: bool = False) -> bool:
         return False
     if len(parts) == 2 and parts[0] == 'examples' and parts[1] in EXCLUDED_EXAMPLE_FILES:
         return False
+    if parts[0] == 'docs' and len(parts) > 1 and parts[1] == 'assets':
+        # README screenshots and motion clips are part of the published docs.
+        return parts[-1].lower().endswith(('.png', '.gif', '.svg', '.jpg', '.webp'))
     if parts[0] == 'docs' and not all_docs and relative.name not in PUBLIC_DOCS:
         return False
     if parts[-1].startswith('.env') and parts[-1] != '.env.example':

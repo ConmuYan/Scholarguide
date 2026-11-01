@@ -1,6 +1,6 @@
 # Install a release
 
-ScholarGuide publishes versioned source bundles and native per-user installers on GitHub Releases. The public repository slug is set by the release workflow; the slug is `ConmuYan/Scholarguide`.
+ScholarGuide publishes versioned source bundles and native per-user installers on GitHub Releases. The public repository slug is set by the release workflow; replace `ConmuYan/Scholarguide` below with that slug after the repository is created.
 
 ## macOS and Linux
 

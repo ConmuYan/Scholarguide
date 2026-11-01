@@ -34,8 +34,10 @@ class SourceExportTests(unittest.TestCase):
         report = SOURCE.export(self.out)
         self.assertEqual(report['secret_findings'], [])
         names = {p.relative_to(self.out).as_posix() for p in self.out.rglob('*') if p.is_file()}
-        for required in ('app.py', 'common.py', 'LICENSE', 'NOTICE.md', 'README.md',
+        for required in ('app.py', 'common.py', 'LICENSE', 'NOTICE.md', 'README.md', 'README.zh-CN.md',
                          'requirements.txt', 'requirements-dev.txt', '.env.example',
+                         'docs/assets/screenshots/landing.png',
+                         'docs/assets/screenshots/search-desktop.png',
                          'install/install.sh.in', 'install/install.ps1.in',
                          '.github/workflows/release.yml', 'scripts/build_release.py',
                          'scripts/set_repository.py', 'docs/API.md', 'docs/INSTALL.md',
