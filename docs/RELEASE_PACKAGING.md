@@ -20,13 +20,13 @@ The command produces:
 Attach all four files to the matching GitHub Release. The generated installers embed the exact repository and version. The user-facing command is:
 
 ```bash
-curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.0/install.sh | sh
+curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.sh | sh
 ```
 
 Windows PowerShell:
 
 ```powershell
-irm https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.0/install.ps1 | iex
+irm https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.ps1 | iex
 ```
 
 The current `install/*` files are templates and cannot be run before the repository slug and version are substituted by this builder. The release installer downloads a matching checksum manifest, validates the source bundle, creates a per-user Python virtual environment, and keeps runtime data under `~/.scholarguide`. It does not upload API keys or configure a shared model.

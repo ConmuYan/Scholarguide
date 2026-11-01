@@ -9,13 +9,13 @@ Choose a versioned release command from the GitHub Releases page. The repository
 macOS / Linux:
 
 ```bash
-curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/download/vX.Y.Z/install.sh | sh
+curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.sh | sh
 ```
 
 Windows PowerShell:
 
 ```powershell
-irm https://github.com/ConmuYan/Scholarguide/releases/download/vX.Y.Z/install.ps1 | iex
+irm https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.ps1 | iex
 ```
 
 The installer downloads the matching release archive, verifies its SHA-256 checksum, creates a per-user virtual environment under your home directory, and installs the pinned dependencies. It does not require administrator rights. Review the installer before piping it into a shell, or download it first and inspect it.
@@ -35,6 +35,8 @@ If `scholarguide` is not on `PATH`, restart the terminal or add the installer's 
 1. Open the local page printed by the command.
 2. Go to **Models**, add your provider's API key, and test the connection.
 3. Go to **Sources** to configure optional source credentials. Use offline Demo first if you do not want to make provider calls.
+
+Keep it current with `scholarguide update --check` / `scholarguide update --yes`; your keys, profiles, quota ledger and history in `~/.scholarguide` are never rewritten.
 
 Keys are stored locally under your user profile. Search and Chat may call your selected model and academic sources and can incur provider charges or use account quotas. ScholarGuide does not provide shared API credits.
 

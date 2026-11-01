@@ -46,14 +46,14 @@ Requires **Python 3.11+**. No admin rights, no containers, no GPU.
 **macOS / Linux**
 
 ```bash
-curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.0/install.sh | sh
+curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.sh | sh
 scholarguide web --open
 ```
 
 **Windows (PowerShell)**
 
 ```powershell
-irm https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.0/install.ps1 | iex
+irm https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.ps1 | iex
 scholarguide web --open
 ```
 

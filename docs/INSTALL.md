@@ -7,7 +7,7 @@ ScholarGuide publishes versioned source bundles and native per-user installers o
 One-command install:
 
 ```sh
-curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/download/vX.Y.Z/install.sh | sh
+curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.sh | sh
 ```
 
 The script downloads the versioned source archive and SHA-256 manifest over HTTPS, verifies the archive, creates a Python virtual environment under the user's data directory, and installs the pinned runtime dependencies. It does not require administrator permissions.
@@ -15,7 +15,7 @@ The script downloads the versioned source archive and SHA-256 manifest over HTTP
 For review-before-execution, download the installer and inspect it first:
 
 ```sh
-curl -fsSLO https://github.com/ConmuYan/Scholarguide/releases/download/vX.Y.Z/install.sh
+curl -fsSLO https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.sh
 less install.sh
 sh install.sh
 ```
@@ -23,7 +23,7 @@ sh install.sh
 ## Windows PowerShell
 
 ```powershell
-irm https://github.com/ConmuYan/Scholarguide/releases/download/vX.Y.Z/install.ps1 | iex
+irm https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.ps1 | iex
 ```
 
 For review-before-execution, save and inspect `install.ps1` before running it. The installer uses the current user's `%LOCALAPPDATA%` for app versions and `%USERPROFILE%\.scholarguide` for data; it adds a user-level `bin` directory to PATH and does not modify machine-wide settings.
@@ -59,14 +59,14 @@ Restart the service afterwards so the new build is loaded.
 `scholarguide update` shipped in **v0.1.2**, so the first hop has to be a normal install. Run the current installer once; it adds the new version next to the old one and repoints the launcher:
 
 ```bash
-curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.3/install.sh | sh
+curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.sh | sh
 scholarguide update --check     # from here on, updates are one command
 ```
 
 Windows:
 
 ```powershell
-irm https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.3/install.ps1 | iex
+irm https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.ps1 | iex
 scholarguide update --check
 ```
 
@@ -83,7 +83,7 @@ Each version is installed into a separate version directory; the launch wrapper 
 After creating the public GitHub repository and reviewing licensing and release contents:
 
 ```bash
-python scripts/build_release.py --repository ConmuYan/Scholarguide --version v0.1.0 --out dist
+python scripts/build_release.py --repository ConmuYan/Scholarguide --version v0.1.4 --out dist
 ```
 
 This produces a strict allow-listed source archive, Unix and Windows installers, and `SHA256SUMS`. The build rejects nonempty output directories. It excludes `.env`, `runs/`, tests, evaluations, research archives, local agent configuration, PDFs, and old Cloudflare demos. This release asset is suitable for installation, not a complete research/development checkout.

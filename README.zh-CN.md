@@ -44,14 +44,14 @@
 **macOS / Linux**
 
 ```bash
-curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.0/install.sh | sh
+curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.sh | sh
 scholarguide web --open
 ```
 
 **Windows (PowerShell)**
 
 ```powershell
-irm https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.0/install.ps1 | iex
+irm https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.ps1 | iex
 scholarguide web --open
 ```
 
@@ -189,14 +189,14 @@ python -m unittest discover -s tests -v
 `scholarguide update` 从 **v0.1.2** 才有。旧版本用一次当前安装器即可切换到新的发布轨道：
 
 ```bash
-curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.3/install.sh | sh
+curl -fsSL https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.sh | sh
 scholarguide update --check
 ```
 
 Windows：
 
 ```powershell
-irm https://github.com/ConmuYan/Scholarguide/releases/download/v0.1.3/install.ps1 | iex
+irm https://github.com/ConmuYan/Scholarguide/releases/latest/download/install.ps1 | iex
 scholarguide update --check
 ```
 
