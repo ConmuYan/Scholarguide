@@ -1,0 +1,51 @@
+{
+  "protocol_version": "FB-1.0",
+  "track": "C",
+  "whitelist": [
+    "ICLR",
+    "ICML",
+    "NeurIPS",
+    "ACL",
+    "EMNLP",
+    "AAAI"
+  ],
+  "years": [
+    2024,
+    2025,
+    2026
+  ],
+  "indexed": {
+    "ICLR": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "indexed"
+    },
+    "ICML": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "indexed"
+    },
+    "NeurIPS": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "not_indexed"
+    },
+    "ACL": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "indexed"
+    },
+    "EMNLP": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "not_indexed"
+    },
+    "AAAI": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "indexed"
+    }
+  },
+  "checked_at": "2026-11-05T13:06:05.483525+00:00",
+  "source": "lune_list_conferences"
+}

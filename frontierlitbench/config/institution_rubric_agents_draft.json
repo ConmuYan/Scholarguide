@@ -1,0 +1,521 @@
+{
+  "protocol_version": "FB-1.0",
+  "track": "C",
+  "dimension": "A",
+  "area_combination": "NLP+AI+ML",
+  "year_range": [
+    2021,
+    2025
+  ],
+  "source": "https://csrankings.org/generated-author-info.csv",
+  "checked_at": "2026-11-05T14:04:59.285917+00:00",
+  "provisional": true,
+  "note": "CSRankings 排名快照；待负责人确认后转正式 rubric。",
+  "top25": [
+    {
+      "rank": 1,
+      "institution": "Tsinghua University",
+      "adjustedcount": 396.2628
+    },
+    {
+      "rank": 2,
+      "institution": "Peking University",
+      "adjustedcount": 359.7495
+    },
+    {
+      "rank": 3,
+      "institution": "Shanghai Jiao Tong University",
+      "adjustedcount": 324.5225
+    },
+    {
+      "rank": 4,
+      "institution": "Carnegie Mellon University",
+      "adjustedcount": 301.4457
+    },
+    {
+      "rank": 5,
+      "institution": "Zhejiang University",
+      "adjustedcount": 270.5784
+    },
+    {
+      "rank": 6,
+      "institution": "Nanjing University",
+      "adjustedcount": 269.9278
+    },
+    {
+      "rank": 7,
+      "institution": "KAIST",
+      "adjustedcount": 269.5508
+    },
+    {
+      "rank": 8,
+      "institution": "Nanyang Technological University",
+      "adjustedcount": 259.8351
+    },
+    {
+      "rank": 9,
+      "institution": "Univ. of Illinois at Urbana-Champaign",
+      "adjustedcount": 226.7663
+    },
+    {
+      "rank": 10,
+      "institution": "Stanford University",
+      "adjustedcount": 226.1421
+    },
+    {
+      "rank": 11,
+      "institution": "Massachusetts Inst. of Technology",
+      "adjustedcount": 211.4086
+    },
+    {
+      "rank": 12,
+      "institution": "National University of Singapore",
+      "adjustedcount": 206.893
+    },
+    {
+      "rank": 13,
+      "institution": "Univ. of California - Berkeley",
+      "adjustedcount": 203.3888
+    },
+    {
+      "rank": 14,
+      "institution": "Harbin Institute of Technology",
+      "adjustedcount": 197.8144
+    },
+    {
+      "rank": 15,
+      "institution": "USTC",
+      "adjustedcount": 196.7168
+    },
+    {
+      "rank": 16,
+      "institution": "Chinese Academy of Sciences",
+      "adjustedcount": 187.5572
+    },
+    {
+      "rank": 17,
+      "institution": "Univ. of California - San Diego",
+      "adjustedcount": 185.4685
+    },
+    {
+      "rank": 18,
+      "institution": "Renmin University of China",
+      "adjustedcount": 173.6651
+    },
+    {
+      "rank": 19,
+      "institution": "HKUST",
+      "adjustedcount": 168.7024
+    },
+    {
+      "rank": 20,
+      "institution": "Univ. of Maryland - College Park",
+      "adjustedcount": 163.9174
+    },
+    {
+      "rank": 21,
+      "institution": "Georgia Institute of Technology",
+      "adjustedcount": 160.0338
+    },
+    {
+      "rank": 22,
+      "institution": "New York University",
+      "adjustedcount": 158.4326
+    },
+    {
+      "rank": 23,
+      "institution": "Seoul National University",
+      "adjustedcount": 157.3544
+    },
+    {
+      "rank": 24,
+      "institution": "Univ. of California - Los Angeles",
+      "adjustedcount": 156.8962
+    },
+    {
+      "rank": 25,
+      "institution": "Fudan University",
+      "adjustedcount": 156.3308
+    }
+  ],
+  "top50": [
+    {
+      "rank": 26,
+      "institution": "Cornell University",
+      "adjustedcount": 139.1885
+    },
+    {
+      "rank": 27,
+      "institution": "MBZUAI",
+      "adjustedcount": 138.2544
+    },
+    {
+      "rank": 28,
+      "institution": "University of Wisconsin - Madison",
+      "adjustedcount": 135.1979
+    },
+    {
+      "rank": 29,
+      "institution": "Chinese University of Hong Kong",
+      "adjustedcount": 133.8247
+    },
+    {
+      "rank": 30,
+      "institution": "University of Washington",
+      "adjustedcount": 133.3165
+    },
+    {
+      "rank": 31,
+      "institution": "EPFL",
+      "adjustedcount": 131.8811
+    },
+    {
+      "rank": 32,
+      "institution": "Technion",
+      "adjustedcount": 131.0203
+    },
+    {
+      "rank": 33,
+      "institution": "University of Cambridge",
+      "adjustedcount": 128.4357
+    },
+    {
+      "rank": 34,
+      "institution": "ETH Zurich",
+      "adjustedcount": 127.4966
+    },
+    {
+      "rank": 35,
+      "institution": "University of Pennsylvania",
+      "adjustedcount": 124.1061
+    },
+    {
+      "rank": 36,
+      "institution": "Southeast University",
+      "adjustedcount": 118.9087
+    },
+    {
+      "rank": 37,
+      "institution": "Johns Hopkins University",
+      "adjustedcount": 117.244
+    },
+    {
+      "rank": 38,
+      "institution": "Wuhan University",
+      "adjustedcount": 115.1698
+    },
+    {
+      "rank": 39,
+      "institution": "University of Oxford",
+      "adjustedcount": 110.4324
+    },
+    {
+      "rank": 40,
+      "institution": "Tel Aviv University",
+      "adjustedcount": 109.8322
+    },
+    {
+      "rank": 41,
+      "institution": "University of Michigan",
+      "adjustedcount": 108.5808
+    },
+    {
+      "rank": 42,
+      "institution": "Princeton University",
+      "adjustedcount": 107.2999
+    },
+    {
+      "rank": 43,
+      "institution": "CUHK (SZ)",
+      "adjustedcount": 106.8909
+    },
+    {
+      "rank": 44,
+      "institution": "University of Texas at Austin",
+      "adjustedcount": 106.7353
+    },
+    {
+      "rank": 45,
+      "institution": "University of Edinburgh",
+      "adjustedcount": 105.0549
+    },
+    {
+      "rank": 46,
+      "institution": "University of Virginia",
+      "adjustedcount": 105.0494
+    },
+    {
+      "rank": 47,
+      "institution": "UESTC",
+      "adjustedcount": 104.304
+    },
+    {
+      "rank": 48,
+      "institution": "University of Southern California",
+      "adjustedcount": 102.974
+    },
+    {
+      "rank": 49,
+      "institution": "University of Hong Kong",
+      "adjustedcount": 102.0428
+    },
+    {
+      "rank": 50,
+      "institution": "Singapore Management University",
+      "adjustedcount": 101.6987
+    }
+  ],
+  "top100": [
+    {
+      "rank": 51,
+      "institution": "Beihang University",
+      "adjustedcount": 100.889
+    },
+    {
+      "rank": 52,
+      "institution": "University of Toronto",
+      "adjustedcount": 97.1909
+    },
+    {
+      "rank": 53,
+      "institution": "University of North Carolina",
+      "adjustedcount": 92.2952
+    },
+    {
+      "rank": 54,
+      "institution": "Sun Yat-sen University",
+      "adjustedcount": 91.913
+    },
+    {
+      "rank": 55,
+      "institution": "TU Munich",
+      "adjustedcount": 91.511
+    },
+    {
+      "rank": 56,
+      "institution": "Columbia University",
+      "adjustedcount": 88.9078
+    },
+    {
+      "rank": 57,
+      "institution": "Purdue University",
+      "adjustedcount": 87.2226
+    },
+    {
+      "rank": 58,
+      "institution": "Northeastern University",
+      "adjustedcount": 82.6789
+    },
+    {
+      "rank": 59,
+      "institution": "BUPT",
+      "adjustedcount": 81.2395
+    },
+    {
+      "rank": 60,
+      "institution": "Harvard University",
+      "adjustedcount": 78.7079
+    },
+    {
+      "rank": 61,
+      "institution": "University of Montreal",
+      "adjustedcount": 78.5314
+    },
+    {
+      "rank": 62,
+      "institution": "Univ. of Massachusetts Amherst",
+      "adjustedcount": 78.0351
+    },
+    {
+      "rank": 63,
+      "institution": "Max Planck Society",
+      "adjustedcount": 77.0836
+    },
+    {
+      "rank": 64,
+      "institution": "HUST",
+      "adjustedcount": 74.9783
+    },
+    {
+      "rank": 65,
+      "institution": "University of Tokyo",
+      "adjustedcount": 73.0391
+    },
+    {
+      "rank": 66,
+      "institution": "Pennsylvania State University",
+      "adjustedcount": 72.5223
+    },
+    {
+      "rank": 67,
+      "institution": "Boston University",
+      "adjustedcount": 71.8179
+    },
+    {
+      "rank": 68,
+      "institution": "City University of Hong Kong",
+      "adjustedcount": 71.5472
+    },
+    {
+      "rank": 69,
+      "institution": "The Hong Kong Polytechnic Univ.",
+      "adjustedcount": 70.3422
+    },
+    {
+      "rank": 70,
+      "institution": "Monash University",
+      "adjustedcount": 69.7228
+    },
+    {
+      "rank": 71,
+      "institution": "University of Alberta",
+      "adjustedcount": 69.5927
+    },
+    {
+      "rank": 72,
+      "institution": "Imperial College London",
+      "adjustedcount": 69.0195
+    },
+    {
+      "rank": 73,
+      "institution": "Jilin University",
+      "adjustedcount": 68.7307
+    },
+    {
+      "rank": 74,
+      "institution": "University of Melbourne",
+      "adjustedcount": 68.4217
+    },
+    {
+      "rank": 75,
+      "institution": "Texas A&M University",
+      "adjustedcount": 66.7912
+    },
+    {
+      "rank": 76,
+      "institution": "Arizona State University",
+      "adjustedcount": 66.6115
+    },
+    {
+      "rank": 77,
+      "institution": "Ohio State University",
+      "adjustedcount": 65.9521
+    },
+    {
+      "rank": 78,
+      "institution": "Westlake University",
+      "adjustedcount": 65.9448
+    },
+    {
+      "rank": 79,
+      "institution": "Tianjin University",
+      "adjustedcount": 65.3154
+    },
+    {
+      "rank": 80,
+      "institution": "Xiamen University",
+      "adjustedcount": 63.2836
+    },
+    {
+      "rank": 81,
+      "institution": "University of Central Florida",
+      "adjustedcount": 63.0865
+    },
+    {
+      "rank": 82,
+      "institution": "Shenzhen University",
+      "adjustedcount": 63.0012
+    },
+    {
+      "rank": 83,
+      "institution": "Duke University",
+      "adjustedcount": 62.7276
+    },
+    {
+      "rank": 84,
+      "institution": "University of Illinois at Chicago",
+      "adjustedcount": 62.2094
+    },
+    {
+      "rank": 85,
+      "institution": "University of Sydney",
+      "adjustedcount": 61.6606
+    },
+    {
+      "rank": 86,
+      "institution": "CISPA Helmholtz Center",
+      "adjustedcount": 60.905
+    },
+    {
+      "rank": 87,
+      "institution": "University of Waterloo",
+      "adjustedcount": 60.9048
+    },
+    {
+      "rank": 88,
+      "institution": "University of Copenhagen",
+      "adjustedcount": 59.4861
+    },
+    {
+      "rank": 89,
+      "institution": "KAUST",
+      "adjustedcount": 59.0918
+    },
+    {
+      "rank": 90,
+      "institution": "POSTECH",
+      "adjustedcount": 57.5027
+    },
+    {
+      "rank": 91,
+      "institution": "TU Wien",
+      "adjustedcount": 57.2917
+    },
+    {
+      "rank": 92,
+      "institution": "University of Amsterdam",
+      "adjustedcount": 56.9484
+    },
+    {
+      "rank": 93,
+      "institution": "Hong Kong Baptist University",
+      "adjustedcount": 56.8286
+    },
+    {
+      "rank": 94,
+      "institution": "University of Chicago",
+      "adjustedcount": 55.3204
+    },
+    {
+      "rank": 95,
+      "institution": "University of Tübingen",
+      "adjustedcount": 55.0821
+    },
+    {
+      "rank": 96,
+      "institution": "LMU Munich",
+      "adjustedcount": 54.4833
+    },
+    {
+      "rank": 97,
+      "institution": "Xidian University",
+      "adjustedcount": 54.282
+    },
+    {
+      "rank": 98,
+      "institution": "Northwestern University",
+      "adjustedcount": 53.4226
+    },
+    {
+      "rank": 99,
+      "institution": "University of British Columbia",
+      "adjustedcount": 50.1146
+    },
+    {
+      "rank": 100,
+      "institution": "Yale University",
+      "adjustedcount": 50.0155
+    }
+  ],
+  "total_institutions": 610
+}

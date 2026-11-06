@@ -1,0 +1,2618 @@
+{
+  "protocol_version": "FB-1.0",
+  "track": "C",
+  "checked_at": "2026-11-05T13:06:05.483525+00:00",
+  "credential": "env-key",
+  "source": "lune_list_conferences",
+  "raw_payload": {
+    "conferences": [
+      {
+        "id": "41bb2d8e-f056-4e6d-8472-3260e5d42d54",
+        "short_name": "NeurIPS",
+        "full_name": "Conference on Neural Information Processing Systems",
+        "category": "Artificial Intelligence",
+        "paper_count": 19442,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "763346e0-1b1f-4802-a834-c80743ea5579",
+        "short_name": "EUROCRYPT",
+        "full_name": "International Conference on the Theory and Applications of Cryptographic Techniques",
+        "category": "Network & Information Security",
+        "paper_count": 723,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "acc46239-64ba-41e3-9f1c-4a4a1711dafb",
+        "short_name": "SOSP",
+        "full_name": "ACM Symposium on Operating Systems Principles",
+        "category": "Software Engineering / System Software / Programming Languages",
+        "paper_count": 268,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2021
+        ]
+      },
+      {
+        "id": "eda277eb-936b-4747-987d-7593c5c627a0",
+        "short_name": "FOCS",
+        "full_name": "IEEE Annual Symposium on Foundations of Computer Science",
+        "category": "Theoretical Computer Science",
+        "paper_count": 765,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "4e2c7b8d-bb47-479f-b3c7-2f4c14fce9b5",
+        "short_name": "FSE",
+        "full_name": "ACM International Conference on the Foundations of Software Engineering",
+        "category": "Software Engineering / System Software / Programming Languages",
+        "paper_count": 891,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "d65d6278-af24-4a4d-909c-46b927e305e7",
+        "short_name": "CSCW",
+        "full_name": "ACM Conference on Computer-Supported Cooperative Work and Social Computing",
+        "category": "Human-Computer Interaction & Pervasive Computing",
+        "paper_count": 2338,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "b6054fd7-8c4c-41d1-b1b2-3d75f847a5cf",
+        "short_name": "ICDE",
+        "full_name": "IEEE International Conference on Data Engineering",
+        "category": "Databases / Data Mining / Information Retrieval",
+        "paper_count": 1650,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "5122cac1-f9a4-4004-9367-7ed6bb9cf748",
+        "short_name": "ISSTA",
+        "full_name": "ACM SIGSOFT International Symposium on Software Testing and Analysis",
+        "category": "Software Engineering / System Software / Programming Languages",
+        "paper_count": 732,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "4fa525e9-7633-451d-8a43-ae9b39df39ae",
+        "short_name": "ASPLOS",
+        "full_name": "International Conference on Architectural Support for Programming Languages and Operating Systems",
+        "category": "Computer Architecture / Parallel & Distributed Computing / Storage Systems",
+        "paper_count": 915,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "0a4acfc7-46ae-4aca-b7ab-0959b2338275",
+        "short_name": "ICLR",
+        "full_name": "International Conference on Learning Representations",
+        "category": "Artificial Intelligence",
+        "paper_count": 15530,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "0beef43f-9f3f-40d9-b768-fd8c441e34ac",
+        "short_name": "IEEE VIS",
+        "full_name": "IEEE Visualization Conference",
+        "category": "Computer Graphics & Multimedia",
+        "paper_count": 769,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "f259fd81-4d90-44e1-8b12-10373ce5118c",
+        "short_name": "SC",
+        "full_name": "International Conference for High Performance Computing, Networking, Storage, and Analysis",
+        "category": "Computer Architecture / Parallel & Distributed Computing / Storage Systems",
+        "paper_count": 597,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "69db8169-0fb2-4fd0-af66-565f2ac7437c",
+        "short_name": "ASE",
+        "full_name": "International Conference on Automated Software Engineering",
+        "category": "Software Engineering / System Software / Programming Languages",
+        "paper_count": 826,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "e89af8a2-720f-4915-a6a1-d48479f351cb",
+        "short_name": "SIGIR",
+        "full_name": "International ACM SIGIR Conference on Research and Development in Information Retrieval",
+        "category": "Databases / Data Mining / Information Retrieval",
+        "paper_count": 1256,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "b4b326f7-08a0-46a0-8b53-f0281081d052",
+        "short_name": "KDD",
+        "full_name": "ACM SIGKDD Conference on Knowledge Discovery and Data Mining",
+        "category": "Databases / Data Mining / Information Retrieval",
+        "paper_count": 2770,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "c830c658-cc34-4f48-a097-4be74f692bc7",
+        "short_name": "CRYPTO",
+        "full_name": "International Cryptology Conference",
+        "category": "Network & Information Security",
+        "paper_count": 899,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "4b6a454e-b339-4f5c-bab3-f646319f19c4",
+        "short_name": "VLDB",
+        "full_name": "International Conference on Very Large Data Bases",
+        "category": "Databases / Data Mining / Information Retrieval",
+        "paper_count": 1938,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "444ff26b-500f-4f0b-ab7b-a5857173ec7b",
+        "short_name": "ACL",
+        "full_name": "Annual Meeting of the Association for Computational Linguistics",
+        "category": "Artificial Intelligence",
+        "paper_count": 7342,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "95a63b35-a429-43b1-9200-d96b1caaf1e1",
+        "short_name": "FM",
+        "full_name": "International Symposium on Formal Methods",
+        "category": "Software Engineering / System Software / Programming Languages",
+        "paper_count": 141,
+        "years": [
+          2026,
+          2024,
+          2023,
+          2021
+        ]
+      },
+      {
+        "id": "2c5a72a4-0d4b-433e-bbf0-f02dcbc932a2",
+        "short_name": "SODA",
+        "full_name": "ACM-SIAM Symposium on Discrete Algorithms",
+        "category": "Theoretical Computer Science",
+        "paper_count": 1326,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "490bcafd-65fd-4ab2-ae6b-c110d43c09a0",
+        "short_name": "LICS",
+        "full_name": "ACM/IEEE Symposium on Logic in Computer Science",
+        "category": "Theoretical Computer Science",
+        "paper_count": 506,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "a6c73994-fd61-41c7-ba5b-872a4ef60427",
+        "short_name": "MICRO",
+        "full_name": "IEEE/ACM International Symposium on Microarchitecture",
+        "category": "Computer Architecture / Parallel & Distributed Computing / Storage Systems",
+        "paper_count": 596,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "b82ac5f1-e0a1-4e2d-8aa2-1182b531aec5",
+        "short_name": "NDSS",
+        "full_name": "Network and Distributed System Security Symposium",
+        "category": "Network & Information Security",
+        "paper_count": 1256,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020,
+          2019,
+          2018,
+          2017,
+          2016
+        ]
+      },
+      {
+        "id": "a35eca42-3c5c-4ca7-a056-d0fcd0664f8e",
+        "short_name": "NSDI",
+        "full_name": "USENIX Symposium on Networked Systems Design and Implementation",
+        "category": "Computer Networks",
+        "paper_count": 643,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "678f2cfa-ee8b-433e-a56e-2d8dc9317296",
+        "short_name": "HPDC",
+        "full_name": "International ACM Symposium on High-Performance Parallel and Distributed Computing",
+        "category": "Computer Architecture / Parallel & Distributed Computing / Storage Systems",
+        "paper_count": 169,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "0be99f89-27cd-47ff-b968-d16679565a79",
+        "short_name": "INFOCOM",
+        "full_name": "IEEE International Conference on Computer Communications",
+        "category": "Computer Networks",
+        "paper_count": 1848,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "85f1ed6f-037d-4a91-ba16-68d609455d8b",
+        "short_name": "SIGMOD",
+        "full_name": "ACM SIGMOD International Conference on Management of Data",
+        "category": "Databases / Data Mining / Information Retrieval",
+        "paper_count": 1459,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "479158e8-91da-4601-ba81-4156cfaead0e",
+        "short_name": "UIST",
+        "full_name": "ACM Symposium on User Interface Software and Technology",
+        "category": "Human-Computer Interaction & Pervasive Computing",
+        "paper_count": 767,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "6b9fcc1b-81a2-4f79-89b3-295bb7ea7fb6",
+        "short_name": "CHI",
+        "full_name": "ACM Conference on Human Factors in Computing Systems",
+        "category": "Human-Computer Interaction & Pervasive Computing",
+        "paper_count": 7028,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "2a1b2039-c37c-433b-9e68-328cd077ea9c",
+        "short_name": "CVPR",
+        "full_name": "IEEE/CVF Conference on Computer Vision and Pattern Recognition",
+        "category": "Artificial Intelligence",
+        "paper_count": 17207,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "f66c2b01-315a-4452-b0e0-2adf961f0f20",
+        "short_name": "SIGGRAPH",
+        "full_name": "ACM Special Interest Group on Computer Graphics and Interactive Techniques",
+        "category": "Computer Graphics & Multimedia",
+        "paper_count": 1563,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "3b6422e9-aed6-4b71-8244-91f631728275",
+        "short_name": "UbiComp",
+        "full_name": "ACM International Joint Conference on Pervasive and Ubiquitous Computing",
+        "category": "Human-Computer Interaction & Pervasive Computing",
+        "paper_count": 1459,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "b8c248cd-3cc3-445a-9a36-5b319134647f",
+        "short_name": "POPL",
+        "full_name": "ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages",
+        "category": "Software Engineering / System Software / Programming Languages",
+        "paper_count": 531,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "bb62751f-39b8-476d-bbdc-8224590b87a2",
+        "short_name": "AAAI",
+        "full_name": "AAAI Conference on Artificial Intelligence",
+        "category": "Artificial Intelligence",
+        "paper_count": 15644,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "26891bfe-f1a6-44c0-bccb-2b1446812ab1",
+        "short_name": "EMNLP",
+        "full_name": "Conference on Empirical Methods in Natural Language Processing",
+        "description": "EMNLP main conference proceedings (excludes Findings, demonstrations, tutorials, industry track, and student research workshop via the volume_key not_contains -main rule).",
+        "category": "Artificial Intelligence",
+        "paper_count": 5668,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "4ba216ff-2f0c-4abf-8569-a0d4064f90d6",
+        "short_name": "FAST",
+        "full_name": "USENIX Conference on File and Storage Technologies",
+        "category": "Computer Architecture / Parallel & Distributed Computing / Storage Systems",
+        "paper_count": 203,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "abb0dd9f-236d-4219-b49a-77e96fb8eef3",
+        "short_name": "HPCA",
+        "full_name": "IEEE International Symposium on High-Performance Computer Architecture",
+        "category": "Computer Architecture / Parallel & Distributed Computing / Storage Systems",
+        "paper_count": 586,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "8f581516-4577-4b29-a63d-2a4283a2212f",
+        "short_name": "ICCV",
+        "full_name": "IEEE/CVF International Conference on Computer Vision",
+        "category": "Artificial Intelligence",
+        "paper_count": 7544,
+        "years": [
+          2025,
+          2023,
+          2021,
+          2019
+        ]
+      },
+      {
+        "id": "55904109-a041-46a5-9e73-68433816a59c",
+        "short_name": "OOPSLA",
+        "full_name": "ACM SIGPLAN Conference on Object-Oriented Programming, Systems, Languages, and Applications",
+        "category": "Software Engineering / System Software / Programming Languages",
+        "paper_count": 915,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "4e9ccf7c-412d-4dbb-9f27-4a4353165b35",
+        "short_name": "OSDI",
+        "full_name": "USENIX Symposium on Operating Systems Design and Implementation",
+        "category": "Software Engineering / System Software / Programming Languages",
+        "paper_count": 428,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "46ef5dbd-b219-4b76-b196-fe4b191cddb7",
+        "short_name": "WWW",
+        "full_name": "The Web Conference",
+        "category": "Interdisciplinary / Comprehensive / Emerging",
+        "paper_count": 2751,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "c564e418-159a-4d2b-9701-cdc170552974",
+        "short_name": "S&P",
+        "full_name": "IEEE Symposium on Security and Privacy",
+        "category": "Network & Information Security",
+        "paper_count": 1594,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020,
+          2019,
+          2018,
+          2017,
+          2016
+        ]
+      },
+      {
+        "id": "0b3436bd-1a67-443d-b30b-7ef38d76065b",
+        "short_name": "STOC",
+        "full_name": "ACM Symposium on Theory of Computing",
+        "category": "Theoretical Computer Science",
+        "paper_count": 1159,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "d5fe4a95-24b4-413d-9c04-2945a6413c94",
+        "short_name": "DAC",
+        "full_name": "Design Automation Conference",
+        "category": "Computer Architecture / Parallel & Distributed Computing / Storage Systems",
+        "paper_count": 1685,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "721efe46-98b7-4bb4-be2f-be84c5e45c00",
+        "short_name": "RTSS",
+        "full_name": "IEEE Real-Time Systems Symposium",
+        "category": "Interdisciplinary / Comprehensive / Emerging",
+        "paper_count": 211,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "ac7cffd5-fd55-4291-aac6-2df5ee74366b",
+        "short_name": "USENIX ATC",
+        "full_name": "USENIX Annual Technical Conference",
+        "category": "Computer Architecture / Parallel & Distributed Computing / Storage Systems",
+        "paper_count": 405,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "a9accc68-6ec7-4fc1-8d18-0e7c62a86195",
+        "short_name": "EuroSys",
+        "full_name": "European Conference on Computer Systems",
+        "category": "Computer Architecture / Parallel & Distributed Computing / Storage Systems",
+        "paper_count": 474,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "098ae9db-2f83-447e-a3f8-b7a649c126b3",
+        "short_name": "ICML",
+        "full_name": "International Conference on Machine Learning",
+        "category": "Artificial Intelligence",
+        "paper_count": 17459,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "fd56c50d-c300-44b2-8716-66c67faec5e4",
+        "short_name": "ISCA",
+        "full_name": "International Symposium on Computer Architecture",
+        "category": "Computer Architecture / Parallel & Distributed Computing / Storage Systems",
+        "paper_count": 674,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "bf4433bc-d064-4090-b012-bedd619c0fad",
+        "short_name": "MobiCom",
+        "full_name": "ACM International Conference on Mobile Computing and Networking",
+        "category": "Computer Networks",
+        "paper_count": 436,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "ab5ba5fb-f05c-42ed-ab5c-27c47170e05a",
+        "short_name": "USENIX Security",
+        "full_name": "USENIX Security Symposium",
+        "category": "Network & Information Security",
+        "paper_count": 2670,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020,
+          2019,
+          2018,
+          2017,
+          2016
+        ]
+      },
+      {
+        "id": "96808283-39a3-401e-a81d-95f9d6fe0c4d",
+        "short_name": "ICSE",
+        "full_name": "International Conference on Software Engineering",
+        "category": "Software Engineering / System Software / Programming Languages",
+        "paper_count": 1471,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "ba98ed57-2af7-449c-a575-3ddd7f7ca33f",
+        "short_name": "PLDI",
+        "full_name": "ACM SIGPLAN Conference on Programming Language Design and Implementation",
+        "category": "Software Engineering / System Software / Programming Languages",
+        "paper_count": 599,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "e4bd300a-c625-42c5-a6d3-8ac04c20529f",
+        "short_name": "PPoPP",
+        "full_name": "ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming",
+        "category": "Computer Architecture / Parallel & Distributed Computing / Storage Systems",
+        "paper_count": 240,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "2265f3e3-59f7-40af-8ade-86d1bf3be248",
+        "short_name": "SIGCOMM",
+        "full_name": "ACM Conference on Applications, Technologies, Architectures, and Protocols for Computer Communication",
+        "category": "Computer Networks",
+        "paper_count": 455,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "d4c819f8-ebb3-4a04-93b1-40f7cc62a3fd",
+        "short_name": "CCS",
+        "full_name": "ACM Conference on Computer and Communications Security",
+        "description": "The flagship annual conference of the ACM Special Interest Group on Security, Audit and Control (SIGSAC).",
+        "category": "Network & Information Security",
+        "paper_count": 2466,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020,
+          2019,
+          2018,
+          2017,
+          2016
+        ]
+      },
+      {
+        "id": "9e7eea14-c878-4aa3-81dd-dc692b6fb515",
+        "short_name": "ACM MM",
+        "full_name": "ACM International Conference on Multimedia",
+        "category": "Computer Graphics & Multimedia",
+        "paper_count": 5007,
+        "years": [
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "0d00184b-fd5c-434d-a550-818e017407f6",
+        "short_name": "CAV",
+        "full_name": "International Conference on Computer Aided Verification",
+        "category": "Theoretical Computer Science",
+        "paper_count": 348,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      },
+      {
+        "id": "7023ae35-45fc-4c41-bf87-3c6533fd1e5b",
+        "short_name": "IEEE VR",
+        "full_name": "IEEE Conference on Virtual Reality and 3D User Interfaces",
+        "category": "Computer Graphics & Multimedia",
+        "paper_count": 1118,
+        "years": [
+          2026,
+          2025,
+          2024,
+          2023,
+          2022,
+          2021,
+          2020
+        ]
+      }
+    ]
+  },
+  "coverage": [
+    [
+      "AAAI",
+      2020
+    ],
+    [
+      "AAAI",
+      2021
+    ],
+    [
+      "AAAI",
+      2022
+    ],
+    [
+      "AAAI",
+      2023
+    ],
+    [
+      "AAAI",
+      2024
+    ],
+    [
+      "AAAI",
+      2025
+    ],
+    [
+      "AAAI",
+      2026
+    ],
+    [
+      "ACL",
+      2020
+    ],
+    [
+      "ACL",
+      2021
+    ],
+    [
+      "ACL",
+      2022
+    ],
+    [
+      "ACL",
+      2023
+    ],
+    [
+      "ACL",
+      2024
+    ],
+    [
+      "ACL",
+      2025
+    ],
+    [
+      "ACL",
+      2026
+    ],
+    [
+      "ACM MM",
+      2020
+    ],
+    [
+      "ACM MM",
+      2021
+    ],
+    [
+      "ACM MM",
+      2022
+    ],
+    [
+      "ACM MM",
+      2023
+    ],
+    [
+      "ACM MM",
+      2024
+    ],
+    [
+      "ACM MM",
+      2025
+    ],
+    [
+      "ASE",
+      2020
+    ],
+    [
+      "ASE",
+      2021
+    ],
+    [
+      "ASE",
+      2022
+    ],
+    [
+      "ASE",
+      2023
+    ],
+    [
+      "ASE",
+      2024
+    ],
+    [
+      "ASE",
+      2025
+    ],
+    [
+      "ASPLOS",
+      2020
+    ],
+    [
+      "ASPLOS",
+      2021
+    ],
+    [
+      "ASPLOS",
+      2022
+    ],
+    [
+      "ASPLOS",
+      2023
+    ],
+    [
+      "ASPLOS",
+      2024
+    ],
+    [
+      "ASPLOS",
+      2025
+    ],
+    [
+      "ASPLOS",
+      2026
+    ],
+    [
+      "CAV",
+      2020
+    ],
+    [
+      "CAV",
+      2021
+    ],
+    [
+      "CAV",
+      2022
+    ],
+    [
+      "CAV",
+      2023
+    ],
+    [
+      "CAV",
+      2024
+    ],
+    [
+      "CAV",
+      2025
+    ],
+    [
+      "CAV",
+      2026
+    ],
+    [
+      "CCS",
+      2016
+    ],
+    [
+      "CCS",
+      2017
+    ],
+    [
+      "CCS",
+      2018
+    ],
+    [
+      "CCS",
+      2019
+    ],
+    [
+      "CCS",
+      2020
+    ],
+    [
+      "CCS",
+      2021
+    ],
+    [
+      "CCS",
+      2022
+    ],
+    [
+      "CCS",
+      2023
+    ],
+    [
+      "CCS",
+      2024
+    ],
+    [
+      "CCS",
+      2025
+    ],
+    [
+      "CCS",
+      2026
+    ],
+    [
+      "CHI",
+      2020
+    ],
+    [
+      "CHI",
+      2021
+    ],
+    [
+      "CHI",
+      2022
+    ],
+    [
+      "CHI",
+      2023
+    ],
+    [
+      "CHI",
+      2024
+    ],
+    [
+      "CHI",
+      2025
+    ],
+    [
+      "CHI",
+      2026
+    ],
+    [
+      "CRYPTO",
+      2020
+    ],
+    [
+      "CRYPTO",
+      2021
+    ],
+    [
+      "CRYPTO",
+      2022
+    ],
+    [
+      "CRYPTO",
+      2023
+    ],
+    [
+      "CRYPTO",
+      2024
+    ],
+    [
+      "CRYPTO",
+      2025
+    ],
+    [
+      "CRYPTO",
+      2026
+    ],
+    [
+      "CSCW",
+      2020
+    ],
+    [
+      "CSCW",
+      2021
+    ],
+    [
+      "CSCW",
+      2022
+    ],
+    [
+      "CSCW",
+      2023
+    ],
+    [
+      "CSCW",
+      2024
+    ],
+    [
+      "CSCW",
+      2025
+    ],
+    [
+      "CSCW",
+      2026
+    ],
+    [
+      "CVPR",
+      2020
+    ],
+    [
+      "CVPR",
+      2021
+    ],
+    [
+      "CVPR",
+      2022
+    ],
+    [
+      "CVPR",
+      2023
+    ],
+    [
+      "CVPR",
+      2024
+    ],
+    [
+      "CVPR",
+      2025
+    ],
+    [
+      "CVPR",
+      2026
+    ],
+    [
+      "DAC",
+      2020
+    ],
+    [
+      "DAC",
+      2021
+    ],
+    [
+      "DAC",
+      2022
+    ],
+    [
+      "DAC",
+      2023
+    ],
+    [
+      "DAC",
+      2024
+    ],
+    [
+      "DAC",
+      2025
+    ],
+    [
+      "EMNLP",
+      2020
+    ],
+    [
+      "EMNLP",
+      2021
+    ],
+    [
+      "EMNLP",
+      2022
+    ],
+    [
+      "EMNLP",
+      2023
+    ],
+    [
+      "EMNLP",
+      2024
+    ],
+    [
+      "EMNLP",
+      2025
+    ],
+    [
+      "EUROCRYPT",
+      2020
+    ],
+    [
+      "EUROCRYPT",
+      2021
+    ],
+    [
+      "EUROCRYPT",
+      2022
+    ],
+    [
+      "EUROCRYPT",
+      2023
+    ],
+    [
+      "EUROCRYPT",
+      2024
+    ],
+    [
+      "EUROCRYPT",
+      2025
+    ],
+    [
+      "EUROCRYPT",
+      2026
+    ],
+    [
+      "EuroSys",
+      2020
+    ],
+    [
+      "EuroSys",
+      2021
+    ],
+    [
+      "EuroSys",
+      2022
+    ],
+    [
+      "EuroSys",
+      2023
+    ],
+    [
+      "EuroSys",
+      2024
+    ],
+    [
+      "EuroSys",
+      2025
+    ],
+    [
+      "EuroSys",
+      2026
+    ],
+    [
+      "FAST",
+      2020
+    ],
+    [
+      "FAST",
+      2021
+    ],
+    [
+      "FAST",
+      2022
+    ],
+    [
+      "FAST",
+      2023
+    ],
+    [
+      "FAST",
+      2024
+    ],
+    [
+      "FAST",
+      2025
+    ],
+    [
+      "FAST",
+      2026
+    ],
+    [
+      "FM",
+      2021
+    ],
+    [
+      "FM",
+      2023
+    ],
+    [
+      "FM",
+      2024
+    ],
+    [
+      "FM",
+      2026
+    ],
+    [
+      "FOCS",
+      2020
+    ],
+    [
+      "FOCS",
+      2021
+    ],
+    [
+      "FOCS",
+      2022
+    ],
+    [
+      "FOCS",
+      2023
+    ],
+    [
+      "FOCS",
+      2024
+    ],
+    [
+      "FOCS",
+      2025
+    ],
+    [
+      "FSE",
+      2020
+    ],
+    [
+      "FSE",
+      2021
+    ],
+    [
+      "FSE",
+      2022
+    ],
+    [
+      "FSE",
+      2023
+    ],
+    [
+      "FSE",
+      2024
+    ],
+    [
+      "FSE",
+      2025
+    ],
+    [
+      "FSE",
+      2026
+    ],
+    [
+      "HPCA",
+      2020
+    ],
+    [
+      "HPCA",
+      2021
+    ],
+    [
+      "HPCA",
+      2022
+    ],
+    [
+      "HPCA",
+      2023
+    ],
+    [
+      "HPCA",
+      2024
+    ],
+    [
+      "HPCA",
+      2025
+    ],
+    [
+      "HPCA",
+      2026
+    ],
+    [
+      "HPDC",
+      2020
+    ],
+    [
+      "HPDC",
+      2021
+    ],
+    [
+      "HPDC",
+      2022
+    ],
+    [
+      "HPDC",
+      2023
+    ],
+    [
+      "HPDC",
+      2024
+    ],
+    [
+      "HPDC",
+      2025
+    ],
+    [
+      "HPDC",
+      2026
+    ],
+    [
+      "ICCV",
+      2019
+    ],
+    [
+      "ICCV",
+      2021
+    ],
+    [
+      "ICCV",
+      2023
+    ],
+    [
+      "ICCV",
+      2025
+    ],
+    [
+      "ICDE",
+      2020
+    ],
+    [
+      "ICDE",
+      2021
+    ],
+    [
+      "ICDE",
+      2022
+    ],
+    [
+      "ICDE",
+      2023
+    ],
+    [
+      "ICDE",
+      2024
+    ],
+    [
+      "ICDE",
+      2025
+    ],
+    [
+      "ICDE",
+      2026
+    ],
+    [
+      "ICLR",
+      2020
+    ],
+    [
+      "ICLR",
+      2021
+    ],
+    [
+      "ICLR",
+      2022
+    ],
+    [
+      "ICLR",
+      2023
+    ],
+    [
+      "ICLR",
+      2024
+    ],
+    [
+      "ICLR",
+      2025
+    ],
+    [
+      "ICLR",
+      2026
+    ],
+    [
+      "ICML",
+      2020
+    ],
+    [
+      "ICML",
+      2021
+    ],
+    [
+      "ICML",
+      2022
+    ],
+    [
+      "ICML",
+      2023
+    ],
+    [
+      "ICML",
+      2024
+    ],
+    [
+      "ICML",
+      2025
+    ],
+    [
+      "ICML",
+      2026
+    ],
+    [
+      "ICSE",
+      2020
+    ],
+    [
+      "ICSE",
+      2021
+    ],
+    [
+      "ICSE",
+      2022
+    ],
+    [
+      "ICSE",
+      2023
+    ],
+    [
+      "ICSE",
+      2024
+    ],
+    [
+      "ICSE",
+      2025
+    ],
+    [
+      "ICSE",
+      2026
+    ],
+    [
+      "IEEE VIS",
+      2020
+    ],
+    [
+      "IEEE VIS",
+      2021
+    ],
+    [
+      "IEEE VIS",
+      2022
+    ],
+    [
+      "IEEE VIS",
+      2023
+    ],
+    [
+      "IEEE VIS",
+      2024
+    ],
+    [
+      "IEEE VIS",
+      2025
+    ],
+    [
+      "IEEE VR",
+      2020
+    ],
+    [
+      "IEEE VR",
+      2021
+    ],
+    [
+      "IEEE VR",
+      2022
+    ],
+    [
+      "IEEE VR",
+      2023
+    ],
+    [
+      "IEEE VR",
+      2024
+    ],
+    [
+      "IEEE VR",
+      2025
+    ],
+    [
+      "IEEE VR",
+      2026
+    ],
+    [
+      "INFOCOM",
+      2020
+    ],
+    [
+      "INFOCOM",
+      2021
+    ],
+    [
+      "INFOCOM",
+      2022
+    ],
+    [
+      "INFOCOM",
+      2023
+    ],
+    [
+      "INFOCOM",
+      2024
+    ],
+    [
+      "INFOCOM",
+      2025
+    ],
+    [
+      "INFOCOM",
+      2026
+    ],
+    [
+      "ISCA",
+      2020
+    ],
+    [
+      "ISCA",
+      2021
+    ],
+    [
+      "ISCA",
+      2022
+    ],
+    [
+      "ISCA",
+      2023
+    ],
+    [
+      "ISCA",
+      2024
+    ],
+    [
+      "ISCA",
+      2025
+    ],
+    [
+      "ISCA",
+      2026
+    ],
+    [
+      "ISSTA",
+      2020
+    ],
+    [
+      "ISSTA",
+      2021
+    ],
+    [
+      "ISSTA",
+      2022
+    ],
+    [
+      "ISSTA",
+      2023
+    ],
+    [
+      "ISSTA",
+      2024
+    ],
+    [
+      "ISSTA",
+      2025
+    ],
+    [
+      "ISSTA",
+      2026
+    ],
+    [
+      "KDD",
+      2020
+    ],
+    [
+      "KDD",
+      2021
+    ],
+    [
+      "KDD",
+      2022
+    ],
+    [
+      "KDD",
+      2023
+    ],
+    [
+      "KDD",
+      2024
+    ],
+    [
+      "KDD",
+      2025
+    ],
+    [
+      "KDD",
+      2026
+    ],
+    [
+      "LICS",
+      2020
+    ],
+    [
+      "LICS",
+      2021
+    ],
+    [
+      "LICS",
+      2022
+    ],
+    [
+      "LICS",
+      2023
+    ],
+    [
+      "LICS",
+      2024
+    ],
+    [
+      "LICS",
+      2025
+    ],
+    [
+      "LICS",
+      2026
+    ],
+    [
+      "MICRO",
+      2020
+    ],
+    [
+      "MICRO",
+      2021
+    ],
+    [
+      "MICRO",
+      2022
+    ],
+    [
+      "MICRO",
+      2023
+    ],
+    [
+      "MICRO",
+      2024
+    ],
+    [
+      "MICRO",
+      2025
+    ],
+    [
+      "MobiCom",
+      2020
+    ],
+    [
+      "MobiCom",
+      2021
+    ],
+    [
+      "MobiCom",
+      2022
+    ],
+    [
+      "MobiCom",
+      2023
+    ],
+    [
+      "MobiCom",
+      2024
+    ],
+    [
+      "MobiCom",
+      2025
+    ],
+    [
+      "NDSS",
+      2016
+    ],
+    [
+      "NDSS",
+      2017
+    ],
+    [
+      "NDSS",
+      2018
+    ],
+    [
+      "NDSS",
+      2019
+    ],
+    [
+      "NDSS",
+      2020
+    ],
+    [
+      "NDSS",
+      2021
+    ],
+    [
+      "NDSS",
+      2022
+    ],
+    [
+      "NDSS",
+      2023
+    ],
+    [
+      "NDSS",
+      2024
+    ],
+    [
+      "NDSS",
+      2025
+    ],
+    [
+      "NDSS",
+      2026
+    ],
+    [
+      "NSDI",
+      2020
+    ],
+    [
+      "NSDI",
+      2021
+    ],
+    [
+      "NSDI",
+      2022
+    ],
+    [
+      "NSDI",
+      2023
+    ],
+    [
+      "NSDI",
+      2024
+    ],
+    [
+      "NSDI",
+      2025
+    ],
+    [
+      "NSDI",
+      2026
+    ],
+    [
+      "NeurIPS",
+      2020
+    ],
+    [
+      "NeurIPS",
+      2021
+    ],
+    [
+      "NeurIPS",
+      2022
+    ],
+    [
+      "NeurIPS",
+      2023
+    ],
+    [
+      "NeurIPS",
+      2024
+    ],
+    [
+      "NeurIPS",
+      2025
+    ],
+    [
+      "OOPSLA",
+      2020
+    ],
+    [
+      "OOPSLA",
+      2021
+    ],
+    [
+      "OOPSLA",
+      2022
+    ],
+    [
+      "OOPSLA",
+      2023
+    ],
+    [
+      "OOPSLA",
+      2024
+    ],
+    [
+      "OOPSLA",
+      2025
+    ],
+    [
+      "OOPSLA",
+      2026
+    ],
+    [
+      "OSDI",
+      2020
+    ],
+    [
+      "OSDI",
+      2021
+    ],
+    [
+      "OSDI",
+      2022
+    ],
+    [
+      "OSDI",
+      2023
+    ],
+    [
+      "OSDI",
+      2024
+    ],
+    [
+      "OSDI",
+      2025
+    ],
+    [
+      "OSDI",
+      2026
+    ],
+    [
+      "PLDI",
+      2020
+    ],
+    [
+      "PLDI",
+      2021
+    ],
+    [
+      "PLDI",
+      2022
+    ],
+    [
+      "PLDI",
+      2023
+    ],
+    [
+      "PLDI",
+      2024
+    ],
+    [
+      "PLDI",
+      2025
+    ],
+    [
+      "PLDI",
+      2026
+    ],
+    [
+      "POPL",
+      2020
+    ],
+    [
+      "POPL",
+      2021
+    ],
+    [
+      "POPL",
+      2022
+    ],
+    [
+      "POPL",
+      2023
+    ],
+    [
+      "POPL",
+      2024
+    ],
+    [
+      "POPL",
+      2025
+    ],
+    [
+      "POPL",
+      2026
+    ],
+    [
+      "PPoPP",
+      2020
+    ],
+    [
+      "PPoPP",
+      2021
+    ],
+    [
+      "PPoPP",
+      2022
+    ],
+    [
+      "PPoPP",
+      2023
+    ],
+    [
+      "PPoPP",
+      2024
+    ],
+    [
+      "PPoPP",
+      2025
+    ],
+    [
+      "PPoPP",
+      2026
+    ],
+    [
+      "RTSS",
+      2020
+    ],
+    [
+      "RTSS",
+      2021
+    ],
+    [
+      "RTSS",
+      2022
+    ],
+    [
+      "RTSS",
+      2023
+    ],
+    [
+      "RTSS",
+      2024
+    ],
+    [
+      "RTSS",
+      2025
+    ],
+    [
+      "S&P",
+      2016
+    ],
+    [
+      "S&P",
+      2017
+    ],
+    [
+      "S&P",
+      2018
+    ],
+    [
+      "S&P",
+      2019
+    ],
+    [
+      "S&P",
+      2020
+    ],
+    [
+      "S&P",
+      2021
+    ],
+    [
+      "S&P",
+      2022
+    ],
+    [
+      "S&P",
+      2023
+    ],
+    [
+      "S&P",
+      2024
+    ],
+    [
+      "S&P",
+      2025
+    ],
+    [
+      "S&P",
+      2026
+    ],
+    [
+      "SC",
+      2020
+    ],
+    [
+      "SC",
+      2021
+    ],
+    [
+      "SC",
+      2022
+    ],
+    [
+      "SC",
+      2023
+    ],
+    [
+      "SC",
+      2024
+    ],
+    [
+      "SC",
+      2025
+    ],
+    [
+      "SIGCOMM",
+      2020
+    ],
+    [
+      "SIGCOMM",
+      2021
+    ],
+    [
+      "SIGCOMM",
+      2022
+    ],
+    [
+      "SIGCOMM",
+      2023
+    ],
+    [
+      "SIGCOMM",
+      2024
+    ],
+    [
+      "SIGCOMM",
+      2025
+    ],
+    [
+      "SIGCOMM",
+      2026
+    ],
+    [
+      "SIGGRAPH",
+      2020
+    ],
+    [
+      "SIGGRAPH",
+      2021
+    ],
+    [
+      "SIGGRAPH",
+      2022
+    ],
+    [
+      "SIGGRAPH",
+      2023
+    ],
+    [
+      "SIGGRAPH",
+      2024
+    ],
+    [
+      "SIGGRAPH",
+      2025
+    ],
+    [
+      "SIGGRAPH",
+      2026
+    ],
+    [
+      "SIGIR",
+      2020
+    ],
+    [
+      "SIGIR",
+      2021
+    ],
+    [
+      "SIGIR",
+      2022
+    ],
+    [
+      "SIGIR",
+      2023
+    ],
+    [
+      "SIGIR",
+      2024
+    ],
+    [
+      "SIGIR",
+      2025
+    ],
+    [
+      "SIGIR",
+      2026
+    ],
+    [
+      "SIGMOD",
+      2020
+    ],
+    [
+      "SIGMOD",
+      2021
+    ],
+    [
+      "SIGMOD",
+      2022
+    ],
+    [
+      "SIGMOD",
+      2023
+    ],
+    [
+      "SIGMOD",
+      2024
+    ],
+    [
+      "SIGMOD",
+      2025
+    ],
+    [
+      "SIGMOD",
+      2026
+    ],
+    [
+      "SODA",
+      2020
+    ],
+    [
+      "SODA",
+      2021
+    ],
+    [
+      "SODA",
+      2022
+    ],
+    [
+      "SODA",
+      2023
+    ],
+    [
+      "SODA",
+      2024
+    ],
+    [
+      "SODA",
+      2025
+    ],
+    [
+      "SODA",
+      2026
+    ],
+    [
+      "SOSP",
+      2021
+    ],
+    [
+      "SOSP",
+      2023
+    ],
+    [
+      "SOSP",
+      2024
+    ],
+    [
+      "SOSP",
+      2025
+    ],
+    [
+      "SOSP",
+      2026
+    ],
+    [
+      "STOC",
+      2020
+    ],
+    [
+      "STOC",
+      2021
+    ],
+    [
+      "STOC",
+      2022
+    ],
+    [
+      "STOC",
+      2023
+    ],
+    [
+      "STOC",
+      2024
+    ],
+    [
+      "STOC",
+      2025
+    ],
+    [
+      "STOC",
+      2026
+    ],
+    [
+      "UIST",
+      2020
+    ],
+    [
+      "UIST",
+      2021
+    ],
+    [
+      "UIST",
+      2022
+    ],
+    [
+      "UIST",
+      2023
+    ],
+    [
+      "UIST",
+      2024
+    ],
+    [
+      "UIST",
+      2025
+    ],
+    [
+      "USENIX ATC",
+      2020
+    ],
+    [
+      "USENIX ATC",
+      2021
+    ],
+    [
+      "USENIX ATC",
+      2022
+    ],
+    [
+      "USENIX ATC",
+      2023
+    ],
+    [
+      "USENIX ATC",
+      2024
+    ],
+    [
+      "USENIX ATC",
+      2025
+    ],
+    [
+      "USENIX Security",
+      2016
+    ],
+    [
+      "USENIX Security",
+      2017
+    ],
+    [
+      "USENIX Security",
+      2018
+    ],
+    [
+      "USENIX Security",
+      2019
+    ],
+    [
+      "USENIX Security",
+      2020
+    ],
+    [
+      "USENIX Security",
+      2021
+    ],
+    [
+      "USENIX Security",
+      2022
+    ],
+    [
+      "USENIX Security",
+      2023
+    ],
+    [
+      "USENIX Security",
+      2024
+    ],
+    [
+      "USENIX Security",
+      2025
+    ],
+    [
+      "USENIX Security",
+      2026
+    ],
+    [
+      "UbiComp",
+      2020
+    ],
+    [
+      "UbiComp",
+      2021
+    ],
+    [
+      "UbiComp",
+      2022
+    ],
+    [
+      "UbiComp",
+      2023
+    ],
+    [
+      "UbiComp",
+      2024
+    ],
+    [
+      "UbiComp",
+      2025
+    ],
+    [
+      "UbiComp",
+      2026
+    ],
+    [
+      "VLDB",
+      2020
+    ],
+    [
+      "VLDB",
+      2021
+    ],
+    [
+      "VLDB",
+      2022
+    ],
+    [
+      "VLDB",
+      2023
+    ],
+    [
+      "VLDB",
+      2024
+    ],
+    [
+      "VLDB",
+      2025
+    ],
+    [
+      "VLDB",
+      2026
+    ],
+    [
+      "WWW",
+      2020
+    ],
+    [
+      "WWW",
+      2021
+    ],
+    [
+      "WWW",
+      2022
+    ],
+    [
+      "WWW",
+      2023
+    ],
+    [
+      "WWW",
+      2024
+    ],
+    [
+      "WWW",
+      2025
+    ],
+    [
+      "WWW",
+      2026
+    ]
+  ],
+  "venues": {
+    "ICLR": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "indexed"
+    },
+    "ICML": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "indexed"
+    },
+    "NeurIPS": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "not_indexed"
+    },
+    "ACL": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "indexed"
+    },
+    "EMNLP": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "not_indexed"
+    },
+    "AAAI": {
+      "2024": "indexed",
+      "2025": "indexed",
+      "2026": "indexed"
+    }
+  }
+}
