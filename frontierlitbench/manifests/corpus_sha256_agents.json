@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-11-06T12:51:41.608993+00:00",
+  "files": {
+    "config/institution_rubric_agents_draft.json": "7fb0a65a3bab4a74b5c227633fd75d5c023713a94bb1978ffcfa19290c8aa9fa",
+    "config/venues_agents.json": "3f6fbb0f3b44ec7f0c9f65244af895b42575176bfeee737b218da7cfe48ce430",
+    "corpus/candidates_agents.jsonl": "5f12ff93e3408101141b610b9921e2b7a76bc13cdff6c17244907663d267773a",
+    "corpus/dedup_candidates.jsonl": "70e38e9d1a4785d2954033f20e912156f2b163c0e65c55e3e01f75f26ef1ae20",
+    "corpus/features_agents.jsonl": "ac19b680e014c347b2e8cf04b9b7e492cb65583205ff1029c46907c763cdff0e",
+    "corpus/gold_agents.jsonl": "8fdbafb2591fb14441498734d32e685c2259ca13e6ec893440c8c8e4926bda23",
+    "labels/impact_annotations_agents.jsonl": "4e8060202e9c743485c11e6730ee5dd763c11796240f8a8a24fedbb7a56570ae",
+    "labels/tier_thresholds_agents.json": "e56180ef997ba1265cdc9d06b420b723743d024bd29a22adad844533089bff85",
+    "manifests/corpus_sha256_agents.json": "731ef9146237bde12650eb4e6b7258a8e8056c0b0c87ae6595f12de4804d8966",
+    "reports/coverage_and_missingness_agents.csv": "07e0b68919d423d8ebb8b401adb5a23a23c65376fb67240cfc72422d6f0b7868",
+    "reports/github_coverage_agents.csv": "dfce94f3046b92bb667778a4145b85c32f879fd94c63b8a33d41fa50213bf0d5",
+    "reports/gold_leaderboard_agents.csv": "acf0b934c811b8db0a16ce925f33ababb3e87c8873e32c7f1c47418aaa586f50",
+    "reports/gold_leaderboard_agents.md": "962eac7b266f9f5ade6efde8916ef466e46e6c41b8dbee0e8ab8d881023342e3",
+    "reports/sensitivity_agents.md": "452f48c62c3d2b3b7f561532ee742d2eb13e4e46ef8aee79914f681a2665b20e",
+    "review/github_review_queue_agents.csv": "58d60521188e8470331f33e28a677b9878616477935b27e9baef3c6b80650b80",
+    "review/open_issues.md": "72a8be8cce782839af4d7e45bc519b60a08da0ad8b3acafab7cb1ed8751be929",
+    "review/sample_for_human_review.csv": "cc5532756c8cf6867328899d7a9940eb12d9b5ef6c715170993bdcf3cfe58f27",
+    "snapshots/lune_conferences_20261105.json": "a5606fbeddee4db6f46569c4ac1f0bb2c6cf67cc47e94eae3c9388679ced7711",
+    "tasks/task_eligibility_agents.json": "f47f4abc883a4c6877750dcb3bc85debeb9ab451356bbfa098972dac6aac2ff6"
+  }
+}
