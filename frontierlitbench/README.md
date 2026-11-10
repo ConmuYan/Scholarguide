@@ -1,3 +1,12 @@
+# FrontierLitBench track index
+
+| Track | Scope | Corpus | Status and review |
+|---|---|---|---|
+| A | Video generation and editing | [Video corpus](corpus/gold_video.jsonl) | [Track A notes](README_TrackA.md), [open issues](review/open_issues_video.md) |
+| C | LLM agents and tools | [Agents corpus](corpus/gold_agents.jsonl) | [Track C review](#track-c-review-and-pilot-status), [open issues](review/open_issues.md) |
+
+Tracks are exploratory snapshots with separate evidence, scores, eligibility and pending reviews. Cross-track scores are not directly comparable.
+
 # Track C review and pilot status
 
 This is a working research dataset, not a claim of exhaustive verification or a completed benchmark release. It contains LLM agents, tool use, planning, memory, self-correction and multi-agent work, including relevant benchmarks and adjacent reasoning research. The original discovery and scoring evidence is retained in `corpus/features_agents.jsonl`.

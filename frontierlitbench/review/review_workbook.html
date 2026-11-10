@@ -1,0 +1,329 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8">
+<title>Track A Gold 评审工作簿</title>
+<style>body{font-family:sans-serif;margin:24px}table{border-collapse:collapse;width:100%;font-size:13px}
+td,th{border:1px solid #ccc;padding:4px 6px;vertical-align:top}th{background:#f4f4f4}
+h2{margin-top:28px}.note{background:#fff8e1;border:1px solid #e0c060;padding:10px}</style></head><body>
+<h1>Track A (Video) Gold Corpus 评审工作簿 · 2026-11-05</h1>
+<p>corpus_version: <b>trackA-video-gold-v1.0-2026-11-05</b> · N=216 (S=43/A=86/B=87) · sha256: d76c8410ec084260d4b8dd4d6bdaf5683e61648ba6887a63abb4b671ba3ad246</p>
+<div class="note"><b>政策确认（请负责人勾选）：</b><br>
+<input type="checkbox"> 引用口径：123 篇 arXiv 孪生记录的 OpenAlex 引用数直接采用并标注<br>
+<input type="checkbox"> 113 篇无官方仓库按 <code>none_available = G 0.0</code> 处理（已自动搜索+README 核验）<br>
+<input type="checkbox"> 机构分简化版：第一作者 CSRankings CV+ML 2021–2025 分档；未匹配默认 0.4（本表中标 UNMATCHED）<br>
+<input type="checkbox"> 已知遗漏：CogVideoX 等 34 篇 OpenAlex 未收录论文本轮不入选（备选池保留）</div>
+<h2>一、25% 书目信息抽检（54 篇，点链接核对后勾选）</h2>
+<table><tr><th>#</th><th>标题</th><th>会议/年</th><th>档</th><th>引用</th><th>仓库</th><th>机构</th><th>链接</th><th>确认</th><th>异议</th></tr>
+<tr><td>5</td><td>MiniMax-Remover: Taming Bad Noise Helps Video Object Removal</td>
+<td>NeurIPS 2025</td><td>S</td><td>9</td>
+<td>official 624</td>
+<td>Chinese University of Hong Kong</td>
+<td><a href="https://doi.org/10.52202/085713-2536">DOI</a> <a href="https://openalex.org/W4414859143">OA</a> <a href="https://github.com/zibojia/MiniMax-Remover">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>6</td><td>UniEdit: A Unified Tuning-Free Framework for Video Motion and Appearance Editing</td>
+<td>ACM MM 2025</td><td>S</td><td>22</td>
+<td>official 120</td>
+<td>Zhejiang University</td>
+<td><a href="https://doi.org/10.1145/3746027.3755462">DOI</a> <a href="https://openalex.org/W4415537039">OA</a> <a href="https://github.com/JianhongBai/UniEdit">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>8</td><td>AC3D: Analyzing and Improving 3D Camera Control in Video Diffusion Transformers</td>
+<td>CVPR 2025</td><td>S</td><td>33</td>
+<td>official 168</td>
+<td>University of Toronto</td>
+<td><a href="https://doi.org/10.1109/cvpr52734.2025.02130">DOI</a> <a href="https://openalex.org/W4413144558">OA</a> <a href="https://github.com/snap-research/ac3d">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>9</td><td>VideoCoF: Unified Video Editing with Temporal Reasoner</td>
+<td>CVPR 2026</td><td>S</td><td>5</td>
+<td>official 210</td>
+<td>University of Sydney</td>
+<td><a href="https://doi.org/10.48550/arxiv.2512.07469">DOI</a> <a href="https://openalex.org/W7110990721">OA</a> <a href="https://github.com/knightyxp/VideoCoF">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>11</td><td>Autoregressive Video Generation without Vector Quantization</td>
+<td>ICLR 2025</td><td>S</td><td>19</td>
+<td>official 661</td>
+<td>Beijing Institute of Technology</td>
+<td><a href="https://doi.org/10.48550/arxiv.2412.14169">DOI</a> <a href="https://openalex.org/W4405627087">OA</a> <a href="https://github.com/baaivision/NOVA">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>17</td><td>Video Interpolation with Diffusion Models</td>
+<td>CVPR 2024</td><td>S</td><td>45</td>
+<td>official 193</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.1109/cvpr52733.2024.00701">DOI</a> <a href="https://openalex.org/W4402727587">OA</a> <a href="https://github.com/danier97/LDMVFI">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>24</td><td>ViVid-1-to-3: Novel View Synthesis with Video Diffusion Models</td>
+<td>CVPR 2024</td><td>S</td><td>21</td>
+<td>official 180</td>
+<td>Columbia University</td>
+<td><a href="https://doi.org/10.1109/cvpr52733.2024.00647">DOI</a> <a href="https://openalex.org/W4402772407">OA</a> <a href="https://github.com/ubc-vision/vivid123">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>31</td><td>VideoPoet: A Large Language Model for Zero-Shot Video Generation</td>
+<td>ICML 2024</td><td>S</td><td>88</td>
+<td>none_found</td>
+<td>Carnegie Mellon University</td>
+<td><a href="https://doi.org/10.48550/arxiv.2312.14125">DOI</a> <a href="https://openalex.org/W4390137271">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>32</td><td>Diffusion as Shader: 3D-aware Video Diffusion for Versatile Video Generation Control</td>
+<td>SIGGRAPH 2025</td><td>S</td><td>38</td>
+<td>none_found</td>
+<td>University of Hong Kong</td>
+<td><a href="https://doi.org/10.1145/3721238.3730607">DOI</a> <a href="https://openalex.org/W4412587524">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>34</td><td>HoloCine: Holistic Generation of Cinematic Multi-Shot Long Video Narratives</td>
+<td>CVPR 2026</td><td>S</td><td>1</td>
+<td>official 705</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2510.20822">DOI</a> <a href="https://openalex.org/W4417082654">OA</a> <a href="https://github.com/yihao-meng/HoloCine">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>35</td><td>RealisMotion: Decomposed Human Motion Control and Video Generation in the World Space</td>
+<td>ICML 2026</td><td>S</td><td>2</td>
+<td>official 51</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2508.08588">DOI</a> <a href="https://openalex.org/W4416167255">OA</a> <a href="https://github.com/JingyunLiang/RealisMotion">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>38</td><td>OmniVCus: Feedforward Subject-driven Video Customization with Multimodal Control Conditions</td>
+<td>NeurIPS 2025</td><td>S</td><td>3</td>
+<td>official 489</td>
+<td>Johns Hopkins University</td>
+<td><a href="https://doi.org/10.52202/085713-3848">DOI</a> <a href="https://openalex.org/W4416513697">OA</a> <a href="https://github.com/caiyuanhao1998/Open-OmniVCus">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>39</td><td>PanoWan: Lifting Diffusion Video Generation Models to 360° with Latitude/Longitude-aware Mechanisms</td>
+<td>NeurIPS 2025</td><td>S</td><td>4</td>
+<td>official 57</td>
+<td>Peking University</td>
+<td><a href="https://doi.org/10.52202/085713-4949">DOI</a> <a href="https://openalex.org/W7196963661">OA</a> <a href="https://github.com/VariantConst/PanoWan">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>47</td><td>MV-S2V: Multi-View Subject-Consistent Video Generation</td>
+<td>SIGGRAPH 2026</td><td>A</td><td>1</td>
+<td>official 19</td>
+<td>University of Hong Kong</td>
+<td><a href="https://doi.org/10.1145/3799902.3811131">DOI</a> <a href="https://openalex.org/W7168867323">OA</a> <a href="https://github.com/Szy-Young/MV-S2V">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>54</td><td>Inference-Time Text-to-Video Alignment with Diffusion Latent Beam Search</td>
+<td>NeurIPS 2025</td><td>A</td><td>6</td>
+<td>official 21</td>
+<td>University of Tokyo</td>
+<td><a href="https://doi.org/10.52202/085713-0445">DOI</a> <a href="https://openalex.org/W4407091669">OA</a> <a href="https://github.com/shim0114/T2V-Diffusion-Search">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>55</td><td>Fast Timing-Conditioned Latent Audio Diffusion</td>
+<td>ICML 2024</td><td>A</td><td>53</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2402.04825">DOI</a> <a href="https://openalex.org/W4391709184">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>58</td><td>Neodragon: Mobile Video Generation Using Diffusion Transformer</td>
+<td>ICLR 2026</td><td>A</td><td>1</td>
+<td>official 34</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2511.06055">DOI</a> <a href="https://openalex.org/W4416157057">OA</a> <a href="https://github.com/Qualcomm-AI-research/neodragon">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>59</td><td>Generative Video Motion Editing with 3D Point Tracks</td>
+<td>CVPR 2026</td><td>A</td><td>3</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2512.02015">DOI</a> <a href="https://openalex.org/W4416982458">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>73</td><td>FreeLong: Training-Free Long Video Generation with SpectralBlend Temporal Attention</td>
+<td>NeurIPS 2024</td><td>A</td><td>10</td>
+<td>official 67</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.52202/079017-4177">DOI</a> <a href="https://openalex.org/W4415800771">OA</a> <a href="https://github.com/aniki-ly/FreeLong">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>74</td><td>Scaling Laws for Diffusion Transformers</td>
+<td>ICLR 2026</td><td>A</td><td>2</td>
+<td>official 0</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2410.08184">DOI</a> <a href="https://openalex.org/W4403365399">OA</a> <a href="https://github.com/bundlab/embodied-intelligence-and-digital-architectures">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>75</td><td>DisenStudio: Customized Multi-Subject Text-to-Video Generation with Disentangled Spatial Control</td>
+<td>ACM MM 2024</td><td>A</td><td>10</td>
+<td>official 12</td>
+<td>Tsinghua University</td>
+<td><a href="https://doi.org/10.1145/3664647.3680637">DOI</a> <a href="https://openalex.org/W4403792309">OA</a> <a href="https://github.com/forchchch/disenstudio.github.io">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>77</td><td>JavisGPT: A Unified Multi-modal LLM for Sounding-Video Comprehension and Generation</td>
+<td>NeurIPS 2025</td><td>A</td><td>3</td>
+<td>official 77</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2512.22905">DOI</a> <a href="https://openalex.org/W7117691083">OA</a> <a href="https://github.com/JavisVerse/JavisGPT">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>81</td><td>Identifying and Solving Conditional Image Leakage in Image-to-Video Diffusion Model</td>
+<td>NeurIPS 2024</td><td>A</td><td>5</td>
+<td>official 258</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.52202/079017-0954">DOI</a> <a href="https://openalex.org/W4415798374">OA</a> <a href="https://github.com/thu-ml/cond-image-leakage">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>87</td><td>TRIP: Temporal Residual Learning with Image Noise Prior for Image-to-Video Diffusion Models</td>
+<td>CVPR 2024</td><td>A</td><td>25</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.1109/cvpr52733.2024.00828">DOI</a> <a href="https://openalex.org/W4402733581">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>89</td><td>TempoMaster: Efficient Long Video Generation via Next-Frame-Rate Prediction</td>
+<td>CVPR 2026</td><td>A</td><td>1</td>
+<td>official 10</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2511.12578">DOI</a> <a href="https://openalex.org/W4416355773">OA</a> <a href="https://github.com/scottykma/TempoMaster">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>94</td><td>VidSplat: Gaussian Splatting Reconstruction with Geometry-Guided Video Diffusion Priors</td>
+<td>SIGGRAPH 2026</td><td>A</td><td>0</td>
+<td>official 54</td>
+<td>Tsinghua University</td>
+<td><a href="https://doi.org/10.1145/3799902.3811138">DOI</a> <a href="https://openalex.org/W7169402232">OA</a> <a href="https://github.com/tangjm24/VidSplat">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>97</td><td>Video Analysis and Generation via a Semantic Progress Function</td>
+<td>SIGGRAPH 2026</td><td>A</td><td>0</td>
+<td>official 77</td>
+<td>Tel Aviv University</td>
+<td><a href="https://doi.org/10.1145/3799902.3811049">DOI</a> <a href="https://openalex.org/W7156635062">OA</a> <a href="https://github.com/Aryia-Behroziuan/References">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>98</td><td>Sequential Neural Score Estimation: Likelihood-Free Inference with Conditional Score Based Diffusion Models</td>
+<td>ICML 2024</td><td>A</td><td>21</td>
+<td>none_found</td>
+<td>University of Bristol</td>
+<td><a href="https://doi.org/10.48550/arxiv.2210.04872">DOI</a> <a href="https://openalex.org/W7052799110">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>99</td><td>VEGGIE: Instructional Editing and Reasoning Video Concepts with Grounded Generation</td>
+<td>ICCV 2025</td><td>A</td><td>3</td>
+<td>official 34</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.1109/iccv51701.2025.01406">DOI</a> <a href="https://openalex.org/W7160072196">OA</a> <a href="https://github.com/Yui010206/VEGGIE-VidEdit">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>100</td><td>Video Diffusion Models are Training-free Motion Interpreter and Controller</td>
+<td>NeurIPS 2024</td><td>A</td><td>9</td>
+<td>official 52</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.52202/079017-2423">DOI</a> <a href="https://openalex.org/W4415796819">OA</a> <a href="https://github.com/xizaoqu/MOFT">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>109</td><td>Spatiotemporal Skip Guidance for Enhanced Video Diffusion Sampling</td>
+<td>CVPR 2025</td><td>A</td><td>4</td>
+<td>none_found</td>
+<td>Korea University</td>
+<td><a href="https://doi.org/10.1109/cvpr52734.2025.01028">DOI</a> <a href="https://openalex.org/W4413147367">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>110</td><td>Sketch3DVE: Sketch-based 3D-Aware Scene Video Editing</td>
+<td>SIGGRAPH 2025</td><td>A</td><td>3</td>
+<td>none_found</td>
+<td>Chinese Academy of Sciences</td>
+<td><a href="https://doi.org/10.1145/3721238.3730623">DOI</a> <a href="https://openalex.org/W4412595644">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>112</td><td>AnimeColor: Reference-based Animation Colorization with Diffusion Transformers</td>
+<td>ACM MM 2025</td><td>A</td><td>2</td>
+<td>official 9</td>
+<td>Shanghai Jiao Tong University</td>
+<td><a href="https://doi.org/10.1145/3746027.3755524">DOI</a> <a href="https://openalex.org/W4415536485">OA</a> <a href="https://github.com/IamCreateAI/AnimeColor">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>113</td><td>Frame In-N-Out: Unbounded Controllable Image-to-Video Generation</td>
+<td>NeurIPS 2025</td><td>A</td><td>2</td>
+<td>official 34</td>
+<td>University of Virginia</td>
+<td><a href="https://doi.org/10.52202/085713-0114">DOI</a> <a href="https://openalex.org/W4415037680">OA</a> <a href="https://github.com/UVA-Computer-Vision-Lab/FrameINO">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>122</td><td>Lighting-grounded Video Generation with Renderer-based Agent Reasoning</td>
+<td>CVPR 2026</td><td>A</td><td>1</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2604.07966">DOI</a> <a href="https://openalex.org/W7153093749">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>127</td><td>Vivid-ZOO: Multi-View Video Generation with Diffusion Model</td>
+<td>NeurIPS 2024</td><td>A</td><td>12</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.52202/079017-1987">DOI</a> <a href="https://openalex.org/W4415797074">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>131</td><td>STDD: Spatio-Temporal Dual Diffusion for Video Generation</td>
+<td>CVPR 2025</td><td>B</td><td>2</td>
+<td>none_found</td>
+<td>Nanjing University</td>
+<td><a href="https://doi.org/10.1109/cvpr52734.2025.01173">DOI</a> <a href="https://openalex.org/W4413146523">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>132</td><td>Audio-Sync Video Generation with Multi-Stream Temporal Control</td>
+<td>NeurIPS 2025</td><td>B</td><td>2</td>
+<td>none_found</td>
+<td>Peking University</td>
+<td><a href="https://doi.org/10.52202/085713-0433">DOI</a> <a href="https://openalex.org/W4417136534">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>141</td><td>CamEdit: Continuous Camera Parameter Control for Photorealistic Image Editing</td>
+<td>NeurIPS 2025</td><td>B</td><td>2</td>
+<td>official 0</td>
+<td>Sun Yat-sen University</td>
+<td><a href="https://doi.org/10.52202/085713-3808">DOI</a> <a href="https://openalex.org/W7196961880">OA</a> <a href="https://github.com/XinranQin/camedit.github.io">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>157</td><td>Auto DragGAN: Editing the Generative Image Manifold in an Autoregressive Manner</td>
+<td>ACM MM 2024</td><td>B</td><td>4</td>
+<td>none_found</td>
+<td>Chinese Academy of Sciences</td>
+<td><a href="https://doi.org/10.1145/3664647.3680814">DOI</a> <a href="https://openalex.org/W4403791477">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>158</td><td>MoTrans: Customized Motion Transfer with Text-driven Video Diffusion Models</td>
+<td>ACM MM 2024</td><td>B</td><td>7</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.1145/3664647.3680718">DOI</a> <a href="https://openalex.org/W4403792036">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>160</td><td>PropFly: Learning to Propagate via On-the-Fly Supervision from Pre-trained Video Diffusion Models</td>
+<td>CVPR 2026</td><td>B</td><td>0</td>
+<td>official 9</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2602.20583">DOI</a> <a href="https://openalex.org/W7131424940">OA</a> <a href="https://github.com/pmjames16/PropFly">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>161</td><td>HECTOR: Hybrid Editable Compositional Object References for Video Generation</td>
+<td>ICML 2026</td><td>B</td><td>0</td>
+<td>official 0</td>
+<td>Johns Hopkins University</td>
+<td><a href="https://doi.org/10.48550/arxiv.2603.08850">DOI</a> <a href="https://openalex.org/W7134890085">OA</a> <a href="https://github.com/Richard-Guofeng-Zhang/HECTOR">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>166</td><td>DisMo: Disentangled Motion Representations for Open-World Motion Transfer</td>
+<td>NeurIPS 2025</td><td>B</td><td>0</td>
+<td>official 36</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2511.23428">DOI</a> <a href="https://openalex.org/W7108210730">OA</a> <a href="https://github.com/CompVis/DisMo">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>169</td><td>Prompt-Softbox-Prompt: A Free-Text Embedding Control for Image Editing</td>
+<td>ACM MM 2025</td><td>B</td><td>2</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.1145/3746027.3755429">DOI</a> <a href="https://openalex.org/W4415536828">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>172</td><td>Matting by Generation</td>
+<td>SIGGRAPH 2024</td><td>B</td><td>5</td>
+<td>none_found</td>
+<td>National Inst. of Informatics</td>
+<td><a href="https://doi.org/10.1145/3641519.3657519">DOI</a> <a href="https://openalex.org/W4400573494">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>180</td><td>Zero-Shot Controllable Image-to-Video Animation via Motion Decomposition</td>
+<td>ACM MM 2024</td><td>B</td><td>3</td>
+<td>official 3</td>
+<td>University of North Carolina</td>
+<td><a href="https://doi.org/10.1145/3664647.3681394">DOI</a> <a href="https://openalex.org/W4403791617">OA</a> <a href="https://github.com/Yui010206/IVA-0">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>182</td><td>Position-LoRA: Enhanced Relation Customization through Structural Prior in Initial Latent Noise</td>
+<td>ACM MM 2025</td><td>B</td><td>0</td>
+<td>none_found</td>
+<td>Shanghai Jiao Tong University</td>
+<td><a href="https://doi.org/10.1145/3746027.3754543">DOI</a> <a href="https://openalex.org/W4415538863">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>190</td><td>BodyReLux: Temporally Consistent Full-Body Video Relighting</td>
+<td>SIGGRAPH 2026</td><td>B</td><td>0</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.1145/3811352">DOI</a> <a href="https://openalex.org/W7162186018">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>194</td><td>CoT-Edit: Let CoT Guide Instruction Video Editing</td>
+<td>CVPR 2026</td><td>B</td><td>0</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.48550/arxiv.2608.01113">DOI</a> <a href="https://openalex.org/W7172414931">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>195</td><td>ActAnywhere: Subject-Aware Video Background Generation</td>
+<td>NeurIPS 2024</td><td>B</td><td>4</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.52202/079017-0936">DOI</a> <a href="https://openalex.org/W4415798001">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>196</td><td>Towards Unified Multimodal Editing with Enhanced Knowledge Collaboration</td>
+<td>NeurIPS 2024</td><td>B</td><td>4</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.52202/079017-3500">DOI</a> <a href="https://openalex.org/W4415795868">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>209</td><td>Image as a World: Generating Interactive World from Single Image via Panoramic Video Generation</td>
+<td>NeurIPS 2025</td><td>B</td><td>0</td>
+<td>official 3</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.52202/085713-5744">DOI</a> <a href="https://openalex.org/W7197025518">OA</a> <a href="https://github.com/ivarun987/TERRIFIC-MARIO-BROS.">repo</a></td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr><tr><td>216</td><td>RefDrop: Controllable Consistency in Image or Video Generation via Reference Feature Guidance</td>
+<td>NeurIPS 2024</td><td>B</td><td>1</td>
+<td>none_found</td>
+<td>UNMATCHED->0.4</td>
+<td><a href="https://doi.org/10.52202/079017-1058">DOI</a> <a href="https://openalex.org/W4415798190">OA</a> </td>
+<td><input type="checkbox">确认</td><td><input type="text" placeholder="异议"></td></tr></table>
+<h2>二、仓库抽查（20 篇：star 最高 10 篇 official + 随机 10 篇 none_available）</h2>
+<table><tr><th>标题</th><th>判定</th><th>仓库</th><th>属实</th><th>判错</th><th>正确repo</th></tr>
+<tr><td>VACE: All-in-One Video Creation and Editing</td><td>official</td>
+<td>https://github.com/ali-vilab/VACE</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>SEINE: Short-to-Long Video Diffusion Model for Generative Transition and Prediction</td><td>official</td>
+<td>https://github.com/Vchitect/SEINE</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>MotionBricks: Scalable Real-Time Motions with Modular Latent Generative Model and Smart Primitives</td><td>official</td>
+<td>https://github.com/NVlabs/motionbricks</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>HoloCine: Holistic Generation of Cinematic Multi-Shot Long Video Narratives</td><td>official</td>
+<td>https://github.com/yihao-meng/HoloCine</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>Wan-Move: Motion-controllable Video Generation via Latent Trajectory Guidance</td><td>official</td>
+<td>https://github.com/ali-vilab/Wan-Move</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>Autoregressive Video Generation without Vector Quantization</td><td>official</td>
+<td>https://github.com/baaivision/NOVA</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>MiniMax-Remover: Taming Bad Noise Helps Video Object Removal</td><td>official</td>
+<td>https://github.com/zibojia/MiniMax-Remover</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>OmniVCus: Feedforward Subject-driven Video Customization with Multimodal Control Conditions</td><td>official</td>
+<td>https://github.com/caiyuanhao1998/Open-OmniVCus</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>BindWeave: Subject-Consistent Video Generation via Cross-Modal Integration</td><td>official</td>
+<td>https://github.com/bytedance/BindWeave</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>Taming Diffusion Probabilistic Models for Character Control</td><td>official</td>
+<td>https://github.com/AIGAnimation/CAMDM</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>Deep Motion Warping via Phase-Conditioned Diffusion Autoencoder</td><td>none_available</td>
+<td>-</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>VideoPoet: A Large Language Model for Zero-Shot Video Generation</td><td>none_available</td>
+<td>-</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>SAT3D: Image-driven Semantic Attribute Transfer in 3D</td><td>none_available</td>
+<td>-</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>Generative Omnimatte: Learning to Decompose Video into Layers</td><td>none_available</td>
+<td>-</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>Direct-a-Video: Customized Video Generation with User-Directed Camera Movement and Object Motion</td><td>none_available</td>
+<td>-</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>Temporal In‑Context Fine‑Tuning with Temporal Reasoning for Versatile Control of Video Diffusion Models</td><td>none_available</td>
+<td>-</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>Mixture of Contexts for Long Video Generation</td><td>none_available</td>
+<td>-</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>GR3EN: Generative Relighting for 3D Environments</td><td>none_available</td>
+<td>-</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>ArtiFixer: Enhancing and Extending 3D Reconstruction with Auto-Regressive Diffusion Models</td><td>none_available</td>
+<td>-</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr><tr><td>CoT-Edit: Let CoT Guide Instruction Video Editing</td><td>none_available</td>
+<td>-</td><td><input type="checkbox">仓库属实</td>
+<td><input type="checkbox">判错了(在下面写正确repo)</td><td><input type="text"></td></tr></table>
+</body></html>

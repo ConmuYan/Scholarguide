@@ -1,0 +1,76 @@
+{
+ "as_of": "2026-11-10",
+ "corpus_version": "trackA_video_v1.2.1",
+ "tasks": [
+  {
+   "task_id": "FB-01",
+   "track": "A",
+   "category": "Overall",
+   "year": null,
+   "eligible": true,
+   "valid_gold": 198,
+   "tiers": {
+    "S": 40,
+    "A": 79,
+    "B": 79
+   },
+   "note": "eligible (|G|=198 >= 5)"
+  },
+  {
+   "task_id": "FB-04",
+   "track": "A",
+   "category": "Year",
+   "year": 2024,
+   "eligible": true,
+   "valid_gold": 68,
+   "tiers": {
+    "S": 13,
+    "A": 26,
+    "B": 29
+   },
+   "note": "eligible (|G|=68 >= 5)"
+  },
+  {
+   "task_id": "FB-05",
+   "track": "A",
+   "category": "Year",
+   "year": 2025,
+   "eligible": true,
+   "valid_gold": 87,
+   "tiers": {
+    "S": 19,
+    "A": 34,
+    "B": 34
+   },
+   "note": "eligible (|G|=87 >= 5)"
+  },
+  {
+   "task_id": "FB-06",
+   "track": "A",
+   "category": "Year",
+   "year": 2026,
+   "eligible": true,
+   "valid_gold": 43,
+   "tiers": {
+    "S": 8,
+    "A": 19,
+    "B": 16
+   },
+   "note": "eligible (|G|=43 >= 5)"
+  },
+  {
+   "task_id": "FB-13",
+   "track": "A",
+   "category": "Venue",
+   "year": null,
+   "eligible": true,
+   "valid_gold": 46,
+   "tiers": {
+    "S": 11,
+    "A": 24,
+    "B": 11
+   },
+   "note": "eligible (|G|=46 >= 5)"
+  }
+ ]
+}
