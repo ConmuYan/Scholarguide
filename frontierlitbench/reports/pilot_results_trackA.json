@@ -1,0 +1,672 @@
+{
+ "run_version": "trackA_pilot_lune_retrieval_2026-11-10",
+ "as_of": "2026-11-10",
+ "corpus_version": "trackA_video_v1.2.1",
+ "disclaimer": "Retrieval pilot via Lune (same source as Gold construction) — optimistic bound; NOT the official ScholarGuide system run. 1 run/task.",
+ "macro_avg_nDCG@5_probeA_lune_relevance": 0.1988,
+ "macro_avg_nDCG@5_probeB_citation_rerank": 0.1546,
+ "tasks": [
+  {
+   "task": "FB-01",
+   "prompt": "You are an academic paper discovery and recommendation assistant. Recommend exactly five real,\npeer-reviewed papers that are most influential and research-significant for the specified frontier AI topic.\nOnly use the provided publication years and conference whitelist. Rank the papers from most to least\nsignificant. For every recommendation provide: rank, exact paper title, authors (all if available), formal\npublication year, accepted venue, DOI or canonical URL, and a brief evidence-grounded reason. Do\nnot invent papers or publication details. If fewer than five valid papers can be verified, return only\nthe verified ones and explicitly report the gap.\nTopic: video generation and editing: text-to-video and image-to-video generation, video diffusion models and Diffusion Transformers, controllable video editing, and temporal consistency\nYears: 2024-2026\nEligible conferences: CVPR, ICCV, ICLR, ICML, NeurIPS, ACM MM, SIGGRAPH\nCount: 5",
+   "n_pool": 198,
+   "probeA_lune_relevance": {
+    "top5": [
+     {
+      "rank": 1,
+      "title": "FLATTEN: optical FLow-guided ATTENtion for consistent text-to-video editing",
+      "venue": "ICLR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2310.05922"
+     },
+     {
+      "rank": 2,
+      "title": "TokenFlow: Consistent Diffusion Features for Consistent Video Editing",
+      "venue": "ICLR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2307.10373"
+     },
+     {
+      "rank": 3,
+      "title": "Video Diffusion Models",
+      "venue": "NeurIPS",
+      "year": 2022,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2204.03458"
+     },
+     {
+      "rank": 4,
+      "title": "VidToMe: Video Token Merging for Zero-Shot Video Editing",
+      "venue": "CVPR",
+      "year": 2024,
+      "matched": true,
+      "tier": "S",
+      "gain": 5,
+      "doi": "10.1109/cvpr52733.2024.00715"
+     },
+     {
+      "rank": 5,
+      "title": "Towards Consistent Video Editing with Text-to-Image Diffusion Models",
+      "venue": "NeurIPS",
+      "year": 2023,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2305.17431"
+     }
+    ],
+    "hits@5": 1,
+    "WeightedHit@5_pct": 20.0,
+    "nDCG@5": 0.1461,
+    "S_tier_hit@5": 1,
+    "pending_adjudication": [
+     "FLATTEN: optical FLow-guided ATTENtion for consistent text-to-video editing",
+     "TokenFlow: Consistent Diffusion Features for Consistent Video Editing",
+     "Video Diffusion Models",
+     "Towards Consistent Video Editing with Text-to-Image Diffusion Models"
+    ]
+   },
+   "probeB_citation_rerank": {
+    "top5": [
+     {
+      "rank": 1,
+      "title": "Video Diffusion Models",
+      "venue": "NeurIPS",
+      "year": 2022,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2204.03458"
+     },
+     {
+      "rank": 2,
+      "title": "Structure and Content-Guided Video Synthesis with Diffusion Models",
+      "venue": "ICCV",
+      "year": 2023,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/iccv51070.2023.00675"
+     },
+     {
+      "rank": 3,
+      "title": "TokenFlow: Consistent Diffusion Features for Consistent Video Editing",
+      "venue": "ICLR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2307.10373"
+     },
+     {
+      "rank": 4,
+      "title": "StoryDiffusion: Consistent Self-Attention for Long-Range Image and Video Generation",
+      "venue": "NeurIPS",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2405.01434"
+     },
+     {
+      "rank": 5,
+      "title": "StableVideo: Text-driven Consistency-aware Diffusion Video Editing",
+      "venue": "ICCV",
+      "year": 2023,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/iccv51070.2023.02106"
+     }
+    ],
+    "hits@5": 0,
+    "WeightedHit@5_pct": 0.0,
+    "nDCG@5": 0.0,
+    "S_tier_hit@5": 0,
+    "pending_adjudication": [
+     "Video Diffusion Models",
+     "Structure and Content-Guided Video Synthesis with Diffusion Models",
+     "TokenFlow: Consistent Diffusion Features for Consistent Video Editing",
+     "StoryDiffusion: Consistent Self-Attention for Long-Range Image and Video Generation",
+     "StableVideo: Text-driven Consistency-aware Diffusion Video Editing"
+    ]
+   }
+  },
+  {
+   "task": "FB-04",
+   "prompt": "You are an academic paper discovery and recommendation assistant. Recommend exactly five real,\npeer-reviewed papers that are most influential and research-significant for the specified frontier AI topic.\nOnly use the provided publication years and conference whitelist. Rank the papers from most to least\nsignificant. For every recommendation provide: rank, exact paper title, authors (all if available), formal\npublication year, accepted venue, DOI or canonical URL, and a brief evidence-grounded reason. Do\nnot invent papers or publication details. If fewer than five valid papers can be verified, return only\nthe verified ones and explicitly report the gap.\nTopic: video generation and editing: text-to-video and image-to-video generation, video diffusion models and Diffusion Transformers, controllable video editing, and temporal consistency\nYears: 2024\nEligible conferences: CVPR, ICCV, ICLR, ICML, NeurIPS, ACM MM, SIGGRAPH\nCount: 5",
+   "n_pool": 68,
+   "probeA_lune_relevance": {
+    "top5": [
+     {
+      "rank": 1,
+      "title": "FLATTEN: optical FLow-guided ATTENtion for consistent text-to-video editing",
+      "venue": "ICLR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2310.05922"
+     },
+     {
+      "rank": 2,
+      "title": "TokenFlow: Consistent Diffusion Features for Consistent Video Editing",
+      "venue": "ICLR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2307.10373"
+     },
+     {
+      "rank": 3,
+      "title": "VidToMe: Video Token Merging for Zero-Shot Video Editing",
+      "venue": "CVPR",
+      "year": 2024,
+      "matched": true,
+      "tier": "S",
+      "gain": 5,
+      "doi": "10.1109/cvpr52733.2024.00715"
+     },
+     {
+      "rank": 4,
+      "title": "Fuse Your Latents: Video Editing with Multi-source Latent Diffusion Models",
+      "venue": "ACM MM",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1145/3664647.3680683"
+     },
+     {
+      "rank": 5,
+      "title": "COVE: Unleashing the Diffusion Feature Correspondence for Consistent Video Editing",
+      "venue": "NeurIPS",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2406.08850"
+     }
+    ],
+    "hits@5": 1,
+    "WeightedHit@5_pct": 20.0,
+    "nDCG@5": 0.1696,
+    "S_tier_hit@5": 1,
+    "pending_adjudication": [
+     "FLATTEN: optical FLow-guided ATTENtion for consistent text-to-video editing",
+     "TokenFlow: Consistent Diffusion Features for Consistent Video Editing",
+     "Fuse Your Latents: Video Editing with Multi-source Latent Diffusion Models",
+     "COVE: Unleashing the Diffusion Feature Correspondence for Consistent Video Editing"
+    ]
+   },
+   "probeB_citation_rerank": {
+    "top5": [
+     {
+      "rank": 1,
+      "title": "TokenFlow: Consistent Diffusion Features for Consistent Video Editing",
+      "venue": "ICLR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2307.10373"
+     },
+     {
+      "rank": 2,
+      "title": "StoryDiffusion: Consistent Self-Attention for Long-Range Image and Video Generation",
+      "venue": "NeurIPS",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2405.01434"
+     },
+     {
+      "rank": 3,
+      "title": "FLATTEN: optical FLow-guided ATTENtion for consistent text-to-video editing",
+      "venue": "ICLR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2310.05922"
+     },
+     {
+      "rank": 4,
+      "title": "VDT: General-purpose Video Diffusion Transformers via Mask Modeling",
+      "venue": "ICLR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": null
+     },
+     {
+      "rank": 5,
+      "title": "Video-P2P: Video Editing with Cross-Attention Control",
+      "venue": "CVPR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/cvpr52733.2024.00821"
+     }
+    ],
+    "hits@5": 0,
+    "WeightedHit@5_pct": 0.0,
+    "nDCG@5": 0.0,
+    "S_tier_hit@5": 0,
+    "pending_adjudication": [
+     "TokenFlow: Consistent Diffusion Features for Consistent Video Editing",
+     "StoryDiffusion: Consistent Self-Attention for Long-Range Image and Video Generation",
+     "FLATTEN: optical FLow-guided ATTENtion for consistent text-to-video editing",
+     "VDT: General-purpose Video Diffusion Transformers via Mask Modeling",
+     "Video-P2P: Video Editing with Cross-Attention Control"
+    ]
+   }
+  },
+  {
+   "task": "FB-05",
+   "prompt": "You are an academic paper discovery and recommendation assistant. Recommend exactly five real,\npeer-reviewed papers that are most influential and research-significant for the specified frontier AI topic.\nOnly use the provided publication years and conference whitelist. Rank the papers from most to least\nsignificant. For every recommendation provide: rank, exact paper title, authors (all if available), formal\npublication year, accepted venue, DOI or canonical URL, and a brief evidence-grounded reason. Do\nnot invent papers or publication details. If fewer than five valid papers can be verified, return only\nthe verified ones and explicitly report the gap.\nTopic: video generation and editing: text-to-video and image-to-video generation, video diffusion models and Diffusion Transformers, controllable video editing, and temporal consistency\nYears: 2025\nEligible conferences: CVPR, ICCV, ICLR, ICML, NeurIPS, ACM MM, SIGGRAPH\nCount: 5",
+   "n_pool": 87,
+   "probeA_lune_relevance": {
+    "top5": [
+     {
+      "rank": 1,
+      "title": "SUV: Suppressing Undesired Video Content via Semantic Modulation Based on Text Embeddings",
+      "venue": "ICCV",
+      "year": 2025,
+      "matched": true,
+      "tier": "B",
+      "gain": 1,
+      "doi": "10.1109/iccv51701.2025.01706"
+     },
+     {
+      "rank": 2,
+      "title": "DIVE: Taming DINO for Subject-Driven Video Editing",
+      "venue": "ICCV",
+      "year": 2025,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/iccv51701.2025.01485"
+     },
+     {
+      "rank": 3,
+      "title": "VACE: All-in-One Video Creation and Editing",
+      "venue": "ICCV",
+      "year": 2025,
+      "matched": true,
+      "tier": "S",
+      "gain": 5,
+      "doi": "10.1109/iccv51701.2025.01597"
+     },
+     {
+      "rank": 4,
+      "title": "Pathways on the Image Manifold: Image Editing via Video Generation",
+      "venue": "CVPR",
+      "year": 2025,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/cvpr52734.2025.00736"
+     },
+     {
+      "rank": 5,
+      "title": "Ctrl-Adapter: An Efficient and Versatile Framework for Adapting Diverse Controls to Any Diffusion Model",
+      "venue": "ICLR",
+      "year": 2025,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": null
+     }
+    ],
+    "hits@5": 2,
+    "WeightedHit@5_pct": 24.0,
+    "nDCG@5": 0.2374,
+    "S_tier_hit@5": 1,
+    "pending_adjudication": [
+     "DIVE: Taming DINO for Subject-Driven Video Editing",
+     "Pathways on the Image Manifold: Image Editing via Video Generation",
+     "Ctrl-Adapter: An Efficient and Versatile Framework for Adapting Diverse Controls to Any Diffusion Model"
+    ]
+   },
+   "probeB_citation_rerank": {
+    "top5": [
+     {
+      "rank": 1,
+      "title": "VACE: All-in-One Video Creation and Editing",
+      "venue": "ICCV",
+      "year": 2025,
+      "matched": true,
+      "tier": "S",
+      "gain": 5,
+      "doi": "10.1109/iccv51701.2025.01597"
+     },
+     {
+      "rank": 2,
+      "title": "Dynamic Concepts Personalization from Single Videos",
+      "venue": "SIGGRAPH",
+      "year": 2025,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1145/3721238.3730644"
+     },
+     {
+      "rank": 3,
+      "title": "Temporal In‑Context Fine‑Tuning with Temporal Reasoning for Versatile Control of Video Diffusion Models",
+      "venue": "NeurIPS",
+      "year": 2025,
+      "matched": true,
+      "tier": "B",
+      "gain": 1,
+      "doi": "10.52202/085713-2501"
+     },
+     {
+      "rank": 4,
+      "title": "SUV: Suppressing Undesired Video Content via Semantic Modulation Based on Text Embeddings",
+      "venue": "ICCV",
+      "year": 2025,
+      "matched": true,
+      "tier": "B",
+      "gain": 1,
+      "doi": "10.1109/iccv51701.2025.01706"
+     },
+     {
+      "rank": 5,
+      "title": "TokensGen: Harnessing Condensed Tokens for Long Video Generation",
+      "venue": "ICCV",
+      "year": 2025,
+      "matched": true,
+      "tier": "A",
+      "gain": 3,
+      "doi": "10.1109/iccv51701.2025.01691"
+     }
+    ],
+    "hits@5": 4,
+    "WeightedHit@5_pct": 40.0,
+    "nDCG@5": 0.481,
+    "S_tier_hit@5": 1,
+    "pending_adjudication": [
+     "Dynamic Concepts Personalization from Single Videos"
+    ]
+   }
+  },
+  {
+   "task": "FB-06",
+   "prompt": "You are an academic paper discovery and recommendation assistant. Recommend exactly five real,\npeer-reviewed papers that are most influential and research-significant for the specified frontier AI topic.\nOnly use the provided publication years and conference whitelist. Rank the papers from most to least\nsignificant. For every recommendation provide: rank, exact paper title, authors (all if available), formal\npublication year, accepted venue, DOI or canonical URL, and a brief evidence-grounded reason. Do\nnot invent papers or publication details. If fewer than five valid papers can be verified, return only\nthe verified ones and explicitly report the gap.\nTopic: video generation and editing: text-to-video and image-to-video generation, video diffusion models and Diffusion Transformers, controllable video editing, and temporal consistency\nYears: 2026\nEligible conferences: CVPR, ICCV, ICLR, ICML, NeurIPS, ACM MM, SIGGRAPH\nCount: 5",
+   "n_pool": 43,
+   "probeA_lune_relevance": {
+    "top5": [
+     {
+      "rank": 1,
+      "title": "CoT-Edit: Let CoT Guide Instruction Video Editing",
+      "venue": "CVPR",
+      "year": 2026,
+      "matched": true,
+      "tier": "B",
+      "gain": 1,
+      "doi": "10.48550/arxiv.2608.01113"
+     },
+     {
+      "rank": 2,
+      "title": "Accelerating Diffusion-based Video Editing via Heterogeneous Caching: Beyond Full Computing at Sampled Denoising Timestep",
+      "venue": "CVPR",
+      "year": 2026,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2603.24260"
+     },
+     {
+      "rank": 3,
+      "title": "Video-As-Prompt: Unified Semantic Control for Video Generation",
+      "venue": "ICLR",
+      "year": 2026,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2510.20888"
+     },
+     {
+      "rank": 4,
+      "title": "DreamID-Omni: Unified Framework for Controllable Human-Centric Audio-Video Generation",
+      "venue": "ICML",
+      "year": 2026,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2602.12160"
+     },
+     {
+      "rank": 5,
+      "title": "MotionV2V: Editing Motion in a Video",
+      "venue": "CVPR",
+      "year": 2026,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2511.20640"
+     }
+    ],
+    "hits@5": 1,
+    "WeightedHit@5_pct": 4.0,
+    "nDCG@5": 0.0678,
+    "S_tier_hit@5": 0,
+    "pending_adjudication": [
+     "Accelerating Diffusion-based Video Editing via Heterogeneous Caching: Beyond Full Computing at Sampled Denoising Timestep",
+     "Video-As-Prompt: Unified Semantic Control for Video Generation",
+     "DreamID-Omni: Unified Framework for Controllable Human-Centric Audio-Video Generation",
+     "MotionV2V: Editing Motion in a Video"
+    ]
+   },
+   "probeB_citation_rerank": {
+    "top5": [
+     {
+      "rank": 1,
+      "title": "DreamID-Omni: Unified Framework for Controllable Human-Centric Audio-Video Generation",
+      "venue": "ICML",
+      "year": 2026,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2602.12160"
+     },
+     {
+      "rank": 2,
+      "title": "Video-As-Prompt: Unified Semantic Control for Video Generation",
+      "venue": "ICLR",
+      "year": 2026,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2510.20888"
+     },
+     {
+      "rank": 3,
+      "title": "MotionV2V: Editing Motion in a Video",
+      "venue": "CVPR",
+      "year": 2026,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2511.20640"
+     },
+     {
+      "rank": 4,
+      "title": "RealisMotion: Decomposed Human Motion Control and Video Generation in the World Space",
+      "venue": "ICML",
+      "year": 2026,
+      "matched": true,
+      "tier": "S",
+      "gain": 5,
+      "doi": "10.48550/arxiv.2508.08588"
+     },
+     {
+      "rank": 5,
+      "title": "Training-Free Text-Guided Color Editing with Multi-Modal Diffusion Transformer",
+      "venue": "ICLR",
+      "year": 2026,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.48550/arxiv.2508.09131"
+     }
+    ],
+    "hits@5": 1,
+    "WeightedHit@5_pct": 20.0,
+    "nDCG@5": 0.1461,
+    "S_tier_hit@5": 1,
+    "pending_adjudication": [
+     "DreamID-Omni: Unified Framework for Controllable Human-Centric Audio-Video Generation",
+     "Video-As-Prompt: Unified Semantic Control for Video Generation",
+     "MotionV2V: Editing Motion in a Video",
+     "Training-Free Text-Guided Color Editing with Multi-Modal Diffusion Transformer"
+    ]
+   }
+  },
+  {
+   "task": "FB-13",
+   "prompt": "You are an academic paper discovery and recommendation assistant. Recommend exactly five real,\npeer-reviewed papers that are most influential and research-significant for the specified frontier AI topic.\nOnly use the provided publication years and conference whitelist. Rank the papers from most to least\nsignificant. For every recommendation provide: rank, exact paper title, authors (all if available), formal\npublication year, accepted venue, DOI or canonical URL, and a brief evidence-grounded reason. Do\nnot invent papers or publication details. If fewer than five valid papers can be verified, return only\nthe verified ones and explicitly report the gap.\nTopic: video generation and editing: text-to-video and image-to-video generation, video diffusion models and Diffusion Transformers, controllable video editing, and temporal consistency\nYears: 2024-2026, venues CVPR/ICCV\nEligible conferences: CVPR, ICCV, ICLR, ICML, NeurIPS, ACM MM, SIGGRAPH\nCount: 5",
+   "n_pool": 57,
+   "probeA_lune_relevance": {
+    "top5": [
+     {
+      "rank": 1,
+      "title": "VidToMe: Video Token Merging for Zero-Shot Video Editing",
+      "venue": "CVPR",
+      "year": 2024,
+      "matched": true,
+      "tier": "S",
+      "gain": 5,
+      "doi": "10.1109/cvpr52733.2024.00715"
+     },
+     {
+      "rank": 2,
+      "title": "RAVE: Randomized Noise Shuffling for Fast and Consistent Video Editing with Diffusion Models",
+      "venue": "CVPR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/cvpr52733.2024.00622"
+     },
+     {
+      "rank": 3,
+      "title": "SUV: Suppressing Undesired Video Content via Semantic Modulation Based on Text Embeddings",
+      "venue": "ICCV",
+      "year": 2025,
+      "matched": true,
+      "tier": "B",
+      "gain": 1,
+      "doi": "10.1109/iccv51701.2025.01706"
+     },
+     {
+      "rank": 4,
+      "title": "DIVE: Taming DINO for Subject-Driven Video Editing",
+      "venue": "ICCV",
+      "year": 2025,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/iccv51701.2025.01485"
+     },
+     {
+      "rank": 5,
+      "title": "StableVideo: Text-driven Consistency-aware Diffusion Video Editing",
+      "venue": "ICCV",
+      "year": 2023,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/iccv51070.2023.02106"
+     }
+    ],
+    "hits@5": 2,
+    "WeightedHit@5_pct": 24.0,
+    "nDCG@5": 0.3731,
+    "S_tier_hit@5": 1,
+    "pending_adjudication": [
+     "RAVE: Randomized Noise Shuffling for Fast and Consistent Video Editing with Diffusion Models",
+     "DIVE: Taming DINO for Subject-Driven Video Editing",
+     "StableVideo: Text-driven Consistency-aware Diffusion Video Editing"
+    ]
+   },
+   "probeB_citation_rerank": {
+    "top5": [
+     {
+      "rank": 1,
+      "title": "Structure and Content-Guided Video Synthesis with Diffusion Models",
+      "venue": "ICCV",
+      "year": 2023,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/iccv51070.2023.00675"
+     },
+     {
+      "rank": 2,
+      "title": "StableVideo: Text-driven Consistency-aware Diffusion Video Editing",
+      "venue": "ICCV",
+      "year": 2023,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/iccv51070.2023.02106"
+     },
+     {
+      "rank": 3,
+      "title": "Video-P2P: Video Editing with Cross-Attention Control",
+      "venue": "CVPR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/cvpr52733.2024.00821"
+     },
+     {
+      "rank": 4,
+      "title": "VACE: All-in-One Video Creation and Editing",
+      "venue": "ICCV",
+      "year": 2025,
+      "matched": true,
+      "tier": "S",
+      "gain": 5,
+      "doi": "10.1109/iccv51701.2025.01597"
+     },
+     {
+      "rank": 5,
+      "title": "AVID: Any-Length Video Inpainting with Diffusion Model",
+      "venue": "CVPR",
+      "year": 2024,
+      "matched": false,
+      "tier": null,
+      "gain": 0,
+      "doi": "10.1109/cvpr52733.2024.00684"
+     }
+    ],
+    "hits@5": 1,
+    "WeightedHit@5_pct": 20.0,
+    "nDCG@5": 0.1461,
+    "S_tier_hit@5": 1,
+    "pending_adjudication": [
+     "Structure and Content-Guided Video Synthesis with Diffusion Models",
+     "StableVideo: Text-driven Consistency-aware Diffusion Video Editing",
+     "Video-P2P: Video Editing with Cross-Attention Control",
+     "AVID: Any-Length Video Inpainting with Diffusion Model"
+    ]
+   }
+  }
+ ]
+}
