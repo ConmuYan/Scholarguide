@@ -1,3 +1,6 @@
-# Track C review status
+# Track A open issues
 
-The former text claiming all GitHub statuses are unverified was stale. See ../README.md for scope decisions and limits. Some candidate records remain unverified and are excluded from Gold; repository attribution and institutional scores are automatically derived and need further spot checks before a formal release.
+1. **18 papers excluded from scoring** (protocol §4.4): first-author institution unverifiable via OpenAlex (rate-limited during re-verification; caches retained for resume). Affected titles listed in `labels/triage_video.jsonl` with `institution_status=unverified_excluded`.
+2. **A-dimension evidence level**: 53 of the 94 re-verified papers use author-level evidence (OpenAlex `last_known_institutions`) instead of work-level authorships; flagged per-paper in gold records. May over/under-state affiliation at publication time.
+3. **Policy confirmations pending group sign-off** (see review_workbook.html header): citation source policy (OpenAlex single source), none_available=0.0, industry-lab quartile mapping population (labs observed in Track A pool).
+4. FB-13 venue-subset interpreted as CVPR (largest venue-year cells); confirm with task owner.
