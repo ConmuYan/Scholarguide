@@ -52,6 +52,16 @@ def _observation_error(observation):
 def _paid_failure_outcome(value, providers):
     if not any(name in _PAID_PROVIDERS for name in providers):
         return None
+    # A later free source can hit the deadline after a paid source completed.
+    # Only clear the paid ambiguity when the retained batch explicitly proves
+    # that every paid provider in this call completed successfully.
+    batch = getattr(value, 'partial_batch', None)
+    if isinstance(batch, SearchBatch):
+        paid = [name for name in providers if name in _PAID_PROVIDERS]
+        if all(any(run.name == name and run.status in ('ok', 'empty', 'cache')
+                       and run.remote_outcome == 'completed'
+                       for run in batch.runs) for name in paid):
+            return None
     remote = getattr(value, 'remote_outcome', None)
     return remote if isinstance(remote, str) and remote in REMOTE_OUTCOMES else 'unknown'
 

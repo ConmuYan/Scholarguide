@@ -415,6 +415,9 @@ def to_paper(item: dict) -> Paper:
                                 'value': year, 'paper_id': str(native_id)}],
                   'evidence_level': 'corpus_metadata', 'acceptance_verified': False}
         publication = {**record, 'records': [record]}
+    citations = item.get('citation_count')
+    valid_citations = type(citations) is int and citations >= 0
+    observed_at = utc_now()
     return Paper(
         id=f'{PROVIDER}:{identifier}',
         title=title or identifier,
@@ -431,7 +434,10 @@ def to_paper(item: dict) -> Paper:
         sources=[PROVIDER],
         abstract_source='lune' if abstract else '',
         metadata_only=not abstract,
-        fetched_at=utc_now(),
+        fetched_at=observed_at,
+        citation_count=citations if valid_citations else None,
+        citation_source='lune' if valid_citations else '',
+        citation_observed_at=observed_at if valid_citations else '',
     )
 
 

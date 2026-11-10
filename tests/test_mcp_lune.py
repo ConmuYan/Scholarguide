@@ -236,6 +236,16 @@ def search_script(payload=None):
 
 
 class MappingTests(unittest.TestCase):
+    def test_lune_citations_are_provenanced_and_invalid_values_remain_unknown(self):
+        for value in (0, 42):
+            p = mcp_lune.to_paper({'title': 'Example', 'citation_count': value})
+            self.assertEqual((p.citation_count, p.citation_source), (value, 'lune'))
+            self.assertTrue(p.citation_observed_at)
+        for value in (None, -1, True, '42'):
+            p = mcp_lune.to_paper({'title': 'Example', 'citation_count': value})
+            self.assertIsNone(p.citation_count)
+            self.assertEqual(p.citation_source, '')
+
     def test_payload_shapes(self):
         self.assertEqual(len(mcp_lune.papers_from({'papers': [{'id': 1}]})), 1)
         self.assertEqual(len(mcp_lune.papers_from({'results': [{'id': 1}]})), 1)

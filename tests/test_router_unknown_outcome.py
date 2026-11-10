@@ -17,6 +17,19 @@ from source import SearchBatch, SourceRun
 
 
 class UnknownRouterTests(unittest.TestCase):
+    def test_partial_batch_distinguishes_completed_paid_source_from_later_failure(self):
+        from retrieval import _paid_failure_outcome
+        error = GuideError('later source hit the deadline')
+        error.remote_outcome = 'unknown'
+        error.partial_batch = SearchBatch('q', ['lune', 'openalex'], [], [
+            SourceRun('lune', 'ok', 1, remote_outcome='completed', retry_safe=False),
+            SourceRun('openalex', 'partial', remote_outcome='unknown', retry_safe=False)])
+        self.assertIsNone(_paid_failure_outcome(error, ['lune', 'openalex']))
+        error.partial_batch.runs[0].remote_outcome = 'unknown'
+        self.assertEqual(_paid_failure_outcome(error, ['lune', 'openalex']), 'unknown')
+        error.partial_batch.runs[0].remote_outcome = 'completed'
+        self.assertEqual(_paid_failure_outcome(error, ['lune', 'deepseek', 'openalex']), 'unknown')
+
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
