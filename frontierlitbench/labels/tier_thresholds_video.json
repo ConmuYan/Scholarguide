@@ -1,0 +1,9 @@
+{
+  "N": 198,
+  "NS": 40,
+  "NA": 79,
+  "NB": 79,
+  "S_min_Q": 0.658908,
+  "A_min_Q": 0.399451,
+  "quota_rule": "S=round(0.20N), A=round(0.40N), B=rest; ties broken by DOI/lune_id"
+}

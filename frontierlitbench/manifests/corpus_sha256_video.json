@@ -1,0 +1,16 @@
+{
+  "corpus_version": "trackA_video_v1.2.1",
+  "protocol_version": "FB-1.0",
+  "as_of": "2026-11-10",
+  "file": "corpus/gold_video.jsonl",
+  "sha256": "24178b0e0361c7dd3669857c6fa8d2df22cf1a5e7d7ce2d42e8600099e9759b4",
+  "n_records": 216,
+  "n_scored": 198,
+  "n_unscored": 18,
+  "tiers": {
+    "S": 40,
+    "A": 79,
+    "B": 79
+  },
+  "note": "Integrity of submitted snapshot; this hash does not verify its bibliographic or scoring evidence."
+}

@@ -31,3 +31,6 @@ Thumbs.db
 # Agent workspace state and build caches are not release inputs.
 .codebuddy/
 frontierlitbench/cache/
+
+# Local research credentials
+keys.local.env
