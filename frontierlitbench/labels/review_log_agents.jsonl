@@ -1,0 +1,46 @@
+{"ts": "2026-11-05T13:05:38.241702+00:00", "event": "phase0_snapshot", "venues": {"ICLR": {"2024": "not_indexed", "2025": "not_indexed", "2026": "not_indexed"}, "ICML": {"2024": "not_indexed", "2025": "not_indexed", "2026": "not_indexed"}, "NeurIPS": {"2024": "not_indexed", "2025": "not_indexed", "2026": "not_indexed"}, "ACL": {"2024": "not_indexed", "2025": "not_indexed", "2026": "not_indexed"}, "EMNLP": {"2024": "not_indexed", "2025": "not_indexed", "2026": "not_indexed"}, "AAAI": {"2024": "not_indexed", "2025": "not_indexed", "2026": "not_indexed"}}, "checked_at": "2026-11-05T13:05:35.011291+00:00", "item_count": 59}
+{"ts": "2026-11-05T13:06:08.418890+00:00", "event": "phase0_snapshot", "venues": {"ICLR": {"2024": "indexed", "2025": "indexed", "2026": "indexed"}, "ICML": {"2024": "indexed", "2025": "indexed", "2026": "indexed"}, "NeurIPS": {"2024": "indexed", "2025": "indexed", "2026": "not_indexed"}, "ACL": {"2024": "indexed", "2025": "indexed", "2026": "indexed"}, "EMNLP": {"2024": "indexed", "2025": "indexed", "2026": "not_indexed"}, "AAAI": {"2024": "indexed", "2025": "indexed", "2026": "indexed"}}, "checked_at": "2026-11-05T13:06:05.483525+00:00", "item_count": 59}
+{"ts": "2026-11-05T13:09:13.942869+00:00", "event": "phase1_discover", "total": 69, "failures": [], "by_year": {"2024": 17, "2026": 31, "2025": 21}, "by_venue": {"ICLR": 18, "EMNLP": 3, "ACL": 23, "NeurIPS": 8, "ICML": 14, "AAAI": 3}}
+{"ts": "2026-11-05T13:15:05.343841+00:00", "event": "phase1_discover", "total": 329, "calls": 35, "failures": [], "by_year": {"2024": 60, "2026": 155, "2025": 114}, "by_venue": {"ICLR": 72, "EMNLP": 33, "ACL": 85, "NeurIPS": 33, "ICML": 86, "AAAI": 20}}
+{"ts": "2026-11-05T13:17:57.299211+00:00", "event": "phase1_discover", "total": 329, "calls": 35, "failures": [], "by_year": {"2024": 60, "2026": 155, "2025": 114}, "by_venue": {"ICLR": 72, "EMNLP": 33, "ACL": 85, "NeurIPS": 33, "ICML": 86, "AAAI": 20}}
+{"ts": "2026-11-05T13:19:37.896896+00:00", "event": "phase2_dedup_verify", "candidates": 329, "deduped": 329, "merged": 0, "boundary": 29, "lead_decision": 195, "field_unverified": 0}
+{"ts": "2026-11-05T13:20:32.072450+00:00", "event": "phase2_dedup_verify", "candidates": 329, "deduped": 329, "merged": 0, "boundary": 6, "lead_decision": 15, "field_unverified": 0}
+{"ts": "2026-11-05T13:26:02.065691+00:00", "event": "phase3_citations", "total": 329, "verified": 256, "unverified": 73}
+{"ts": "2026-11-05T13:59:24.013459+00:00", "event": "phase3_citations", "total": 329, "verified": 286, "unverified": 43}
+{"ts": "2026-11-05T14:06:24.023069+00:00", "event": "phase3_csrankings", "total": 610, "top100_saved": 100, "source": "https://csrankings.org/generated-author-info.csv", "checked_at": "2026-11-05T14:04:59.285917+00:00"}
+{"ts": "2026-11-05T14:07:01.655065+00:00", "event": "phase3_institution", "total": 329, "verified": 213, "unverified": 116}
+{"ts": "2026-11-05T14:10:38.913222+00:00", "event": "phase3_github", "total": 329, "repo_status": "all_unverified", "reason": "github_official_repo_requires_manual_verification"}
+{"ts": "2026-11-05T14:13:14.215333+00:00", "event": "phase4_score_tier", "total": 329, "admitted": 0, "rejected": 329, "n_s": 0, "n_a": 0, "n_b": 0, "reject_reasons": {"github_unverified": 213, "institution_unverified": 73, "citation_unverified": 43}}
+{"ts": "2026-11-05T14:14:29.161155+00:00", "event": "phase5_eligibility", "gold_total": 0, "tasks": {"FB-03": "ineligible", "FB-10": "ineligible", "FB-11": "ineligible", "FB-12": "ineligible", "FB-15": "ineligible"}}
+{"ts": "2026-11-05T14:14:33.338485+00:00", "event": "phase6_review", "gold": 0, "sample": 0, "gold_check_issues": 0, "manifest_files": 14}
+{"ts": "2026-11-05T14:25:55.337155+00:00", "event": "phase3_github", "total": 329, "searched": 10, "official": 1}
+{"ts": "2026-11-05T14:28:27.141365+00:00", "event": "phase3_github", "total": 329, "searched": 10, "official": 3}
+{"ts": "2026-11-05T14:31:51.682774+00:00", "event": "phase3_github", "total": 329, "searched": 15, "official": 2}
+{"ts": "2026-11-05T14:35:28.769730+00:00", "event": "phase3_github", "total": 329, "searched": 11, "official": 0}
+{"ts": "2026-11-05T14:39:35.969974+00:00", "event": "phase3_github", "total": 329, "searched": 19, "official": 5}
+{"ts": "2026-11-05T14:43:02.668505+00:00", "event": "phase3_github", "total": 329, "searched": 16, "official": 2}
+{"ts": "2026-11-05T15:06:50.533293+00:00", "event": "phase3_github", "total": 329, "searched": 148, "official": 33}
+{"ts": "2026-11-05T15:10:26.488729+00:00", "event": "phase3_github", "total": 329, "searched": 16, "official": 1}
+{"ts": "2026-11-05T15:35:05.181393+00:00", "event": "phase3_github", "total": 329, "searched": 148, "official": 24}
+{"ts": "2026-11-05T15:35:52.202599+00:00", "event": "phase4_score_tier", "total": 329, "admitted": 18, "rejected": 311, "n_s": 4, "n_a": 7, "n_b": 7, "reject_reasons": {"github_unverified": 195, "institution_unverified": 73, "citation_unverified": 43}}
+{"ts": "2026-11-05T15:35:59.308402+00:00", "event": "phase5_eligibility", "gold_total": 18, "tasks": {"FB-03": "eligible", "FB-10": "ineligible", "FB-11": "eligible", "FB-12": "eligible", "FB-15": "eligible"}}
+{"ts": "2026-11-05T15:35:59.380247+00:00", "event": "phase6_review", "gold": 18, "sample": 4, "gold_check_issues": 0, "manifest_files": 15}
+{"ts": "2026-11-05T15:36:48.595344+00:00", "event": "phase4_score_tier", "total": 329, "admitted": 17, "rejected": 312, "n_s": 3, "n_a": 7, "n_b": 7, "reject_reasons": {"github_unverified": 196, "institution_unverified": 73, "citation_unverified": 43}}
+{"ts": "2026-11-05T15:36:48.650488+00:00", "event": "phase5_eligibility", "gold_total": 17, "tasks": {"FB-03": "eligible", "FB-10": "ineligible", "FB-11": "eligible", "FB-12": "eligible", "FB-15": "eligible"}}
+{"ts": "2026-11-05T15:36:48.725715+00:00", "event": "phase6_review", "gold": 17, "sample": 4, "gold_check_issues": 0, "manifest_files": 15}
+{"ts": "2026-11-05T15:36:59.386162+00:00", "event": "g_dimension_caveat", "note": "G 维度采用 GitHub Search + 启发式识别官方仓库，reviewer=agent-draft，标记 official 的 23 篇需人工二次核验（其中 GEM 因同名仓库 GeM(POI推荐) 已回退 unverified）。", "official_count": 23, "corrected_misjudgment": ["GEM->mubella/GeM"]}
+{"ts": "2026-11-06T00:05:19.454554+00:00", "event": "phase3_github", "total": 329, "abstract_official": 5, "searched": 5, "official": 7}
+{"ts": "2026-11-06T00:25:45.978510+00:00", "event": "phase3_github", "total": 329, "abstract_official": 71, "searched": 107, "official": 82}
+{"ts": "2026-11-06T00:27:46.993342+00:00", "event": "phase4_score_tier", "total": 329, "admitted": 61, "rejected": 268, "n_s": 12, "n_a": 24, "n_b": 25, "reject_reasons": {"github_unverified": 152, "institution_unverified": 73, "citation_unverified": 43}}
+{"ts": "2026-11-06T00:27:47.073611+00:00", "event": "phase5_eligibility", "gold_total": 61, "tasks": {"FB-03": "eligible", "FB-10": "eligible", "FB-11": "eligible", "FB-12": "eligible", "FB-15": "eligible"}}
+{"ts": "2026-11-06T00:27:47.155306+00:00", "event": "phase6_review", "gold": 61, "sample": 15, "gold_check_issues": 0, "manifest_files": 15}
+{"ts": "2026-11-06T09:59:59.253125+00:00", "event": "phase3_github_v2", "processed": 3, "official": 3, "unverified": 0, "with_candidates": 0, "methods": {"L1_paper_text": 1, "L3_project_page": 1, "L5_search": 1}, "http_calls": {"arxiv": 1, "gh_core": 17, "hf": 2, "web": 2, "gh_search": 3}}
+{"ts": "2026-11-06T12:11:29.177131+00:00", "event": "phase3_github_v2", "processed": 269, "official": 173, "unverified": 96, "with_candidates": 45, "methods": {"L1_paper_text": 101, "L5_search": 43, "L2_hf_papers": 22, "L3_project_page": 6, "L3_ghio_guess": 1}, "http_calls": {"gh_core": 1797, "hf": 142, "gh_search": 338, "web": 18}}
+{"ts": "2026-11-06T12:12:47.811841+00:00", "event": "phase4_score_tier", "total": 329, "admitted": 139, "rejected": 190, "n_s": 28, "n_a": 56, "n_b": 55, "reject_reasons": {"github_unverified": 74, "institution_unverified": 73, "citation_unverified": 43}}
+{"ts": "2026-11-06T12:12:47.890638+00:00", "event": "phase5_eligibility", "gold_total": 139, "tasks": {"FB-03": "eligible", "FB-10": "eligible", "FB-11": "eligible", "FB-12": "eligible", "FB-15": "eligible"}}
+{"ts": "2026-11-06T12:12:48.545919+00:00", "event": "phase6_review", "gold": 139, "sample": 34, "gold_check_issues": 0, "manifest_files": 2592}
+{"ts": "2026-11-06T12:13:14.639026+00:00", "event": "phase6_review", "gold": 139, "sample": 34, "gold_check_issues": 0, "manifest_files": 18}
+{"ts": "2026-11-06T12:51:26.254333+00:00", "event": "phase6_review", "gold": 139, "sample": 34, "gold_check_issues": 0, "manifest_files": 20}
+{"ts": "2026-11-06T12:51:41.617611+00:00", "event": "phase6_review", "gold": 139, "sample": 34, "gold_check_issues": 0, "manifest_files": 19}
+{"ts": "2026-11-10T06:07:26.095688+00:00", "event": "phase4_score_tier", "total": 329, "admitted": 134, "rejected": 195, "n_s": 27, "n_a": 54, "n_b": 53, "reject_reasons": {"github_unverified": 74, "institution_unverified": 72, "citation_unverified": 43, "outside_track_c": 4, "github_stars_not_paper_specific": 2}}
+{"ts": "2026-11-10T06:07:26.240587+00:00", "event": "phase5_eligibility", "gold_total": 134, "tasks": {"FB-03": "eligible", "FB-10": "eligible", "FB-11": "eligible", "FB-12": "eligible", "FB-15": "eligible"}}

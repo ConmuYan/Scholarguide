@@ -1,0 +1,35 @@
+paper_id,title,venue,year,tier,Q,evidence_links
+doi:10.1609/aaai.v40i40.40676,Beyond ReAct: A Planner-Centric Framework for Complex Tool-Augmented LLM Reasoning,AAAI,2026,A,0.747639,10.1609/aaai.v40i40.40676; 2511.10037
+arxiv:2308.10848,AgentVerse: Facilitating Multi-Agent Collaboration and Exploring Emergent Behaviors,ICLR,2024,S,0.913095,2308.10848
+doi:10.18653/v1/2026.acl-long.531,MOA: Multi-Objective Alignment for Role-Playing Agents,ACL,2026,A,0.530903,10.18653/v1/2026.acl-long.531; 2512.09756
+doi:10.18653/v1/2025.emnlp-main.401,WebAgent-R1: Training Web Agents via End-to-End Multi-Turn Reinforcement Learning,EMNLP,2025,A,0.577174,10.18653/v1/2025.emnlp-main.401
+doi:10.18653/v1/2025.acl-long.605,Can a Single Model Master Both Multi-turn Conversations and Tool Use? CoALM: A Unified Conversational Agentic Language Model,ACL,2025,A,0.601304,10.18653/v1/2025.acl-long.605
+arxiv:2509.15221,ScaleCUA: Scaling Open-Source Computer Use Agents with Cross-Platform Data,ICLR,2026,A,0.689167,2509.15221
+arxiv:2506.03106,Advancing LLM Reasoning with Natural Language and Numerical Feedback,ICML,2026,S,0.754375,2506.03106
+arxiv:2511.21689,ToolOrchestra: Elevating Intelligence via Efficient Model and Tool Orchestration,ICML,2026,S,0.771736,2511.21689
+doi:10.18653/v1/2025.acl-long.1167,Don't Get Lost in the Trees: Streamlining LLM Reasoning by Overcoming Tree Search Exploration Pitfalls,ACL,2025,B,0.33837,10.18653/v1/2025.acl-long.1167; 2502.11183
+arxiv:2509.03312,AgenTracer: Who Is Inducing Failure in the LLM Agentic Systems?,ICLR,2026,S,0.867222,2509.03312
+arxiv:2509.06949,Revolutionizing Reinforcement Learning Framework for Diffusion Large Language Models,ICLR,2026,S,0.893611,2509.06949
+arxiv:2402.01030,Executable Code Actions Elicit Better LLM Agents,ICML,2024,S,0.768333,2402.01030
+arxiv:2508.09123,OpenCUA: Open Foundations for Computer-Use Agents,NeurIPS,2025,S,0.754239,2508.09123
+doi:10.18653/v1/2025.acl-long.359,G-Safeguard: A Topology-Guided Security Lens and Treatment on LLM-based Multi-agent Systems,ACL,2025,A,0.721196,10.18653/v1/2025.acl-long.359; 2502.11127
+arxiv:2510.24302,Lookahead Tree-Based Rollouts for Enhanced Trajectory-Level Exploration in Reinforcement Learning with Verifiable Rewards,ICLR,2026,A,0.558333,2510.24302
+arxiv:2506.01748,Thinking in Character: Advancing Role-Playing Agents with Role-Aware Reasoning,NeurIPS,2025,A,0.488043,2506.01748
+doi:10.18653/v1/2025.emnlp-main.276,Search-o1: Agentic Search-Enhanced Large Reasoning Models,EMNLP,2025,S,0.964674,10.18653/v1/2025.emnlp-main.276; 2501.05366
+doi:10.18653/v1/2025.emnlp-main.1339,GraphAgent: Agentic Graph Language Assistant,EMNLP,2025,A,0.53087,10.18653/v1/2025.emnlp-main.1339
+doi:10.18653/v1/2025.acl-long.757,MasRouter: Learning to Route LLMs for Multi-Agent Systems,ACL,2025,S,0.762717,10.18653/v1/2025.acl-long.757; 2502.11133
+doi:10.18653/v1/2026.acl-long.1736,ToolOmni: Enabling Open-World Tool Use via Agentic learning with Proactive Retrieval and Grounded Execution,ACL,2026,B,0.421181,10.18653/v1/2026.acl-long.1736; 2604.13787
+doi:10.18653/v1/2024.acl-long.826,Pride and Prejudice: LLM Amplifies Self-Bias in Self-Refinement,ACL,2024,A,0.463571,10.18653/v1/2024.acl-long.826
+arxiv:2510.02609,RedCodeAgent: Automatic Red-teaming Agent against Diverse Code Agents,ICLR,2026,B,0.429931,2510.02609
+arxiv:2603.03296,PlugMem: A Task-Agnostic Plugin Memory Module for LLM Agents,ICML,2026,A,0.535347,2603.03296
+doi:10.18653/v1/2026.acl-long.2216,Reinforced Efficient Reasoning via Semantically Diverse Exploration,ACL,2026,A,0.608958,10.18653/v1/2026.acl-long.2216; 2601.05053
+doi:10.18653/v1/2024.emnlp-main.938,Working Memory Identifies Reasoning Limits in Language Models,EMNLP,2024,B,0.106429,10.18653/v1/2024.emnlp-main.938
+doi:10.1609/aaai.v40i25.39205,MemoryART: Enhancing LLMs via Multi-Memory Models with Adaptive Resonance Theory for Healthcare Agents,AAAI,2026,B,0.168333,10.1609/aaai.v40i25.39205
+arxiv:2501.01702,AgentRefine: Enhancing Agent Generalization through Refinement Tuning,ICLR,2025,A,0.514348,2501.01702
+arxiv:2605.25511,CRPO: Character-centric Group Relative Policy Optimization for Role-aware Reasoning in Role-playing Agents,ICML,2026,B,0.189167,2605.25511
+doi:10.1609/aaai.v39i24.34749,S^3cMath: Spontaneous Step-Level Self-Correction Makes Large Language Models Better Mathematical Reasoners,AAAI,2025,B,0.365761,10.1609/aaai.v39i24.34749; 2409.01524
+doi:10.18653/v1/2026.acl-long.1,OctoTools: A Multi-Agent Framework with Extensible Tools for Complex Reasoning,ACL,2026,S,0.989931,10.18653/v1/2026.acl-long.1
+arxiv:2602.06025,Learning Query-Aware Budget-Tier Routing for Runtime Agent Memory,ICML,2026,B,0.383333,2602.06025
+arxiv:2412.04233,HyperMARL: Adaptive Hypernetworks for Multi-Agent RL,NeurIPS,2025,B,0.317826,2412.04233
+arxiv:2410.06703,ST-WebAgentBench: A Benchmark for Evaluating Safety and Trustworthiness in Web Agents,ICLR,2026,S,0.775625,2410.06703
+arxiv:2602.08235,When Benign Inputs Lead to Severe Harms: Eliciting Unsafe Unintended Behaviors of Computer-Use Agents,ICML,2026,B,0.275417,2602.08235

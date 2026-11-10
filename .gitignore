@@ -27,3 +27,7 @@ Thumbs.db
 *.sqlite3-wal
 *.sqlite3-shm
 *.log
+
+# Agent workspace state and build caches are not release inputs.
+.codebuddy/
+frontierlitbench/cache/
