@@ -64,13 +64,13 @@
    "category": "Venue",
    "year": null,
    "eligible": true,
-   "valid_gold": 46,
+   "valid_gold": 57,
    "tiers": {
-    "S": 11,
-    "A": 24,
-    "B": 11
+    "S": 14,
+    "A": 30,
+    "B": 13
    },
-   "note": "eligible (|G|=46 >= 5)"
+   "note": "eligible (|G|=57 >= 5); venue filter = CVPR+ICCV per protocol Table 5"
   }
  ]
 }
