@@ -4,6 +4,16 @@ from source import merge_papers
 from workflow import select_papers, coverage
 
 class InfluenceRankingTests(unittest.TestCase):
+    def test_benchmark_significance_is_qualified_only_in_paired_ranking_request(self):
+        from workflow import _calibrate_paired_significance
+        plan = {'ranking': 'citations'}
+        text = 'Recommend the most influential and research-significant papers.'
+        self.assertEqual(_calibrate_paired_significance(plan, text, ['research-significant', 'code released']), ['code released'])
+        self.assertEqual(_calibrate_paired_significance(plan, 'Find research-significant papers.', ['research-significant']), ['research-significant'])
+        corrected = {'ranking': 'relevance'}
+        self.assertEqual(_calibrate_paired_significance(corrected, text, ['research-significant']), [])
+        self.assertEqual(corrected['ranking'], 'citations')
+
     def test_ranking_and_missing_counts(self):
         papers = [Paper(id='a', title='A', abstract='evidence', url='', citation_count=0, citation_source='openalex'),
                   Paper(id='b', title='B', abstract='evidence', url='', citation_count=50, citation_source='openalex'),
