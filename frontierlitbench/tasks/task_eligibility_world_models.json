@@ -1,0 +1,129 @@
+{
+  "as_of": "2026-11-09",
+  "protocol_version": "FB-1.0",
+  "corpus_version": "FB-1.0-world-2026-11-09-single-reviewer",
+  "gold_total": 128,
+  "threshold": 5,
+  "tasks": [
+    {
+      "task_id": "FB-02",
+      "track": "B",
+      "category": "Overall",
+      "years": [
+        2024,
+        2025,
+        2026
+      ],
+      "venues": [
+        "AAAI",
+        "CVPR",
+        "ICCV",
+        "ICLR",
+        "ICML",
+        "NeurIPS"
+      ],
+      "eligible": true,
+      "valid_gold": 128,
+      "tiers": {
+        "S": 26,
+        "A": 51,
+        "B": 51
+      },
+      "note": "eligible (|G|=128 >= 5)"
+    },
+    {
+      "task_id": "FB-07",
+      "track": "B",
+      "category": "Year",
+      "years": [
+        2024
+      ],
+      "venues": [
+        "AAAI",
+        "CVPR",
+        "ICCV",
+        "ICLR",
+        "ICML",
+        "NeurIPS"
+      ],
+      "eligible": true,
+      "valid_gold": 34,
+      "tiers": {
+        "S": 8,
+        "A": 10,
+        "B": 16
+      },
+      "note": "eligible (|G|=34 >= 5)"
+    },
+    {
+      "task_id": "FB-08",
+      "track": "B",
+      "category": "Year",
+      "years": [
+        2025
+      ],
+      "venues": [
+        "AAAI",
+        "CVPR",
+        "ICCV",
+        "ICLR",
+        "ICML",
+        "NeurIPS"
+      ],
+      "eligible": true,
+      "valid_gold": 47,
+      "tiers": {
+        "S": 10,
+        "A": 20,
+        "B": 17
+      },
+      "note": "eligible (|G|=47 >= 5)"
+    },
+    {
+      "task_id": "FB-09",
+      "track": "B",
+      "category": "Year",
+      "years": [
+        2026
+      ],
+      "venues": [
+        "AAAI",
+        "CVPR",
+        "ICCV",
+        "ICLR",
+        "ICML",
+        "NeurIPS"
+      ],
+      "eligible": true,
+      "valid_gold": 47,
+      "tiers": {
+        "S": 8,
+        "A": 21,
+        "B": 18
+      },
+      "note": "eligible (|G|=47 >= 5)"
+    },
+    {
+      "task_id": "FB-14",
+      "track": "B",
+      "category": "Venue",
+      "years": [
+        2024,
+        2025,
+        2026
+      ],
+      "venues": [
+        "ICLR",
+        "ICML"
+      ],
+      "eligible": true,
+      "valid_gold": 65,
+      "tiers": {
+        "S": 15,
+        "A": 27,
+        "B": 23
+      },
+      "note": "eligible (|G|=65 >= 5)"
+    }
+  ]
+}
