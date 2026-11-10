@@ -1,0 +1,199 @@
+rank,tier,title,venue,year,doi,C,G,A,Q,github_url,institution
+1,S,VACE: All-in-One Video Creation and Editing,ICCV,2025,10.1109/iccv51701.2025.01597,0.994,0.988,1.000,0.993351,https://github.com/ali-vilab/VACE,Alibaba Group (China)
+2,S,Motion-I2V: Consistent and Controllable Image-to-Video Generation with Explicit Motion Modeling,SIGGRAPH,2024,10.1145/3641519.3657497,0.969,0.793,1.000,0.920617,https://github.com/G-U-N/Motion-I2V,Chinese University of Hong Kong
+3,S,VidToMe: Video Token Merging for Zero-Shot Video Editing,CVPR,2024,10.1109/cvpr52733.2024.00715,0.919,0.841,1.000,0.907752,https://github.com/lixirui142/VidToMe,Shanghai Jiao Tong University
+4,S,SEINE: Short-to-Long Video Diffusion Model for Generative Transition and Prediction,ICLR,2024,10.48550/arxiv.2310.20700,0.806,0.988,1.000,0.889779,https://github.com/Vchitect/SEINE,Shanghai Artificial Intelligence Laboratory
+5,S,Taming Diffusion Probabilistic Models for Character Control,SIGGRAPH,2024,10.1145/3641519.3657440,0.819,0.963,1.000,0.889337,https://github.com/AIGAnimation/CAMDM,University of Hong Kong
+6,S,MiniMax-Remover: Taming Bad Noise Helps Video Object Removal,NeurIPS,2025,10.52202/085713-2536,0.822,0.919,1.000,0.877593,https://github.com/zibojia/MiniMax-Remover,Chinese University of Hong Kong
+7,S,Video Interpolation with Diffusion Models,CVPR,2024,10.1109/cvpr52733.2024.00701,0.875,0.817,1.000,0.876372,https://github.com/danier97/LDMVFI,Google (United States)
+8,S,UniEdit: A Unified Tuning-Free Framework for Video Motion and Appearance Editing,ACM MM,2025,10.1145/3746027.3755462,0.943,0.686,1.000,0.874205,https://github.com/JianhongBai/UniEdit,Zhejiang University
+9,S,Flexible Motion In-betweening with Diffusion Models,SIGGRAPH,2024,10.1145/3641519.3657414,0.906,0.939,0.600,0.870145,https://github.com/setarehc/diffusion-motion-inbetweening,Columbia University
+10,S,I2V-Adapter: A General Image-to-Video Adapter for Diffusion Models,SIGGRAPH,2024,10.1145/3641519.3657407,0.831,0.866,1.000,0.866944,https://github.com/KlingAIResearch/I2V-Adapter,USTC
+11,S,AC3D: Analyzing and Improving 3D Camera Control in Video Diffusion Transformers,CVPR,2025,10.1109/cvpr52734.2025.02130,0.960,0.802,0.600,0.858571,https://github.com/snap-research/ac3d,University of Toronto
+12,S,VideoCoF: Unified Video Editing with Temporal Reasoner,CVPR,2026,10.48550/arxiv.2512.07469,0.949,0.796,0.600,0.850828,https://github.com/knightyxp/VideoCoF,University of Sydney
+13,S,Just-Dub-It: Video dubbing via Joint Audio-Visual Diffusion,SIGGRAPH,2026,10.1145/3799902.3811061,0.796,0.870,1.000,0.848866,https://github.com/justdubit/just-dub-it,Peking University
+14,S,Autoregressive Video Generation without Vector Quantization,ICLR,2025,10.48550/arxiv.2412.14169,0.914,0.942,0.400,0.845144,https://github.com/baaivision/NOVA,Beijing Institute of Technology
+15,S,CCEdit: Creative and Controllable Video Editing via Diffusion Models,CVPR,2024,10.1109/cvpr52733.2024.00641,0.875,0.695,1.000,0.839787,https://github.com/RuoyuFeng/CCEdit,USTC
+16,S,FasterCache: Training-Free Video Diffusion Model Acceleration with High Quality,ICLR,2025,10.48550/arxiv.2410.19355,0.770,0.849,1.000,0.828214,https://github.com/Vchitect/FasterCache,Chinese University of Hong Kong
+17,S,WISA: World simulator assistant for physics-aware text-to-video generation,NeurIPS,2025,10.52202/085713-0191,0.891,0.872,0.400,0.81157,https://github.com/360CVGroup/WISA,Beijing Institute of Technology
+18,S,Vision as a Dialect: Unifying Visual Understanding and Generation via Text-Aligned Representations,NeurIPS,2025,10.52202/085713-5294,0.736,0.826,1.000,0.802272,https://github.com/csuhan/Tar,Chinese University of Hong Kong
+19,S,MovieBench: A Hierarchical Movie Level Dataset for Long Video Generation,CVPR,2025,10.1109/cvpr52734.2025.02699,0.822,0.640,1.000,0.793872,https://github.com/showlab/MovieBench,National University of Singapore
+20,S,MotionCanvas: Cinematic Shot Design with Controllable Image-to-Video Generation,SIGGRAPH,2025,10.1145/3721238.3730604,0.874,0.512,1.000,0.783948,https://github.com/Doubiiu/MotionCanvas,Chinese University of Hong Kong
+21,S,HoloCine: Holistic Generation of Cinematic Multi-Shot Long Video Narratives,CVPR,2026,10.48550/arxiv.2510.20822,0.612,0.944,1.000,0.770068,https://github.com/yihao-meng/HoloCine,University of Hong Kong
+22,S,PhysCtrl: Generative Physics for Controllable and Physics-Grounded Video Generation,NeurIPS,2025,10.52202/085713-5598,0.822,0.756,0.600,0.768756,https://github.com/cwchenwang/physctrl,Nankai University
+23,S,RealisMotion: Decomposed Human Motion Control and Video Generation in the World Space,ICML,2026,10.48550/arxiv.2508.08588,0.796,0.574,1.000,0.759977,https://github.com/JingyunLiang/RealisMotion,Alibaba Group (China)
+24,S,LeviTor: 3D Trajectory Oriented Image-to-Video Synthesis,CVPR,2025,10.1109/cvpr52734.2025.01165,0.672,0.779,1.000,0.753549,https://github.com/robbyant-research/LeviTor,Nanjing University
+25,S,ViVid-1-to-3: Novel View Synthesis with Video Diffusion Models,CVPR,2024,10.1109/cvpr52733.2024.00647,0.738,0.768,0.600,0.726113,https://github.com/ubc-vision/vivid123,Columbia University
+26,S,InsViE-1M: Effective Instruction-Based Video Editing with Elaborate Dataset Construction,ICCV,2025,10.1109/iccv51701.2025.01550,0.770,0.477,1.000,0.716586,https://github.com/langmanbusi/InsViE,University of Hong Kong
+27,S,Wan-Move: Motion-controllable Video Generation via Latent Trajectory Guidance,NeurIPS,2025,10.48550/arxiv.2512.08765,0.494,0.965,1.000,0.711374,https://github.com/ali-vilab/Wan-Move,Tsinghua University
+28,S,Videoauteur: Towards Long Narrative Video Generation,ICCV,2025,10.1109/iccv51701.2025.01781,0.770,0.547,0.800,0.707517,https://github.com/lambert-x/VideoAuteur,Johns Hopkins University
+29,S,MotionCtrl: A Unified and Flexible Motion Controller for Video Generation,SIGGRAPH,2024,10.1145/3641519.3657518,0.994,0.000,1.000,0.696563,,Nanyang Technological University
+30,S,Mixture of Contexts for Long Video Generation,ICLR,2026,10.48550/arxiv.2508.21058,0.990,0.000,1.000,0.694388,,Stanford University
+31,S,VFXMaster: Unlocking Dynamic Visual Effect Generation via In-Context Learning,SIGGRAPH,2026,10.1145/3799902.3811208,0.796,0.648,0.400,0.6922,https://github.com/libaolu312/VFXMaster,Dalian University of Technology
+32,S,"LoL: Longer than Longer, Scaling Video Generation to Hour",CVPR,2026,10.48550/arxiv.2601.16914,0.949,0.167,0.800,0.691939,https://github.com/Cedric-Perauer/LoLVideoGen,University of Central Florida
+33,S,VideoPoet: A Large Language Model for Zero-Shot Video Generation,ICML,2024,10.48550/arxiv.2312.14125,0.981,0.000,1.000,0.689688,,Carnegie Mellon University
+34,S,Diffusion as Shader: 3D-aware Video Diffusion for Versatile Video Generation Control,SIGGRAPH,2025,10.1145/3721238.3730607,0.971,0.000,1.000,0.684195,,University of Hong Kong
+35,S,BIVDiff: A Training-Free Framework for General-Purpose Video Synthesis via Bridging Image and Video Diffusion Models,CVPR,2024,10.1109/cvpr52733.2024.00706,0.631,0.622,1.000,0.683773,https://github.com/MCG-NJU/BIVDiff,Nanjing University
+36,S,Controllable First-Frame-Guided Video Editing via Mask-Aware LoRA Fine-Tuning,ICLR,2026,10.48550/arxiv.2506.10082,0.949,0.000,1.000,0.671939,,Chinese University of Hong Kong
+37,S,Protein Conformation Generation via Force-Guided SE(3) Diffusion Models,ICML,2024,10.48550/arxiv.2403.14088,0.756,0.646,0.400,0.66984,https://github.com/bytedance/ConfDiff,South China Normal University
+38,S,Show-o2: Improved Native Unified Multimodal Models,NeurIPS,2025,10.52202/085713-1584,0.943,0.000,1.000,0.668391,,National University of Singapore
+39,S,OmniVCus: Feedforward Subject-driven Video Customization with Multimodal Control Conditions,NeurIPS,2025,10.52202/085713-3848,0.494,0.895,0.800,0.660444,https://github.com/caiyuanhao1998/Open-OmniVCus,Johns Hopkins University
+40,S,EasyAnimate: High-Performance Video Generation Framework with Hybrid Windows Attention and Reward Backpropagation,ACM MM,2025,10.1145/3746027.3755083,0.925,0.000,1.000,0.658908,,Alibaba Group (China)
+41,A,PanoWan: Lifting Diffusion Video Generation Models to 360° with Latitude/Longitude-aware Mechanisms,NeurIPS,2025,10.52202/085713-4949,0.609,0.570,1.000,0.655988,https://github.com/VariantConst/PanoWan,Peking University
+42,A,OmniRoam: World Wandering via Long-Horizon Panoramic Video Generation,SIGGRAPH,2026,10.1145/3799902.3811180,0.612,0.759,0.600,0.654512,https://github.com/yuhengliu02/OmniRoam,California Inst. of Technology
+43,A,Frieren: Efficient Video-to-Audio Generation Network with Rectified Flow Matching,NeurIPS,2024,10.52202/079017-4068,0.631,0.524,1.000,0.654505,https://github.com/cyanbx/Frieren-V2A,Zhejiang University
+44,A,Long Context Tuning for Video Generation,ICCV,2025,10.1109/iccv51701.2025.01605,0.902,0.000,1.000,0.646264,,Chinese University of Hong Kong
+45,A,Make Pixels Dance: High-Dynamic Video Generation,CVPR,2024,10.1109/cvpr52733.2024.00845,0.956,0.000,0.800,0.645938,,ByteDance (China)
+46,A,Generative Video Motion Editing with 3D Point Tracks,CVPR,2026,10.48550/arxiv.2512.02015,0.898,0.000,1.000,0.643878,,Univ. of Maryland - College Park
+47,A,GenTron: Diffusion Transformers for Image and Video Generation,CVPR,2024,10.1109/cvpr52733.2024.00616,0.894,0.000,1.000,0.641563,,Chinese University of Hong Kong
+48,A,Motion Prompting: Controlling Video Generation with Motion Trajectories,CVPR,2025,10.1109/cvpr52734.2025.00010,0.983,0.000,0.600,0.630517,,Google DeepMind (United Kingdom)
+49,A,AnimateAnything: Consistent and Controllable Animation for Video Generation,CVPR,2025,10.1109/cvpr52734.2025.02602,0.856,0.000,1.000,0.620977,,Zhejiang University
+50,A,SketchDream: Sketch-based Text-To-3D Generation and Editing,SIGGRAPH,2024,10.1145/3658120,0.844,0.000,1.000,0.614063,,Chinese Academy of Sciences
+51,A,VIVA: VLM-Guided Instruction-Based Video Editing with Reward Optimization,CVPR,2026,10.48550/arxiv.2512.16906,0.898,0.000,0.800,0.613878,,ByteDance (China)
+52,A,Scaling Laws for Diffusion Transformers,ICLR,2026,10.48550/arxiv.2410.08184,0.796,0.074,1.000,0.609977,https://github.com/bundlab/embodied-intelligence-and-digital-architectures,Shanghai Artificial Intelligence Laboratory
+53,A,DVD-Quant: Data-free Video Diffusion Transformers Quantization,ICLR,2026,10.48550/arxiv.2505.18663,0.796,0.074,1.000,0.609977,https://github.com/ProlificTeddy/dvd-quant-data-free-video-diffusion-transformers-quantization,Shanghai Jiao Tong University
+54,A,Direct-a-Video: Customized Video Generation with User-Directed Camera Movement and Object Motion,SIGGRAPH,2024,10.1145/3641519.3657481,0.944,0.000,0.600,0.609062,,Tianjin University
+55,A,MV-S2V: Multi-View Subject-Consistent Video Generation,SIGGRAPH,2026,10.1145/3799902.3811131,0.612,0.407,1.000,0.608957,https://github.com/Szy-Young/MV-S2V,University of Hong Kong
+56,A,AR-Diffusion: Asynchronous Video Generation with Auto-Regressive Diffusion,CVPR,2025,10.1109/cvpr52734.2025.00690,0.822,0.000,1.000,0.602011,,Chinese Academy of Sciences
+57,A,ReRoPE: Repurposing RoPE for Relative Camera Control,SIGGRAPH,2026,10.1145/3799902.3811226,0.796,0.000,1.000,0.587755,,Zhejiang University
+58,A,FFP-300K: Scaling First-Frame Propagation for Generalizable Video Editing,CVPR,2026,10.48550/arxiv.2601.01720,0.796,0.000,1.000,0.587755,,University of Hong Kong
+59,A,TRIP: Temporal Residual Learning with Image Noise Prior for Image-to-Video Diffusion Models,CVPR,2024,10.1109/cvpr52733.2024.00828,0.794,0.000,1.000,0.586562,,USTC
+60,A,Collaborative Video Diffusion: Consistent Multi-video Generation with Camera Control,NeurIPS,2024,10.52202/079017-0518,0.537,0.427,1.000,0.573674,https://github.com/CollaborativeVideoDiffusion/CVD,Stanford University
+61,A,Inference-Time Text-to-Video Alignment with Diffusion Latent Beam Search,NeurIPS,2025,10.52202/085713-0445,0.707,0.314,0.600,0.572979,https://github.com/shim0114/T2V-Diffusion-Search,University of Tokyo
+62,A,Autoregressive Adversarial Post-Training for Real-Time Interactive Video Generation,NeurIPS,2025,10.52202/085713-1371,0.822,0.000,0.800,0.572011,,ByteDance (China)
+63,A,VD3D: Taming Large Video Diffusion Transformers for 3D Camera Control,ICLR,2025,10.48550/arxiv.2407.12781,0.874,0.000,0.600,0.57046,,University of Toronto
+64,A,BindWeave: Subject-Consistent Video Generation via Cross-Modal Integration,ICLR,2026,10.48550/arxiv.2510.00438,0.255,0.907,1.000,0.562528,https://github.com/bytedance/BindWeave,Chinese Academy of Sciences
+65,A,Snap Video: Scaled Spatiotemporal Transformers for Text-to-Video Synthesis,CVPR,2024,10.1109/cvpr52733.2024.00672,0.856,0.000,0.600,0.560937,,Snap (United States)
+66,A,MotionBricks: Scalable Real-Time Motions with Modular Latent Generative Model and Smart Primitives,SIGGRAPH,2026,10.1145/3811334,0.255,0.981,0.800,0.554751,https://github.com/NVlabs/motionbricks,Nvidia (United States)
+67,A,Video Diffusion Models are Training-free Motion Interpreter and Controller,NeurIPS,2024,10.52202/079017-2423,0.487,0.451,1.000,0.553491,https://github.com/xizaoqu/MOFT,Nanyang Technological University
+68,A,SketchVideo: Sketch-based Video Generation and Editing,CVPR,2025,10.1109/cvpr52734.2025.02177,0.707,0.047,1.000,0.552747,https://github.com/StaryMoon/SketchVideo-Unofficial,Chinese Academy of Sciences
+69,A,FIND: Fine-tuning Initial Noise Distribution with Policy Optimization for Diffusion Models,ACM MM,2024,10.1145/3664647.3681047,0.487,0.744,0.400,0.551296,https://github.com/himanshub1007/Alzhimers-Disease-Prediction-Using-Deep-learning,East China Normal University
+70,A,TempoMaster: Efficient Long Video Generation via Next-Frame-Rate Prediction,CVPR,2026,10.48550/arxiv.2511.12578,0.612,0.315,0.800,0.551179,https://github.com/scottykma/TempoMaster,Fudan University
+71,A,Optical-Flow Guided Prompt Optimization for Coherent Video Generation,CVPR,2025,10.1109/cvpr52734.2025.00734,0.736,0.186,0.600,0.550412,https://github.com/HyelinNAM/MotionPrompt,Korea University
+72,A,Boximator: Generating Rich and Controllable Motions for Video Synthesis,ICML,2024,10.48550/arxiv.2402.01566,0.781,0.000,0.800,0.549688,,ByteDance (China)
+73,A,GeoVideo: Introducing Geometric Regularization into Video Generation Model,NeurIPS,2025,10.52202/085713-1931,0.609,0.314,0.800,0.549244,https://github.com/yunpeng1998/GeoVideo,University of Texas at Austin
+74,A,UniVidX: A Unified Multimodal Framework for Versatile Video Generation via Diffusion Priors,SIGGRAPH,2026,10.1145/3811304,0.255,0.833,1.000,0.540306,https://github.com/houyuanchen111/UniVidX,University of Hong Kong
+75,A,Streetscapes: Large-scale Consistent Street View Generation Using Autoregressive Video Diffusion,SIGGRAPH,2024,10.1145/3641519.3657513,0.700,0.000,1.000,0.535,,Stanford University
+76,A,MagicFight: Personalized Martial Arts Combat Video Generation,ACM MM,2024,10.1145/3664647.3680849,0.700,0.000,1.000,0.535,,Chinese Academy of Sciences
+77,A,AnyI2V: Animating Any Conditional Image with Motion Control,ICCV,2025,10.1109/iccv51701.2025.01607,0.356,0.721,0.800,0.532256,https://github.com/FudanCVL/AnyI2V,Fudan University
+78,A,HOI-Swap: Swapping Objects in Videos with Hand-Object Interaction Awareness,NeurIPS,2024,10.52202/079017-2454,0.537,0.378,0.800,0.52904,https://github.com/zihuixue/HOISwap,University of Texas at Austin
+79,A,FullDiT: Video Generative Foundation Models with Multimodal Control via Full Attention,ICCV,2025,10.1109/iccv51701.2025.01460,0.770,0.047,0.600,0.527517,https://github.com/fulldit/fulldit.github.io,Kuaishou (China)
+80,A,VEGGIE: Instructional Editing and Reasoning Video Concepts with Grounded Generation,ICCV,2025,10.1109/iccv51701.2025.01406,0.494,0.442,0.800,0.524397,https://github.com/Yui010206/VEGGIE-VidEdit,Adobe Systems (United States)
+81,A,TokensGen: Harnessing Condensed Tokens for Long Video Generation,ICCV,2025,10.1109/iccv51701.2025.01691,0.356,0.593,1.000,0.523884,https://github.com/Vicky0522/TokensGen,Nanyang Technological University
+82,A,Text-to-Vector Generation with Neural Path Representation,SIGGRAPH,2024,10.1145/3658204,0.675,0.000,1.000,0.52125,,University of Hong Kong
+83,A,DisenStudio: Customized Multi-Subject Text-to-Video Generation with Disentangled Spatial Control,ACM MM,2024,10.1145/3664647.3680637,0.537,0.244,1.000,0.518796,https://github.com/forchchch/disenstudio.github.io,Tsinghua University
+84,A,What Happens Next? Anticipating Future Motion by Generating Point Trajectories,ICLR,2026,10.48550/arxiv.2509.21592,0.612,0.204,0.800,0.517846,https://github.com/gboduljak/what-happens-next,University of Oxford
+85,A,JavisGPT: A Unified Multi-modal LLM for Sounding-Video Comprehension and Generation,NeurIPS,2025,10.48550/arxiv.2512.22905,0.494,0.616,0.400,0.516723,https://github.com/JavisVerse/JavisGPT,Luoyang Normal University
+86,A,Efficient Video Diffusion Models via Content-Frame Motion-Latent Decomposition,ICLR,2024,10.48550/arxiv.2403.14148,0.487,0.500,0.600,0.508125,https://github.com/NVlabs/CMD,Korea University
+87,A,Relit-LiVE: Relight Video by Jointly Learning Environment Video,SIGGRAPH,2026,10.1145/3799902.3811200,0.255,0.722,1.000,0.506973,https://github.com/zhuxing0/Relit-LiVE,Nanjing University
+88,A,Identifying and Solving Conditional Image Leakage in Image-to-Video Diffusion Model,NeurIPS,2024,10.52202/079017-0954,0.325,0.890,0.400,0.505823,https://github.com/thu-ml/cond-image-leakage,Central South University
+89,A,Extrapolating and Decoupling Image-to-Video Generation Models: Motion Modeling is Easier Than You Think,CVPR,2025,10.1109/cvpr52734.2025.01167,0.609,0.360,0.400,0.503197,https://github.com/Chuge0335/EDG,Huazhong University of Science and Technology
+90,A,TAVGBench: Benchmarking Text to Audible-Video Generation,ACM MM,2024,10.1145/3664647.3680612,0.631,0.305,0.400,0.498651,https://github.com/OpenNLPLab/TAVGBench,Northwestern University
+91,A,ReVideo: Remake a Video with Motion and Content Control,NeurIPS,2024,10.52202/079017-0586,0.631,0.000,1.000,0.497188,,Peking University
+92,A,Lighting-grounded Video Generation with Renderer-based Agent Reasoning,CVPR,2026,10.48550/arxiv.2604.07966,0.612,0.000,1.000,0.486735,,USTC
+93,A,I2V3D: Controllable Image-to-Video Generation with 3D Guidance,ICCV,2025,10.1109/iccv51701.2025.01241,0.609,0.000,1.000,0.485057,,University of Hong Kong
+94,A,AV-DiT: Taming Image Diffusion Transformers for Efficient Joint Audio and Video Generation,ACM MM,2025,10.1145/3746027.3755713,0.707,0.000,0.600,0.478793,,University of Toronto
+95,A,VidSplat: Gaussian Splatting Reconstruction with Geometry-Guided Video Diffusion Priors,SIGGRAPH,2026,10.1145/3799902.3811138,0.255,0.611,1.000,0.473639,https://github.com/tangjm24/VidSplat,Tsinghua University
+96,A,OmniTokenizer: A Joint Image-Video Tokenizer for Visual Generation,NeurIPS,2024,10.52202/079017-0887,0.631,0.000,0.800,0.467188,,Fudan University
+97,A,Video Analysis and Generation via a Semantic Progress Function,SIGGRAPH,2026,10.1145/3799902.3811049,0.255,0.685,0.800,0.465862,https://github.com/Aryia-Behroziuan/References,Tel Aviv University
+98,A,Sequential Neural Score Estimation: Likelihood-Free Inference with Conditional Score Based Diffusion Models,ICML,2024,10.48550/arxiv.2210.04872,0.738,0.000,0.400,0.465625,,University of Bristol
+99,A,LGTM: Local-to-Global Text-Driven Human Motion Diffusion Model,SIGGRAPH,2024,10.1145/3641519.3657422,0.675,0.000,0.600,0.46125,,Shenzhen University
+100,A,Safe-Sora: Safe Text-to-Video Generation via Graphical Watermarking,NeurIPS,2025,10.52202/085713-5236,0.356,0.384,1.000,0.461093,https://github.com/Zihan-Su/Safe-Sora,Tsinghua University
+101,A,Instruction-based Image Manipulation by Watching How Things Move,CVPR,2025,10.1109/cvpr52734.2025.00258,0.672,0.000,0.600,0.459828,,University of Tokyo
+102,A,MotionStone: Decoupled Motion Intensity Modulation with Diffusion Transformer for Image-to-Video Generation,CVPR,2025,10.1109/cvpr52734.2025.02129,0.672,0.000,0.600,0.459828,,University of Tokyo
+103,A,TV2TV: A Unified Framework for Interleaved Language and Video Generation,CVPR,2026,10.48550/arxiv.2512.05103,0.612,0.000,0.800,0.456735,,University of Washington
+104,A,Separate Motion from Appearance: Customizing Motion via Customizing Text-to-Video Diffusion Models,ACM MM,2025,10.1145/3746027.3754493,0.494,0.314,0.600,0.456025,https://github.com/mhowerton91/history,Beihang University
+105,A,TexSliders: Diffusion-Based Texture Editing in CLIP Space,SIGGRAPH,2024,10.1145/3641519.3657444,0.719,0.000,0.400,0.455313,,Universidad de Zaragoza
+106,A,OSV: One Step is Enough for High-Quality Image to Video Generation,CVPR,2025,10.1109/cvpr52734.2025.01174,0.609,0.000,0.800,0.455057,,Fudan University
+107,A,Fast and Memory-Efficient Video Diffusion Using Streamlined Inference,NeurIPS,2024,10.52202/079017-0437,0.412,0.341,0.800,0.449314,https://github.com/wuyushuwys/FMEDiffusion,Wuhan University
+108,A,Adaptive Video Distillation: Mitigating Oversaturation and Temporal Collapse in Few-Step Generation,CVPR,2026,10.48550/arxiv.2603.21864,0.255,0.500,1.000,0.440306,https://github.com/yuyangyou/Adaptive-Video-Distillation,Peking University
+109,A,Spatiotemporal Skip Guidance for Enhanced Video Diffusion Sampling,CVPR,2025,10.1109/cvpr52734.2025.01028,0.609,0.000,0.600,0.425057,,Korea University
+110,A,Generative Omnimatte: Learning to Decompose Video into Layers,CVPR,2025,10.1109/cvpr52734.2025.01168,0.609,0.000,0.600,0.425057,,Google DeepMind (United Kingdom)
+111,A,Towards Precise Scaling Laws for Video Diffusion Transformers,CVPR,2025,10.1109/cvpr52734.2025.01692,0.494,0.000,1.000,0.421839,,USTC
+112,A,Sketch3DVE: Sketch-based 3D-Aware Scene Video Editing,SIGGRAPH,2025,10.1145/3721238.3730623,0.494,0.000,1.000,0.421839,,Chinese Academy of Sciences
+113,A,Tora2: Motion and Appearance Customized Diffusion Transformer for Multi-Entity Video Generation,ACM MM,2025,10.1145/3746027.3754869,0.494,0.000,1.000,0.421839,,Alibaba Group (China)
+114,A,InterAnimate: Taming Region-Aware Diffusion Model for Realistic Human Interaction Animation,ACM MM,2025,10.1145/3746027.3755532,0.494,0.000,1.000,0.421839,,Tsinghua University
+115,A,AnimeColor: Reference-based Animation Colorization with Diffusion Transformers,ACM MM,2025,10.1145/3746027.3755524,0.356,0.244,1.000,0.419233,https://github.com/IamCreateAI/AnimeColor,Shanghai Jiao Tong University
+116,A,Frame In-N-Out: Unbounded Controllable Image-to-Video Generation,NeurIPS,2025,10.52202/085713-0114,0.356,0.442,0.600,0.418535,https://github.com/UVA-Computer-Vision-Lab/FrameINO,University of Virginia
+117,A,LeMiCa: Lexicographic Minimax Path Caching for Efficient Diffusion-Based Video Generation,NeurIPS,2025,10.52202/085713-4408,0.241,0.721,0.400,0.409038,https://github.com/UnicomAI/LeMiCa,China United Network Communications Group (China)
+118,A,Long Video Diffusion Generation with Segmented Cross-Attention and Content-Rich Video Data Curation,CVPR,2025,10.1109/cvpr52734.2025.00303,0.609,0.047,0.400,0.409011,https://github.com/StaryMoon/Presto-SCA-Unofficial,01.AI (China)
+119,A,FRAG: Frequency Adapting Group for Diffusion Video Editing,ICML,2024,10.48550/arxiv.2406.06044,0.250,0.573,0.600,0.399451,https://github.com/dbstjswo505/FRAG,Korea University
+120,B,OneStory: Coherent Multi-Shot Video Generation with Adaptive Memory,CVPR,2026,10.48550/arxiv.2512.07802,0.612,0.000,0.400,0.396735,,University of Copenhagen
+121,B,DFSAttn: Dynamic Fine-grained Sparse Attention for Efficient Video Generation,ICML,2026,10.48550/arxiv.2605.23445,0.255,0.352,1.000,0.395862,https://github.com/jessica-hujie/DFSAttn,Huawei Technologies (China)
+122,B,Vivid-ZOO: Multi-View Video Generation with Diffusion Model,NeurIPS,2024,10.52202/079017-1987,0.588,0.000,0.400,0.383125,,Clemson University
+123,B,IllumiCraft: Unified Geometry and Illumination Diffusion for Controllable Video Generation,NeurIPS,2025,10.52202/085713-0938,0.098,0.663,0.800,0.372573,https://github.com/yuanze-lin/IllumiCraft,University of Oxford
+124,B,Fairy: Fast Parallelized Instruction-Guided Video-to-Video Synthesis,CVPR,2024,10.1109/cvpr52733.2024.00789,0.450,0.000,0.800,0.3675,,Meta (United States)
+125,B,Motion Consistency Model: Accelerating Video Diffusion with Disentangled Motion-Appearance Distillation,NeurIPS,2024,10.52202/079017-3524,0.175,0.598,0.600,0.365518,https://github.com/yhZhai/mcm,University of Southern California
+126,B,VideoHandles: Editing 3D Object Compositions in Videos Using Video Generative Priors,CVPR,2025,10.1109/cvpr52734.2025.01648,0.494,0.000,0.600,0.361839,,Korea University
+127,B,DissolveStereo: Coarse Depth Injection for Zero-Shot Stereo Video Generation,SIGGRAPH,2026,10.1145/3811390,0.255,0.407,0.600,0.352528,https://github.com/shijianjian/DissolveStereo,KAUST
+128,B,STDD: Spatio-Temporal Dual Diffusion for Video Generation,CVPR,2025,10.1109/cvpr52734.2025.01173,0.356,0.000,1.000,0.345977,,Nanjing University
+129,B,Audio-Sync Video Generation with Multi-Stream Temporal Control,NeurIPS,2025,10.52202/085713-0433,0.356,0.000,1.000,0.345977,,Peking University
+130,B,ReToMe-VA: Recursive Token Merging for Video Diffusion-based Unrestricted Adversarial Attack,ACM MM,2024,10.1145/3664647.3680959,0.250,0.280,0.800,0.341646,https://github.com/Gao-zy26/ReToMe-VA,Fudan University
+131,B,X-Ray: A Sequential 3D Representation For Generation,NeurIPS,2024,10.52202/079017-4327,0.025,0.671,0.800,0.33497,https://github.com/tau-yihouxiang/X-Ray,Wuhan University
+132,B,RLZero: Direct Policy Inference from Language Without In-Domain Supervision,NeurIPS,2025,10.52202/085713-2794,0.494,0.000,0.400,0.331839,,OpenAI (United States)
+133,B,Generative Pre-trained Autoregressive Diffusion Transformer,NeurIPS,2025,10.52202/085713-4524,0.494,0.000,0.400,0.331839,,Communication University of China
+134,B,CamEdit: Continuous Camera Parameter Control for Photorealistic Image Editing,NeurIPS,2025,10.52202/085713-3808,0.356,0.047,0.800,0.32993,https://github.com/XinranQin/camedit.github.io,Sun Yat-sen University
+135,B,MM-LDM: Multi-Modal Latent Diffusion Model for Sounding Video Generation,ACM MM,2024,10.1145/3664647.3680889,0.325,0.000,1.000,0.32875,,Chinese Academy of Sciences
+136,B,Warped Diffusion: Solving Video Inverse Problems with Image Diffusion Models,NeurIPS,2024,10.52202/079017-3207,0.325,0.000,1.000,0.32875,,Massachusetts Inst. of Technology
+137,B,T2V-Turbo: Breaking the Quality Bottleneck of Video Consistency Model with Mixed Reward Feedback,NeurIPS,2024,10.52202/079017-2410,0.487,0.000,0.400,0.328125,,Northwestern University
+138,B,WorldWeaver: Generating Long-Horizon Video Worlds via Rich Perception,NeurIPS,2025,10.52202/085713-1540,0.241,0.151,1.000,0.328107,https://github.com/Johanan528/WorldWeaver,Chinese University of Hong Kong
+139,B,MotionRAG: Motion Retrieval-Augmented Image-to-Video Generation,NeurIPS,2025,10.48550/arxiv.2509.26391,0.098,0.407,1.000,0.325829,https://github.com/MCG-NJU/MotionRAG,Nanjing University
+140,B,QVD: Post-training Quantization for Video Diffusion Models,ACM MM,2024,10.1145/3664647.3681050,0.412,0.024,0.600,0.324192,https://github.com/Worromots/QVD.,Beihang University
+141,B,"EIDT-V: Exploiting Intersections in Diffusion Trajectories for Model-Agnostic, Zero-Shot, Training-Free Text-to-Video Generation",CVPR,2025,10.1109/cvpr52734.2025.01698,0.356,0.221,0.400,0.322256,https://github.com/djagpal02/EIDT-V,University of Bath
+142,B,FlowMo: Variance-Based Flow Guidance for Coherent Motion in Video Generation,NeurIPS,2025,10.52202/085713-2771,0.356,0.000,0.800,0.315977,,Tel Aviv University
+143,B,Gloria: Consistent Character Video Generation via Content Anchors,CVPR,2026,10.48550/arxiv.2603.29931,0.255,0.074,1.000,0.312528,https://github.com/yyvhang/Gloria_Page,USTC
+144,B,Toward Dynamic Non-Line-of-Sight Imaging with Mamba Enforced Temporal Consistency,NeurIPS,2024,10.52202/079017-4016,0.450,0.000,0.400,0.3075,,University of Nottingham
+145,B,ParallelEdits: Efficient Multi-Aspect Text-Driven Image Editing with Attention Grouping,NeurIPS,2024,10.52202/079017-0710,0.175,0.159,1.000,0.293811,https://github.com/Mingzhen-Huang/ParallelEdits,New York University
+146,B,LoMOE: Localized Multi-Object Editing via Multi-Diffusion,ACM MM,2024,10.1145/3664647.3681199,0.325,0.183,0.400,0.293628,https://github.com/goirik-chakrabarty/LoMOE,Tata Consultancy Services (India)
+147,B,Deep Motion Warping via Phase-Conditioned Diffusion Autoencoder,SIGGRAPH,2026,10.1145/3799902.3811144,0.255,0.000,1.000,0.290306,,Zhejiang University
+148,B,DreamSwapV: Mask-guided Subject Swapping for Any Customized Video Editing,ICLR,2026,10.48550/arxiv.2508.14465,0.255,0.000,1.000,0.290306,,Tsinghua University
+149,B,ConsID-Gen: View-Consistent and Identity-Preserving Image-to-Video Generation,CVPR,2026,10.48550/arxiv.2602.10113,0.255,0.000,1.000,0.290306,,Peking University
+150,B,LumosX: Relate Any Identities with Their Attributes for Personalized Video Generation,ICLR,2026,10.48550/arxiv.2603.20192,0.255,0.000,1.000,0.290306,,National University of Singapore
+151,B,CoT-Edit: Let CoT Guide Instruction Video Editing,CVPR,2026,10.48550/arxiv.2608.01113,0.255,0.000,1.000,0.290306,,USTC
+152,B,Text-Guided Synthesis of Crowd Animation,SIGGRAPH,2024,10.1145/3641519.3657516,0.250,0.000,1.000,0.2875,,Chinese University of Hong Kong
+153,B,Auto DragGAN: Editing the Generative Image Manifold in an Autoregressive Manner,ACM MM,2024,10.1145/3664647.3680814,0.250,0.000,1.000,0.2875,,Chinese Academy of Sciences
+154,B,ActAnywhere: Subject-Aware Video Background Generation,NeurIPS,2024,10.52202/079017-0936,0.250,0.000,1.000,0.2875,,Stanford University
+155,B,Towards Unified Multimodal Editing with Enhanced Knowledge Collaboration,NeurIPS,2024,10.52202/079017-3500,0.250,0.000,1.000,0.2875,,Zhejiang University
+156,B,MoTrans: Customized Motion Transfer with Text-driven Video Diffusion Models,ACM MM,2024,10.1145/3664647.3680718,0.412,0.000,0.400,0.286875,,Dalian University of Technology
+157,B,Aligning What Matters: Masked Latent Adaptation for Text-to-Audio-Video Generation,NeurIPS,2025,10.52202/085713-5764,0.356,0.000,0.600,0.285977,,University of Sydney
+158,B,Instant Video Models: Universal Adapters for Stabilizing Image-Based Networks,NeurIPS,2025,10.52202/085713-3709,0.098,0.267,1.000,0.283968,https://github.com/wision-lab/instant-video-models,University of Wisconsin - Madison
+159,B,HECTOR: Hybrid Editable Compositional Object References for Video Generation,ICML,2026,10.48550/arxiv.2603.08850,0.255,0.074,0.800,0.282528,https://github.com/Richard-Guofeng-Zhang/HECTOR,Johns Hopkins University
+160,B,VideoNeuMat: Neural Material Extraction from Generative Video Models,SIGGRAPH,2026,10.1145/3799902.3811190,0.255,0.241,0.400,0.272528,https://github.com/bowenxueai/VideoNeuMat,University of Manchester
+161,B,DisMo: Disentangled Motion Representations for Open-World Motion Transfer,NeurIPS,2025,10.48550/arxiv.2511.23428,0.098,0.512,0.400,0.267224,https://github.com/CompVis/DisMo,LMU Munich
+162,B,ArtiFixer: Enhancing and Extending 3D Reconstruction with Auto-Regressive Diffusion Models,SIGGRAPH,2026,10.1145/3799902.3811060,0.255,0.000,0.800,0.260306,,Nvidia (United States)
+163,B,Prompt-Softbox-Prompt: A Free-Text Embedding Control for Image Editing,ACM MM,2025,10.1145/3746027.3755429,0.356,0.000,0.400,0.255977,,Shanghai University of Finance and Economics
+164,B,FlexiDiT: Your Diffusion Transformer Can Easily Generate High-Quality Samples with Less Compute,CVPR,2025,10.1109/cvpr52734.2025.02637,0.241,0.000,0.800,0.252759,,ETH Zurich
+165,B,From Vision to Audio and Beyond: A Unified Model for Audio-Visual Representation and Generation,ICML,2024,10.48550/arxiv.2409.19132,0.125,0.207,0.800,0.250945,https://github.com/DragonLiu1995/Vision-to-Audio-and-Beyond,University of Washington
+166,B,DisControlFace: Adding Disentangled Control to Diffusion Autoencoder for One-shot Explicit Facial Image Editing,ACM MM,2024,10.1145/3664647.3680607,0.175,0.000,1.000,0.24625,,Huawei Technologies (China)
+167,B,Probabilistic Forecasting with Stochastic Interpolants and Föllmer Processes,ICML,2024,10.48550/arxiv.2403.13724,0.175,0.000,1.000,0.24625,,New York University
+168,B,Matting by Generation,SIGGRAPH,2024,10.1145/3641519.3657519,0.325,0.000,0.400,0.23875,,National Inst. of Informatics
+169,B,Image as a World: Generating Interactive World from Single Image via Panoramic Video Generation,NeurIPS,2025,10.52202/085713-5744,0.098,0.116,1.000,0.238619,https://github.com/ivarun987/TERRIFIC-MARIO-BROS.,USTC
+170,B,Stylized Text-to-Motion Generation via Hypernetwork-Driven Low-Rank Adaptation,SIGGRAPH,2026,10.1145/3799902.3811205,0.255,0.000,0.600,0.230306,,Korea University
+171,B,ACT: A Unified Framework for Rigging and Animating Characters with Arbitrary Topologies,SIGGRAPH,2026,10.1145/3811392,0.255,0.000,0.600,0.230306,,ShanghaiTech University
+172,B,Refaçade: Editing Object with Given Reference Texture,CVPR,2026,10.48550/arxiv.2512.04534,0.255,0.000,0.600,0.230306,,UESTC
+173,B,Temporal In‑Context Fine‑Tuning with Temporal Reasoning for Versatile Control of Video Diffusion Models,NeurIPS,2025,10.52202/085713-2501,0.241,0.000,0.600,0.222759,,Korea University
+174,B,Towards Physical Understanding in Video Generation: A 3D Point Regularization Approach,NeurIPS,2025,10.52202/085713-3438,0.241,0.000,0.600,0.222759,,California Inst. of Technology
+175,B,Zero-Shot Controllable Image-to-Video Animation via Motion Decomposition,ACM MM,2024,10.1145/3664647.3681394,0.175,0.098,0.600,0.215518,https://github.com/Yui010206/IVA-0,University of North Carolina
+176,B,Position-LoRA: Enhanced Relation Customization through Structural Prior in Initial Latent Noise,ACM MM,2025,10.1145/3746027.3754543,0.098,0.000,1.000,0.203736,,Shanghai Jiao Tong University
+177,B,Text Prompted Spatiotemporal Sequence Prediction with Text-Vision Prompt Refiner and Masked Diffusion Transformers,ACM MM,2025,10.1145/3746027.3755255,0.098,0.000,1.000,0.203736,,Nanjing University
+178,B,S2-Edit3DV: Diffusion-Guided Style Meets Structure for Consistent Multi-View 3D Video Generation,ACM MM,2025,10.1145/3746027.3755796,0.098,0.000,1.000,0.203736,,Zhejiang University
+179,B,VaporTok: RL-Driven Adaptive Video Tokenizer with Prior & Task Awareness,NeurIPS,2025,10.52202/085713-1583,0.098,0.000,1.000,0.203736,,Tsinghua University
+180,B,UniTransfer: Video Concept Transfer via Progressive Spatio-Temporal Decomposition,NeurIPS,2025,10.52202/085713-2932,0.098,0.000,1.000,0.203736,,Zhejiang University
+181,B,VividFace: A Robost and High-Fidelity Video Face Swapping Framework,NeurIPS,2025,10.52202/085713-3115,0.098,0.000,1.000,0.203736,,Chinese University of Hong Kong
+182,B,GR3EN: Generative Relighting for 3D Environments,SIGGRAPH,2026,10.1145/3799902.3811181,0.255,0.000,0.400,0.200306,,University of Amsterdam
+183,B,FVGen: Accelerating Novel-View Synthesis with Adversarial Video Diffusion Distillation,ICCV,2025,10.1109/iccv51701.2025.02421,0.098,0.186,0.600,0.19955,https://github.com/wbteng9526/FVGen,University of Southern California
+184,B,COMD: Training-free Video Motion Transfer With Camera-Object Motion Disentanglement,ACM MM,2024,10.1145/3664647.3680600,0.081,0.000,1.000,0.194688,,Shanghai Jiao Tong University
+185,B,SUV: Suppressing Undesired Video Content via Semantic Modulation Based on Text Embeddings,ICCV,2025,10.1109/iccv51701.2025.01706,0.241,0.000,0.400,0.192759,,"China University of Petroleum, East China"
+186,B,Diffusion Feature Field for Text-based 3D Editing with Gaussian Splatting,NeurIPS,2025,10.52202/085713-0007,0.241,0.000,0.400,0.192759,,Sungkyunkwan University
+187,B,Virtual Fitting Room: Generating Arbitrarily Long Videos of Virtual Try-On from a Single Image,NeurIPS,2025,10.52202/085713-5188,0.241,0.000,0.400,0.192759,,Illinois Institute of Technology
+188,B,HeroMaker: Human-centric Video Editing with Motion Priors,ACM MM,2024,10.1145/3664647.3681147,0.025,0.244,0.600,0.176921,https://github.com/LiuShiyu95/HeroMaker,ShanghaiTech University
+189,B,EditMaster: Bridging Text instruction and Visual Example for Multimodal guided Image Editing,ACM MM,2025,10.1145/3746027.3754926,0.098,0.000,0.800,0.173736,,Fudan University
+190,B,LaVieID: Local Autoregressive Diffusion Transformers for Identity-Preserving Video Creation,ACM MM,2025,10.1145/3746027.3754943,0.098,0.000,0.800,0.173736,,Sun Yat-sen University
+191,B,Look Beyond: Two-Stage Scene View Generation via Panorama and Video Diffusion,ACM MM,2025,10.1145/3746027.3754779,0.098,0.116,0.400,0.148619,https://github.com/YiGuYT/LookBeyond,University of Melbourne
+192,B,SNED: Superposition Network Architecture Search for Efficient Video Diffusion Model,CVPR,2024,10.1109/cvpr52733.2024.00827,0.081,0.000,0.600,0.134688,,Northeastern University
+193,B,D-Flow: Differentiating through Flows for Controlled Generation,ICML,2024,10.48550/arxiv.2402.14017,0.081,0.098,0.400,0.133956,https://github.com/marvinsxtr/d-flow,Weizmann Institute of Science
+194,B,SAT3D: Image-driven Semantic Attribute Transfer in 3D,ACM MM,2024,10.1145/3664647.3681035,0.025,0.000,0.800,0.13375,,Wuhan University
+195,B,Sequential Disentanglement by Extracting Static Information From A Single Sequence Element,ICML,2024,10.48550/arxiv.2406.18131,0.081,0.061,0.400,0.12298,https://github.com/azencot-group/DBSE,Ben-Gurion University of the Negev
+196,B,AICL: Action In-Context Learning for Text-to-Video Generation,ACM MM,2025,10.1145/3746027.3754864,0.098,0.000,0.400,0.113736,,Tongji University
+197,B,Stable Cinemetrics : Structured Taxonomy and Evaluation for Professional Video Generation,NeurIPS,2025,10.52202/085713-3783,0.098,0.000,0.400,0.113736,,Arizona State University
+198,B,RefDrop: Controllable Consistency in Image or Video Generation via Reference Feature Guidance,NeurIPS,2024,10.52202/079017-1058,0.081,0.000,0.400,0.104688,,University of Arkansas
