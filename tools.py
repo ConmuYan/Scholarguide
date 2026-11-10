@@ -93,13 +93,16 @@ class ToolOutcome:
     cost_cny: float | None = 0.0
 
 
-def search(source: Any, query: str, per_search: int, meter: CostMeter | None = None) -> ToolOutcome:
+def search(source: Any, query: str, per_search: int, meter: CostMeter | None = None, *, filters: dict | None = None) -> ToolOutcome:
     """Run one search; network/API failures become observations, never exceptions."""
     meter = meter or CostMeter()
     handle = meter.reserve('search', COST_UNITS['search'], {'query': query})
     observation: dict[str, Any] = {'query': query}
     try:
-        found = list(source.search(query, per_search))
+        if filters and getattr(source, 'supports_search_filters', False):
+            found = list(source.search(query, per_search, filters=filters))
+        else:
+            found = list(source.search(query, per_search))
     except RunCancelled as exc:
         from source import retained_partial_batch
         partial = retained_partial_batch(exc, query, getattr(source, 'providers', ()), per_search)

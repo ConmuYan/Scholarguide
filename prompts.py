@@ -15,6 +15,7 @@ query: 3-6 English topic keywords, without generic filler words.
 category: "evaluation" if evaluation/benchmark papers are requested, "survey" if surveys are requested, "research" if only research/method papers are requested, otherwise "none".
 minimum_category_count: the requested minimum of that category (0 if not requested).
 target_count: the requested number of papers (1-10); default 5.
+ranking: "citations" when the user explicitly requests most influential, highly cited or impact-ranked papers; otherwise "relevance". Citations are a limited proxy, not proof of research significance.
 minimum_count/maximum_count: explicit list-size interval, otherwise null. For an exact count set both to that count. Preserve quantity instructions; never replace an over-limit count by a different number.
 reading_goal: infer the user's reading intent: "orientation" for beginner/入门/survey/overview,
 "comparison" for compare methods/benchmark/evaluation, "frontier" for new ideas/SOTA/前沿,
@@ -35,7 +36,7 @@ Use current_date supplied in the input (YYYY-MM-DD) for relative dates, never a 
 "近两年"/"last two years"/"recent two years" is an explicit range covering the calendar year of
 current_date and its preceding year, not just prefer_recent. Preserve explicitly written years unchanged.
 unsupported: []. Change this ONLY if an explicit user requirement cannot be represented by
-topic, purpose, reading_goal, one category quota, venue, publication_type, venue_scope,
+topic, purpose, reading_goal, ranking, one category quota, venue, publication_type, venue_scope,
 accepted_only, presentation_types and a year range. Stated reading purposes,
 venue and year are SUPPORTED: do not put an experiment-design purpose, "CVPR", "last two years"
 or an explicit year range in unsupported. Copy EXACT words only for truly
@@ -95,6 +96,7 @@ PLAN_SCHEMA = {
         'category': {'type': 'string', 'enum': ['none', 'evaluation', 'survey', 'research']},
         'minimum_category_count': {'type': 'integer', 'minimum': 0, 'maximum': 10},
         'target_count': {'type': 'integer', 'minimum': 1, 'maximum': 10},
+        'ranking': {'type': 'string', 'enum': ['relevance', 'citations']},
         'minimum_count': {'type': ['integer', 'null'], 'minimum': 1, 'maximum': 10},
         'maximum_count': {'type': ['integer', 'null'], 'minimum': 1, 'maximum': 10},
         'unsupported': {'type': 'array', 'items': {'type': 'string'}},
@@ -189,7 +191,8 @@ ACTION_SCHEMA = {
 TASK_UPDATE = SAFETY + '''Update the research task from the user's latest message.
 Return {"patch": {...}, "summary": "...", "assumptions": [], "unsupported": [], "unresolved": []}.
 Only put fields the user actually changed or clarified into "patch"; omit everything else.
-Allowed patch fields: topic, purpose, category, minimum_category_count, target_count, minimum_count, maximum_count, excluded_paper_ids, prefer_recent, venue, year_from, year_to, reading_goal, venue_scope, publication_type, accepted_only, presentation_types.
+Allowed patch fields: topic, purpose, category, minimum_category_count, target_count, minimum_count, maximum_count, excluded_paper_ids, prefer_recent, venue, year_from, year_to, reading_goal, venue_scope, publication_type, accepted_only, presentation_types, ranking.
+For requests to rank papers by influence or citations, set ranking="citations". This uses citation counts as a limited proxy; it does not establish scientific quality. For relevance ordering set ranking="relevance".
 When the user adds a category quota, set both category and minimum_category_count.
 Never drop an existing explicit requirement unless the latest message changes or removes it.
 
@@ -230,6 +233,7 @@ TASK_UPDATE_SCHEMA = {
             'maximum_count': {'type': ['integer', 'null'], 'minimum': 1, 'maximum': 10},
             'excluded_paper_ids': {'type': 'array', 'items': {'type': 'string'}},
             'prefer_recent': {'type': 'boolean'},
+            'ranking': {'type': 'string', 'enum': ['relevance', 'citations']},
             'venue': {'type': 'string'},
             'year_from': {'type': ['integer', 'null'], 'minimum': 1900, 'maximum': 2100},
             'year_to': {'type': ['integer', 'null'], 'minimum': 1900, 'maximum': 2100},

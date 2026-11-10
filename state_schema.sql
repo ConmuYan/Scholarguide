@@ -55,6 +55,9 @@ CREATE TABLE IF NOT EXISTS papers (
   snippet         TEXT NOT NULL DEFAULT '',
   provenance_conflict INTEGER NOT NULL DEFAULT 0,
   publication_json TEXT NOT NULL DEFAULT '{}',
+  citation_count INTEGER,
+  citation_source TEXT NOT NULL DEFAULT '',
+  citation_observed_at TEXT NOT NULL DEFAULT '',
   PRIMARY KEY (paper_id, content_hash)
 );
 CREATE INDEX IF NOT EXISTS idx_papers_content ON papers(content_hash);

@@ -122,6 +122,9 @@ class StateStore:
             'snippet': "TEXT NOT NULL DEFAULT ''",
             'provenance_conflict': 'INTEGER NOT NULL DEFAULT 0',
             'publication_json': "TEXT NOT NULL DEFAULT '{}'",
+            'citation_count': 'INTEGER',
+            'citation_source': "TEXT NOT NULL DEFAULT ''",
+            'citation_observed_at': "TEXT NOT NULL DEFAULT ''",
         }
         for column, ddl in migrations.items():
             if column not in columns:
@@ -286,8 +289,8 @@ class StateStore:
                 year = int(date[:4])
         self.con.execute(
             'INSERT INTO papers(paper_id, content_hash, title, abstract, authors_json, url, year, venue, source, fetched_at, '
-            'doi, arxiv_id, open_access_url, abstract_source, metadata_only, sources_json, authority, snippet, provenance_conflict, publication_json) '
-            'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) '
+            'doi, arxiv_id, open_access_url, abstract_source, metadata_only, sources_json, authority, snippet, provenance_conflict, publication_json, citation_count, citation_source, citation_observed_at) '
+            'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) '
             'ON CONFLICT(paper_id, content_hash) DO UPDATE SET title=excluded.title, '
             "abstract=excluded.abstract, authors_json=CASE WHEN excluded.authors_json = '[]' THEN papers.authors_json ELSE excluded.authors_json END, "
             "url=CASE WHEN COALESCE(excluded.url, '') = '' THEN papers.url ELSE excluded.url END, "
@@ -302,15 +305,19 @@ class StateStore:
             'sources_json=excluded.sources_json, authority=MAX(papers.authority, excluded.authority), '
             "snippet=CASE WHEN excluded.snippet = '' THEN papers.snippet ELSE excluded.snippet END, "
             'provenance_conflict=MAX(papers.provenance_conflict, excluded.provenance_conflict), '
-            "publication_json=CASE WHEN excluded.publication_json = '{}' THEN papers.publication_json ELSE excluded.publication_json END",
+            "publication_json=CASE WHEN excluded.publication_json = '{}' THEN papers.publication_json ELSE excluded.publication_json END, "
+            "citation_count=CASE WHEN excluded.citation_count IS NULL OR (papers.citation_source='openalex' AND excluded.citation_source!='openalex') THEN papers.citation_count ELSE excluded.citation_count END, "
+            "citation_source=CASE WHEN excluded.citation_count IS NULL OR (papers.citation_source='openalex' AND excluded.citation_source!='openalex') THEN papers.citation_source ELSE excluded.citation_source END, "
+            "citation_observed_at=CASE WHEN excluded.citation_count IS NULL OR (papers.citation_source='openalex' AND excluded.citation_source!='openalex') THEN papers.citation_observed_at ELSE excluded.citation_observed_at END",
             (paper_id, digest, title, abstract, authors, paper.get('url'), year,
               venue, source_label, utc_now(), paper.get('doi') or '',
              paper.get('arxiv_id') or '', paper.get('open_access_url') or '',
              paper.get('abstract_source') or '', int(bool(paper.get('metadata_only'))),
              json.dumps(sources, ensure_ascii=False), float(paper.get('authority') or 0),
               paper.get('snippet') or '', int(bool(paper.get('provenance_conflict')) or bool(publication.get('conflicts'))),
-              json.dumps(publication,
-                         ensure_ascii=False, sort_keys=True)),
+              json.dumps(publication, ensure_ascii=False, sort_keys=True),
+              paper.get('citation_count') if type(paper.get('citation_count')) is int and paper['citation_count'] >= 0 else None,
+              paper.get('citation_source') or '', paper.get('citation_observed_at') or ''),
         )
         self.commit()
         return {'paper_id': paper_id, 'content_hash': digest}
@@ -507,7 +514,7 @@ class StateStore:
             'SELECT p.paper_id, p.content_hash, p.title, p.abstract, p.authors_json, p.url, '
             'p.year, p.venue, p.source, p.fetched_at, p.doi, p.arxiv_id, p.open_access_url, '
             'p.abstract_source, p.metadata_only, p.sources_json, p.authority, p.snippet, '
-            'p.provenance_conflict, p.publication_json, c.first_query FROM candidates c '
+            'p.provenance_conflict, p.publication_json, p.citation_count, p.citation_source, p.citation_observed_at, c.first_query FROM candidates c '
             'JOIN papers p ON p.paper_id = c.paper_id AND p.content_hash = c.content_hash '
             'WHERE c.session_id = ? ORDER BY c.first_seen_at, p.paper_id', (session_id,))
         return [{**dict(row), 'publication': json.loads(row['publication_json'] or '{}')} for row in rows]

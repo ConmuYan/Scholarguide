@@ -353,20 +353,27 @@ def normalize_venue(value: str) -> str:
     return ' '.join(re.findall(r'[a-z0-9]+', str(value or '').casefold()))
 
 
+def requested_venues(value: str) -> list[str]:
+    """Split acronym lists, leaving comma-containing full venue names intact."""
+    text = str(value or '').strip()
+    parts = [re.sub(r'^(?:or|and)\s+', '', part.strip(), flags=re.I)
+             for part in re.split(r'\s*(?:,|;|&|\s+or\s+|\s+and\s+)\s*', text, flags=re.I)]
+    if len(parts) > 1 and all(re.fullmatch(r'[A-Z][A-Za-z0-9.-]{1,19}', part) for part in parts):
+        return parts
+    return [text] if text else []
+
+
 def venue_matches(venue: str, requested: str) -> bool:
-    """Match a requested venue against metadata, including common aliases."""
-    requested = normalize_venue(requested)
-    if not requested:
+    """Match venue identities, allowing exact aliases and edition years."""
+    names = requested_venues(requested)
+    if not names:
         return True
-    haystack = normalize_venue(venue)
-    if not haystack:
-        return False
-    if requested in haystack:
-        return True
-    aliases = set()
-    for token in requested.split():
-        aliases.update(VENUE_ALIASES.get(token, ()))
-    return any(alias and alias in haystack for alias in aliases)
+    # A substring or an individual acronym is not a venue identity: ACL is
+    # neither NAACL nor ACL Findings. Unknown names still match after the same
+    # canonical punctuation, proceedings-heading and year normalization.
+    from research_policy import venue_identity
+    actual = venue_identity(venue)
+    return bool(actual) and any(actual == venue_identity(name) for name in names)
 
 
 def year_matches(year: int | None, year_from: int | None, year_to: int | None) -> bool:
@@ -403,6 +410,7 @@ class Request:
     presentation_types: list[str] = field(default_factory=list)
     minimum_count: int | None = None
     maximum_count: int | None = None
+    ranking: str = 'relevance'
 
     @classmethod
     def from_dict(cls, data: dict) -> Request:
@@ -424,6 +432,9 @@ class Request:
         publication_type = data.get('publication_type', 'any')
         accepted_only = data.get('accepted_only', False)
         presentation_types = data.get('presentation_types', [])
+        ranking = data.get('ranking', 'relevance')
+        if ranking not in ('relevance', 'citations'):
+            raise GuideError('ranking must be relevance or citations.')
         if venue_scope not in ('any', 'preferred', 'preferred_only'):
             raise GuideError('venue_scope must be any, preferred or preferred_only.')
         if publication_type not in ('any', 'conference', 'journal', 'preprint'):
@@ -479,7 +490,8 @@ class Request:
         return cls(topic.strip(), category, minimum, target, unsupported, purpose.strip(),
                    list(excluded), prefer_recent, venue.strip(), year_from, year_to,
                    str(reading_goal).strip(), venue_scope, publication_type,
-                   accepted_only, presentation_types, minimum_count=low, maximum_count=high)
+                   accepted_only, presentation_types, minimum_count=low, maximum_count=high,
+                   ranking=ranking)
 
 
 @dataclass
@@ -508,6 +520,9 @@ class Paper:
     # Publication facts are distinct from abstract-based relevance/category judgements.
     # An empty mapping means unknown, including records loaded from older caches.
     publication: dict = field(default_factory=dict)
+    citation_count: int | None = None
+    citation_source: str = ''
+    citation_observed_at: str = ''
 
     def __post_init__(self) -> None:
         if self.retrieved_at and not self.fetched_at:

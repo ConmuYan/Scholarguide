@@ -12,7 +12,7 @@ import re
 from typing import Any, Mapping
 from urllib.parse import urlsplit
 
-from common import merge_publication_records, verified_retraction, year_matches
+from common import merge_publication_records, requested_venues, verified_retraction, year_matches
 
 
 CATALOG_VERSION = 'ai-cs-curated-2026-10-v2'
@@ -26,7 +26,8 @@ _VENUES = (
                               'Advances in Neural Information Processing Systems')),
     ('ICML', 'conference', ('International Conference on Machine Learning',)),
     ('ICLR', 'conference', ('International Conference on Learning Representations',)),
-    ('ACL', 'conference', ('Annual Meeting of the Association for Computational Linguistics',)),
+    ('ACL', 'conference', ('Annual Meeting of the Association for Computational Linguistics',
+                           'Proceedings of the conference - Association for Computational Linguistics. Meeting')),
     ('EMNLP', 'conference', ('Conference on Empirical Methods in Natural Language Processing',)),
     ('NAACL', 'conference', ('North American Chapter of the Association for Computational Linguistics',
                             'Conference of the North American Chapter of the Association for Computational Linguistics')),
@@ -168,6 +169,9 @@ def _record_year(record: Mapping[str, Any]) -> int | None:
 
 
 def _record_venue_matches(record: Mapping[str, Any], requested: str) -> bool:
+    names = requested_venues(requested)
+    if len(names) > 1:
+        return any(_record_venue_matches(record, name) for name in names)
     if not str(requested or '').strip():
         return True
     issns = journal_issns_for_venue(requested)

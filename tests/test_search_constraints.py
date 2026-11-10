@@ -253,3 +253,49 @@ class GuidedConstraintHttpTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+class SingleSourceFiltersTests(unittest.TestCase):
+    def test_source_receives_filters_without_changing_legacy_adapter(self):
+        class FilteredSource(Source):
+            supports_search_filters = True
+            def search(self, query, limit=10, *, filters=None):
+                self.filters = filters
+                return list(PAPERS)
+        source = FilteredSource()
+        result = run('Visual adaptation.', Config(), 'S', source=source, llm=Planner(), request_constraints=CONSTRAINTS)
+        self.assertEqual(source.filters, {'venue':'CVPR', 'year_from':2024, 'year_to':2025})
+        self.assertEqual(result['status'], 'complete')
+        self.assertEqual(result['metrics']['cost_units']['by_action']['search']['settled'], 1)
+
+    def test_acl_verification_is_bounded_and_cancellation_propagates(self):
+        from common import RunCancelled
+        class ACLSource(Source):
+            def __init__(self, cancel=False): self.calls = []; self.cancel = cancel
+            def search(self, query, limit=10):
+                return [Paper(str(i), 'Paper '+str(i), QUOTE, '', doi='10.18653/v1/2025.acl-long.'+str(i), year=2025, venue='ACL') for i in range(1,8)]
+            def verify_acl_paper(self, paper):
+                self.calls.append(paper.id)
+                if self.cancel: raise RunCancelled()
+                return paper
+        source = ACLSource()
+        run('x', Config(), 'S', source=source, llm=Planner(), request_data={'topic':'test','query':'test','accepted_only':True,'venue':'ACL','year_from':2024,'year_to':2026})
+        self.assertEqual(len(source.calls),5)
+        source = ACLSource(cancel=True)
+        result = run('x', Config(), 'S', source=source, llm=Planner(), request_data={'topic':'test','query':'test','accepted_only':True,'venue':'ACL'})
+        self.assertEqual(len(source.calls),1)
+        self.assertIn('Stopped by the user', result['stop_reason'])
+
+
+class ACLVerificationSelectionTest(unittest.TestCase):
+    def test_officially_verified_candidate_can_be_selected(self):
+        from dataclasses import replace
+        from common import merge_publication_records
+        class VerifiedSource(Source):
+            def search(self, query, limit=10):
+                return [Paper('p1', 'Paper One', QUOTE, 'https://example.test', doi='10.18653/v1/2025.acl-long.1', year=2025, venue='ACL')]
+            def verify_acl_paper(self, paper):
+                record = {'type':'conference','status':'published','venue_name':'ACL', 'venue_id':'2025.acl-long','date':'2025','verified':True,'identity_verified':True,'evidence':[{'source':'acl_anthology','url':'https://aclanthology.org/2025.acl-long.1/'}]}
+                return replace(paper, publication=merge_publication_records([record]))
+        result=run('x',Config(),'S',source=VerifiedSource(),llm=Planner(),request_data={'topic':'test','query':'test','target_count':1,'accepted_only':True,'venue':'ACL','year_from':2025,'year_to':2025})
+        self.assertEqual([p['id'] for p in result['papers']],['p1'])
+        self.assertEqual(result['papers'][0]['publication']['status'],'published')

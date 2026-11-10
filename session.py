@@ -496,6 +496,10 @@ class ChatSession:
         from quantities import calibrate_user_requirements
         patch = calibrate_user_requirements(patch, message, current)
         unsupported = [str(x) for x in (raw.get('unsupported') or []) if str(x).strip()]
+        influence = re.compile(r'^(?:rank|order)(?:\s+the\s+papers)?\s+by\s+(?:research\s+)?(?:influence|citation(?:\s+count)?s?)$', re.I)
+        if any(influence.fullmatch(x.strip(' .')) for x in unsupported):
+            patch['ranking'] = 'citations'
+            unsupported = [x for x in unsupported if not influence.fullmatch(x.strip(' .'))]
         for excerpt in unsupported:
             if excerpt.casefold() not in message.casefold():
                 raise GuideError('unsupported must contain exact excerpts from the message.')
@@ -864,6 +868,9 @@ class ChatSession:
                              authority=float(row.get('authority') or 0),
                              snippet=row.get('snippet') or '',
                              provenance_conflict=bool(row.get('provenance_conflict')),
+                             citation_count=row.get('citation_count'),
+                             citation_source=row.get('citation_source') or '',
+                             citation_observed_at=row.get('citation_observed_at') or '',
                              publication=json.loads(row.get('publication_json') or '{}'),
                              fetched_at=row.get('fetched_at') or utc_now()))
         return out
@@ -1877,7 +1884,7 @@ class ChatSession:
             'assessments': self._assessments(task),
             'gaps': self.gaps(),
             'trace': self._trace,
-            'warnings': self._warnings,
+            'warnings': self._warnings + (['Influence ranking uses reported citation counts as a limited proxy among retrieved, relevant candidates; missing counts rank last. Sources and publication years can differ; this is not a measure of scientific quality.'] if task.get('ranking') == 'citations' else []),
             'metrics': metrics,
             'session_id': self.session_id,
             'revision': self.revision,

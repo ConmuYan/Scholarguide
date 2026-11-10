@@ -460,6 +460,12 @@ class ProviderTests(unittest.TestCase):
                                 'venues': ['NeurIPS', 'ICML'], 'year_min': 2020,
                                 'year_max': 2024})
 
+    def test_natural_language_venue_list_is_split_before_paid_call(self):
+        for filters in ({'venue':'ACL or EMNLP'}, {'venues':['ACL and EMNLP']}):
+            provider, mock = self.provider(search_script(), max_requests=5)
+            provider.search('q', limit=2, filters=filters)
+            self.assertEqual(mock.requests[-1]['params']['arguments']['venues'], ['ACL', 'EMNLP'])
+
     def test_budget_and_rate_limit(self):
         provider, mock = self.provider(search_script(), max_requests=1)
         provider.search('one', limit=1)

@@ -14,7 +14,7 @@ import uuid
 from costing import apply_cost, paid_cost_may_be_unknown, source_runs_cost
 from model_identity import assessment_prompt_version, research_model_identity
 from diagnosis import diagnose
-from common import (Budget, Config, GuideError, Paper, Request, utc_now,
+from common import (Budget, BudgetExceeded, Config, GuideError, Paper, Request, RunCancelled, utc_now,
                     venue_matches, year_matches)
 from intent import IntentPolicy, TYPE_LABELS, allocate, mix_text, type_from_assessment
 from llm import JsonLLM
@@ -139,6 +139,17 @@ def select_papers(papers: list[Paper], assessments: dict, request: Request, *, r
                 and (publication_matches(p, asdict(request)) if research or publication_constraints
                      else venue_matches(p.venue, venue) and year_matches(p.year, year_from, year_to))]
 
+    if request.ranking == 'citations':
+        # Rank only grounded, eligible candidates. Missing is unknown, not zero.
+        ranked = sorted(eligible, key=lambda p: (p.citation_count is None,
+                        -(p.citation_count if p.citation_count is not None else 0), p.id))
+        required = [p for p in ranked if assessments[p.id]['category_status'] == 'yes'][:request.minimum_category_count]
+        selected = required + [p for p in ranked if p.id not in {x.id for x in required}]
+        selected = selected[:request.target_count]
+        selected.sort(key=lambda p: (p.citation_count is None,
+                       -(p.citation_count if p.citation_count is not None else 0), p.id))
+        return [packet(p) for p in selected]
+
     if research:
         preferred_type = {'orientation': 'survey', 'comparison': 'benchmark', 'frontier': 'research'}.get(request.reading_goal, '')
         ranked = sorted(eligible, key=lambda p: research_selection_key(p, assessments[p.id], asdict(request), preferred_type))
@@ -202,6 +213,11 @@ def coverage(selected: list[dict], request: Request, *, research: bool = False,
     if count < request.minimum_category_count:
         gaps.append({'requirement': request.category, 'required': request.minimum_category_count,
                      'found': count, 'missing': request.minimum_category_count - count})
+    if request.ranking == 'citations' and selected:
+        known = sum(type(p.get('citation_count')) is int and p['citation_count'] >= 0 for p in selected)
+        if known < len(selected):
+            gaps.append({'requirement': 'citation_counts', 'required': len(selected),
+                         'found': known, 'missing': len(selected) - known})
     constraint_bits = []
     if getattr(request, 'venue', ''):
         constraint_bits.append(f'venue={request.venue}')
@@ -211,7 +227,7 @@ def coverage(selected: list[dict], request: Request, *, research: bool = False,
         gaps.append({'requirement': 'constraints', 'value': ' · '.join(constraint_bits),
                      'required': request.target_count, 'found': len(selected),
                      'missing': max(0, request.target_count - len(selected))})
-    if getattr(request, 'reading_goal', '') and not research:
+    if getattr(request, 'reading_goal', '') and not research and request.ranking != 'citations':
         mix = allocate(request.target_count, request.reading_goal)
         counts = {kind: 0 for kind in mix}
         for paper in selected:
@@ -265,6 +281,8 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
     assessed_abstracts = {}
     meter = CostMeter()
     landscape = None
+    acl_checked: set[str] = set()
+    citation_checked: set[str] = set()
 
     def event(action: str, **details) -> None:
         entry = {'step': len(result['trace']) + 1, 'action': action, 'at': utc_now(), **details}
@@ -293,6 +311,13 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
                                 prompts.PLAN_SCHEMA, validate_plan, prompts.PLAN, meter)
             from quantities import calibrate_user_requirements
             plan = calibrate_user_requirements(dict(raw_plan), user_input)
+            # Correct an overly conservative planner only for this exact,
+            # now-supported ranking requirement, never for unrelated clauses.
+            influence = re.compile(r'^(?:rank|order)(?:\s+the\s+papers)?\s+by\s+(?:research\s+)?(?:influence|citation(?:\s+count)?s?)$', re.I)
+            unsupported = plan.get('unsupported') or []
+            if any(influence.fullmatch(str(x).strip(' .')) for x in unsupported):
+                plan['ranking'] = 'citations'
+                plan['unsupported'] = [x for x in unsupported if not influence.fullmatch(str(x).strip(' .'))]
         else:
             plan = dict(request_data)
             plan.setdefault('query', plan.get('topic', ''))
@@ -302,6 +327,8 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
             plan.update(constraints)
         plan.update(preferences)
         request = Request.from_dict(plan)
+        if request.ranking == 'citations':
+            result['warnings'].append('Influence ranking uses reported citation counts as a limited proxy among retrieved, relevant candidates; missing counts rank last. Sources and publication years can differ; this is not a measure of scientific quality.')
         explicit_goal = goal_hint in ('orientation', 'comparison', 'frontier', 'general')
         if explicit_goal:
             request = replace(request, reading_goal=goal_hint)
@@ -310,7 +337,7 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
               provider=config.provider, model=config.model, protocol=config.protocol,
               input_price=config.input_price, output_price=config.output_price,
               currency=config.currency)
-        if request.reading_goal:
+        if request.reading_goal and request.ranking != 'citations':
             mix = allocate(request.target_count, request.reading_goal)
             event('intent', goal=request.reading_goal,
                   policy='deterministic_intent_v1', mix=mix_text(mix),
@@ -360,7 +387,9 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
                                        'router': router_observation},
                                       cost=retrieval.cost, cost_cny=cost_cny)
             else:
-                outcome = run_search(source, query, config.per_search, meter)
+                filters = {'venue': request.venue, 'year_from': request.year_from, 'year_to': request.year_to}
+                outcome = run_search(source, query, config.per_search, meter,
+                                     filters=filters if any(filters.values()) else None)
             if outcome.ok:
                 found = outcome.items
                 before = len(candidates)
@@ -379,6 +408,56 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
             blocked_error = unresolved_paid_error(retrieval if router is not None else outcome.observation)
             if blocked_error is not None:
                 raise blocked_error
+            enrich = getattr(source, 'enrich_openalex_citations', None)
+            if (request.ranking == 'citations' and callable(enrich)
+                    and 'openalex' in (getattr(source, 'providers', ()) or ())
+                    and len(citation_checked) < 10):
+                from source import normalize_doi
+                remaining = 10 - len(citation_checked)
+                admitted_dois = []
+                for paper in candidates:
+                    doi = normalize_doi(paper.doi)
+                    if (paper.citation_count is None and doi and doi not in citation_checked
+                            and doi not in admitted_dois and len(admitted_dois) < remaining):
+                        admitted_dois.append(doi)
+                if admitted_dois:
+                    to_enrich = [p for p in candidates if p.citation_count is None
+                                 and normalize_doi(p.doi) in admitted_dois]
+                    budget.check_cancelled()
+                    citation_checked.update(admitted_dois)
+                    try:
+                        enriched, stats = enrich(to_enrich, max_lookups=len(admitted_dois))
+                        by_id = {p.id: p for p in enriched}
+                        candidates = [by_id.get(p.id, p) for p in candidates]
+                        result['candidates'] = [p.to_dict() for p in candidates]
+                        event('citation_enrichment', **stats)
+                    except (RunCancelled, BudgetExceeded):
+                        raise
+                    except GuideError as exc:
+                        event('citation_enrichment_failed', error=str(exc))
+            # Verify a small number of exact ACL Anthology identities before
+            # applying accepted-only publication filters. Unknown remains unknown.
+            verifier = getattr(source, 'verify_acl_paper', None)
+            if request.accepted_only and callable(verifier):
+                for index, paper in enumerate(candidates):
+                    if len(acl_checked) >= 5:
+                        break
+                    if paper.id in acl_checked or not re.fullmatch(r'10\.18653/(?:v1/)?(?:19|20)\d{2}\.(?:acl|emnlp)-(?:long|short|main)\.\d+', paper.doi or '', re.I):
+                        continue
+                    from research_policy import matched_publication
+                    if matched_publication(paper, asdict(request)):
+                        continue
+                    budget.check_cancelled()
+                    if budget.remaining() < 5:
+                        break
+                    acl_checked.add(paper.id)
+                    try:
+                        candidates[index] = verifier(paper)
+                    except RunCancelled:
+                        raise
+                    except GuideError:
+                        pass
+                result['candidates'] = [p.to_dict() for p in candidates]
             # Reuse assessments when metadata is unchanged; process only new records.
             pending = [p for p in candidates if p.id not in assessments or assessed_abstracts.get(p.id) != p.abstract]
             # A stop before reassessment must not expose a prior judgement against

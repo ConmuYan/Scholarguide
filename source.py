@@ -32,7 +32,7 @@ from urllib.request import Request as HttpRequest
 import xml.etree.ElementTree as ET
 
 from common import (Budget, BudgetExceeded, Config, GuideError, Paper, REMOTE_OUTCOMES, RunCancelled, SOURCE_NAMES, source_names,
-                    merge_publication_records, utc_now, venue_matches, year_matches)
+                    merge_publication_records, requested_venues, utc_now, venue_matches, year_matches)
 import hashlib
 from execution_events import operation
 from network import source_urlopen as urlopen, TransportDeadlineExceeded
@@ -468,6 +468,9 @@ def merge_papers(papers: list[Paper]) -> list[Paper]:
             keys |= groups[i][1]
         keys |= identifiers
         for item in others:
+            citation_identity = (old.id == item.id or
+                bool(old.doi and item.doi and normalize_doi(old.doi) == normalize_doi(item.doi)) or
+                bool(old.arxiv_id and item.arxiv_id and arxiv_id(old.arxiv_id) == arxiv_id(item.arxiv_id)))
             old.sources = list(dict.fromkeys(old.sources + item.sources))
             old.publication = _publication(_publication_records(old.publication)
                 + _publication_records(item.publication),
@@ -487,6 +490,11 @@ def merge_papers(papers: list[Paper]) -> list[Paper]:
                     old.venue = item.venue
                     old.year = item.year or old.year
             old.open_access_url = old.open_access_url or item.open_access_url
+            if (citation_identity and item.citation_count is not None and
+                (old.citation_count is None or (item.citation_source == 'openalex' and old.citation_source != 'openalex'))):
+                old.citation_count = item.citation_count
+                old.citation_source = item.citation_source
+                old.citation_observed_at = item.citation_observed_at
             old.authority = max(float(old.authority or 0), float(item.authority or 0))
             old.snippet = old.snippet or item.snippet
             if (old.abstract and item.abstract
@@ -582,6 +590,7 @@ def _source_budget_scope(method):
 
 
 class AcademicSource:
+    supports_search_filters = True
     def __init__(self, config: Config, budget: Budget):
         self.config, self.budget = config, budget
         self.last_arxiv_call = 0.0
@@ -1031,7 +1040,27 @@ class AcademicSource:
                               journal_issns_for_venue(venue))[:10]
         # A known publisher ISSN is a stronger journal identity than a fuzzy
         # name search. Alias resolution must not veto an exact ISSN lookup.
-        if venue and not journal_issns:
+        venues = requested_venues(venue)
+        if len(venues) > 1:
+            resolved, unresolved, errors = [], [], []
+            for name in venues:
+                self.budget.check_cancelled()
+                try:
+                    resolved.append(self._venue_id(name, kind) if kind in ('journal', 'conference')
+                                    else self._venue_id(name))
+                except GuideError as exc:
+                    self.budget.check_cancelled()
+                    unresolved.append(name)
+                    errors.append(f'{name}: {exc}')
+            self.preference_resolution['openalex'] = {'requested_venues': venues,
+                'resolved_venues': [v for v in venues if v not in unresolved],
+                'unresolved_venues': unresolved, 'source_ids': list(dict.fromkeys(resolved)),
+                'errors': errors}
+            # A partial source-id filter silently loses unresolved venues. Search
+            # broadly instead, and apply the full whitelist to returned records.
+            if resolved and not unresolved:
+                filters.append('primary_location.source.id:' + '|'.join(dict.fromkeys(resolved)))
+        elif venue and not journal_issns:
             filters.append('primary_location.source.id:' + (self._venue_id(venue, kind)
                 if kind in ('journal', 'conference') else self._venue_id(venue)))
         elif preferred:
@@ -1129,13 +1158,29 @@ class AcademicSource:
                 venue=venue, open_access_url=oa, sources=['openalex'], source='openalex',
                 abstract_source='openalex' if abstract else '', authority=0.65,
                 metadata_only=not bool(abstract), fetched_at=utc_now(), from_query=[query],
-                publication=publication))
+                publication=publication,
+                citation_count=row.get('cited_by_count') if type(row.get('cited_by_count')) is int and row['cited_by_count'] >= 0 else None,
+                citation_source='openalex' if type(row.get('cited_by_count')) is int and row['cited_by_count'] >= 0 else '',
+                citation_observed_at=utc_now() if type(row.get('cited_by_count')) is int and row['cited_by_count'] >= 0 else ''))
         return papers
 
     def _semantic_scholar(self, query: str, limit: int, filters: dict | None = None) -> list[Paper]:
         filters = filters or {}
+        # The relevance API treats long keyword lists as a narrow conjunction.
+        # For an explicit venue list, preserve a compact topical seed and let
+        # the API parameters enforce year and venue; never append venue names as
+        # extra topic terms. The full original query remains in provenance.
+        names = requested_venues(filters.get('venue') or '')
+        search_query = query
+        if len(names) > 1:
+            venue_tokens = {name.casefold() for name in names}
+            words = re.findall(r"[\w]+(?:[-'][\w]+)*", query)
+            topical = [word for word in words if word.casefold() not in venue_tokens
+                       and not re.fullmatch(r'(?:19|20)\d{2}', word)]
+            if topical:
+                search_query = ' '.join(topical[:4] if len(topical) > 5 else topical)
         params = {
-            'query': query,
+            'query': search_query,
             'limit': min(max(limit, 1), 100),
             'fields': 'title,abstract,url,year,venue,authors,externalIds,openAccessPdf,publicationVenue,citationCount,publicationTypes,publicationDate,journal',
         }
@@ -1143,7 +1188,7 @@ class AcademicSource:
         if year_from or year_to:
             params['year'] = f'{year_from or ""}-{year_to or ""}'
         if filters.get('venue'):
-            params['venue'] = str(filters['venue'])
+            params['venue'] = ','.join(requested_venues(filters['venue']))
         else:
             preferred = curated_preferences(filters.get('preferred_venues'), filters.get('publication_type', 'any'))
             if preferred:
@@ -1226,7 +1271,10 @@ class AcademicSource:
                 venue=venue, open_access_url=oa, sources=['semantic_scholar'],
                 source='semantic_scholar', abstract_source='semantic_scholar' if abstract else '',
                 authority=0.7, metadata_only=not bool(abstract), fetched_at=utc_now(),
-                from_query=[query], publication=facts))
+                from_query=[query], publication=facts,
+                citation_count=row.get('citationCount') if type(row.get('citationCount')) is int and row['citationCount'] >= 0 else None,
+                citation_source='semantic_scholar' if type(row.get('citationCount')) is int and row['citationCount'] >= 0 else '',
+                citation_observed_at=utc_now() if type(row.get('citationCount')) is int and row['citationCount'] >= 0 else ''))
         return papers
 
     def _dblp(self, query: str, limit: int) -> list[Paper]:
@@ -1475,6 +1523,45 @@ class AcademicSource:
         except Exception:
             return {}
         return _acl_html(html)
+
+    def verify_acl_paper(self, paper: Paper) -> Paper:
+        """Add publication evidence from the exact official Anthology page.
+
+        A Lune conference label or a DOI prefix by itself is not acceptance
+        evidence. This only considers main ACL/EMNLP proceedings, and requires
+        the official page's DOI, title and publication date to agree.
+        """
+        doi = normalize_doi(paper.doi)
+        match = re.fullmatch(r'10\.18653/(?:v1/)?((?:19|20)\d{2}\.(?:acl|emnlp)-(?:long|short|main)\.\d+)', doi)
+        if not match:
+            return paper
+        url = 'https://aclanthology.org/' + match.group(1) + '/'
+        try:
+            page = self._acl_page(url)
+        except RunCancelled:
+            raise
+        except GuideError:
+            return paper
+        meta = page.get('meta') or {}
+        title = _clean(meta.get('citation_title') or '')
+        def title_key(value):
+            return ''.join(re.findall(r'\w+', value.casefold()))
+        official_year = _year(meta.get('citation_publication_date'))
+        venue = _clean(meta.get('citation_conference_title') or '')
+        from research_policy import venue_identity
+        expected = 'ACL' if '.acl-' in match.group(1) else 'EMNLP'
+        if (normalize_doi(meta.get('citation_doi') or '') != doi or not title
+                or title_key(title) != title_key(paper.title)
+                or not official_year or official_year != int(match.group(1)[:4])
+                or venue_identity(venue) != expected):
+            return paper
+        record = _record('conference', 'published', venue_id=match.group(1).rsplit('.', 1)[0],
+            venue_name=venue, date=str(official_year), doi=doi, verified=True,
+            evidence=[_evidence('acl_anthology', url, 'citation_conference_title', venue),
+                      _evidence('acl_anthology', url, 'citation_doi', doi),
+                      _evidence('acl_anthology', url, 'citation_title', title)])
+        existing = (paper.publication or {}).get('records') or []
+        return replace(paper, publication=merge_publication_records([*existing, record]))
 
     def _acl_anthology(self, query: str, limit: int) -> list[Paper]:
         params = {'query': query, 'limit': min(max(limit, 1), 50), 'collection_ids': 'anthology'}
@@ -1949,8 +2036,58 @@ class AcademicSource:
                 pass
         return batch
 
-    def search(self, query: str, limit: int = 10) -> list[Paper]:
-        return self.search_batch(query, limit).papers
+    def search(self, query: str, limit: int = 10, *, filters: dict | None = None) -> list[Paper]:
+        return self.search_batch(query, limit, filters=filters).papers
+
+    @_source_budget_scope
+    def enrich_openalex_citations(self, papers: list[Paper], *, max_lookups: int = 10) -> tuple[list[Paper], dict]:
+        """Fill missing citations by exact DOI only, without changing discovery facts.
+
+        OpenAlex must be among the caller's selected and enabled providers. Failed,
+        invalid or unmatched lookups stay unknown; no search/title fallback is used.
+        The caller controls when to invoke this bounded, potentially billable operation.
+        """
+        if type(max_lookups) is not int or not 0 <= max_lookups <= 20:
+            raise ValueError('max_lookups must be an integer between 0 and 20')
+        if 'openalex' not in self.providers or not self.available('openalex'):
+            raise GuideError('OpenAlex must be selected and enabled for citation enrichment.')
+        cache = {}
+        stats = {'attempted': 0, 'updated': 0, 'unresolved': 0}
+        output = []
+        for paper in papers:
+            self.budget.check_cancelled()
+            self.budget.remaining()
+            identifier = normalize_doi(paper.doi)
+            if paper.citation_count is not None or not identifier:
+                output.append(paper)
+                continue
+            if identifier not in cache and stats['attempted'] < max_lookups:
+                stats['attempted'] += 1
+                params = {'api_key': self.config.openalex_key} if self.config.openalex_key else {}
+                endpoint = OPENALEX_WORKS_URL + '/doi:' + quote(identifier, safe='')
+                if params:
+                    endpoint += '?' + urlencode(params)
+                try:
+                    work = self._json(endpoint, provider='openalex')
+                    count = work.get('cited_by_count') if isinstance(work, dict) else None
+                    returned_doi = normalize_doi(work.get('doi') or '') if isinstance(work, dict) else ''
+                    work_id = str(work.get('id') or '') if isinstance(work, dict) else ''
+                    valid = (returned_doi == identifier and re.fullmatch(r'https://openalex\.org/W\d+', work_id)
+                             and type(count) is int and count >= 0)
+                    cache[identifier] = (count, utc_now()) if valid else None
+                except (RunCancelled, BudgetExceeded):
+                    raise
+                except GuideError:
+                    cache[identifier] = None
+            found = cache.get(identifier)
+            if found is None:
+                stats['unresolved'] += 1
+                output.append(paper)
+            else:
+                stats['updated'] += 1
+                output.append(replace(paper, citation_count=found[0], citation_source='openalex',
+                                      citation_observed_at=found[1]))
+        return output, stats
 
     @_source_budget_scope
     def lookup(self, identifier: str) -> list[Paper]:

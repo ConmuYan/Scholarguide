@@ -117,6 +117,117 @@ class CuratedRouterTests(unittest.TestCase):
 
 
 class CuratedSourceTests(unittest.TestCase):
+    def test_venue_whitelist_separators_and_full_names(self):
+        from common import requested_venues, venue_matches
+        for value in ('ACL or EMNLP', 'ACL and EMNLP', 'ACL & EMNLP', 'ACL, or EMNLP'):
+            self.assertEqual(requested_venues(value), ['ACL', 'EMNLP'])
+            self.assertTrue(venue_matches('ACL', value))
+            self.assertFalse(venue_matches('NAACL', value))
+        full = 'International Conference on Artificial Intelligence and Statistics'
+        self.assertEqual(requested_venues(full), [full])
+
+    def test_single_venue_identity_rejects_similar_venues(self):
+        from common import venue_matches
+        for actual in ('NAACL', 'ACL Findings', 'ACL workshop'):
+            self.assertFalse(venue_matches(actual, 'ACL'))
+        self.assertTrue(venue_matches('Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)', 'ACL'))
+        self.assertTrue(venue_matches('Proceedings of the International Rare Topics Symposium 2025',
+                                      'International Rare Topics Symposium'))
+        self.assertFalse(venue_matches('International Rare Topics Symposium Workshop',
+                                       'International Rare Topics Symposium'))
+
+    def test_official_acl_verification_requires_matching_page_identity(self):
+        from common import Paper
+        src = source()
+        paper = Paper(id='lune:1', title='Agentic Reasoning', abstract='A method.',
+                      doi='10.18653/v1/2025.acl-long.1383', year=2025, venue='ACL',
+                      url='https://aclanthology.org/2025.acl-long.1383/')
+        meta = {'citation_title':'Agentic Reasoning',
+                'citation_doi':'10.18653/v1/2025.acl-long.1383',
+                'citation_publication_date':'2025/7',
+                'citation_conference_title':'Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)'}
+        with patch.object(src, '_acl_page', return_value={'meta':meta}):
+            verified = src.verify_acl_paper(paper)
+        self.assertTrue(publication_matches(verified, {'venue':'ACL, EMNLP',
+            'accepted_only':True, 'year_from':2024, 'year_to':2026}))
+        with patch.object(src, '_acl_page', return_value={'meta':{**meta,'citation_title':'Different paper'}}):
+            self.assertIs(src.verify_acl_paper(paper), paper)
+        with patch.object(src, '_acl_page') as fetch:
+            src.verify_acl_paper(Paper(id='x', title='X', abstract='', url='', doi='10.18653/v1/2025.findings-acl.1'))
+            fetch.assert_not_called()
+
+    def test_official_acl_verification_accepts_new_doi_format_but_not_findings(self):
+        from common import Paper
+        src = source()
+        doi = '10.18653/2026.emnlp-main.2090'
+        paper = Paper(id='lune:1', title='Beyond Max Tokens', abstract='', url='', doi=doi)
+        meta = {'citation_title':'Beyond Max Tokens', 'citation_doi':doi,
+                'citation_publication_date':'2026/10',
+                'citation_conference_title':'Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing'}
+        with patch.object(src, '_acl_page', return_value={'meta':meta}) as fetch:
+            result = src.verify_acl_paper(paper)
+        fetch.assert_called_once_with('https://aclanthology.org/2026.emnlp-main.2090/')
+        self.assertTrue(publication_matches(result, {'venue':'EMNLP', 'accepted_only':True}))
+        with patch.object(src, '_acl_page', return_value={'meta':{**meta, 'citation_doi':'10.18653/2026.emnlp-main.659'}}):
+            self.assertIs(src.verify_acl_paper(paper), paper)
+        with patch.object(src, '_acl_page') as fetch:
+            src.verify_acl_paper(Paper(id='x', title='X', abstract='', url='', doi='10.18653/2026.findings-emnlp.1'))
+            fetch.assert_not_called()
+
+    def test_semantic_scholar_compacts_long_topic_for_explicit_venue_pool(self):
+        src = source('semantic_scholar')
+        captured = []
+        def response(url, **kwargs):
+            captured.append(parse_qs(urlsplit(url).query))
+            return {'data': []}
+        with patch.object(src, '_json', side_effect=response):
+            src._semantic_scholar('LLM agents tool use planning memory self-correction multi-agent',
+                10, {'venue':'ICLR, ICML, NeurIPS, ACL, EMNLP, AAAI', 'year_from':2024, 'year_to':2026})
+            src._semantic_scholar('LLM agents planning 2024 NeurIPS ICML ACL',
+                10, {'venue':'ICLR, ICML, NeurIPS, ACL, EMNLP, AAAI'})
+        self.assertEqual(captured[0]['query'], ['LLM agents tool use'])
+        self.assertEqual(captured[0]['venue'], ['ICLR,ICML,NeurIPS,ACL,EMNLP,AAAI'])
+        self.assertEqual(captured[0]['year'], ['2024-2026'])
+        self.assertEqual(captured[1]['query'], ['LLM agents planning'])
+
+    def test_explicit_venue_list_uses_or_and_checks_each_publication(self):
+        src = source()
+        calls = []
+        def response(url, **kwargs):
+            q = parse_qs(urlsplit(url).query)
+            calls.append(url)
+            if '/sources?' in url:
+                name = q['search'][0]
+                return {'results': [{'id': 'https://openalex.org/' + {'ICLR':'S1','ACL':'S2'}[name],
+                    'display_name': name, 'type': 'conference', 'works_count': 100}]}
+            return {'results': [work(1, 'ICLR', 'S1'), work(2, 'ACL', 'S2'),
+                                work(3, 'NAACL', 'S3')]}
+        with patch.object(src, '_json', side_effect=response):
+            papers = src.search_batch('agents', 5, providers=['openalex'],
+                filters={'venue': 'ICLR, ACL', 'year_from': 2024, 'year_to': 2026}).papers
+        works_url = next(url for url in calls if '/works?' in url)
+        self.assertIn('primary_location.source.id:S1|S2', parse_qs(urlsplit(works_url).query)['filter'][0])
+        self.assertEqual([p.id for p in papers], ['openalex:W1', 'openalex:W2'])
+
+    def test_unresolved_venue_does_not_silently_drop_it_from_source_search(self):
+        src = source()
+        calls = []
+        def response(url, **kwargs):
+            calls.append(url)
+            q = parse_qs(urlsplit(url).query)
+            if '/sources?' in url:
+                return {'results': ([{'id':'https://openalex.org/S1', 'display_name':'ICLR',
+                                     'type':'conference', 'works_count':1}]
+                                    if q['search'][0] == 'ICLR' else [])}
+            return {'results': [work(1,'ACL','S2'), work(2,'NAACL','S3')]}
+        with patch.object(src, '_json', side_effect=response):
+            papers = src.search_batch('agents', 5, providers=['openalex'],
+                filters={'venue':'ICLR, ACL'}).papers
+        works_url = next(url for url in calls if '/works?' in url)
+        self.assertNotIn('primary_location.source.id', parse_qs(urlsplit(works_url).query).get('filter',[''])[0])
+        self.assertEqual([p.id for p in papers], ['openalex:W1'])
+        self.assertEqual(src.preference_resolution['openalex']['unresolved_venues'], ['ACL'])
+
     def test_openalex_uses_one_or_filtered_works_request_and_cached_source_resolution(self):
         src=source()
         calls=[]

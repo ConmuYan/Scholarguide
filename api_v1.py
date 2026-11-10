@@ -271,7 +271,7 @@ def public_result(raw):
               'sources', 'source', 'abstract', 'abstract_source', 'open_access_url',
               'metadata_only', 'snippet', 'publication', 'provenance_conflict',
               'paper_type', 'category_status', 'fit_score', 'reason', 'evidence_quote',
-              'evidence_verified', 'relevance')
+              'evidence_verified', 'relevance', 'citation_count', 'citation_source', 'citation_observed_at')
     for rank, paper in enumerate(raw.get('papers') or (), start=1):
         item = {key: deepcopy(paper.get(key)) for key in fields
                 if key in paper and key not in ('url', 'open_access_url', 'publication')}

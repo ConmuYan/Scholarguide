@@ -22,6 +22,7 @@ def openapi_document():
         'venue': {'type': 'string'}, 'year_from': {'type': ['integer', 'null']},
         'year_to': {'type': ['integer', 'null']}, 'purpose': {'type': 'string'},
         'reading_goal': {'type': 'string', 'enum': ['', 'auto', 'general', 'orientation', 'comparison', 'frontier']},
+        'ranking': {'type': 'string', 'enum': ['relevance', 'citations']},
         'publication_type': {'type': 'string', 'enum': ['any', 'conference', 'journal', 'preprint']},
         'venue_scope': {'type': 'string', 'enum': ['any', 'preferred', 'preferred_only']},
         'accepted_only': {'type': 'boolean'}, 'prefer_recent': {'type': 'boolean'},
@@ -49,6 +50,8 @@ def openapi_document():
         'rank': {'type': 'integer', 'minimum': 1}, 'paper_id': {'type': 'string'},
         'id': {'type': 'string'}, 'title': {'type': 'string'}, 'url': {'type': 'string'},
         'doi': {'type': 'string'}, 'abstract': {'type': 'string'}, 'reason': {'type': 'string'},
+        'citation_count': {'type': ['integer', 'null'], 'minimum': 0},
+        'citation_source': {'type': 'string'}, 'citation_observed_at': {'type': 'string'},
         'sources': {'type': 'array', 'items': {'type': 'string'}},
         'publication': {'type': 'object'}, 'evidence': {'type': 'array', 'items': {'type': 'object'}}}}
     result = {'type': 'object', 'properties': {

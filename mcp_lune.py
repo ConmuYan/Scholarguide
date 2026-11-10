@@ -31,7 +31,7 @@ from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import Request, build_opener
 
-from common import Budget, BudgetExceeded, GuideError, Paper, REMOTE_OUTCOMES, RunCancelled, utc_now
+from common import Budget, BudgetExceeded, GuideError, Paper, REMOTE_OUTCOMES, RunCancelled, requested_venues, utc_now
 from mcp_client import McpClient, McpError, McpResult, ServerConfig, load_servers, structured
 from source import ProviderSpec
 
@@ -650,13 +650,13 @@ class LuneProvider:
         arguments_base: dict = {'query': str(query), 'limit': min(target, REMOTE_PAGE_SIZE), 'offset': 0}
         venues = filters.get('venues')
         if isinstance(venues, str):
-            venues = [venues]
+            venues = requested_venues(venues)
         elif isinstance(venues, (tuple, set)):
             venues = list(venues)
         if not venues and filters.get('venue'):
-            venues = [filters['venue']]
+            venues = requested_venues(filters['venue'])
         if venues:
-            arguments_base['venues'] = [str(value).strip() for value in venues if str(value).strip()]
+            arguments_base['venues'] = [name for value in venues for name in requested_venues(str(value))]
         for key in ('year_min', 'year_max'):
             if filters.get(key) is not None:
                 arguments_base[key] = int(filters[key])

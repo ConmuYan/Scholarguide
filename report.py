@@ -94,6 +94,7 @@ def markdown(result: dict) -> str:
         url = safe_url(p.get('url'))
         lines.extend([f"## {i}. {safe(p['title'])}", '', url, '',
                       ('Authors: ' + safe(', '.join(str(a) for a in p.get('authors') or []))) if p.get('authors') else 'Authors: unavailable',
+                      ('Citations: %s (%s; observed %s)' % (p['citation_count'], safe(p.get('citation_source', 'unknown')), safe(p.get('citation_observed_at', 'unknown'))) if p.get('citation_count') is not None else 'Citations: unavailable'),
                       f"Year: {p.get('year') or 'unknown'} · ID: {safe(p['id'])}",
                       f"Category match (model): {p.get('category_status', 'unknown')}", '',
                       safe(p.get('reason', '')), '', '> ' + safe(p.get('evidence_quote', '')).replace('\n', '\n> '), ''])
