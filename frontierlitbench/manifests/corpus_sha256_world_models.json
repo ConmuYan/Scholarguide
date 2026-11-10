@@ -1,7 +1,7 @@
 {
-  "corpus_version": "FB-1.0-world-2026-11-09-single-reviewer",
+  "corpus_version": "FB-1.0-world-2026-11-11-repo-corrected-single-reviewer",
   "protocol_version": "FB-1.0",
-  "as_of": "2026-11-10",
+  "as_of": "2026-11-11",
   "n_candidates": 150,
   "n_gold": 128,
   "tiers": {
@@ -10,26 +10,26 @@
     "B": 51
   },
   "files": {
-    "README_TrackB.md": "f0b56463e006231ef3747a14dc4f4de33beb5a93339e0d6fd8406ed1fd88f036",
+    "README_TrackB.md": "0a50f00e79bde5d97e20b82550a1829e52cb0c5f6110d9a7d2b03fbc2fca91bd",
     "config/institution_rubric_world_models.json": "3a0f9318447dff327c26e3cbaaeaa87e46abefc6a8a2eb3c0c1cd9518c477783",
     "config/quality_weights_world_models.json": "56ec22a8ea5cacb326b8ae5c9d70dea1a7fdfd97e36eb25aa09fdaf3e40a6c5e",
     "config/venues_world_models.json": "53b167c89fa7584e6315e5e0424e3cbd14bce72745288c1aac083ea1b27ece4d",
     "corpus/candidates_world_models.jsonl": "877c2f8bb767d76e28a83df7c6ea5ea68e31b30f8223882cf8d33c5016c5fbe6",
     "corpus/features_world_models.jsonl": "877c2f8bb767d76e28a83df7c6ea5ea68e31b30f8223882cf8d33c5016c5fbe6",
-    "corpus/gold_world_models.jsonl": "272bd5e9b9f13a29b06e74ac5e4f7abefa6cb6eb49a65a4764864abf5cc9c8b0",
-    "labels/impact_annotations_world_models.jsonl": "7131cba97d97bd08d7802b9d841a40b0dbfa3433e74b00177820c1973e1903b1",
+    "corpus/gold_world_models.jsonl": "4a2603bb747ae5ecef2eaf6cd3eadd2b2d3c4e5264fafc9d275042d72a995772",
+    "labels/impact_annotations_world_models.jsonl": "6fff4f8d030f3356f5fcd9e879296eae42b49bf9bf93f96f4b01f7763859e0c5",
     "labels/openalex_master_world_models.jsonl": "337a6a07ddf961b3d0f140f923fc6be25d4e0f6d8dcb64b6fadd2a4cc26674b8",
-    "labels/repo_verification_world_models.jsonl": "0f81795451c3042d4a1d0722f6f6cc9e67c3ac9c0f2cb3b980eb1f9fbba39c10",
+    "labels/repo_verification_world_models.jsonl": "ac7503953d201909b43ad141fbbcd7cc9c8b35b6b202430c14e135eff5750083",
     "labels/review_log_world_models.jsonl": "a441786f4ad2ce087dde9c58d992f9f087ce1fbce7014b9abaf94e644fda7340",
-    "labels/tier_thresholds_world_models.json": "cd61652be9dacc6a65209ddffcb4d5f4ada5aa61d4bd45d9b1846c2259793969",
-    "reports/coverage_and_missingness_world_models.csv": "6fc2762b87b59e0cc78e62233bd8f08fa4cd8650d9f19615a52a078e5cec10e4",
-    "reports/github_coverage_world_models.csv": "b57773c523fda42372d3d759e5164c3bd475951943d086d2c6cb836e0534e98f",
-    "reports/gold_leaderboard_world_models.csv": "865859969efbe0c470bac6bb3897e8c49a77440459105813c5d709647a4c88f6",
-    "reports/gold_leaderboard_world_models.md": "77facfa9c9ac08ba35b30dfd1cbff6bbdeee754af1503249dc9408829b0343f8",
-    "reports/sensitivity_world_models.md": "c6ce7af81d776dac41b6e115d30ceaf8293f3dc262d758696a0356ffbeb103f0",
-    "review/open_issues_world_models.md": "50ea47452e90fef12fcce8a6a902da3bb4b415102b96d0d4800fa5c32984763e",
-    "review/sample_for_human_review_world_models.csv": "e2b4100680e510b7262581bddaf2c46f9aaa76e553a6dc06d45511cbb07573c8",
+    "labels/tier_thresholds_world_models.json": "864a1a132f13dd7f1d035a702926c06532e0ef278bf59de68628dbac5da268f2",
+    "reports/coverage_and_missingness_world_models.csv": "3045c16f2655eb8878ac2869a1182698cb26d3e7e85684ee864ddf75b8c801a0",
+    "reports/github_coverage_world_models.csv": "555c756d629b7347814fa4fb5db4dba6495ff9a19a51e138cc67f2160f6cf0ee",
+    "reports/gold_leaderboard_world_models.csv": "4d975209cd42121406a2cf8983018d0b0df68f81efff3f988a123f1224a14d57",
+    "reports/gold_leaderboard_world_models.md": "e5f1660b9e0348abd18343a0a1a9f12babb2ed17bac35021c15625344e7c56ad",
+    "reports/sensitivity_world_models.md": "86b795cb1e570ea5d5e6503011b984c51ee0413daba2dc3ee83798405f4e514b",
+    "review/open_issues_world_models.md": "a9e7c1ee8fba9744df43c86e4c1fc3d3679e9cbd349bb3b9aab7fba82f8f77dc",
+    "review/sample_for_human_review_world_models.csv": "2f31f1a5151451116429ffdf08a25059fc73efd288a6a2d85b3410c696aabaab",
     "snapshots/lune_conferences_20261108_world_models.json": "53b167c89fa7584e6315e5e0424e3cbd14bce72745288c1aac083ea1b27ece4d",
-    "tasks/task_eligibility_world_models.json": "a9fe443e79220e453b77867306c021f06fad1d95326395676dab518b87d0ec09"
+    "tasks/task_eligibility_world_models.json": "726c5ba6e8ac2948775f7beeed9cc954210a65ad2c0fbc9aa9735d86a206a432"
   }
 }

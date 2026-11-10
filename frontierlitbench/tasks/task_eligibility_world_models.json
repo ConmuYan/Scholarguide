@@ -1,7 +1,7 @@
 {
-  "as_of": "2026-11-09",
+  "as_of": "2026-11-11",
   "protocol_version": "FB-1.0",
-  "corpus_version": "FB-1.0-world-2026-11-09-single-reviewer",
+  "corpus_version": "FB-1.0-world-2026-11-11-repo-corrected-single-reviewer",
   "gold_total": 128,
   "threshold": 5,
   "tasks": [
@@ -49,9 +49,9 @@
       "eligible": true,
       "valid_gold": 34,
       "tiers": {
-        "S": 8,
-        "A": 10,
-        "B": 16
+        "S": 6,
+        "A": 13,
+        "B": 15
       },
       "note": "eligible (|G|=34 >= 5)"
     },
@@ -73,9 +73,9 @@
       "eligible": true,
       "valid_gold": 47,
       "tiers": {
-        "S": 10,
-        "A": 20,
-        "B": 17
+        "S": 12,
+        "A": 16,
+        "B": 19
       },
       "note": "eligible (|G|=47 >= 5)"
     },
@@ -98,8 +98,8 @@
       "valid_gold": 47,
       "tiers": {
         "S": 8,
-        "A": 21,
-        "B": 18
+        "A": 22,
+        "B": 17
       },
       "note": "eligible (|G|=47 >= 5)"
     },
@@ -119,8 +119,8 @@
       "eligible": true,
       "valid_gold": 65,
       "tiers": {
-        "S": 15,
-        "A": 27,
+        "S": 13,
+        "A": 29,
         "B": 23
       },
       "note": "eligible (|G|=65 >= 5)"

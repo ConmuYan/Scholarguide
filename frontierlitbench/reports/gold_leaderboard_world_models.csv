@@ -1,128 +1,128 @@
 ﻿rank,tier,venue,year,paper_id,title,Q,C,G,A,citation_count,github_url,github_stars,repo_status
-1,S,ICLR,2024,candidate:wm:v2:022,"TD-MPC2: Scalable, Robust World Models for Continuous Control",0.94621849,0.94117647,0.92857143,1.0,250,https://github.com/nicklashansen/tdmpc2,999,official
-2,S,ICML,2025,candidate:wm:v2:073,DINO-WM: World Models on Pre-trained Visual Features enable Zero-shot Planning,0.82914894,0.9893617,0.75,0.4,263,https://github.com/gaoyuezhou/dino_wm,622,official
-3,S,CVPR,2024,candidate:wm:v2:002,Driving Into the Future: Multiview Visual Forecasting and Planning with World Model for Autonomous Driving,0.8062395,0.89705882,0.64285714,0.8,195,https://github.com/BraveGroup/Drive-WM,440,official
-4,S,CVPR,2024,candidate:wm:v2:004,Generalized Predictive Model for Autonomous Driving,0.80056723,0.80882353,0.78571429,0.8,83,https://github.com/OpenDriveLab/DriveAGI,809,official
-5,S,ICCV,2025,candidate:wm:v2:056,End-to-End Driving with Online Trajectory Evaluation via BEV World Model,0.68244681,0.96808511,0.0,1.0,114,,0,none_available
-6,S,CVPR,2026,candidate:wm:v2:114,Motus: A Unified Latent Action World Model,0.68244681,0.96808511,0.0,1.0,248,,0,none_available
-7,S,NeurIPS,2025,candidate:wm:v2:088,Learning from Reward-Free Offline Data: A Case for Planning with Latent Dynamics Models,0.67478723,0.87234043,0.25,0.8,62,https://github.com/vladisai/PLDM,83,official
-8,S,ICML,2024,candidate:wm:v2:025,Genie: Generative Interactive Environments,0.66764706,0.94117647,0.0,1.0,250,,0,none_available
-9,S,ICML,2024,candidate:wm:v2:030,Learning to Model the World With Language,0.64779412,0.63235294,0.5,1.0,46,https://github.com/jlin816/dynalang,421,official
-10,S,ICCV,2025,candidate:wm:v2:055,AETHER: Geometric-Aware Unified World Modeling,0.64734043,0.90425532,0.0,1.0,66,,0,none_available
-11,S,ICCV,2025,candidate:wm:v2:057,IRASim: A Fine-Grained World Model for Robot Manipulation,0.64074468,0.94680851,0.0,0.8,110,,0,none_available
-12,S,CVPR,2026,candidate:wm:v2:117,PointWorld: Scaling 3D World Models for In-The-Wild Robotic Manipulation,0.6356383,0.88297872,0.0,1.0,85,,0,none_available
-13,S,ICML,2025,candidate:wm:v2:079,WorldSimBench: Towards Video Generation Models as World Simulators,0.62904255,0.92553191,0.0,0.8,95,,0,none_available
-14,S,ICLR,2026,candidate:wm:v2:130,Vid2World: Crafting Video Diffusion Models to Interactive World Models,0.62393617,0.86170213,0.0,1.0,65,,0,none_available
-15,S,ICCV,2025,candidate:wm:v2:060,World4Drive: End-to-End Autonomous Driving via Intention-Aware Physical Latent World Model,0.61223404,0.84042553,0.0,1.0,57,,0,none_available
-16,S,ICLR,2026,candidate:wm:v2:120,Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning,0.60414894,0.9893617,0.0,0.4,331,,0,none_available
-17,S,ICLR,2024,candidate:wm:v2:016,Learning Interactive Real-World Simulators,0.60191176,0.98529412,0.0,0.4,344,,0,none_available
-18,S,ICLR,2025,candidate:wm:v2:062,COMBO: Compositional World Models for Embodied Multi-Agent Cooperation,0.60053191,0.81914894,0.0,1.0,48,,0,none_available
-19,S,NeurIPS,2025,candidate:wm:v2:090,MindJourney: Test-Time Scaling with World Models for Spatial Reasoning,0.58882979,0.79787234,0.0,1.0,38,,0,none_available
-20,S,ICML,2026,candidate:wm:v2:150,World Guidance: World Modeling in Condition Space for Action Generation,0.58882979,0.79787234,0.0,1.0,41,,0,none_available
-21,S,ICML,2026,candidate:wm:v2:139,DreamDojo: A Real-Time Robot World Model from Large-Scale Human Videos,0.58074468,0.94680851,0.0,0.4,172,,0,none_available
-22,S,ICLR,2024,candidate:wm:v2:010,Copilot4D: Learning Unsupervised World Models for Autonomous Driving via Discrete Diffusion,0.57867647,0.77941176,0.0,1.0,68,,0,none_available
-23,S,ICLR,2025,candidate:wm:v2:069,Web Agents with World Models: Learning and Leveraging Environment Dynamics in Web Navigation,0.56978723,0.87234043,0.0,0.6,62,,0,none_available
-24,S,ICLR,2026,candidate:wm:v2:121,Ctrl-World: A Controllable Generative World Model for Robot Manipulation,0.56904255,0.92553191,0.0,0.4,147,,0,none_available
-25,S,ICLR,2026,candidate:wm:v2:129,Unified Vision-Language-Action Model,0.55734043,0.90425532,0.0,0.4,132,,0,none_available
-26,S,NeurIPS,2024,candidate:wm:v2:040,iVideoGPT: Interactive VideoGPTs are Scalable World Models,0.54728992,0.69117647,0.35714286,0.4,55,https://github.com/thuml/iVideoGPT,188,official
-27,A,CVPR,2024,candidate:wm:v2:001,DriveWorld: 4D Pre-Trained Scene Understanding via World Models for Autonomous Driving,0.54632353,0.72058824,0.0,1.0,59,,0,none_available
-28,A,NeurIPS,2025,candidate:wm:v2:099,Whole-Body Conditioned Egocentric Video Prediction,0.54202128,0.71276596,0.0,1.0,26,,0,none_available
-29,A,ICLR,2026,candidate:wm:v2:122,DrivingGen: A Comprehensive Benchmark for Generative Video World Models in Autonomous Driving,0.54202128,0.71276596,0.0,1.0,18,,0,none_available
-30,A,ICML,2024,candidate:wm:v2:033,RoboDreamer: Learning Compositional World Models for Robot Imagination,0.53720588,0.86764706,0.0,0.4,169,,0,none_available
-31,A,CVPR,2026,candidate:wm:v2:115,ORV: 4D Occupancy-centric Robot Video Generation,0.53031915,0.69148936,0.0,1.0,16,,0,none_available
-32,A,ICLR,2025,candidate:wm:v2:065,FLIP: Flow-Centric Generative Planning as General-Purpose Manipulation World Model,0.52446809,0.68085106,0.0,1.0,25,,0,none_available
-33,A,ICML,2026,candidate:wm:v2:144,Learning Latent Action World Models in the Wild,0.52223404,0.84042553,0.0,0.4,47,,0,none_available
-34,A,NeurIPS,2024,candidate:wm:v2:049,Vista: A Generalizable Driving World Model with High Fidelity and Versatile Controllability,0.52102941,0.83823529,0.0,0.4,168,,0,none_available
-35,A,AAAI,2026,candidate:wm:v2:105,WorldRFT: Latent World Model Planning with Reinforcement Fine-Tuning for Autonomous Driving,0.51276596,0.65957447,0.0,1.0,15,,0,none_available
-36,A,ICML,2026,candidate:wm:v2:135,Causal-JEPA: Learning World Models through Object-Level Latent Masking,0.51053191,0.81914894,0.0,0.4,45,,0,none_available
-37,A,CVPR,2025,candidate:wm:v2:054,VideoWorld: Exploring Knowledge Learning from Unlabeled Videos,0.50542553,0.75531915,0.0,0.6,29,,0,none_available
-38,A,CVPR,2026,candidate:wm:v2:110,DriveLaW: Unifying Planning and Video Generation in a Latent Driving World,0.50542553,0.75531915,0.0,0.6,33,,0,none_available
-39,A,NeurIPS,2025,candidate:wm:v2:086,Learning 3D Persistent Embodied World Models,0.49446809,0.68085106,0.0,0.8,25,,0,none_available
-40,A,ICLR,2024,candidate:wm:v2:018,Learning to Act without Actions,0.4882563,0.66176471,0.21428571,0.4,50,https://github.com/schmidtdominik/LAPO,149,official
-41,A,NeurIPS,2025,candidate:wm:v2:093,ReSim: Reliable World Simulation for Autonomous Driving,0.48712766,0.77659574,0.0,0.4,36,,0,none_available
-42,A,ICLR,2026,candidate:wm:v2:131,World-In-World: World Models in a Closed-Loop World,0.48712766,0.77659574,0.0,0.4,34,,0,none_available
-43,A,ICML,2026,candidate:wm:v2:142,iWorld-Bench: A Benchmark for Interactive World Models with a Unified Action Generation Framework,0.47765957,0.59574468,0.0,1.0,13,,0,none_available
-44,A,NeurIPS,2024,candidate:wm:v2:050,"WorldCoder, a Model-Based LLM Agent: Building World Models by Writing Code and Interacting with the Environment",0.4725,0.75,0.0,0.4,62,,0,none_available
-45,A,ICLR,2025,candidate:wm:v2:066,GenEx: Generating an Explorable World,0.47106383,0.63829787,0.0,0.8,24,,0,none_available
-46,A,ICLR,2025,candidate:wm:v2:068,Semi-Supervised Vision-Centric 3D Occupancy World Model for Autonomous Driving,0.46595745,0.57446809,0.0,1.0,17,,0,none_available
-47,A,CVPR,2025,candidate:wm:v2:052,DrivingSphere: Building a High-fidelity 4D World for Closed-loop Simulation,0.4637234,0.73404255,0.0,0.4,27,,0,none_available
-48,A,CVPR,2026,candidate:wm:v2:119,WorldLens: Full-Spectrum Evaluations of Driving World Models in Real World,0.4637234,0.73404255,0.0,0.4,28,,0,none_available
-49,A,ICLR,2025,candidate:wm:v2:061,AdaWM: Adaptive World Model based Planning for Autonomous Driving,0.45351064,0.60638298,0.0,0.8,18,,0,none_available
-50,A,ICML,2024,candidate:wm:v2:026,HarmonyDream: Task Harmonization Inside World Models,0.44926471,0.54411765,0.0,1.0,14,,0,none_available
-51,A,CVPR,2026,candidate:wm:v2:109,Dexterous World Models,0.44765957,0.59574468,0.0,0.8,13,,0,none_available
-52,A,ICLR,2026,candidate:wm:v2:128,R-WoM: Retrieval-augmented World Model For Computer-use Agents,0.44765957,0.59574468,0.0,0.8,13,,0,none_available
-53,A,NeurIPS,2025,candidate:wm:v2:080,COME: Adding Scene-Centric Forecasting Control to Occupancy World Model,0.44255319,0.53191489,0.0,1.0,14,,0,none_available
-54,A,ICML,2025,candidate:wm:v2:078,SOLD: Slot Object-Centric Latent Dynamics Models for Relational Manipulation Learning from Pixels,0.44106383,0.63829787,0.0,0.6,24,,0,none_available
-55,A,ICML,2026,candidate:wm:v2:148,Parallel Stochastic Gradient-Based Planning for World Models,0.43670213,0.5212766,0.0,1.0,11,,0,none_available
-56,A,ICLR,2024,candidate:wm:v2:020,Mastering Memory Tasks with World Models,0.43544118,0.57352941,0.0,0.8,24,,0,none_available
-57,A,NeurIPS,2025,candidate:wm:v2:082,Dyn-O: Building Structured World Models with Object-Centric Representations,0.425,0.5,0.0,1.0,12,,0,none_available
-58,A,ICML,2026,candidate:wm:v2:133,Benchmarking World-Model Learning with Environment-Level Queries,0.42276596,0.65957447,0.0,0.4,15,,0,none_available
-59,A,NeurIPS,2025,candidate:wm:v2:084,From Forecasting to Planning: Policy World Model for Collaborative State-Action Prediction,0.40595745,0.57446809,0.0,0.6,17,,0,none_available
-60,A,ICML,2026,candidate:wm:v2:140,Factored Latent Action World Models,0.40159574,0.45744681,0.0,1.0,9,,0,none_available
-61,A,NeurIPS,2024,candidate:wm:v2:039,InterDreamer: Zero-Shot Text to 3D Dynamic Human-Object Interaction,0.39161765,0.60294118,0.0,0.4,42,,0,none_available
-62,A,ICLR,2026,candidate:wm:v2:125,Latent Particle World Models: Self-supervised Object-centric Stochastic Dynamics Modeling,0.38989362,0.43617021,0.0,1.0,8,,0,none_available
-63,A,ICML,2026,candidate:wm:v2:149,VJEPA: Variational Joint Embedding Predictive Architectures as Probabilistic World Models,0.38765957,0.59574468,0.0,0.4,13,,0,none_available
-64,A,ICCV,2025,candidate:wm:v2:058,Learning 4D Embodied World Models,0.38404255,0.42553191,0.0,1.0,8,,0,none_available
-65,A,CVPR,2026,candidate:wm:v2:107,Chain of World: World Model Thinking in Latent Motion,0.38329787,0.4787234,0.0,0.8,10,,0,none_available
-66,A,NeurIPS,2025,candidate:wm:v2:096,SimWorld-Robotics: Synthesizing Photorealistic and Dynamic Urban Environments for Multimodal Robot Navigation and Collaboration,0.37744681,0.46808511,0.0,0.8,9,,0,none_available
-67,A,ICML,2024,candidate:wm:v2:029,Learning Latent Dynamic Robust Representations for World Models,0.37308824,0.51470588,0.0,0.6,13,,0,none_available
-68,A,ICML,2026,candidate:wm:v2:138,DeepSight: Long-Horizon World Modeling via Latent States Prediction for End-to-End Autonomous Driving,0.35478723,0.37234043,0.0,1.0,5,,0,none_available
-69,A,ICLR,2025,candidate:wm:v2:067,Learning Transformer-based World Models with Contrastive Predictive Coding,0.35255319,0.53191489,0.0,0.4,14,,0,none_available
-70,A,ICML,2026,candidate:wm:v2:134,Beyond Pixel Histories: World Models with Persistent 3D State,0.34670213,0.5212766,0.0,0.4,11,,0,none_available
-71,A,ICML,2026,candidate:wm:v2:147,Olaf-World: Orienting Latent Actions for Video World Modeling,0.34670213,0.5212766,0.0,0.4,11,,0,none_available
-72,A,NeurIPS,2025,candidate:wm:v2:089,Learning Interactive World Model for Object-Centric Reinforcement Learning,0.34308511,0.35106383,0.0,1.0,5,,0,none_available
-73,A,NeurIPS,2025,candidate:wm:v2:094,Revisiting Multi-Agent World Modeling from a Diffusion-Inspired Perspective,0.34308511,0.35106383,0.0,1.0,5,,0,none_available
-74,A,NeurIPS,2025,candidate:wm:v2:097,Social World Model-Augmented Mechanism Design Policy Learning,0.34308511,0.35106383,0.0,1.0,5,,0,none_available
-75,A,ICML,2025,candidate:wm:v2:074,G-Sim: Generative Simulations with Large Language Models and Gradient-Free Calibration,0.33648936,0.39361702,0.0,0.8,6,,0,none_available
-76,A,CVPR,2024,candidate:wm:v2:008,ReCoRe: Regularized Contrastive Representation Learning of World Model,0.32691176,0.48529412,0.0,0.4,12,,0,none_available
-77,A,ICLR,2026,candidate:wm:v2:127,One Model for All Tasks: Leveraging Efficient World Models in Multi-Task Planning,0.32478723,0.37234043,0.0,0.8,5,,0,none_available
-78,B,ICML,2025,candidate:wm:v2:076,PlaySlot: Learning Inverse Latent Dynamics for Controllable Object-Centric Video Prediction and Planning,0.31744681,0.46808511,0.0,0.4,9,,0,none_available
-79,B,NeurIPS,2025,candidate:wm:v2:087,Learning and Planning Multi-Agent Tasks via an MoE-based World Model,0.30797872,0.28723404,0.0,1.0,4,,0,none_available
-80,B,NeurIPS,2024,candidate:wm:v2:035,GenRL: Multimodal-foundation world models for generalization in embodied agents,0.30264706,0.44117647,0.0,0.4,10,,0,none_available
-81,B,NeurIPS,2024,candidate:wm:v2:038,Input-to-State Stable Coupled Oscillator Networks for Closed-form Model-based Control in Latent Space,0.30264706,0.44117647,0.0,0.4,10,,0,none_available
-82,B,ICML,2025,candidate:wm:v2:071,Continual Reinforcement Learning by Planning with Online World Models,0.29404255,0.42553191,0.0,0.4,8,,0,none_available
-83,B,ICML,2024,candidate:wm:v2:023,AD3: Implicit Action is the Key for World Models to Distinguish the Diverse Visual Distractors,0.28176471,0.29411765,0.0,0.8,7,,0,none_available
-84,B,ICCV,2025,candidate:wm:v2:059,Precise Action-to-Video Generation Through Visual Action Prompts,0.2787234,0.23404255,0.0,1.0,2,,0,none_available
-85,B,NeurIPS,2025,candidate:wm:v2:095,SAMPO: Scale-wise Autoregression with Motion Prompt for Generative World Models,0.27797872,0.28723404,0.0,0.8,4,,0,none_available
-86,B,CVPR,2024,candidate:wm:v2:006,Learning to Navigate Efficiently and Precisely in Real Environments,0.27029412,0.38235294,0.0,0.4,9,,0,none_available
-87,B,NeurIPS,2024,candidate:wm:v2:046,Simplifying Latent Dynamics with Softly State-Invariant World Models,0.27029412,0.38235294,0.0,0.4,9,,0,none_available
-88,B,AAAI,2026,candidate:wm:v2:103,Unlocking Efficient Vehicle Dynamics Modeling via Analytic World Models,0.26478723,0.37234043,0.0,0.4,5,,0,none_available
-89,B,CVPR,2026,candidate:wm:v2:116,Planning in 8 Tokens: A Compact Discrete Tokenizer for Latent World Model,0.26478723,0.37234043,0.0,0.4,5,,0,none_available
-90,B,ICML,2026,candidate:wm:v2:137,DDP-WM: Disentangled Dynamics Prediction for Efficient World Models,0.26478723,0.37234043,0.0,0.4,5,,0,none_available
-91,B,ICLR,2024,candidate:wm:v2:019,Locality Sensitive Sparse Encoding for Learning World Models Online,0.26323529,0.20588235,0.0,1.0,5,,0,none_available
-92,B,AAAI,2026,candidate:wm:v2:102,Object-Centric World Models for Causality-Aware Reinforcement Learning,0.25968085,0.30851064,0.0,0.6,3,,0,none_available
-93,B,AAAI,2026,candidate:wm:v2:104,WorldAgen: Unified State-Action Prediction with Test-Time World Model Training,0.25457447,0.24468085,0.0,0.8,1,,0,none_available
-94,B,ICML,2024,candidate:wm:v2:027,Hieros: Hierarchical Imagination on Structured State Space Sequence World Models,0.24602941,0.33823529,0.0,0.4,8,,0,none_available
-95,B,NeurIPS,2025,candidate:wm:v2:085,Image as a World: Generating Interactive World from Single Image via Panoramic Video Generation,0.24361702,0.17021277,0.0,1.0,1,,0,none_available
-96,B,NeurIPS,2025,candidate:wm:v2:092,PoE-World: Compositional World Modeling with Products of Programmatic Experts,0.24361702,0.17021277,0.0,1.0,1,,0,none_available
-97,B,ICLR,2024,candidate:wm:v2:011,Efficient Dynamics Modeling in Interactive Environments with Koopman Theory,0.23323529,0.20588235,0.0,0.8,5,,0,none_available
-98,B,ICLR,2024,candidate:wm:v2:014,Learning 3D Particle-based Simulators from RGB-D Videos,0.22176471,0.29411765,0.0,0.4,7,,0,none_available
-99,B,NeurIPS,2025,candidate:wm:v2:083,Dynamics-Aligned Latent Imagination in Contextual World Models for Zero-Shot Generalization,0.21797872,0.28723404,0.0,0.4,4,,0,none_available
-100,B,CVPR,2026,candidate:wm:v2:108,Cloning Deterministic Worlds: The Critical Role of Latent Geometry in Long-Horizon World Models,0.21797872,0.28723404,0.0,0.4,2,,0,none_available
-101,B,CVPR,2025,candidate:wm:v2:053,Neural Motion Simulator Pushing the Limit of World Models in Reinforcement Learning,0.21361702,0.17021277,0.0,0.8,1,,0,none_available
-102,B,ICML,2026,candidate:wm:v2:141,Future Dynamic 3D Reconstruction: A 3D World Model with Disentangled Ego-Motion,0.19457447,0.24468085,0.0,0.4,1,,0,none_available
-103,B,ICML,2026,candidate:wm:v2:145,Learning Task-Sufficient World Models by Synergizing Agentic Exploration and Structured Modeling,0.19457447,0.24468085,0.0,0.4,1,,0,none_available
-104,B,ICML,2025,candidate:wm:v2:077,Reward-free World Models for Online Imitation Learning,0.1887234,0.23404255,0.0,0.4,2,,0,none_available
-105,B,NeurIPS,2025,candidate:wm:v2:081,Curious Causality-Seeking Agents in Open-ended Worlds,0.18510638,0.06382979,0.0,1.0,0,,0,none_available
-106,B,AAAI,2025,candidate:wm:v2:051,Acting Beyond Learning: Imagination-Assisted Decision-Making in the Visual-based Multi-Agent Cooperative Scenarios,0.18361702,0.17021277,0.0,0.6,1,,0,none_available
-107,B,NeurIPS,2024,candidate:wm:v2:036,Grounded Answers for Multi-agent Decision-making Problem through Generative World Model,0.17323529,0.20588235,0.0,0.4,5,,0,none_available
-108,B,NeurIPS,2024,candidate:wm:v2:042,Learning World Models for Unconstrained Goal Navigation,0.17323529,0.20588235,0.0,0.4,5,,0,none_available
-109,B,ICLR,2025,candidate:wm:v2:064,Efficient Exploration and Discriminative World Model Learning with an Object-Centric Abstraction,0.15510638,0.06382979,0.0,0.8,0,,0,none_available
-110,B,AAAI,2026,candidate:wm:v2:101,Beyond Single-Speed Reasoning: Coordinating Fast and Slow Dynamics for Efficient World Modeling,0.14851064,0.10638298,0.0,0.6,0,,0,none_available
-111,B,CVPR,2026,candidate:wm:v2:112,Local Motion Matters: A Deconstruct–Recompose Paradigm for Reinforcement Learning Pre-training from Videos,0.14851064,0.10638298,0.0,0.6,0,,0,none_available
-112,B,NeurIPS,2024,candidate:wm:v2:044,Reinforcement Learning Under Latent Dynamics: Toward Statistical and Algorithmic Modularity,0.13279412,0.13235294,0.0,0.4,4,,0,none_available
-113,B,CVPR,2026,candidate:wm:v2:111,HandWorld: Hand-Centric Unified Video Action Generation,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
-114,B,CVPR,2026,candidate:wm:v2:113,ModularAgent: A Task-Aware Modular Framework for Joint Optimization of Multimodal Large Language Models and World Models,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
-115,B,ICLR,2026,candidate:wm:v2:123,ExoPredicator: Learning Abstract Models of Dynamic Worlds for Robot Planning,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
-116,B,ICLR,2026,candidate:wm:v2:124,Genie Envisioner: A Unified World Foundation Platform for Robotic Manipulation,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
-117,B,ICLR,2026,candidate:wm:v2:126,Learning to Be Uncertain: Pre-training World Models with Horizon-Calibrated Uncertainty,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
-118,B,ICML,2026,candidate:wm:v2:136,Co-Evolving Latent Action World Models,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
-119,B,ICML,2026,candidate:wm:v2:143,Learning Disentangled Multi-Agent World Model for Decentralized Control,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
-120,B,ICML,2026,candidate:wm:v2:146,Learning to Theorize the World from Observation,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
-121,B,ICML,2024,candidate:wm:v2:028,Learning Causal Dynamics Models in Object-Oriented Environments,0.11661765,0.10294118,0.0,0.4,3,,0,none_available
-122,B,ICLR,2024,candidate:wm:v2:015,Learning Hierarchical World Models with Adaptive Temporal Abstractions from Discrete Latent Dynamics,0.10569328,0.04411765,0.07142857,0.4,0,https://github.com/CognitiveModeling/THICK,40,official
-123,B,ICLR,2025,candidate:wm:v2:063,Discrete Codebook World Models for Continuous Control,0.09510638,0.06382979,0.0,0.4,0,,0,none_available
-124,B,ICML,2025,candidate:wm:v2:070,AdaWorld: Learning Adaptable World Models with Latent Actions,0.09510638,0.06382979,0.0,0.4,0,,0,none_available
+1,S,CVPR,2026,candidate:wm:v2:114,Motus: A Unified Latent Action World Model,0.96369681,0.96808511,0.9375,1.0,248,https://github.com/thu-ml/Motus,1316,official
+2,S,ICLR,2024,candidate:wm:v2:022,"TD-MPC2: Scalable, Robust World Models for Continuous Control",0.95882353,0.94117647,0.97058824,1.0,250,https://github.com/nicklashansen/tdmpc2,999,official
+3,S,ICCV,2025,candidate:wm:v2:056,End-to-End Driving with Online Trajectory Evaluation via BEV World Model,0.93869681,0.96808511,0.85416667,1.0,114,https://github.com/liyingyanUCAS/WoTE,276,official
+4,S,ICCV,2025,candidate:wm:v2:055,AETHER: Geometric-Aware Unified World Modeling,0.91609043,0.90425532,0.89583333,1.0,66,https://github.com/InternRobotics/Aether,617,official
+5,S,ICML,2025,candidate:wm:v2:073,DINO-WM: World Models on Pre-trained Visual Features enable Zero-shot Planning,0.88539893,0.9893617,0.9375,0.4,263,https://github.com/gaoyuezhou/dino_wm,627,official
+6,S,CVPR,2026,candidate:wm:v2:117,PointWorld: Scaling 3D World Models for In-The-Wild Robotic Manipulation,0.86688829,0.88297872,0.77083333,1.0,85,https://github.com/NVlabs/PointWorld,571,official
+7,S,CVPR,2024,candidate:wm:v2:002,Driving Into the Future: Multiview Visual Forecasting and Planning with World Model for Autonomous Driving,0.85161765,0.89705882,0.79411765,0.8,195,https://github.com/BraveGroup/Drive-WM,440,official
+8,S,ICML,2026,candidate:wm:v2:139,DreamDojo: A Real-Time Robot World Model from Large-Scale Human Videos,0.84949468,0.94680851,0.89583333,0.4,172,https://github.com/NVIDIA/DreamDojo,1132,official
+9,S,ICCV,2025,candidate:wm:v2:057,IRASim: A Fine-Grained World Model for Robot Manipulation,0.84699468,0.94680851,0.6875,0.8,110,https://github.com/bytedance/IRASim,167,official
+10,S,CVPR,2024,candidate:wm:v2:004,Generalized Predictive Model for Autonomous Driving,0.8207353,0.80882353,0.85294118,0.8,83,https://github.com/OpenDriveLab/DriveAGI,809,official
+11,S,ICLR,2026,candidate:wm:v2:121,Ctrl-World: A Controllable Generative World Model for Robot Manipulation,0.81279255,0.92553191,0.8125,0.4,147,https://github.com/Robert-gyj/Ctrl-World,583,official
+12,S,CVPR,2025,candidate:wm:v2:054,VideoWorld: Exploring Knowledge Learning from Unlabeled Videos,0.79917553,0.75531915,0.97916667,0.6,29,https://github.com/ByteDance-Seed/VideoWorld,809,official
+13,S,NeurIPS,2024,candidate:wm:v2:049,Vista: A Generalizable Driving World Model with High Fidelity and Versatile Controllability,0.79455882,0.83823529,0.91176471,0.4,168,https://github.com/OpenDriveLab/Vista,910,official
+14,S,ICCV,2025,candidate:wm:v2:060,World4Drive: End-to-End Autonomous Driving via Intention-Aware Physical Latent World Model,0.79348404,0.84042553,0.60416667,1.0,57,https://github.com/ucaszyp/World4Drive,114,official
+15,S,NeurIPS,2025,candidate:wm:v2:090,MindJourney: Test-Time Scaling with World Models for Spatial Reasoning,0.78257979,0.79787234,0.64583333,1.0,38,https://github.com/UMass-Embodied-AGI/MindJourney,156,official
+16,S,ICLR,2026,candidate:wm:v2:129,Unified Vision-Language-Action Model,0.77609043,0.90425532,0.72916667,0.4,132,https://github.com/baaivision/UniVLA,322,official
+17,S,ICML,2026,candidate:wm:v2:150,World Guidance: World Modeling in Condition Space for Action Generation,0.75757979,0.79787234,0.5625,1.0,41,https://github.com/Selen-Suyue/WoG,176,official
+18,S,NeurIPS,2025,candidate:wm:v2:088,Learning from Reward-Free Offline Data: A Case for Planning with Latent Dynamics Models,0.75603724,0.87234043,0.52083333,0.8,62,https://github.com/vladisai/PLDM,83,official
+19,S,ICLR,2026,candidate:wm:v2:130,Vid2World: Crafting Video Diffusion Models to Interactive World Models,0.74268617,0.86170213,0.39583333,1.0,65,https://github.com/thuml/Vid2World,78,official
+20,S,ICML,2024,candidate:wm:v2:030,Learning to Model the World With Language,0.71838235,0.63235294,0.73529412,1.0,46,https://github.com/jlin816/dynalang,421,official
+21,S,NeurIPS,2025,candidate:wm:v2:093,ReSim: Reliable World Simulation for Autonomous Driving,0.71837766,0.77659574,0.77083333,0.4,36,https://github.com/OpenDriveLab/ReSim,193,official
+22,S,ICML,2026,candidate:wm:v2:135,Causal-JEPA: Learning World Models through Object-Level Latent Masking,0.71678192,0.81914894,0.6875,0.4,45,https://github.com/galilai-group/cjepa,263,official
+23,S,ICML,2024,candidate:wm:v2:033,RoboDreamer: Learning Compositional World Models for Robot Imagination,0.70485294,0.86764706,0.55882353,0.4,169,https://github.com/rainbow979/robodreamer,102,official
+24,S,ICLR,2025,candidate:wm:v2:062,COMBO: Compositional World Models for Embodied Multi-Agent Cooperation,0.69428192,0.81914894,0.3125,1.0,48,https://github.com/UMass-Embodied-AGI/COMBO,53,official
+25,S,ICLR,2025,candidate:wm:v2:065,FLIP: Flow-Centric Generative Planning as General-Purpose Manipulation World Model,0.69321808,0.68085106,0.5625,1.0,25,https://github.com/HeegerGao/FLIP,84,official
+26,S,ICLR,2025,candidate:wm:v2:066,GenEx: Generating an Explorable World,0.68981383,0.63829787,0.72916667,0.8,24,https://github.com/GenEx-world/genex,173,official
+27,A,ICLR,2026,candidate:wm:v2:131,World-In-World: World Models in a Closed-Loop World,0.66837766,0.77659574,0.60416667,0.4,34,https://github.com/World-In-World/world-in-world,215,official
+28,A,ICML,2024,candidate:wm:v2:025,Genie: Generative Interactive Environments,0.66764706,0.94117647,0.0,1.0,250,,0,none_available
+29,A,CVPR,2026,candidate:wm:v2:115,ORV: 4D Occupancy-centric Robot Video Generation,0.66156915,0.69148936,0.4375,1.0,16,https://github.com/OrangeSodahub/ORV,115,official
+30,A,CVPR,2026,candidate:wm:v2:119,WorldLens: Full-Spectrum Evaluations of Driving World Models in Real World,0.6574734,0.73404255,0.64583333,0.4,28,https://github.com/worldbench/WorldLens,258,official
+31,A,NeurIPS,2024,candidate:wm:v2:040,iVideoGPT: Interactive VideoGPTs are Scalable World Models,0.64308824,0.69117647,0.67647059,0.4,55,https://github.com/thuml/iVideoGPT,189,official
+32,A,ICML,2025,candidate:wm:v2:079,WorldSimBench: Towards Video Generation Models as World Simulators,0.62904255,0.92553191,0.0,0.8,95,,0,none_available
+33,A,ICLR,2026,candidate:wm:v2:127,One Model for All Tasks: Leveraging Efficient World Models in Multi-Task Planning,0.61853724,0.37234043,0.97916667,0.8,5,https://github.com/opendilab/LightZero,1660,official
+34,A,ICLR,2024,candidate:wm:v2:018,Learning to Act without Actions,0.60926471,0.66176471,0.61764706,0.4,50,https://github.com/schmidtdominik/LAPO,149,official
+35,A,ICLR,2026,candidate:wm:v2:120,Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning,0.60414893,0.9893617,0.0,0.4,331,,0,none_available
+36,A,ICLR,2024,candidate:wm:v2:016,Learning Interactive Real-World Simulators,0.60191177,0.98529412,0.0,0.4,344,,0,none_available
+37,A,CVPR,2025,candidate:wm:v2:052,DrivingSphere: Building a High-fidelity 4D World for Closed-loop Simulation,0.5949734,0.73404255,0.4375,0.4,27,https://github.com/yanty123/DrivingSphere,77,official
+38,A,ICLR,2024,candidate:wm:v2:010,Copilot4D: Learning Unsupervised World Models for Autonomous Driving via Discrete Diffusion,0.5875,0.77941176,0.02941176,1.0,68,https://github.com/skr3178/copilot4D,0,official
+39,A,ICLR,2025,candidate:wm:v2:068,Semi-Supervised Vision-Centric 3D Occupancy World Model for Autonomous Driving,0.57220745,0.57446809,0.35416667,1.0,17,https://github.com/getterupper/PreWorld,59,official
+40,A,ICLR,2025,candidate:wm:v2:069,Web Agents with World Models: Learning and Leveraging Environment Dynamics in Web Navigation,0.56978724,0.87234043,0.0,0.6,62,,0,none_available
+41,A,ICLR,2024,candidate:wm:v2:020,Mastering Memory Tasks with World Models,0.56779412,0.57352941,0.44117647,0.8,24,https://github.com/chandar-lab/Recall2Imagine,83,official
+42,A,ICML,2024,candidate:wm:v2:026,HarmonyDream: Task Harmonization Inside World Models,0.56397059,0.54411765,0.38235294,1.0,14,https://github.com/thuml/HarmonyDream,57,official
+43,A,NeurIPS,2025,candidate:wm:v2:084,From Forecasting to Planning: Policy World Model for Collaborative State-Action Prediction,0.54970745,0.57446809,0.47916667,0.6,17,https://github.com/6550Zhao/Policy-World-Model,81,official
+44,A,CVPR,2024,candidate:wm:v2:001,DriveWorld: 4D Pre-Trained Scene Understanding via World Models for Autonomous Driving,0.54632353,0.72058824,0.0,1.0,59,,0,none_available
+45,A,ICLR,2026,candidate:wm:v2:125,Latent Particle World Models: Self-supervised Object-centric Stochastic Dynamics Modeling,0.54614361,0.43617021,0.52083333,1.0,8,https://github.com/taldatech/lpwm,146,official
+46,A,NeurIPS,2025,candidate:wm:v2:099,Whole-Body Conditioned Egocentric Video Prediction,0.54202128,0.71276596,0.0,1.0,26,,0,none_available
+47,A,ICLR,2026,candidate:wm:v2:122,DrivingGen: A Comprehensive Benchmark for Generative Video World Models in Autonomous Driving,0.54202128,0.71276596,0.0,1.0,18,,0,none_available
+48,A,ICML,2026,candidate:wm:v2:148,Parallel Stochastic Gradient-Based Planning for World Models,0.53045213,0.5212766,0.3125,1.0,11,https://github.com/michael-psenka/grasp,37,official
+49,A,ICML,2026,candidate:wm:v2:142,iWorld-Bench: A Benchmark for Interactive World Models with a Unified Action Generation Framework,0.52765958,0.59574468,0.16666667,1.0,13,https://github.com/EmbodiedCity/iWorld-Bench,22,official
+50,A,NeurIPS,2025,candidate:wm:v2:080,COME: Adding Scene-Centric Forecasting Control to Occupancy World Model,0.52380319,0.53191489,0.27083333,1.0,14,https://github.com/synsin0/COME,49,official
+51,A,ICML,2026,candidate:wm:v2:144,Learning Latent Action World Models in the Wild,0.52223404,0.84042553,0.0,0.4,47,,0,none_available
+52,A,AAAI,2026,candidate:wm:v2:105,WorldRFT: Latent World Model Planning with Reinforcement Fine-Tuning for Autonomous Driving,0.51276596,0.65957447,0.0,1.0,15,,0,none_available
+53,A,CVPR,2026,candidate:wm:v2:110,DriveLaW: Unifying Planning and Video Generation in a Latent Driving World,0.50542553,0.75531915,0.0,0.6,33,,0,none_available
+54,A,NeurIPS,2025,candidate:wm:v2:086,Learning 3D Persistent Embodied World Models,0.49446808,0.68085106,0.0,0.8,25,,0,none_available
+55,A,ICML,2026,candidate:wm:v2:147,Olaf-World: Orienting Latent Actions for Video World Modeling,0.49045213,0.5212766,0.47916667,0.4,11,https://github.com/showlab/Olaf-World,129,official
+56,A,CVPR,2026,candidate:wm:v2:107,Chain of World: World Model Thinking in Latent Motion,0.48954787,0.4787234,0.35416667,0.8,10,https://github.com/fx-hit/CoWVLA,68,official
+57,A,NeurIPS,2024,candidate:wm:v2:050,"WorldCoder, a Model-Based LLM Agent: Building World Models by Writing Code and Interacting with the Environment",0.4725,0.75,0.0,0.4,62,,0,none_available
+58,A,ICLR,2025,candidate:wm:v2:067,Learning Transformer-based World Models with Contrastive Predictive Coding,0.47130319,0.53191489,0.39583333,0.4,14,https://github.com/burchim/TWISTER,60,official
+59,A,ICML,2025,candidate:wm:v2:078,SOLD: Slot Object-Centric Latent Dynamics Models for Relational Manipulation Learning from Pixels,0.46606383,0.63829787,0.08333333,0.6,24,https://github.com/maltemosbach/sold,23,official
+60,A,ICLR,2025,candidate:wm:v2:061,AdaWM: Adaptive World Model based Planning for Autonomous Driving,0.45351064,0.60638298,0.0,0.8,18,,0,none_available
+61,A,NeurIPS,2024,candidate:wm:v2:035,GenRL: Multimodal-foundation world models for generalization in embodied agents,0.45264706,0.44117647,0.5,0.4,10,https://github.com/mazpie/genrl,87,official
+62,A,ICML,2024,candidate:wm:v2:029,Learning Latent Dynamic Robust Representations for World Models,0.4525,0.51470588,0.26470588,0.6,13,https://github.com/bit1029public/HRSSM,27,official
+63,A,CVPR,2026,candidate:wm:v2:109,Dexterous World Models,0.44765957,0.59574468,0.0,0.8,13,,0,none_available
+64,A,ICLR,2026,candidate:wm:v2:128,R-WoM: Retrieval-augmented World Model For Computer-use Agents,0.44765957,0.59574468,0.0,0.8,13,,0,none_available
+65,A,ICML,2026,candidate:wm:v2:138,DeepSight: Long-Horizon World Modeling via Latent States Prediction for End-to-End Autonomous Driving,0.43603724,0.37234043,0.27083333,1.0,5,https://github.com/hotdogcheesewhite/DeepSight,31,official
+66,A,NeurIPS,2025,candidate:wm:v2:082,Dyn-O: Building Structured World Models with Object-Centric Representations,0.425,0.5,0.0,1.0,12,,0,none_available
+67,A,ICML,2026,candidate:wm:v2:133,Benchmarking World-Model Learning with Environment-Level Queries,0.42276596,0.65957447,0.0,0.4,15,,0,none_available
+68,A,NeurIPS,2025,candidate:wm:v2:096,SimWorld-Robotics: Synthesizing Photorealistic and Dynamic Urban Environments for Multimodal Robot Navigation and Collaboration,0.42119681,0.46808511,0.14583333,0.8,9,https://github.com/SCAI-JHU/SimWorld-Robotics,30,official
+69,A,ICML,2026,candidate:wm:v2:140,Factored Latent Action World Models,0.40159575,0.45744681,0.0,1.0,9,,0,none_available
+70,A,NeurIPS,2024,candidate:wm:v2:039,InterDreamer: Zero-Shot Text to 3D Dynamic Human-Object Interaction,0.39161765,0.60294118,0.0,0.4,42,,0,none_available
+71,A,ICML,2026,candidate:wm:v2:149,VJEPA: Variational Joint Embedding Predictive Architectures as Probabilistic World Models,0.38765957,0.59574468,0.0,0.4,13,,0,none_available
+72,A,ICCV,2025,candidate:wm:v2:058,Learning 4D Embodied World Models,0.38404255,0.42553191,0.0,1.0,8,,0,none_available
+73,A,ICLR,2026,candidate:wm:v2:124,Genie Envisioner: A Unified World Foundation Platform for Robotic Manipulation,0.37476064,0.10638298,0.85416667,0.4,0,https://github.com/AgibotTech/Genie-Envisioner-V1,592,official
+74,A,NeurIPS,2025,candidate:wm:v2:087,Learning and Planning Multi-Agent Tasks via an MoE-based World Model,0.37047872,0.28723404,0.20833333,1.0,4,https://github.com/zhaozijie2022/moewm,35,official
+75,A,NeurIPS,2024,candidate:wm:v2:038,Input-to-State Stable Coupled Oscillator Networks for Closed-form Model-based Control in Latent Space,0.36441176,0.44117647,0.20588235,0.4,10,https://github.com/phi-lab-research/uncovering-iss-coupled-oscillator-networks-from-pixels,9,official
+76,A,NeurIPS,2025,candidate:wm:v2:094,Revisiting Multi-Agent World Modeling from a Diffusion-Inspired Perspective,0.34933511,0.35106383,0.02083333,1.0,5,https://github.com/breez3young/DIMA,19,official
+77,A,ICML,2026,candidate:wm:v2:134,Beyond Pixel Histories: World Models with Persistent 3D State,0.34670213,0.5212766,0.0,0.4,11,,0,none_available
+78,B,NeurIPS,2025,candidate:wm:v2:089,Learning Interactive World Model for Object-Centric Reinforcement Learning,0.34308511,0.35106383,0.0,1.0,5,,0,none_available
+79,B,NeurIPS,2025,candidate:wm:v2:097,Social World Model-Augmented Mechanism Design Policy Learning,0.34308511,0.35106383,0.0,1.0,5,,0,none_available
+80,B,ICML,2025,candidate:wm:v2:076,PlaySlot: Learning Inverse Latent Dynamics for Controllable Object-Centric Video Prediction and Planning,0.34244681,0.46808511,0.08333333,0.4,9,https://github.com/angelvillar96/PlaySlot,23,official
+81,B,ICML,2025,candidate:wm:v2:070,AdaWorld: Learning Adaptable World Models with Latent Actions,0.33885638,0.06382979,0.8125,0.4,0,https://github.com/Little-Podi/AdaWorld,264,official
+82,B,ICML,2025,candidate:wm:v2:074,G-Sim: Generative Simulations with Large Language Models and Gradient-Free Calibration,0.33648936,0.39361702,0.0,0.8,6,,0,none_available
+83,B,CVPR,2024,candidate:wm:v2:008,ReCoRe: Regularized Contrastive Representation Learning of World Model,0.32691177,0.48529412,0.0,0.4,12,,0,none_available
+84,B,ICML,2026,candidate:wm:v2:137,DDP-WM: Disentangled Dynamics Prediction for Efficient World Models,0.31478724,0.37234043,0.16666667,0.4,5,https://github.com/HCPLab-SYSU/DDP-WM,22,official
+85,B,ICML,2025,candidate:wm:v2:071,Continual Reinforcement Learning by Planning with Online World Models,0.29404255,0.42553191,0.0,0.4,8,,0,none_available
+86,B,ICML,2024,candidate:wm:v2:023,AD3: Implicit Action is the Key for World Models to Distinguish the Diverse Visual Distractors,0.28176471,0.29411765,0.0,0.8,7,,0,none_available
+87,B,ICCV,2025,candidate:wm:v2:059,Precise Action-to-Video Generation Through Visual Action Prompts,0.2787234,0.23404255,0.0,1.0,2,,0,none_available
+88,B,NeurIPS,2025,candidate:wm:v2:095,SAMPO: Scale-wise Autoregression with Motion Prompt for Generative World Models,0.27797872,0.28723404,0.0,0.8,4,,0,none_available
+89,B,CVPR,2024,candidate:wm:v2:006,Learning to Navigate Efficiently and Precisely in Real Environments,0.27029412,0.38235294,0.0,0.4,9,,0,none_available
+90,B,NeurIPS,2024,candidate:wm:v2:046,Simplifying Latent Dynamics with Softly State-Invariant World Models,0.27029412,0.38235294,0.0,0.4,9,,0,none_available
+91,B,AAAI,2026,candidate:wm:v2:103,Unlocking Efficient Vehicle Dynamics Modeling via Analytic World Models,0.26478724,0.37234043,0.0,0.4,5,,0,none_available
+92,B,CVPR,2026,candidate:wm:v2:116,Planning in 8 Tokens: A Compact Discrete Tokenizer for Latent World Model,0.26478724,0.37234043,0.0,0.4,5,,0,none_available
+93,B,ICLR,2024,candidate:wm:v2:019,Locality Sensitive Sparse Encoding for Learning World Models Online,0.26323529,0.20588235,0.0,1.0,5,,0,none_available
+94,B,AAAI,2026,candidate:wm:v2:102,Object-Centric World Models for Causality-Aware Reinforcement Learning,0.25968085,0.30851064,0.0,0.6,3,,0,none_available
+95,B,AAAI,2026,candidate:wm:v2:104,WorldAgen: Unified State-Action Prediction with Test-Time World Model Training,0.25457447,0.24468085,0.0,0.8,1,,0,none_available
+96,B,ICML,2024,candidate:wm:v2:027,Hieros: Hierarchical Imagination on Structured State Space Sequence World Models,0.24602941,0.33823529,0.0,0.4,8,,0,none_available
+97,B,NeurIPS,2025,candidate:wm:v2:085,Image as a World: Generating Interactive World from Single Image via Panoramic Video Generation,0.24361702,0.17021277,0.0,1.0,1,,0,none_available
+98,B,NeurIPS,2025,candidate:wm:v2:092,PoE-World: Compositional World Modeling with Products of Programmatic Experts,0.24361702,0.17021277,0.0,1.0,1,,0,none_available
+99,B,ICLR,2024,candidate:wm:v2:011,Efficient Dynamics Modeling in Interactive Environments with Koopman Theory,0.23323529,0.20588235,0.0,0.8,5,,0,none_available
+100,B,ICLR,2024,candidate:wm:v2:014,Learning 3D Particle-based Simulators from RGB-D Videos,0.22176471,0.29411765,0.0,0.4,7,,0,none_available
+101,B,NeurIPS,2025,candidate:wm:v2:083,Dynamics-Aligned Latent Imagination in Contextual World Models for Zero-Shot Generalization,0.21797872,0.28723404,0.0,0.4,4,,0,none_available
+102,B,CVPR,2026,candidate:wm:v2:108,Cloning Deterministic Worlds: The Critical Role of Latent Geometry in Long-Horizon World Models,0.21797872,0.28723404,0.0,0.4,2,,0,none_available
+103,B,NeurIPS,2024,candidate:wm:v2:042,Learning World Models for Unconstrained Goal Navigation,0.21735294,0.20588235,0.14705882,0.4,5,https://github.com/RU-Automated-Reasoning-Group/MUN,8,official
+104,B,CVPR,2025,candidate:wm:v2:053,Neural Motion Simulator Pushing the Limit of World Models in Reinforcement Learning,0.21361702,0.17021277,0.0,0.8,1,,0,none_available
+105,B,ICML,2026,candidate:wm:v2:141,Future Dynamic 3D Reconstruction: A 3D World Model with Disentangled Ego-Motion,0.19457447,0.24468085,0.0,0.4,1,,0,none_available
+106,B,ICML,2026,candidate:wm:v2:145,Learning Task-Sufficient World Models by Synergizing Agentic Exploration and Structured Modeling,0.19457447,0.24468085,0.0,0.4,1,,0,none_available
+107,B,ICML,2025,candidate:wm:v2:077,Reward-free World Models for Online Imitation Learning,0.1887234,0.23404255,0.0,0.4,2,,0,none_available
+108,B,ICLR,2026,candidate:wm:v2:123,ExoPredicator: Learning Abstract Models of Dynamic Worlds for Robot Planning,0.18726064,0.10638298,0.22916667,0.4,0,https://github.com/BasisResearch/predicators,26,official
+109,B,NeurIPS,2025,candidate:wm:v2:081,Curious Causality-Seeking Agents in Open-ended Worlds,0.18510638,0.06382979,0.0,1.0,0,,0,none_available
+110,B,AAAI,2025,candidate:wm:v2:051,Acting Beyond Learning: Imagination-Assisted Decision-Making in the Visual-based Multi-Agent Cooperative Scenarios,0.18361702,0.17021277,0.0,0.6,1,,0,none_available
+111,B,ICLR,2024,candidate:wm:v2:015,Learning Hierarchical World Models with Adaptive Temporal Abstractions from Discrete Latent Dynamics,0.18132353,0.04411765,0.32352941,0.4,0,https://github.com/CognitiveModeling/THICK,40,official
+112,B,NeurIPS,2024,candidate:wm:v2:036,Grounded Answers for Multi-agent Decision-making Problem through Generative World Model,0.17323529,0.20588235,0.0,0.4,5,,0,none_available
+113,B,ICLR,2025,candidate:wm:v2:063,Discrete Codebook World Models for Continuous Control,0.15760638,0.06382979,0.20833333,0.4,0,https://github.com/aidanscannell/dcmpc,35,official
+114,B,ICLR,2025,candidate:wm:v2:064,Efficient Exploration and Discriminative World Model Learning with an Object-Centric Abstraction,0.15510638,0.06382979,0.0,0.8,0,,0,none_available
+115,B,AAAI,2026,candidate:wm:v2:101,Beyond Single-Speed Reasoning: Coordinating Fast and Slow Dynamics for Efficient World Modeling,0.15476064,0.10638298,0.02083333,0.6,0,https://github.com/wn772/sf-rssm,2,official
+116,B,ICML,2026,candidate:wm:v2:143,Learning Disentangled Multi-Agent World Model for Decentralized Control,0.14976064,0.10638298,0.10416667,0.4,0,https://github.com/DiXue98/DMAWM,17,official
+117,B,CVPR,2026,candidate:wm:v2:112,Local Motion Matters: A Deconstruct–Recompose Paradigm for Reinforcement Learning Pre-training from Videos,0.14851064,0.10638298,0.0,0.6,0,,0,none_available
+118,B,ICML,2024,candidate:wm:v2:028,Learning Causal Dynamics Models in Object-Oriented Environments,0.14308824,0.10294118,0.08823529,0.4,3,https://github.com/zwyu-ai/oocdm,2,official
+119,B,ICML,2026,candidate:wm:v2:146,Learning to Theorize the World from Observation,0.13726064,0.10638298,0.0625,0.4,0,https://github.com/ahn-ml/learning-to-theorize,9,official
+120,B,NeurIPS,2024,candidate:wm:v2:044,Reinforcement Learning Under Latent Dynamics: Toward Statistical and Algorithmic Modularity,0.13279412,0.13235294,0.0,0.4,4,,0,none_available
+121,B,CVPR,2026,candidate:wm:v2:111,HandWorld: Hand-Centric Unified Video Action Generation,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
+122,B,CVPR,2026,candidate:wm:v2:113,ModularAgent: A Task-Aware Modular Framework for Joint Optimization of Multimodal Large Language Models and World Models,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
+123,B,ICLR,2026,candidate:wm:v2:126,Learning to Be Uncertain: Pre-training World Models with Horizon-Calibrated Uncertainty,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
+124,B,ICML,2026,candidate:wm:v2:136,Co-Evolving Latent Action World Models,0.11851064,0.10638298,0.0,0.4,0,,0,none_available
 125,B,ICML,2025,candidate:wm:v2:075,General agents need world models,0.09510638,0.06382979,0.0,0.4,0,,0,none_available
 126,B,NeurIPS,2025,candidate:wm:v2:100,Zero-shot World Models via Search in Memory,0.09510638,0.06382979,0.0,0.4,0,,0,none_available
 127,B,NeurIPS,2024,candidate:wm:v2:043,Predicting Future Actions of Reinforcement Learning Agents,0.08426471,0.04411765,0.0,0.4,0,,0,none_available

@@ -1,11 +1,11 @@
 {
-  "corpus_version": "FB-1.0-world-2026-11-09-single-reviewer",
+  "corpus_version": "FB-1.0-world-2026-11-11-repo-corrected-single-reviewer",
   "N": 128,
   "S_count": 26,
   "A_count": 51,
   "B_count": 51,
-  "S_min_quality_score": 0.54728992,
-  "A_min_quality_score": 0.32478723,
+  "S_min_quality_score": 0.68981383,
+  "A_min_quality_score": 0.34670213,
   "tie_breaker": "paper_id_ascending",
   "formula": "Q=0.55*C+0.30*G+0.15*A",
   "percentile": "track-year midrank"
