@@ -12,6 +12,9 @@ Mirrors the phase structure used for Track C, executed 2026-11-05 ~ 2026-11-08.
 | 5 eligibility | eligibility check (inline in scoring pipeline) | `tasks/task_eligibility_video.json` |
 | 6 review | review sampling + workbook | `review/*` |
 
-All scripts support resume (cache files) and read credentials only from a local
-`keys.local.env` (never committed). CSRankings raw input is
+Some scripts use local caches and credentials from `keys.local.env` (never committed). CSRankings raw input is
 `generated-author-info.csv` from csrankings.org (redistribution-restricted — not committed).
+
+## Reproducibility limitations
+
+These are historical research scripts, not a verified end-to-end reproduction pipeline. Some expect untracked raw responses, caches, local credentials, or intermediate files under their original names. Several write relative to the current working directory and can overwrite outputs; do not run them over the frozen corpus. Resume support has not been independently verified. Reconstruct and validate in an isolated directory before use.

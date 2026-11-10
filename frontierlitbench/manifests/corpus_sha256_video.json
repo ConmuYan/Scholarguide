@@ -1,36 +1,16 @@
 {
- "corpus_version": "trackA-video-gold-v1.1-2026-11-05",
- "sha256": "dbbd0951b3eb45b1f8c1bf2053e724a6a024660dbb8f6ac4ef4e7bfe6d763aab",
- "protocol_version": "FB-1.0",
- "n_papers": 216,
- "frozen_at": "2026-11-05T13:08:13.934442+00:00",
- "scoring": {
-  "weights": {
-   "C": 0.55,
-   "G": 0.3,
-   "A": 0.15
-  },
-  "percentile": "midrank, log1p, per track-year",
-  "tiers": {
-   "N": 216,
-   "NS": 43,
-   "NA": 86,
-   "NB": 87,
-   "S_min_Q": 0.620977,
-   "A_min_Q": 0.372573,
-   "quota_rule": "S=round(0.20N), A=round(0.40N), B=rest; ties broken by DOI/lune_id"
-  }
- },
- "deviations_from_protocol": [
-  "repo none_available assigned G=0.0 after automated search+README check; human spot-check pending (plan v1)",
-  "institution simplified: first-author only, CSRankings CV+ML 2021-2025, unmatched default 0.4 flagged",
-  "123 arXiv-twin OpenAlex records used for citations (conference version not yet in OpenAlex)"
- ],
- "enriched": "authors + abstract + APA/IEEE/BibTeX added (QC pass)",
- "corpus/gold_video.jsonl": {
-  "sha256": "f202e14931ca3f2c123051b7011718b1f3ea80d3f5237db80df838c284e35028",
   "corpus_version": "trackA_video_v1.2.1",
+  "protocol_version": "FB-1.0",
   "as_of": "2026-11-10",
-  "note": "null stale Q/tier/rank on 18 unverified_institution papers (hygiene fix; no scored paper touched)"
- }
+  "file": "corpus/gold_video.jsonl",
+  "sha256": "24178b0e0361c7dd3669857c6fa8d2df22cf1a5e7d7ce2d42e8600099e9759b4",
+  "n_records": 216,
+  "n_scored": 198,
+  "n_unscored": 18,
+  "tiers": {
+    "S": 40,
+    "A": 79,
+    "B": 79
+  },
+  "note": "Integrity of submitted snapshot; this hash does not verify its bibliographic or scoring evidence."
 }
