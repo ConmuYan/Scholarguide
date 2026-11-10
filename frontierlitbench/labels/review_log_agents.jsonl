@@ -42,3 +42,5 @@
 {"ts": "2026-11-06T12:13:14.639026+00:00", "event": "phase6_review", "gold": 139, "sample": 34, "gold_check_issues": 0, "manifest_files": 18}
 {"ts": "2026-11-06T12:51:26.254333+00:00", "event": "phase6_review", "gold": 139, "sample": 34, "gold_check_issues": 0, "manifest_files": 20}
 {"ts": "2026-11-06T12:51:41.617611+00:00", "event": "phase6_review", "gold": 139, "sample": 34, "gold_check_issues": 0, "manifest_files": 19}
+{"ts": "2026-11-10T06:07:26.095688+00:00", "event": "phase4_score_tier", "total": 329, "admitted": 134, "rejected": 195, "n_s": 27, "n_a": 54, "n_b": 53, "reject_reasons": {"github_unverified": 74, "institution_unverified": 72, "citation_unverified": 43, "outside_track_c": 4, "github_stars_not_paper_specific": 2}}
+{"ts": "2026-11-10T06:07:26.240587+00:00", "event": "phase5_eligibility", "gold_total": 134, "tasks": {"FB-03": "eligible", "FB-10": "eligible", "FB-11": "eligible", "FB-12": "eligible", "FB-15": "eligible"}}

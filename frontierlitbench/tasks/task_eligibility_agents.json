@@ -1,15 +1,15 @@
 {
   "protocol_version": "FB-1.0",
   "track": "C",
-  "checked_at": "2026-11-06T12:12:47.889985+00:00",
-  "gold_total": 139,
+  "checked_at": "2026-11-10T06:07:26.239837+00:00",
+  "gold_total": 134,
   "threshold": 5,
   "tasks": {
     "FB-03": {
       "task": "C Agents Overall",
       "description": "2024-26 全白名单",
       "status": "eligible",
-      "gold_count": 139,
+      "gold_count": 134,
       "reason": "",
       "replacement_candidate": null
     },
@@ -25,7 +25,7 @@
       "task": "C Agents Year 2025",
       "description": "2025",
       "status": "eligible",
-      "gold_count": 46,
+      "gold_count": 43,
       "reason": "",
       "replacement_candidate": null
     },
@@ -33,7 +33,7 @@
       "task": "C Agents Year 2026",
       "description": "2026",
       "status": "eligible",
-      "gold_count": 72,
+      "gold_count": 70,
       "reason": "",
       "replacement_candidate": null
     },
@@ -41,7 +41,7 @@
       "task": "C Agents Venue",
       "description": "2024-26 仅 ACL+EMNLP",
       "status": "eligible",
-      "gold_count": 59,
+      "gold_count": 58,
       "reason": "",
       "replacement_candidate": null
     }

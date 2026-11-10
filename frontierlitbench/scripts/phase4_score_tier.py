@@ -25,6 +25,10 @@ _REPO_VERIFIED = ('official', 'none_available', 'not_applicable')
 
 def _admitted(record):
     """准入判断 + 未准入卡点。"""
+    if record.get('track_review') == 'exclude':
+        return False, 'outside_track_c'
+    if record.get('repo_attribution_concern'):
+        return False, 'github_stars_not_paper_specific'
     if record.get('citation_status') != 'verified':
         return False, 'citation_unverified'
     if record.get('institution_status') != 'verified':
