@@ -255,6 +255,24 @@ if __name__ == '__main__':
     unittest.main()
 
 class SingleSourceFiltersTests(unittest.TestCase):
+    def test_recovers_whitelist_from_actual_planner_failure_before_search(self):
+        field = 'Eligible conferences: ICLR, ICML, NeurIPS, ACL, EMNLP, AAAI'
+        llm = Planner()
+        llm.raw.update(topic='agents', query='agents', target_count=1, category='none',
+                       minimum_category_count=0, venue='', year_from=2024, year_to=2026,
+                       reading_goal='general', unsupported=[field])
+        class FilteredSource(Source):
+            supports_search_filters = True
+            def search(self, query, limit=10, *, filters=None):
+                self.filters = filters
+                return [Paper('p1', 'Paper', QUOTE, 'https://example.test', year=2025, venue='ACL')]
+        source = FilteredSource()
+        result = run('Recommend one paper.\n' + field, Config(), 'S', source=source, llm=llm)
+        self.assertEqual(result['request']['unsupported'], [])
+        self.assertEqual(result['request']['venue'], 'ICLR, ICML, NeurIPS, ACL, EMNLP, AAAI')
+        self.assertEqual(source.filters['venue'], result['request']['venue'])
+        self.assertNotEqual(result['status'], 'unsupported')
+
     def test_source_receives_filters_without_changing_legacy_adapter(self):
         class FilteredSource(Source):
             supports_search_filters = True

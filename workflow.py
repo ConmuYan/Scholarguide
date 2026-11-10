@@ -93,6 +93,27 @@ def _calibrate_paired_significance(plan, user_input, unsupported):
     return [x for x in unsupported if str(x).strip(' .').casefold() != 'research-significant']
 
 
+def _restore_explicit_conferences(plan, user_input):
+    """Recover a literal conference whitelist only when it is unambiguous."""
+    from common import requested_venues
+    from research_policy import curated_venue_catalog, venue_identity
+    matches = re.findall(r'^\s*Eligible conferences:\s*([^\r\n]+?)\s*$', user_input, re.I | re.M)
+    if len(matches) != 1:
+        return
+    value = matches[0].strip()
+    names = requested_venues(value)
+    known = {v['name'] for v in curated_venue_catalog()['venues'] if v['type'] == 'conference'}
+    if not names or len(value) > 120 or any(venue_identity(name) not in known for name in names):
+        return
+    existing = str(plan.get('venue') or '').strip()
+    if existing and {venue_identity(x) for x in requested_venues(existing)} != {venue_identity(x) for x in names}:
+        return
+    plan['venue'] = value
+    exact_field = re.compile(r'^eligible conferences:\s*' + re.escape(value) + r'\s*$', re.I)
+    plan['unsupported'] = [x for x in (plan.get('unsupported') or [])
+                           if not exact_field.fullmatch(str(x).strip())]
+
+
 def grounded_assessments(rows: list[dict], papers: list[Paper], category: str) -> dict:
     by_id = {p.id: p for p in papers}
     checked = {}
@@ -328,6 +349,8 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
             # Do not suppress a standalone scientific-significance requirement.
             unsupported = _calibrate_paired_significance(plan, user_input, unsupported)
             plan['unsupported'] = unsupported
+            _restore_explicit_conferences(plan, user_input)
+            unsupported = plan.get('unsupported') or []
             if any(influence.fullmatch(str(x).strip(' .')) for x in unsupported):
                 plan['ranking'] = 'citations'
                 plan['unsupported'] = [x for x in unsupported if not influence.fullmatch(str(x).strip(' .'))]

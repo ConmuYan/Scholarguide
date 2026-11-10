@@ -4,6 +4,24 @@ from source import merge_papers
 from workflow import select_papers, coverage
 
 class InfluenceRankingTests(unittest.TestCase):
+    def test_recovers_only_a_literal_known_conference_whitelist(self):
+        from workflow import _restore_explicit_conferences
+        field = 'Eligible conferences: ICLR, ICML, NeurIPS, ACL, EMNLP, AAAI'
+        plan = {'venue': '', 'unsupported': [field, 'code released']}
+        _restore_explicit_conferences(plan, 'Only use the whitelist.\n' + field + '\nCount: 5')
+        self.assertEqual(plan['venue'], 'ICLR, ICML, NeurIPS, ACL, EMNLP, AAAI')
+        self.assertEqual(plan['unsupported'], ['code released'])
+        conflict = {'venue': 'CVPR', 'unsupported': [field]}
+        _restore_explicit_conferences(conflict, field)
+        self.assertEqual(conflict, {'venue': 'CVPR', 'unsupported': [field]})
+        unknown = {'venue': '', 'unsupported': ['Eligible conferences: ACL, ImaginaryVenue']}
+        _restore_explicit_conferences(unknown, 'Eligible conferences: ACL, ImaginaryVenue')
+        self.assertEqual(unknown['venue'], '')
+        self.assertTrue(unknown['unsupported'])
+        duplicate = {'venue': '', 'unsupported': [field]}
+        _restore_explicit_conferences(duplicate, field + '\n' + field)
+        self.assertEqual(duplicate['venue'], '')
+
     def test_benchmark_significance_is_qualified_only_in_paired_ranking_request(self):
         from workflow import _calibrate_paired_significance
         plan = {'ranking': 'citations'}
