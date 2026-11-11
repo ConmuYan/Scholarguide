@@ -70,7 +70,7 @@
     "A": 30,
     "B": 13
    },
-   "note": "eligible (|G|=57 >= 5); CVPR + ICCV per FB-1.0",
+   "note": "eligible (|G|=57 >= 5); venue filter = CVPR+ICCV per protocol Table 5",
    "venues": ["CVPR", "ICCV"]
   }
  ]
