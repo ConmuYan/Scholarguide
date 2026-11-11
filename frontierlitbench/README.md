@@ -3,6 +3,7 @@
 | Track | Scope | Corpus | Status and review |
 |---|---|---|---|
 | A | Video generation and editing | [Video corpus](corpus/gold_video.jsonl) | [Track A notes](README_TrackA.md), [open issues](review/open_issues_video.md) |
+| B | World models | [World Model corpus](corpus/gold_world_models.jsonl) | [Track B notes](README_TrackB.md), [open issues](review/open_issues_world_models.md) |
 | C | LLM agents and tools | [Agents corpus](corpus/gold_agents.jsonl) | [Track C review](#track-c-review-and-pilot-status), [open issues](review/open_issues.md) |
 
 Tracks are exploratory snapshots with separate evidence, scores, eligibility and pending reviews. Cross-track scores are not directly comparable.
