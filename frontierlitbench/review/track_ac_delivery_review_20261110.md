@@ -1,6 +1,6 @@
 # Track A / C delivery review — 2026-11-10
 
-Status: **review in progress; neither track is a final release**. The original Gold files and trial results remain unchanged. The checks below are needed for correct labels and task scoring, not additional release bureaucracy.
+Status: **historical review completed and superseded by FB-1.1**. New evaluations use `corpus_v1.1/`, `final_adjudications_v1.1.json` and `reports/scholarguide_matrix_20261111.md`. This document is retained to explain the defects that motivated the rebuild; original Gold files and trial results remain unchanged.
 
 ## Track A
 

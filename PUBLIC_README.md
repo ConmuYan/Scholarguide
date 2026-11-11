@@ -58,4 +58,4 @@ cd Scholarguide
 git checkout <release-tag>
 ```
 
-See [`frontierlitbench/EVALUATION_GUIDE.md`](https://github.com/ConmuYan/Scholarguide/blob/main/frontierlitbench/EVALUATION_GUIDE.md) for tasks, ChatGPT and other product imports, and scoring. The benchmark data and labels are still under review and results are exploratory.
+See [`frontierlitbench/EVALUATION_GUIDE.md`](https://github.com/ConmuYan/Scholarguide/blob/main/frontierlitbench/EVALUATION_GUIDE.md) for the reviewed FB-1.1 tasks, ChatGPT and other product imports, scoring, and reusable baseline procedure.

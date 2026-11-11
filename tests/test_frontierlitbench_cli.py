@@ -21,7 +21,7 @@ class CliTests(unittest.TestCase):
         self.assertNotIn('gold_world_models', p.stdout)
 
     def test_chat_import_and_score_preserve_raw_and_ranking(self):
-        records = [json.loads(s) for s in (ROOT/'frontierlitbench/corpus/gold_world_models.jsonl').read_text(encoding='utf8').splitlines() if s.strip()]
+        records = [json.loads(s) for s in (ROOT/'frontierlitbench/corpus_v1.1/gold_world_models.jsonl').read_text(encoding='utf8').splitlines() if s.strip()]
         first = next(x for x in records if x['venue'] == 'ICLR')
         raw = 'Here is the answer:\n```json\n' + json.dumps({'papers':[{'rank':1,'title':first['title'],'year':first['year']}]}) + '\n```\n'
         with tempfile.TemporaryDirectory() as d:
@@ -30,11 +30,15 @@ class CliTests(unittest.TestCase):
             p=self.run_cli('import-chat','--task','FB-14','--response',source,'--system','test','--tools','none','--out',output)
             self.assertEqual(p.returncode,0,p.stderr)
             self.assertEqual(json.loads(output.read_text(encoding='utf8'))['raw_response'],raw)
-            p=self.run_cli('score','--task','FB-14','--result',output,'--out',report)
+            p=self.run_cli('score','--task','FB-14','--result',output,
+                           '--corpus',ROOT/'frontierlitbench/corpus_v1.1/gold_world_models.jsonl',
+                           '--adjudications',ROOT/'frontierlitbench/review/final_adjudications_v1.1.json',
+                           '--out',report)
             self.assertEqual(p.returncode,0,p.stderr)
             data=json.loads(report.read_text(encoding='utf8'))
             self.assertEqual(data['positions'][0]['status'],'matched')
             self.assertEqual(data['eligible_gold_count'],65)
+            self.assertEqual(data['reference_status'],'reviewed_v1.1')
             self.assertNotEqual(self.run_cli('score','--task','FB-14','--result',output,'--out',report).returncode,0)
 
     def test_does_not_silently_reorder_baseline(self):

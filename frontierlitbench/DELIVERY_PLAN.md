@@ -1,16 +1,33 @@
-# FrontierLitBench 收尾计划
+# FrontierLitBench 1.1 delivery
 
-目标：交付可解释的 A/B/C 数据集、统一评测工具、ScholarGuide 的实测结果，以及其他产品可复用的基线流程。现有快照和指标均为探索性版本。
+Status: **delivered on 2026-11-11**. The A/B/C reference corpora, unified review, scoring workflow, ScholarGuide matrix and reusable baseline instructions are present. Historical FB-1.0 files remain for reproducibility.
 
-1. **修正数据与标签**：Track A 复核主题、作者机构及未纳入条目；Track B 处理引用数未确认和机构默认分；Track C 补审库外推荐并核对机构分。只核查会影响论文资格、等级或评分的证据。
-2. **生成新版本**：保留历史快照，按已确认数据重新计算年份内百分位、S/A/B 等级与 15 项任务资格；未确认项继续待审，不伪造零值。
-3. **评测适配**：检验统一提示词、系统输出导入、匹配及补审处理、单任务和总体指标；提供聊天模式及其他产品使用方法。
-4. **真实运行**：启用 DeepSeek 和 Lune，对 15 项任务分别重复三次，保存输出、状态与来源；统一复审各系统库外论文后重算。记录失败和缺失，不挑选最好结果。
-5. **交付**：公开任务、数据说明、补审结果、每任务及总指标；完成必要测试后同步远端与本地。只有数据、评测和待审状态一致时，才标记最终版本。
+## Delivered artifacts
 
-当前进展：统一入口及使用指南已建立；45 次运行已结束，部分任务取得探索性指标。A/B/C 均存在数据或补审缺口，尚未达到最终交付。详见 `reports/scholarguide_matrix_20261111.md`、`review/track_ac_delivery_review_20261110.md` 和 `review/open_issues_world_models.md`。
+1. **Versioned data**
+   - Track A: `corpus_v1.1/gold_video.jsonl`, 163 scored papers, S/A/B = 33/65/65.
+   - Track B: `corpus_v1.1/gold_world_models.jsonl`, 128 scored papers, S/A/B = 26/51/51. Thirteen missing citation counts and 13 paper affiliations were reviewed; two official repositories were corrected.
+   - Track C: `corpus_v1.1/gold_agents.jsonl`, 134 scored papers, S/A/B = 27/54/53.
+2. **Shared review**
+   - `review/final_adjudications_v1.1.json` contains 76 reviewed decisions.
+   - All 62 distinct papers discovered outside Gold during the matrix were reviewed. Publication identity, year and venue were checked; impact used the frozen reference thresholds.
+   - The review report records the conservative policies and provenance in `review/final_adjudication_report_v1.1.json`.
+3. **Unified evaluation**
+   - Common prompts, chat import, scoring, per-task repetition summaries and overall aggregation are exposed through `evaluation/frontierlitbench_cli.py`.
+   - URL evidence can supplement DOI/arXiv identity without treating unrelated project and paper URLs as conflicting when DOI/arXiv already agree.
+   - Usage and baseline instructions are in `EVALUATION_GUIDE.md`.
+4. **ScholarGuide evaluation**
+   - 15 tasks × 3 repetitions = 45 scored runs with DeepSeek Flash, method A, multiple sources and no cache.
+   - Track macro nDCG@5: A `0.7316`, B `0.4735`, C `0.7113`; Overall `0.6388`.
+   - Full per-task results are in `reports/scholarguide_matrix_20261111.md`.
 
-- Track A：已确认排除 35 个越界条目；用 `python evaluation/frontierlitbench_rebuild_video.py --out <新目录>` 可重建独立候选版本，重算后为 163 篇（S/A/B 分别为 33/65/65）。五项任务的候选数为 163/47/79/37/56；剩余范围与机构证据待查。
-- Track B：`review/trackb_label_review_queue.json` 列出 54 篇待核验记录，其中 13 篇还有引用数问题。
-- Track C：12 篇已有补审裁决；15 次历史运行重算后仍有 31 个待审位置。
-- 运行：`evaluation/frontierlitbench_matrix.py` 保存固定的 45 次运行计划、代码版本及每次运行日志。首批尝试保留在 `runs/frontier-matrix-20261111`，其中 FB-01 暴露了包含 ACM MM 的名单被当成单个会议的问题。修正后使用新批次，不能与之前的尝试混算。
+## Final checks
+
+- All 45 result files reached a final score with no positions pending adjudication.
+- 44 runs completed normally; one FB-14 run exhausted its search budget after returning five papers and is scored under the documented bounded-search rule.
+- The complete unified adjudication file is used for every system. Frozen Gold is never silently mutated.
+- Historical `corpus/` and review files are retained. They are superseded for new comparisons by `corpus_v1.1/`.
+
+## Limits
+
+FB-1.1 is a reviewed research benchmark, not an exhaustive or objective census. Unmapped institutions use the documented conservative floor, absent attributable repositories receive zero repository evidence, and labels are single-primary-reviewer with retained evidence. Cross-system results must use the same corpus, adjudications, prompt and tool conditions. Missing papers in an incomplete search are not counted as evidence that those papers do not exist.

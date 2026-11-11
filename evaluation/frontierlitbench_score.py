@@ -16,7 +16,7 @@ import math
 from pathlib import Path
 import re
 import unicodedata
-from urllib.parse import unquote
+from urllib.parse import parse_qsl, unquote, urlencode, urlsplit
 
 TASKS = {
     'FB-01': ({2024, 2025, 2026}, None),
@@ -70,6 +70,33 @@ def identities(p):
     return ({x for v in values if (x := doi(v))}, {x for v in values if (x := arxiv(v))})
 
 
+def canonical_urls(value):
+    """Return normalized academic/proceeding URLs, including nested evidence."""
+    found = set()
+
+    def visit(item, key=''):
+        if isinstance(item, dict):
+            for child_key, child in item.items():
+                visit(child, str(child_key))
+        elif isinstance(item, (list, tuple)):
+            for child in item:
+                visit(child, key)
+        elif isinstance(item, str) and key in {
+                'url', 'canonical_url', 'project_url', 'paper_url'}:
+            parsed = urlsplit(item.strip())
+            if parsed.scheme not in ('http', 'https') or not parsed.hostname:
+                return
+            host = parsed.hostname.casefold().removeprefix('www.')
+            path = unquote(parsed.path).rstrip('/')
+            if host == 'api2.openreview.net' and path.startswith(('/groups', '/notes')):
+                return
+            query = urlencode(sorted(parse_qsl(parsed.query, keep_blank_values=True)))
+            found.add(f'https://{host}{path}' + (f'?{query}' if query else ''))
+
+    visit(value)
+    return found
+
+
 def score(result, gold, task, adjudications=None):
     if task not in TASKS:
         raise ValueError('unknown task: ' + str(task))
@@ -94,14 +121,16 @@ def score(result, gold, task, adjudications=None):
     valid = [p for p in gold if eligible(p)]
     if len(valid) < 5:
         raise ValueError('task requires at least five eligible Gold records')
-    index = {'doi': {}, 'arxiv': {}, 'title_year': {}}
+    index = {'doi': {}, 'arxiv': {}, 'url': {}, 'title_year': {}}
     def add(kind, key, i):
         if key:
             index[kind].setdefault(key, set()).add(i)
     for i, p in enumerate(gold):
         ds, ars = identities(p)
+        urls = canonical_urls(p)
         for v in ds: add('doi', v, i)
         for v in ars: add('arxiv', v, i)
+        for v in urls: add('url', v, i)
         if title(p.get('title')) and p.get('year'):
             add('title_year', (title(p['title']), str(p['year'])), i)
     # The same adjudication pool must be used for every compared system. It is
@@ -110,13 +139,16 @@ def score(result, gold, task, adjudications=None):
         adjudications = []
     if not isinstance(adjudications, list):
         raise ValueError('adjudications must be a list')
-    adjud_index = {'doi': {}, 'arxiv': {}, 'title_year': {}}
+    adjud_index = {'doi': {}, 'arxiv': {}, 'url': {}, 'title_year': {}}
     for i, p in enumerate(adjudications):
         if not isinstance(p, dict):
             raise ValueError('adjudication must be an object')
+        if p.get('track') not in (None, track):
+            continue
         ds, ars = identities(p)
-        if not ds and not ars:
-            raise ValueError('adjudication requires a DOI or arXiv ID')
+        urls = canonical_urls(p)
+        if not ds and not ars and not urls:
+            raise ValueError('adjudication requires a DOI, arXiv ID, or academic URL')
         if len(ds) > 1 or len(ars) > 1:
             raise ValueError('adjudication has conflicting identifiers')
         decision = p.get('decision')
@@ -130,7 +162,7 @@ def score(result, gold, task, adjudications=None):
                 raise ValueError('eligible adjudication requires verified identity, track, year, venue and tier')
         elif p.get('tier') is not None:
             raise ValueError('invalid adjudication cannot have a tier')
-        for kind, keys in (('doi', ds), ('arxiv', ars)):
+        for kind, keys in (('doi', ds), ('arxiv', ars), ('url', urls)):
             for key in keys:
                 if key in index[kind]:
                     raise ValueError('adjudication conflicts with frozen Gold identity')
@@ -149,19 +181,24 @@ def score(result, gold, task, adjudications=None):
         if not isinstance(p, dict):
             output.append({'rank': position+1, 'status': 'pending_adjudication', 'gain': None, 'reason': 'invalid_record'}); continue
         ds, ars = identities(p)
+        urls = canonical_urls(p)
         matches = set()
         match_method = None
         # Conflicting strong identifiers must never be silently resolved by
         # taking the first match. Keep the recommendation for adjudication.
         strong_matches = set().union(*(index['doi'].get(k, set()) for k in ds),
-                                     *(index['arxiv'].get(k, set()) for k in ars))
-        for kind, keys in [('doi', ds), ('arxiv', ars), ('title_year', {(title(p.get('title')), str(p.get('year'))) } if title(p.get('title')) and p.get('year') else set())]:
+                                     *(index['arxiv'].get(k, set()) for k in ars),
+                                     *(index['url'].get(k, set()) for k in urls))
+        for kind, keys in [('doi', ds), ('arxiv', ars), ('url', urls),
+                           ('title_year', {(title(p.get('title')), str(p.get('year'))) }
+                            if title(p.get('title')) and p.get('year') else set())]:
             hits = set().union(*(index[kind].get(key, set()) for key in keys)) if keys else set()
             if hits:
                 matches, match_method = hits, kind
                 break
         row = {'rank': position+1, 'title': p.get('title'), 'match_method': match_method}
-        adj_hits = {adjud_index[kind][key] for kind, keys in (('doi', ds), ('arxiv', ars))
+        adj_hits = {adjud_index[kind][key] for kind, keys in
+                    (('doi', ds), ('arxiv', ars), ('url', urls))
                     for key in keys if key in adjud_index[kind]}
         adj_method = 'adjudicated_strong_id'
         if not matches and not adj_hits and title(p.get('title')) and p.get('year'):
@@ -197,8 +234,11 @@ def score(result, gold, task, adjudications=None):
             if adj_hits:
                 i = next(iter(adj_hits)); adjud = adjudications[i]
                 adois, aarxivs = identities(adjud)
+                aurls = canonical_urls(adjud)
                 if ((ds and adois and ds.isdisjoint(adois)) or
-                        (ars and aarxivs and ars.isdisjoint(aarxivs))):
+                        (ars and aarxivs and ars.isdisjoint(aarxivs)) or
+                        (not (ds & adois or ars & aarxivs) and
+                         urls and aurls and urls.isdisjoint(aurls))):
                     row.update(status='pending_adjudication', gain=None, reason='conflicting_identifiers')
                 elif i in seen_adjud:
                     row.update(status='duplicate', gain=0)
@@ -223,7 +263,9 @@ def score(result, gold, task, adjudications=None):
                 seen_unknown.update(keys)
                 row.update(status='pending_adjudication', gain=None, reason='not_in_gold')
         output.append(row)
-    additions = [p for p in adjudications if p['decision'] == 'eligible' and eligible(p)]
+    additions = [p for p in adjudications
+                 if p.get('track') == track
+                 and p['decision'] == 'eligible' and eligible(p)]
     ideal = sorted([GAINS[p['tier']] for p in valid] + [GAINS[p['tier']] for p in additions], reverse=True)[:5]
     idcg = sum(g / math.log2(i+2) for i, g in enumerate(ideal))
     pending = any(x['gain'] is None for x in output)

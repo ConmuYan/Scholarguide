@@ -35,16 +35,59 @@ class FrontierScoreTests(unittest.TestCase):
         self.assertEqual(r['status'], 'scored')
         self.assertEqual(corpus, before)
 
+    def test_verified_academic_url_is_a_strong_supplemental_identity(self):
+        url = 'https://openreview.net/forum?id=abc123'
+        addition = dict(url=url, title='URL study', decision='eligible',
+                        identity_verified=True, track='C', year=2024,
+                        venue='ICLR', tier='A')
+        result = {'papers': [{
+            'title': 'URL study',
+            'year': 2024,
+            'publication': {'evidence': [{'url': url}]},
+        }]}
+        report = score(result, gold(), 'FB-10', [addition])
+        self.assertEqual(report['positions'][0]['status'], 'matched_adjudicated')
+        self.assertEqual(report['positions'][0]['match_method'], 'adjudicated_strong_id')
+        self.assertEqual(report['positions'][0]['gain'], 3)
+
     def test_adjudication_requires_strong_ids_and_valid_explicit_decisions(self):
         base = dict(doi='10.9999/new', decision='eligible', identity_verified=True,
                     track='C', year=2024, venue='ACL', tier='S')
         for additions in ([dict(title='Only title', decision='invalid')],
                           [{**base, 'identity_verified':False}],
-                          [{**base, 'tier':'X'}], [{**base, 'track':'B'}],
+                          [{**base, 'tier':'X'}],
                           [base, dict(base)], [dict(base, doi='10.1234/p0')],
                           [{**base, 'decision':'pending'}]):
             with self.subTest(additions=additions), self.assertRaises(ValueError):
                 score({'papers':[]}, gold(), 'FB-10', additions)
+
+    def test_unified_adjudication_file_skips_other_tracks(self):
+        addition = dict(doi='10.9999/other-track', decision='eligible',
+                        identity_verified=True, track='B', year=2024,
+                        venue='ICLR', tier='S')
+        report = score({'papers': []}, gold(), 'FB-10', [addition])
+        self.assertEqual(report['eligible_adjudicated_count'], 0)
+
+    def test_secondary_project_url_does_not_conflict_with_matching_ids(self):
+        doi = '10.9999/new'
+        addition = dict(doi=doi, arxiv_id='2512.20618',
+                        url='https://example.org/paper',
+                        evidence={'project_url': 'https://project.example.org'},
+                        decision='eligible', identity_verified=True, track='C',
+                        year=2026, venue='ACL', tier='S')
+        paper = dict(
+            doi=doi,
+            arxiv_id='2512.20618',
+            title='Long video study',
+            year=2026,
+            publication={'evidence': [
+                {'url': 'https://example.org/paper'},
+                {'url': 'https://project.example.org'},
+            ]},
+        )
+        report = score({'papers': [paper]}, gold(), 'FB-15', [addition])
+        self.assertEqual(report['positions'][0]['status'], 'matched_adjudicated')
+        self.assertEqual(report['positions'][0]['gain'], 5)
 
     def test_adjudications_cannot_override_gold_or_force_conflicting_match(self):
         add = [dict(doi='10.9999/new', arxiv_id='2401.22222', decision='eligible',

@@ -26,6 +26,7 @@ Years: {years}
 Eligible conferences: {venues}
 Count: 5'''
 FORMAT = '''\n\nFor reliable import, provide the recommendations as one JSON object with a papers array in ranked order. Each paper should contain rank, title, authors, year, venue, doi or url, and reason. Use null for unknown details. Do not include any benchmark labels or scores.'''
+EXPLORATORY_REFERENCE = 'exploratory; current corpus and labels are under review'
 
 
 def track_for(task):
@@ -124,7 +125,9 @@ def main(argv=None):
             raise ValueError('Result task does not match the requested task.')
         adjudications = read_json(args.adjudications) if args.adjudications else None
         report = score(result, load_gold(args.task, args.corpus), args.task, adjudications)
-        report['reference_status'] = 'exploratory; current corpus and labels are under review'
+        report['reference_status'] = (
+            'reviewed_v1.1' if args.corpus and 'corpus_v1.1' in args.corpus.parts
+            else EXPLORATORY_REFERENCE)
         report['corpus'] = str(args.corpus.resolve()) if args.corpus else CORPORA[track_for(args.task)]
         report['adjudications'] = str(args.adjudications.resolve()) if args.adjudications else None
         config = result.get('config') if isinstance(result.get('config'), dict) else {}
@@ -167,7 +170,7 @@ def main(argv=None):
                   'repetitions_per_task': args.repeat,
                   'status': 'scored' if complete else 'incomplete',
                   'macro_ndcg_at_5': statistics.mean(v['metrics']['ndcg_at_5'] for v in per_task.values()) if complete else None,
-                  'reference_status': 'exploratory; current corpus and labels are under review',
+                  'reference_status': reports[0].get('reference_status', EXPLORATORY_REFERENCE),
                   'tasks': per_task}
         save_new(args.out, result)
         print(json.dumps(result, ensure_ascii=False, indent=2))
@@ -184,7 +187,10 @@ def main(argv=None):
                   'status': 'scored' if complete else 'incomplete',
                   'track_ndcg_at_5': {r['track']:r.get('macro_ndcg_at_5') for r in summaries},
                   'overall_ndcg_at_5': statistics.mean(r['macro_ndcg_at_5'] for r in summaries) if complete else None,
-                  'reference_status': 'exploratory; current corpus and labels are under review'}
+                  'reference_status': (
+                      summaries[0].get('reference_status', EXPLORATORY_REFERENCE)
+                      if len({r.get('reference_status') for r in summaries}) == 1
+                      else 'mixed reference versions')}
         save_new(args.out, result)
         print(json.dumps(result, ensure_ascii=False, indent=2))
 
