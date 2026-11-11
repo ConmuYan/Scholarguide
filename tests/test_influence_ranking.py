@@ -21,6 +21,15 @@ class InfluenceRankingTests(unittest.TestCase):
         duplicate = {'venue': '', 'unsupported': [field]}
         _restore_explicit_conferences(duplicate, field + '\n' + field)
         self.assertEqual(duplicate['venue'], '')
+        video = 'ACM MM, CVPR, ICCV, ICLR, ICML, NeurIPS, SIGGRAPH'
+        plan = {'venue': '', 'unsupported': [video, 'code released']}
+        _restore_explicit_conferences(plan, 'Eligible conferences: ' + video)
+        self.assertEqual(plan['venue'], video)
+        self.assertEqual(plan['unsupported'], ['code released'])
+        asia = {'venue': '', 'unsupported': ['SIGGRAPH Asia']}
+        _restore_explicit_conferences(asia, 'Eligible conferences: SIGGRAPH Asia')
+        self.assertEqual(asia['venue'], '')
+        self.assertEqual(asia['unsupported'], ['SIGGRAPH Asia'])
 
     def test_benchmark_significance_is_qualified_only_in_paired_ranking_request(self):
         from workflow import _calibrate_paired_significance

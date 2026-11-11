@@ -103,6 +103,7 @@ def _restore_explicit_conferences(plan, user_input):
     value = matches[0].strip()
     names = requested_venues(value)
     known = {v['name'] for v in curated_venue_catalog()['venues'] if v['type'] == 'conference'}
+    known.update({'ACM MM', 'SIGGRAPH'})
     if not names or len(value) > 120 or any(venue_identity(name) not in known for name in names):
         return
     existing = str(plan.get('venue') or '').strip()
@@ -111,7 +112,8 @@ def _restore_explicit_conferences(plan, user_input):
     plan['venue'] = value
     exact_field = re.compile(r'^eligible conferences:\s*' + re.escape(value) + r'\s*$', re.I)
     plan['unsupported'] = [x for x in (plan.get('unsupported') or [])
-                           if not exact_field.fullmatch(str(x).strip())]
+                           if not (exact_field.fullmatch(str(x).strip())
+                                   or str(x).strip().casefold() == value.casefold())]
 
 
 def grounded_assessments(rows: list[dict], papers: list[Paper], category: str) -> dict:
