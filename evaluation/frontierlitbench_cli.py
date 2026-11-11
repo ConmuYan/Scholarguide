@@ -43,8 +43,8 @@ def read_json(path):
     return json.loads(path.read_text(encoding='utf-8-sig'))
 
 
-def load_gold(task):
-    path = ROOT / 'frontierlitbench' / 'corpus' / CORPORA[track_for(task)]
+def load_gold(task, corpus=None):
+    path = corpus or ROOT / 'frontierlitbench' / 'corpus' / CORPORA[track_for(task)]
     return [json.loads(line) for line in path.read_text(encoding='utf-8-sig').splitlines() if line.strip()]
 
 
@@ -96,6 +96,7 @@ def main(argv=None):
     p.add_argument('--task', choices=TASKS, required=True)
     p.add_argument('--result', type=Path, required=True)
     p.add_argument('--adjudications', type=Path)
+    p.add_argument('--corpus', type=Path, help='Explicit reference corpus in JSONL format')
     p.add_argument('--out', type=Path, required=True)
     p = sub.add_parser('summary', help='Summarize a complete set of task repetitions for one system.')
     p.add_argument('--track', choices=TRACK_TASKS, required=True)
@@ -122,9 +123,9 @@ def main(argv=None):
         if result.get('task') and result['task'] != args.task:
             raise ValueError('Result task does not match the requested task.')
         adjudications = read_json(args.adjudications) if args.adjudications else None
-        report = score(result, load_gold(args.task), args.task, adjudications)
+        report = score(result, load_gold(args.task, args.corpus), args.task, adjudications)
         report['reference_status'] = 'exploratory; current corpus and labels are under review'
-        report['corpus'] = CORPORA[track_for(args.task)]
+        report['corpus'] = str(args.corpus.resolve()) if args.corpus else CORPORA[track_for(args.task)]
         report['adjudications'] = str(args.adjudications.resolve()) if args.adjudications else None
         config = result.get('config') if isinstance(result.get('config'), dict) else {}
         report['system'] = result.get('system') or ('ScholarGuide / ' + str(config.get('model')) if config.get('model') else None)

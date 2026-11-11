@@ -314,6 +314,7 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
     landscape = None
     acl_checked: set[str] = set()
     openreview_checked: set[str] = set()
+    openalex_publication_checked: set[str] = set()
     citation_checked: set[str] = set()
 
     def event(action: str, **details) -> None:
@@ -490,6 +491,24 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
                     if budget.remaining() < 5:
                         break
                     acl_checked.add(paper.id)
+                    try:
+                        candidates[index] = verifier(paper)
+                    except RunCancelled:
+                        raise
+                    except GuideError:
+                        pass
+                result['candidates'] = [p.to_dict() for p in candidates]
+            verifier = getattr(source, 'verify_openalex_publication', None)
+            if request.accepted_only and callable(verifier):
+                from research_policy import matched_publication, venue_identity
+                for index, paper in enumerate(candidates):
+                    if len(openalex_publication_checked) >= 5 or budget.remaining() < 15:
+                        break
+                    if (paper.id in openalex_publication_checked or not paper.doi or not paper.year
+                            or venue_identity(paper.venue or '') not in ('CVPR', 'ICCV')
+                            or matched_publication(paper, asdict(request))):
+                        continue
+                    openalex_publication_checked.add(paper.id)
                     try:
                         candidates[index] = verifier(paper)
                     except RunCancelled:

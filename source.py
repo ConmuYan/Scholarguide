@@ -1524,6 +1524,44 @@ class AcademicSource:
             return {}
         return _acl_html(html)
 
+    def verify_openalex_publication(self, paper: Paper) -> Paper:
+        """Verify a conference publication using an exact DOI lookup."""
+        from research_policy import venue_identity
+        doi = normalize_doi(paper.doi)
+        if not doi or not paper.year or 'openalex' not in self.providers or not self.available('openalex'):
+            return paper
+        endpoint = OPENALEX_WORKS_URL + '/doi:' + quote(doi, safe='')
+        if self.config.openalex_key:
+            endpoint += '?' + urlencode({'api_key': self.config.openalex_key})
+        try:
+            work = self._json(endpoint, provider='openalex')
+        except RunCancelled:
+            raise
+        except GuideError:
+            return paper
+        location = work.get('primary_location') or {}
+        source_info = location.get('source') or {}
+        venue = source_info.get('display_name') or ''
+        key = lambda value: ''.join(re.findall(r'\w+', str(value or '').casefold()))
+        work_id = str(work.get('id') or '')
+        if (normalize_doi(work.get('doi') or '') != doi or key(work.get('title')) != key(paper.title)
+                or work.get('publication_year') != paper.year
+                or not re.fullmatch(r'https://openalex\.org/W\d+', work_id)
+                or work.get('is_retracted') is True or work.get('type') != 'conference-paper'
+                or source_info.get('type') != 'conference' or location.get('is_published') is not True
+                or location.get('version') != 'publishedVersion'
+                or not venue or venue_identity(venue) != venue_identity(paper.venue)):
+            return paper
+        url = 'https://api.openalex.org/works/' + work_id.rsplit('/', 1)[-1]
+        record = _record('conference', 'published', venue_id=str(source_info.get('id') or ''),
+                         venue_name=venue, date=_date(work.get('publication_date'), paper.year),
+                         doi=doi, document_type='conference-paper', verified=True,
+                         evidence=[_evidence('openalex', url, 'primary_location', location),
+                                   _evidence('openalex', url, 'doi', doi),
+                                   _evidence('openalex', url, 'title', work['title'])])
+        existing = (paper.publication or {}).get('records') or []
+        return replace(paper, publication=merge_publication_records([*existing, record]))
+
     def verify_openreview_paper(self, paper: Paper) -> Paper:
         """Verify an exact candidate against its official OpenReview edition.
 

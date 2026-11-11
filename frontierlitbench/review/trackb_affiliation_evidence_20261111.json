@@ -1,0 +1,71 @@
+{
+  "status": "partial_review",
+  "note": "Publication-time affiliations verified from the paper. These observations do not replace or rescore the historical Gold snapshot.",
+  "papers": [
+    {
+      "paper_id": "candidate:wm:v2:073",
+      "title": "DINO-WM: World Models on Pre-trained Visual Features enable Zero-shot Planning",
+      "first_author": "Gaoyue Zhou",
+      "first_author_institutions": ["New York University"],
+      "evidence_url": "https://arxiv.org/pdf/2411.04983",
+      "evidence_location": "First page, author list and affiliation footnote; arXiv version 2 dated 2025-02-01",
+      "rubric_match": "New York University",
+      "reviewed_at": "2026-11-11",
+      "reason": "The first author is marked with affiliation 1, Courant Institute, New York University."
+    },
+    {
+      "paper_id": "candidate:wm:v2:121",
+      "title": "Ctrl-World: A Controllable Generative World Model for Robot Manipulation",
+      "first_author": "Yanjiang Guo",
+      "first_author_institutions": ["Stanford University", "Tsinghua University"],
+      "evidence_url": "https://arxiv.org/pdf/2510.10125",
+      "evidence_location": "First page, author list and affiliations; version 3 dated 2026-03-01",
+      "reviewed_at": "2026-11-11"
+    },
+    {
+      "paper_id": "candidate:wm:v2:129",
+      "title": "Unified Vision-Language-Action Model",
+      "first_author": "Yuqi Wang",
+      "first_author_institutions": ["Institute of Automation, Chinese Academy of Sciences"],
+      "evidence_url": "https://arxiv.org/pdf/2506.19850",
+      "evidence_location": "First page, author list and affiliation 1 (CASIA); version 1 dated 2025-06-24",
+      "reviewed_at": "2026-11-11"
+    },
+    {
+      "paper_id": "candidate:wm:v2:131",
+      "title": "World-In-World: World Models in a Closed-Loop World",
+      "first_author": "Jiahan Zhang",
+      "first_author_institutions": ["Johns Hopkins University"],
+      "evidence_url": "https://arxiv.org/pdf/2510.18135",
+      "evidence_location": "First page, author list and affiliation 1 (JHU); version 2 dated 2026-08-16",
+      "reviewed_at": "2026-11-11"
+    },
+    {
+      "paper_id": "candidate:wm:v2:120",
+      "title": "Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning",
+      "first_author": "Moo Jin Kim",
+      "first_author_institutions": ["NVIDIA", "Stanford University"],
+      "evidence_url": "https://arxiv.org/pdf/2601.16163",
+      "evidence_location": "First page, author list and affiliations; version 1 dated 2026-01-22",
+      "reviewed_at": "2026-11-11"
+    },
+    {
+      "paper_id": "candidate:wm:v2:016",
+      "title": "Learning Interactive Real-World Simulators",
+      "first_author": "Sherry Yang",
+      "first_author_institutions": ["University of California, Berkeley", "Google DeepMind"],
+      "evidence_url": "https://arxiv.org/pdf/2310.06114",
+      "evidence_location": "First page, author list and affiliations; version 3 dated 2024-09-26",
+      "reviewed_at": "2026-11-11"
+    },
+    {
+      "paper_id": "candidate:wm:v2:116",
+      "title": "Planning in 8 Tokens: A Compact Discrete Tokenizer for Latent World Model",
+      "first_author": "Dongwon Kim",
+      "first_author_institutions": ["KAIST"],
+      "evidence_url": "https://arxiv.org/pdf/2603.05438",
+      "evidence_location": "First page, author list and affiliation 1; version 1 dated 2026-03-05",
+      "reviewed_at": "2026-11-11"
+    }
+  ]
+}

@@ -4,6 +4,31 @@ from source import merge_papers
 from workflow import select_papers, coverage
 
 class InfluenceRankingTests(unittest.TestCase):
+    def test_exact_openalex_conference_publication_verification(self):
+        from types import SimpleNamespace
+        from source import AcademicSource
+        from research_policy import matched_publication
+        source = AcademicSource.__new__(AcademicSource)
+        source.providers = ['openalex']
+        source.config = SimpleNamespace(openalex_key='')
+        source.available = lambda provider: True
+        work = {'id': 'https://openalex.org/W123', 'doi': 'https://doi.org/10.1109/example',
+                'title': 'An Example', 'publication_year': 2025, 'type': 'conference-paper',
+                'primary_location': {'is_published': True, 'version': 'publishedVersion',
+                                     'source': {'type': 'conference', 'display_name': 'CVPR'}}}
+        source._json = lambda *args, **kwargs: work
+        paper = Paper(id='lune:x', title='An Example', abstract='abstract', url='',
+                      doi='10.1109/example', venue='CVPR', year=2025)
+        verified = source.verify_openalex_publication(paper)
+        self.assertTrue(matched_publication(verified, {'venue': 'CVPR', 'year_from': 2025,
+                                                      'year_to': 2025, 'publication_type': 'conference',
+                                                      'accepted_only': True}))
+        work['title'] = 'A Different Paper'
+        self.assertIs(source.verify_openalex_publication(paper), paper)
+        work['title'] = paper.title
+        work['primary_location']['version'] = 'acceptedVersion'
+        self.assertIs(source.verify_openalex_publication(paper), paper)
+
     def test_recovers_only_a_literal_known_conference_whitelist(self):
         from workflow import _restore_explicit_conferences
         field = 'Eligible conferences: ICLR, ICML, NeurIPS, ACL, EMNLP, AAAI'
