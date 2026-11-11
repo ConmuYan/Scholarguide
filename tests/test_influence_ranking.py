@@ -4,6 +4,15 @@ from source import merge_papers
 from workflow import select_papers, coverage
 
 class InfluenceRankingTests(unittest.TestCase):
+    def test_crossref_rate_limit_does_not_use_unregistered_store_source(self):
+        from types import SimpleNamespace
+        from source import AcademicSource
+        source = AcademicSource.__new__(AcademicSource)
+        source.store = SimpleNamespace(wait_for_rate=lambda *args: self.fail('unexpected store call'))
+        source.last_call = {}
+        source._wait_for('crossref')
+        self.assertIn('crossref', source.last_call)
+
     def test_crossref_requires_matching_published_conference_identity(self):
         from source import AcademicSource
         from research_policy import matched_publication

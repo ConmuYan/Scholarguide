@@ -698,7 +698,7 @@ class AcademicSource:
         return {name: dict(value) for name, value in self.health.items()}
 
     def _wait_for(self, provider: str) -> None:
-        if self.store is not None:
+        if self.store is not None and provider in PROVIDERS:
             self.store.wait_for_rate(provider, self.budget)
             return
         if provider == 'arxiv':
@@ -706,7 +706,8 @@ class AcademicSource:
             self.budget.wait(wait)
             self.last_arxiv_call = time.monotonic()
             return
-        interval = PROVIDERS.get(provider, ProviderSpec(provider, provider, '')).rate_seconds
+        interval = (0.2 if provider == 'crossref' else
+                    PROVIDERS.get(provider, ProviderSpec(provider, provider, '')).rate_seconds)
         last = self.last_call.get(provider)
         if last and interval:
             self.budget.wait(max(0, interval - (time.monotonic() - last)))
@@ -1539,11 +1540,17 @@ class AcademicSource:
             raise
         except GuideError:
             return paper
+        if not isinstance(message, dict):
+            return paper
         key = lambda value: ''.join(re.findall(r'\w+', str(value or '').casefold()))
         titles = message.get('title') or []
         containers = message.get('container-title') or []
-        parts = (message.get('published') or {}).get('date-parts') or []
-        year = parts[0][0] if parts and parts[0] else None
+        published = message.get('published') or {}
+        parts = published.get('date-parts') or [] if isinstance(published, dict) else []
+        year = parts[0][0] if (isinstance(parts, list) and parts and
+                               isinstance(parts[0], list) and parts[0]) else None
+        if not isinstance(titles, list) or not isinstance(containers, list):
+            return paper
         if (normalize_doi(message.get('DOI') or '') != doi or len(titles) != 1
                 or key(titles[0]) != key(paper.title) or year != paper.year
                 or message.get('type') != 'proceedings-article'
