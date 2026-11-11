@@ -181,6 +181,7 @@ Design notes: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · [`docs/DESIGN_IN
 | [`docs/UI.md`](docs/UI.md) | layout, tokens, interaction contracts |
 | [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) | module map, verification, doc index |
 | [`docs/PUBLISHING.md`](docs/PUBLISHING.md) | how this repo and its releases are produced |
+| [`frontierlitbench/EVALUATION_GUIDE.md`](frontierlitbench/EVALUATION_GUIDE.md) | experimental benchmark tasks, chat imports, and scoring; data and labels remain under review |
 
 ## Verify it yourself
 

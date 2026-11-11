@@ -8,9 +8,9 @@
 4. **真实运行**：启用 DeepSeek 和 Lune，对 15 项任务分别重复三次，保存输出、状态与来源；统一复审各系统库外论文后重算。记录失败和缺失，不挑选最好结果。
 5. **交付**：公开任务、数据说明、补审结果、每任务及总指标；完成必要测试后同步远端与本地。只有数据、评测和待审状态一致时，才标记最终版本。
 
-当前进展：统一入口及使用指南已建立；FB-14 取得一次探索性指标；A/B/C 均存在数据或补审缺口，尚未达到最终交付。详见 `review/track_ac_delivery_review_20261110.md`、`review/open_issues_world_models.md` 和 `reports/unified_smoke_20261111.md`。
+当前进展：统一入口及使用指南已建立；45 次运行已结束，部分任务取得探索性指标。A/B/C 均存在数据或补审缺口，尚未达到最终交付。详见 `reports/scholarguide_matrix_20261111.md`、`review/track_ac_delivery_review_20261110.md` 和 `review/open_issues_world_models.md`。
 
-- Track A：从论文摘要确认了 21 个越界条目；用 `evaluation/frontierlitbench_rebuild_video.py` 生成独立候选版本，重算 177 篇的百分位及等级。五项任务仍合格；剩余范围与机构证据待查。
+- Track A：已确认排除 35 个越界条目；用 `python evaluation/frontierlitbench_rebuild_video.py --out <新目录>` 可重建独立候选版本，重算后为 163 篇（S/A/B 分别为 33/65/65）。五项任务的候选数为 163/47/79/37/56；剩余范围与机构证据待查。
 - Track B：`review/trackb_label_review_queue.json` 列出 54 篇待核验记录，其中 13 篇还有引用数问题。
 - Track C：12 篇已有补审裁决；15 次历史运行重算后仍有 31 个待审位置。
 - 运行：`evaluation/frontierlitbench_matrix.py` 保存固定的 45 次运行计划、代码版本及每次运行日志。首批尝试保留在 `runs/frontier-matrix-20261111`，其中 FB-01 暴露了包含 ACM MM 的名单被当成单个会议的问题。修正后使用新批次，不能与之前的尝试混算。

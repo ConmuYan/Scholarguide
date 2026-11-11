@@ -1,0 +1,177 @@
+{
+  "status": "publication_and_scope_evidence_only",
+  "reviewed_at": "2026-11-11",
+  "run_directory": "runs/frontier-matrix-20261111-final",
+  "coverage_note": "These are the distinct Track A pending titles observed in completed score files at review time. Later matrix results may add titles. The publication records and abstracts do not determine impact tier; no tier or gain is assigned here.",
+  "papers": [
+    {
+      "title": "TokenFlow: Consistent Diffusion Features for Consistent Video Editing",
+      "year": 2024,
+      "venue": "ICLR",
+      "first_author": "Michal Geyer",
+      "paper_url": "https://arxiv.org/abs/2307.10373",
+      "topic": "Text-guided editing of an input video, with inter-frame feature propagation for temporal consistency.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-01-1:1",
+        "FB-04-1:1"
+      ]
+    },
+    {
+      "title": "DiffPerformer: Iterative Learning of Consistent Latent Guidance for Diffusion-Based Human Video Generation",
+      "year": 2024,
+      "venue": "CVPR",
+      "first_author": "Chenyang Wang",
+      "doi": "10.1109/CVPR52733.2024.00590",
+      "topic": "Pose-guided human video generation with temporally consistent latent guidance.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-01-1:3"
+      ]
+    },
+    {
+      "title": "Ctrl-Adapter: An Efficient and Versatile Framework for Adapting Diverse Controls to Any Diffusion Model",
+      "year": 2025,
+      "venue": "ICLR",
+      "first_author": "Han Lin",
+      "paper_url": "https://arxiv.org/abs/2404.09967",
+      "topic": "Adapts controls to image and video diffusion models; applications include video generation, editing and motion control.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-01-1:5"
+      ]
+    },
+    {
+      "title": "COVE: Unleashing the Diffusion Feature Correspondence for Consistent Video Editing",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "first_author": "Jiangshan Wang",
+      "paper_url": "https://arxiv.org/abs/2406.08850",
+      "topic": "Uses diffusion feature correspondences for temporally consistent editing of source videos.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-04-1:4"
+      ]
+    },
+    {
+      "title": "FLATTEN: optical FLow-guided ATTENtion for consistent text-to-video editing",
+      "year": 2024,
+      "venue": "ICLR",
+      "first_author": "Yuren Cong",
+      "paper_url": "https://arxiv.org/abs/2310.05922",
+      "topic": "Optical-flow-guided attention for text-guided video editing and consistency.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-04-1:2"
+      ]
+    },
+    {
+      "title": "Ground-A-Video: Zero-shot Grounded Video Editing using Text-to-image Diffusion Models",
+      "year": 2024,
+      "venue": "ICLR",
+      "first_author": "Hyeonho Jeong",
+      "paper_url": "https://arxiv.org/abs/2310.01107",
+      "topic": "Grounding-guided multi-attribute editing of input videos.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-04-1:5"
+      ]
+    },
+    {
+      "title": "Video-P2P: Video Editing with Cross-Attention Control",
+      "year": 2024,
+      "venue": "CVPR",
+      "first_author": "Shaoteng Liu",
+      "doi": "10.1109/CVPR52733.2024.00821",
+      "topic": "Text-driven editing of real videos using cross-attention control.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-04-1:3"
+      ]
+    },
+    {
+      "title": "DIVE: Taming DINO for Subject-Driven Video Editing",
+      "year": 2025,
+      "venue": "ICCV",
+      "first_author": "Yi Huang",
+      "doi": "10.1109/ICCV51701.2025.01485",
+      "topic": "Subject-driven editing of source videos conditioned on text or reference images.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-05-1:3"
+      ]
+    },
+    {
+      "title": "Pathways on the Image Manifold: Image Editing via Video Generation",
+      "year": 2025,
+      "venue": "CVPR",
+      "first_author": "Noam Rotstein",
+      "doi": "10.1109/CVPR52734.2025.00736",
+      "topic": "Uses video generation as an intermediate method to produce an edited image; the stated end task and evaluation are image editing.",
+      "scope_assessment": "likely_out_of_scope_pending_adjudication",
+      "positions_at_review": [
+        "FB-05-1:4"
+      ]
+    },
+    {
+      "title": "EditVerse: Unifying Image and Video Editing and Generation with In-Context Learning",
+      "year": 2026,
+      "venue": "ICLR",
+      "first_author": "Xuan Ju",
+      "paper_url": "https://openreview.net/pdf?id=blJXE07r7I",
+      "topic": "Unified image and video generation and editing, including instruction-based video editing.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-06-1:1"
+      ]
+    },
+    {
+      "title": "EasyCreator: Empowering 4D Creation through Video Inpainting",
+      "year": 2026,
+      "venue": "ICLR",
+      "first_author": "Yue Ma",
+      "paper_url": "https://arxiv.org/abs/2506.04590",
+      "topic": "Generates and edits 4D video content from monocular video using a video-inpainting model.",
+      "scope_assessment": "borderline_4d_video_creation_review",
+      "positions_at_review": [
+        "FB-06-1:2"
+      ]
+    },
+    {
+      "title": "MiVE: Multiscale Vision-language features for reference-guided video Editing",
+      "year": 2026,
+      "venue": "ICML",
+      "first_author": "Tong Wang",
+      "paper_url": "https://arxiv.org/abs/2605.14664",
+      "topic": "Reference-image and text-guided editing of an input video.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-06-1:4"
+      ]
+    },
+    {
+      "title": "MoCa: Modeling Object Consistency for 3D Camera Control in Video Generation",
+      "year": 2026,
+      "venue": "ICLR",
+      "first_author": "Zhijing Cheng",
+      "topic": "Camera-controllable video generation with object consistency across frames.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-06-1:5"
+      ]
+    },
+    {
+      "title": "A Video is Worth 256 Bases: Spatial-Temporal Expectation-Maximization Inversion for Zero-Shot Video Editing",
+      "year": 2024,
+      "venue": "CVPR",
+      "first_author": "Maomao Li",
+      "doi": "10.1109/CVPR52733.2024.00719",
+      "paper_url": "https://arxiv.org/abs/2312.05856",
+      "topic": "Spatial-temporal inversion for zero-shot video editing and temporal consistency.",
+      "scope_assessment": "likely_in_scope",
+      "positions_at_review": [
+        "FB-13-1:4"
+      ]
+    }
+  ]
+}

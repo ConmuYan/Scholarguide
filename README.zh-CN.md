@@ -159,6 +159,7 @@ for paper in op["result"]["papers"]:
 | [`docs/UI.md`](docs/UI.md) | 布局、token、交互契约 |
 | [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) | 模块表、验证方式、文档索引 |
 | [`docs/PUBLISHING.md`](docs/PUBLISHING.md) | 本仓库与发布包的生成方式 |
+| [`frontierlitbench/EVALUATION_GUIDE.md`](frontierlitbench/EVALUATION_GUIDE.md) | 实验性基准任务、聊天结果导入及评分；数据和标签仍在复审 |
 
 ## 自己验证
 

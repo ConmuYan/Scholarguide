@@ -1,0 +1,22 @@
+{
+  "status": "supplemental_observations_not_applied_to_gold",
+  "observed_at_local": "2026-11-11T19:46:47+08:00",
+  "source": "Lune MCP search_papers and search_papers_many citation_count",
+  "identity_match": "Exact title, publication year, venue, and first author match the historical Track B record.",
+  "limitations": "Lune's upstream citation source and index refresh time were not returned. An observed zero is the value returned by Lune, not proof of zero citations. These observations are not OpenAlex counts and must not be inserted into the historical OpenAlex snapshot or mixed into its percentile calculation. The complete corpus needs a consistent source and observation window before recalculating labels.",
+  "papers": [
+    {"paper_id":"candidate:wm:v2:124","title":"Genie Envisioner: A Unified World Foundation Platform for Robotic Manipulation","year":2026,"venue":"ICLR","first_author":"Yue Liao","lune_paper_id":"8d49f996-ea84-4475-98b3-866a11ef9e4d","lune_citation_count":136},
+    {"paper_id":"candidate:wm:v2:070","title":"AdaWorld: Learning Adaptable World Models with Latent Actions","year":2025,"venue":"ICML","first_author":"Shenyuan Gao","lune_paper_id":"badc3216-74b8-49f4-9d6a-4aa1db1f2652","lune_citation_count":0},
+    {"paper_id":"candidate:wm:v2:123","title":"ExoPredicator: Learning Abstract Models of Dynamic Worlds for Robot Planning","year":2026,"venue":"ICLR","first_author":"Yichao Liang","lune_paper_id":"3a8cd88c-708c-4065-a98e-6b181b4b7764","lune_citation_count":11},
+    {"paper_id":"candidate:wm:v2:015","title":"Learning Hierarchical World Models with Adaptive Temporal Abstractions from Discrete Latent Dynamics","year":2024,"venue":"ICLR","first_author":"Christian Gumbsch","lune_paper_id":"26a9f6c7-a8e1-4c97-b5a9-7745b8af629f","lune_citation_count":24},
+    {"paper_id":"candidate:wm:v2:063","title":"Discrete Codebook World Models for Continuous Control","year":2025,"venue":"ICLR","first_author":"Aidan Scannell","lune_paper_id":"1ea8a1e6-7b02-4222-8b5c-1e7fe76352c9","lune_citation_count":0},
+    {"paper_id":"candidate:wm:v2:143","title":"Learning Disentangled Multi-Agent World Model for Decentralized Control","year":2026,"venue":"ICML","first_author":"Di Xue","lune_paper_id":"93a25b1d-b5a3-40a5-8ba9-18849dd6a2bd","lune_citation_count":2},
+    {"paper_id":"candidate:wm:v2:111","title":"HandWorld: Hand-Centric Unified Video Action Generation","year":2026,"venue":"CVPR","first_author":"Zhihao Sun","lune_paper_id":"075060c4-dde7-4d1c-98f0-99b4f870b149","lune_citation_count":1},
+    {"paper_id":"candidate:wm:v2:113","title":"ModularAgent: A Task-Aware Modular Framework for Joint Optimization of Multimodal Large Language Models and World Models","year":2026,"venue":"CVPR","first_author":"Yu-Wei Zhan","lune_paper_id":"c8964887-b837-43b7-b750-dbb9eb4b3c93","lune_citation_count":0},
+    {"paper_id":"candidate:wm:v2:126","title":"Learning to Be Uncertain: Pre-training World Models with Horizon-Calibrated Uncertainty","year":2026,"venue":"ICLR","first_author":"Shenghua Wan","lune_paper_id":"295cd330-7d78-41bd-b871-bd97a3d80006","lune_citation_count":0},
+    {"paper_id":"candidate:wm:v2:136","title":"Co-Evolving Latent Action World Models","year":2026,"venue":"ICML","first_author":"Yucen Wang","lune_paper_id":"2f5fb1e5-0713-4e55-9b87-d26ac81eb160","lune_citation_count":12},
+    {"paper_id":"candidate:wm:v2:075","title":"General agents need world models","year":2025,"venue":"ICML","first_author":"Jonathan Richens","lune_paper_id":"63203d4d-d563-4535-bdf7-87bea8f4b4e0","lune_citation_count":0},
+    {"paper_id":"candidate:wm:v2:043","title":"Predicting Future Actions of Reinforcement Learning Agents","year":2024,"venue":"NeurIPS","first_author":"Stephen Chung","lune_paper_id":"de89c3e0-eaae-4e91-bd55-d23a16db4337","lune_citation_count":6},
+    {"paper_id":"candidate:wm:v2:048","title":"VidMan: Exploiting Implicit Dynamics from Video Diffusion Model for Effective Robot Manipulation","year":2024,"venue":"NeurIPS","first_author":"Youpeng Wen","lune_paper_id":"f7b7d76a-019d-4a75-a999-3dbf8325c0c9","lune_citation_count":63}
+  ]
+}

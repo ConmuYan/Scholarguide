@@ -4,7 +4,7 @@ A local research assistant for finding papers, checking abstract-level evidence,
 
 ## Install
 
-Choose a versioned release command from the GitHub Releases page. The repository name below is a placeholder until the public repository is created.
+Choose a versioned release command from the GitHub Releases page.
 
 macOS / Linux:
 
@@ -50,4 +50,12 @@ The service listens on loopback only and does not provide user authentication. D
 
 Original ScholarGuide code is licensed under MIT. See [`LICENSE`](LICENSE) and [`NOTICE.md`](NOTICE.md). Adapted and third-party assets/dependencies retain their own terms; review the notices before redistribution.
 
-**The versioned release bundle is for end-user installation.** The complete development checkout, tests, and contribution workflow will be published in the GitHub source repository separately.
+**The versioned release bundle is for end-user installation.** It does not include FrontierLitBench data or evaluation tools. Get these from the [source repository](https://github.com/ConmuYan/Scholarguide), checking out the tag matching your installed release:
+
+```bash
+git clone https://github.com/ConmuYan/Scholarguide.git
+cd Scholarguide
+git checkout <release-tag>
+```
+
+See [`frontierlitbench/EVALUATION_GUIDE.md`](https://github.com/ConmuYan/Scholarguide/blob/main/frontierlitbench/EVALUATION_GUIDE.md) for tasks, ChatGPT and other product imports, and scoring. The benchmark data and labels are still under review and results are exploratory.
