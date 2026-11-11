@@ -166,5 +166,117 @@
     "decision": "out_of_scope",
     "reason": "Transfers semantic attributes for image-driven 3D editing.",
     "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "0d64743f-f153-4679-a32c-af911ca43835",
+    "title": "Taming Diffusion Probabilistic Models for Character Control",
+    "doi": "10.1145/3641519.3657440",
+    "decision": "out_of_scope",
+    "reason": "Generates character motion under interactive control, rather than video.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "792d6d98-e7ea-4efc-bb84-334dadb2b197",
+    "title": "Flexible Motion In-betweening with Diffusion Models",
+    "doi": "10.1145/3641519.3657414",
+    "decision": "out_of_scope",
+    "reason": "Interpolates character motion sequences between keyframes.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "b4b3c438-fb75-4c1f-9e06-5587b09bbc70",
+    "title": "MotionBricks: Scalable Real-Time Motions with Modular Latent Generative Model and Smart Primitives",
+    "doi": "10.1145/3811334",
+    "decision": "out_of_scope",
+    "reason": "Generates and controls character motion for animation and robotics.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "9ae875c4-fe47-4039-8eb7-da157fbb598a",
+    "title": "LGTM: Local-to-Global Text-Driven Human Motion Diffusion Model",
+    "doi": "10.1145/3641519.3657422",
+    "decision": "out_of_scope",
+    "reason": "Generates human motion for computer animation from text.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "28e08b72-32e8-4a68-a2d7-7ac77f72d484",
+    "title": "Deep Motion Warping via Phase-Conditioned Diffusion Autoencoder",
+    "doi": "10.1145/3799902.3811144",
+    "decision": "out_of_scope",
+    "reason": "Edits character motion data and motion trajectories.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "9958f959-2050-41a4-a403-07a5f67865a1",
+    "title": "Text-Guided Synthesis of Crowd Animation",
+    "doi": "10.1145/3641519.3657516",
+    "decision": "out_of_scope",
+    "reason": "Synthesizes crowd behavior and velocity fields for virtual environments.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "31529de5-0025-45f0-810c-077a96a66c01",
+    "title": "Vision as a Dialect: Unifying Visual Understanding and Generation via Text-Aligned Representations",
+    "doi": "10.52202/085713-5294",
+    "decision": "out_of_scope",
+    "reason": "Studies image tokenization, understanding and generation.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "849cbe10-ec7a-43f7-8f80-af3c16ea3e24",
+    "title": "Toward Dynamic Non-Line-of-Sight Imaging with Mamba Enforced Temporal Consistency",
+    "doi": "10.52202/079017-4016",
+    "decision": "out_of_scope",
+    "reason": "Reconstructs hidden 3D volumes from transient sensor measurements.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "04c87320-cbe8-473d-869f-62afa9bbaf8d",
+    "title": "From Vision to Audio and Beyond: A Unified Model for Audio-Visual Representation and Generation",
+    "doi": "10.48550/arxiv.2409.19132",
+    "decision": "out_of_scope",
+    "reason": "Generates audio conditioned on video and learns audio-visual representations.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "05399394-4f9e-45c0-b5b9-6b2c6b9ed886",
+    "title": "Position-LoRA: Enhanced Relation Customization through Structural Prior in Initial Latent Noise",
+    "doi": "10.1145/3746027.3754543",
+    "decision": "out_of_scope",
+    "reason": "Controls spatial relations and layout in image generation.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "eef2ea94-ce4d-48ec-bc81-b2019656390a",
+    "title": "GR3EN: Generative Relighting for 3D Environments",
+    "doi": "10.1145/3799902.3811181",
+    "decision": "out_of_scope",
+    "reason": "Relights reconstructed 3D scenes using outputs from a video model.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "a755a38a-c493-44f0-9b73-bc158f7bbc43",
+    "title": "D-Flow: Differentiating through Flows for Controlled Generation",
+    "doi": "10.48550/arxiv.2402.14017",
+    "decision": "out_of_scope",
+    "reason": "Evaluates controlled generation for images, audio and molecules, with no video application described.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "c0297b03-aaee-4f08-b3df-7ebd0784835b",
+    "title": "Stylized Text-to-Motion Generation via Hypernetwork-Driven Low-Rank Adaptation",
+    "doi": "10.1145/3799902.3811205",
+    "decision": "out_of_scope",
+    "reason": "Generates stylized human motion sequences from text and reference motion.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "dd2dfc56-53d0-4444-a6f0-a42e6b243b02",
+    "title": "ACT: A Unified Framework for Rigging and Animating Characters with Arbitrary Topologies",
+    "doi": "10.1145/3811392",
+    "decision": "out_of_scope",
+    "reason": "Generates 3D character rigging and motion, rather than video.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
   }
 ]
