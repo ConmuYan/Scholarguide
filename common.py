@@ -358,7 +358,8 @@ def requested_venues(value: str) -> list[str]:
     text = str(value or '').strip()
     parts = [re.sub(r'^(?:or|and)\s+', '', part.strip(), flags=re.I)
              for part in re.split(r'\s*(?:,|;|&|\s+or\s+|\s+and\s+)\s*', text, flags=re.I)]
-    if len(parts) > 1 and all(re.fullmatch(r'[A-Z][A-Za-z0-9.-]{1,19}', part) for part in parts):
+    if len(parts) > 1 and all(part == 'ACM MM' or re.fullmatch(r'[A-Z][A-Za-z0-9.-]{1,19}', part)
+                              for part in parts):
         return parts
     return [text] if text else []
 

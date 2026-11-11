@@ -105,6 +105,11 @@ def normalize_issn(value: Any) -> str:
 
 def venue_identity(value: Any) -> str:
     key = _name(value)
+    # Exact aliases for the video benchmark; they are not curated defaults.
+    if key in {'acm mm', 'acm multimedia', 'acm international conference on multimedia'}:
+        return 'ACM MM'
+    if key in {'siggraph', 'acm siggraph', 'acm siggraph conference papers'}:
+        return 'SIGGRAPH'
     for canonical, _, aliases in _VENUES:
         if key in {_name(canonical), *(_name(alias) for alias in aliases)}:
             return canonical

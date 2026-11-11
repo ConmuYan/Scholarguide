@@ -1,0 +1,990 @@
+{
+  "notice": "Review queue, not new labels. Missing evidence must not be interpreted as zero.",
+  "papers": [
+    {
+      "paper_id": "candidate:wm:v2:073",
+      "title": "DINO-WM: World Models on Pre-trained Visual Features enable Zero-shot Planning",
+      "year": 2025,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2411.04983",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4404360744",
+        "openalex_id": "https://openalex.org/W4404360744"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:139",
+      "title": "DreamDojo: A Real-Time Robot World Model from Large-Scale Human Videos",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.mlr.press/v306/gao26q.html",
+        "openalex_id": "https://openalex.org/W7128357184"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:121",
+      "title": "Ctrl-World: A Controllable Generative World Model for Robot Manipulation",
+      "year": 2026,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2510.10125",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4415273528",
+        "openalex_id": "https://openalex.org/W4415273528"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:049",
+      "title": "Vista: A Generalizable Driving World Model with High Fidelity and Versatile Controllability",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": "https://doi.org/10.52202/079017-2906",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4415796242",
+        "openalex_id": "https://openalex.org/W4415796242"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:129",
+      "title": "Unified Vision-Language-Action Model",
+      "year": 2026,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2506.19850",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4414685219",
+        "openalex_id": "https://openalex.org/W4414685219"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:093",
+      "title": "ReSim: Reliable World Simulation for Autonomous Driving",
+      "year": 2025,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": "https://doi.org/10.52202/085713-5591",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4417309039",
+        "openalex_id": "https://openalex.org/W4417309039"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:135",
+      "title": "Causal-JEPA: Learning World Models through Object-Level Latent Masking",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2602.11389",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W7128802224",
+        "openalex_id": "https://openalex.org/W7128802224"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:033",
+      "title": "RoboDreamer: Learning Compositional World Models for Robot Imagination",
+      "year": 2024,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2404.12377",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4394972242",
+        "openalex_id": "https://openalex.org/W4394972242"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:131",
+      "title": "World-In-World: World Models in a Closed-Loop World",
+      "year": 2026,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2510.18135",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4416055186",
+        "openalex_id": "https://openalex.org/W4416055186"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:119",
+      "title": "WorldLens: Full-Spectrum Evaluations of Driving World Models in Real World",
+      "year": 2026,
+      "venue": "CVPR",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2512.10958",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4417298093",
+        "openalex_id": "https://openalex.org/W4417298093"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:040",
+      "title": "iVideoGPT: Interactive VideoGPTs are Scalable World Models",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": "https://doi.org/10.52202/079017-2173",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4415797250",
+        "openalex_id": "https://openalex.org/W4415797250"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:018",
+      "title": "Learning to Act without Actions",
+      "year": 2024,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2312.10812",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4389983794",
+        "openalex_id": "https://openalex.org/W4389983794"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:120",
+      "title": "Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning",
+      "year": 2026,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2601.16163",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W7125496427",
+        "openalex_id": "https://openalex.org/W7125496427"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:016",
+      "title": "Learning Interactive Real-World Simulators",
+      "year": 2024,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2310.06114",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4387560742",
+        "openalex_id": "https://openalex.org/W4387560742"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:144",
+      "title": "Learning Latent Action World Models in the Wild",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2601.05230",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W7120098014",
+        "openalex_id": "https://openalex.org/W7120098014"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:147",
+      "title": "Olaf-World: Orienting Latent Actions for Video World Modeling",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2602.10104",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W7128639913",
+        "openalex_id": "https://openalex.org/W7128639913"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:050",
+      "title": "WorldCoder, a Model-Based LLM Agent: Building World Models by Writing Code and Interacting with the Environment",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": "https://doi.org/10.52202/079017-2243",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4415796843",
+        "openalex_id": "https://openalex.org/W4415796843"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:035",
+      "title": "GenRL: Multimodal-foundation world models for generalization in embodied agents",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": "https://doi.org/10.52202/079017-0865",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4415798271",
+        "openalex_id": "https://openalex.org/W4415798271"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:133",
+      "title": "Benchmarking World-Model Learning with Environment-Level Queries",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2510.19788",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4416058056",
+        "openalex_id": "https://openalex.org/W4416058056"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:039",
+      "title": "InterDreamer: Zero-Shot Text to 3D Dynamic Human-Object Interaction",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": "https://doi.org/10.52202/079017-1675",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4415797651",
+        "openalex_id": "https://openalex.org/W4415797651"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:149",
+      "title": "VJEPA: Variational Joint Embedding Predictive Architectures as Probabilistic World Models",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2601.14354",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W7125364806",
+        "openalex_id": "https://openalex.org/W7125364806"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:124",
+      "title": "Genie Envisioner: A Unified World Foundation Platform for Robotic Manipulation",
+      "year": 2026,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.iclr.cc/papers/search?q=Manipulating",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:038",
+      "title": "Input-to-State Stable Coupled Oscillator Networks for Closed-form Model-based Control in Latent Space",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": "https://doi.org/10.52202/079017-2607",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4415796586",
+        "openalex_id": "https://openalex.org/W4415796586"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:134",
+      "title": "Beyond Pixel Histories: World Models with Persistent 3D State",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2603.03482",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W7133797988",
+        "openalex_id": "https://openalex.org/W7133797988"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:076",
+      "title": "PlaySlot: Learning Inverse Latent Dynamics for Controllable Object-Centric Video Prediction and Planning",
+      "year": 2025,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2502.07600",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4407425737",
+        "openalex_id": "https://openalex.org/W4407425737"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:070",
+      "title": "AdaWorld: Learning Adaptable World Models with Latent Actions",
+      "year": 2025,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.mlr.press/v267/gao25u.html",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:008",
+      "title": "ReCoRe: Regularized Contrastive Representation Learning of World Model",
+      "year": 2024,
+      "venue": "CVPR",
+      "identifiers": {
+        "doi": "https://doi.org/10.1109/cvpr52733.2024.02161",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4402753642",
+        "openalex_id": "https://openalex.org/W4402753642"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:137",
+      "title": "DDP-WM: Disentangled Dynamics Prediction for Efficient World Models",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2602.01780",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W7127303380",
+        "openalex_id": "https://openalex.org/W7127303380"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:071",
+      "title": "Continual Reinforcement Learning by Planning with Online World Models",
+      "year": 2025,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2507.09177",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4414691537",
+        "openalex_id": "https://openalex.org/W4414691537"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:006",
+      "title": "Learning to Navigate Efficiently and Precisely in Real Environments",
+      "year": 2024,
+      "venue": "CVPR",
+      "identifiers": {
+        "doi": "https://doi.org/10.1109/cvpr52733.2024.01689",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4402716113",
+        "openalex_id": "https://openalex.org/W4402716113"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:046",
+      "title": "Simplifying Latent Dynamics with Softly State-Invariant World Models",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": "https://doi.org/10.52202/079017-1212",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4415797811",
+        "openalex_id": "https://openalex.org/W4415797811"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:116",
+      "title": "Planning in 8 Tokens: A Compact Discrete Tokenizer for Latent World Model",
+      "year": 2026,
+      "venue": "CVPR",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2603.05438",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W7134039088",
+        "openalex_id": "https://openalex.org/W7134039088"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:027",
+      "title": "Hieros: Hierarchical Imagination on Structured State Space Sequence World Models",
+      "year": 2024,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2310.05167",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4387583283",
+        "openalex_id": "https://openalex.org/W4387583283"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:014",
+      "title": "Learning 3D Particle-based Simulators from RGB-D Videos",
+      "year": 2024,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2312.05359",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4389649950",
+        "openalex_id": "https://openalex.org/W4389649950"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:108",
+      "title": "Cloning Deterministic Worlds: The Critical Role of Latent Geometry in Long-Horizon World Models",
+      "year": 2026,
+      "venue": "CVPR",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2510.26782",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4417209506",
+        "openalex_id": "https://openalex.org/W4417209506"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:042",
+      "title": "Learning World Models for Unconstrained Goal Navigation",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": "https://doi.org/10.52202/079017-1890",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4415797517",
+        "openalex_id": "https://openalex.org/W4415797517"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:141",
+      "title": "Future Dynamic 3D Reconstruction: A 3D World Model with Disentangled Ego-Motion",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.mlr.press/v306/morbitzer26a.html",
+        "openalex_id": "https://openalex.org/W7165062089"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:145",
+      "title": "Learning Task-Sufficient World Models by Synergizing Agentic Exploration and Structured Modeling",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2607.04409",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W7167626676",
+        "openalex_id": "https://openalex.org/W7167626676"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:077",
+      "title": "Reward-free World Models for Online Imitation Learning",
+      "year": 2025,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2410.14081",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4403995486",
+        "openalex_id": "https://openalex.org/W4403995486"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:123",
+      "title": "ExoPredicator: Learning Abstract Models of Dynamic Worlds for Robot Planning",
+      "year": 2026,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/5140fb72e83da1383f79352ca101d0f5-Abstract-Conference.html",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:015",
+      "title": "Learning Hierarchical World Models with Adaptive Temporal Abstractions from Discrete Latent Dynamics",
+      "year": 2024,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.iclr.cc/paper_files/paper/2024/hash/13b45b44e26c353c64cba9529bf4724f-Abstract-Conference.html",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:036",
+      "title": "Grounded Answers for Multi-agent Decision-making Problem through Generative World Model",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": "https://doi.org/10.52202/079017-1479",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4415797773",
+        "openalex_id": "https://openalex.org/W4415797773"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:063",
+      "title": "Discrete Codebook World Models for Continuous Control",
+      "year": 2025,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://openreview.net/pdf/3dd9b5346d58a27ef332db4770f358f012e2a6c8.pdf",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:143",
+      "title": "Learning Disentangled Multi-Agent World Model for Decentralized Control",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.mlr.press/v306/xue26e.html",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:028",
+      "title": "Learning Causal Dynamics Models in Object-Oriented Environments",
+      "year": 2024,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2405.12615",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4398230203",
+        "openalex_id": "https://openalex.org/W4398230203"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:146",
+      "title": "Learning to Theorize the World from Observation",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": "https://doi.org/10.48550/arxiv.2605.03413",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W7160389499",
+        "openalex_id": "https://openalex.org/W7160389499"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:044",
+      "title": "Reinforcement Learning Under Latent Dynamics: Toward Statistical and Algorithmic Modularity",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": "https://doi.org/10.52202/079017-4228",
+        "arxiv_id": null,
+        "canonical_url": "https://openalex.org/W4415800724",
+        "openalex_id": "https://openalex.org/W4415800724"
+      },
+      "review_reasons": [
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:111",
+      "title": "HandWorld: Hand-Centric Unified Video Action Generation",
+      "year": 2026,
+      "venue": "CVPR",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://openaccess.thecvf.com/content/CVPR2026/html/Sun_HandWorld_Hand-Centric_Unified_Video_Action_Generation_CVPR_2026_paper.html",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:113",
+      "title": "ModularAgent: A Task-Aware Modular Framework for Joint Optimization of Multimodal Large Language Models and World Models",
+      "year": 2026,
+      "venue": "CVPR",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://openaccess.thecvf.com/content/CVPR2026/html/Zhan_ModularAgent_A_Task-Aware_Modular_Framework_for_Joint_Optimization_of_Multimodal_CVPR_2026_paper.html",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:126",
+      "title": "Learning to Be Uncertain: Pre-training World Models with Horizon-Calibrated Uncertainty",
+      "year": 2026,
+      "venue": "ICLR",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/ad222e6e38e26e3f00d85829b9e02f43-Abstract-Conference.html",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:136",
+      "title": "Co-Evolving Latent Action World Models",
+      "year": 2026,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.mlr.press/v306/wang26kz.html",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:075",
+      "title": "General agents need world models",
+      "year": 2025,
+      "venue": "ICML",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.mlr.press/v267/richens25a.html",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:043",
+      "title": "Predicting Future Actions of Reinforcement Learning Agents",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.neurips.cc/paper_files/paper/2024/hash/5aea56eefab60e06f35016478e21aae6-Abstract-Conference.html",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    },
+    {
+      "paper_id": "candidate:wm:v2:048",
+      "title": "VidMan: Exploiting Implicit Dynamics from Video Diffusion Model for Effective Robot Manipulation",
+      "year": 2024,
+      "venue": "NeurIPS",
+      "identifiers": {
+        "doi": null,
+        "arxiv_id": null,
+        "canonical_url": "https://proceedings.neurips.cc/paper_files/paper/2024/hash/481c70828a4ff20d31a646cc6cc95f3d-Abstract-Conference.html",
+        "openalex_id": null
+      },
+      "review_reasons": [
+        "citation_unconfirmed",
+        "institution_unmapped"
+      ],
+      "recorded_institutions": [],
+      "recorded_institution_reason": "verified_unmapped_conservative_floor",
+      "status": "pending"
+    }
+  ]
+}

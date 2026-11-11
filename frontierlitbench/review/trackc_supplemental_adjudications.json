@@ -298,5 +298,77 @@
       "observed_at_utc": "2026-11-11T07:39:54.272772+00:00",
       "notes": "The publication explicitly lists Ohio State as first-author affiliation, explains the asterisk as an internship rather than correspondence, and identifies the official repository. No corresponding author is explicitly designated. Citation and star counts were collected after the original Gold freeze."
     }
+  },
+  {
+    "doi": "10.18653/v1/2026.acl-long.1876",
+    "title": "LongVideoAgent: Multi-Agent Reasoning with Long Videos",
+    "decision": "eligible",
+    "identity_verified": true,
+    "track": "C",
+    "year": 2026,
+    "venue": "ACL",
+    "tier": "S",
+    "review_method": "supplemental FB-1.0 adjudication using frozen Track C reference; features observed after corpus freeze",
+    "evidence": {
+      "publication_url": "https://aclanthology.org/2026.acl-long.1876/",
+      "paper_pdf": "https://aclanthology.org/2026.acl-long.1876.pdf",
+      "project_url": "https://longvideoagent.github.io/",
+      "citation_source": "https://api.openalex.org/works/doi:10.18653/v1/2026.acl-long.1876",
+      "citation_count": 21,
+      "github_url": "https://github.com/longvideoagent/LongVideoAgent",
+      "github_stars": 133,
+      "first_author_institution": "Hong Kong University of Science and Technology",
+      "first_author_score": 1.0,
+      "corresponding_institutions": [
+        "Hong Kong University of Science and Technology"
+      ],
+      "corresponding_best_score": 1.0,
+      "institution_score": 1.0,
+      "institution_rubric": "frontierlitbench/config/institution_rubric_agents_draft.json",
+      "citation_percentile": 0.9642857142857143,
+      "github_percentile": 0.8142857142857143,
+      "Q": 0.9246428571428572,
+      "observed_at_utc": "2026-11-11T10:32:08.227236+00:00",
+      "notes": "Publication first page identifies HKUST as the authors affiliation and marks the corresponding author; it links the project page, which links the official repository. Counts observed after the original Gold freeze."
+    }
+  },
+  {
+    "doi": "10.18653/v1/2026.acl-long.583",
+    "title": "Memory-R1: Enhancing Large Language Model Agents to Manage and Utilize Memories via Reinforcement Learning",
+    "decision": "eligible",
+    "identity_verified": true,
+    "track": "C",
+    "year": 2026,
+    "venue": "ACL",
+    "tier": "S",
+    "review_method": "supplemental tier is stable over full institution score range; original reference remains provisional",
+    "evidence": {
+      "publication_url": "https://aclanthology.org/2026.acl-long.583/",
+      "paper_pdf": "https://aclanthology.org/2026.acl-long.583.pdf",
+      "github_url": "https://github.com/yansikuan/memory-r1",
+      "github_stars": 132,
+      "citation_source": "https://api.openalex.org/works/doi:10.18653/v1/2026.acl-long.583",
+      "citation_count": 299,
+      "first_author_institutions": [
+        "Ludwig Maximilian University of Munich",
+        "Munich Center for Machine Learning"
+      ],
+      "corresponding_institutions": [
+        "Ludwig Maximilian University of Munich",
+        "Munich Center for Machine Learning"
+      ],
+      "institution_score_range": [
+        0.4,
+        1.0
+      ],
+      "citation_percentile": 1.0,
+      "github_percentile": 0.8142857142857143,
+      "Q_range": [
+        0.8542857142857143,
+        0.9442857142857143
+      ],
+      "observed_at_utc": "2026-11-11T10:33:21.853493+00:00",
+      "notes": "Official author repository cites this paper and names the authors. Publication first page identifies author and corresponding affiliations. Exact institution score is unresolved, but Q exceeds the frozen S threshold across the entire possible 0.4–1.0 range. Feature counts postdate Gold freeze."
+    }
   }
 ]

@@ -1,0 +1,170 @@
+[
+  {
+    "lune_id": "bd642a58-5045-4d78-aca3-5917c58ebb3e",
+    "title": "Protein Conformation Generation via Force-Guided SE(3) Diffusion Models",
+    "doi": "10.48550/arxiv.2403.14088",
+    "decision": "out_of_scope",
+    "reason": "Models protein conformations for molecular dynamics.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "b43cd685-c333-44ec-8f70-4e5254004222",
+    "title": "SketchDream: Sketch-based Text-To-3D Generation and Editing",
+    "doi": "10.1145/3658120",
+    "decision": "out_of_scope",
+    "reason": "Outputs geometry and appearance of static 3D assets.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "3e0675dc-a15c-4daa-a1d7-a80c409e3a0e",
+    "title": "Frieren: Efficient Video-to-Audio Generation Network with Rectified Flow Matching",
+    "doi": "10.52202/079017-4068",
+    "decision": "out_of_scope",
+    "reason": "Synthesizes audio conditioned on silent video.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "3cc5eef7-9798-480e-b973-d7e3b985edb0",
+    "title": "Text-to-Vector Generation with Neural Path Representation",
+    "doi": "10.1145/3658204",
+    "decision": "out_of_scope",
+    "reason": "Produces vector graphics from text.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "4d114e65-bb7d-473d-bbb2-802dfa4e18e5",
+    "title": "Sequential Neural Score Estimation: Likelihood-Free Inference with Conditional Score Based Diffusion Models",
+    "doi": "10.48550/arxiv.2210.04872",
+    "decision": "out_of_scope",
+    "reason": "Estimates posterior distributions for simulator-based Bayesian inference.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "0e7f3515-beb7-4ced-b273-5e3021897c0b",
+    "title": "Instruction-based Image Manipulation by Watching How Things Move",
+    "doi": "10.1109/cvpr52734.2025.00258",
+    "decision": "out_of_scope",
+    "reason": "Trains on video frame pairs but edits single images.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "808c83fc-8f36-4397-a4f1-a8b8dcdcd14c",
+    "title": "TexSliders: Diffusion-Based Texture Editing in CLIP Space",
+    "doi": "10.1145/3641519.3657444",
+    "decision": "out_of_scope",
+    "reason": "Edits 2D texture maps for 3D content creation.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "e2573276-4e80-4750-977f-8da42fb2fbee",
+    "title": "RLZero: Direct Policy Inference from Language Without In-Domain Supervision",
+    "doi": "10.52202/085713-2794",
+    "decision": "out_of_scope",
+    "reason": "Infers reinforcement learning policies from language.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "aa48df56-a4d7-4b72-831b-023116987e98",
+    "title": "CamEdit: Continuous Camera Parameter Control for Photorealistic Image Editing",
+    "doi": "10.52202/085713-3808",
+    "decision": "out_of_scope",
+    "reason": "Edits single images using camera parameter controls.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "739a8dd9-a626-4240-aa23-90ea4eab0208",
+    "title": "LoMOE: Localized Multi-Object Editing via Multi-Diffusion",
+    "doi": "10.1145/3664647.3681199",
+    "decision": "out_of_scope",
+    "reason": "Edits selected objects or regions in static images.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "f24b6434-ed09-494b-8265-d4a7a6f68fa1",
+    "title": "Auto DragGAN: Editing the Generative Image Manifold in an Autoregressive Manner",
+    "doi": "10.1145/3664647.3680814",
+    "decision": "out_of_scope",
+    "reason": "Controls pixel locations in still images through StyleGAN.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "f942c355-ec0f-4e25-b627-ef16cca0286e",
+    "title": "X-Ray: A Sequential 3D Representation For Generation",
+    "doi": "10.52202/079017-4327",
+    "decision": "out_of_scope",
+    "reason": "Uses surface layers as a representation to generate 3D objects.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "5745fdcc-7fbf-4c39-9a08-8cdbed59527a",
+    "title": "VideoNeuMat: Neural Material Extraction from Generative Video Models",
+    "doi": "10.1145/3799902.3811190",
+    "decision": "out_of_scope",
+    "reason": "Extracts reusable 3D materials from video models.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "ff9d1bd0-8988-4062-a3ad-6f364275b59b",
+    "title": "Prompt-Softbox-Prompt: A Free-Text Embedding Control for Image Editing",
+    "doi": "10.1145/3746027.3755429",
+    "decision": "out_of_scope",
+    "reason": "Studies text embedding control in static image editing.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "4fd49d55-46e2-4add-af02-7e2ac7b59744",
+    "title": "Matting by Generation",
+    "doi": "10.1145/3641519.3657519",
+    "decision": "out_of_scope",
+    "reason": "Predicts an image alpha matte.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "f0166f1a-9153-4004-934b-1dc66e6c2f37",
+    "title": "ParallelEdits: Efficient Multi-Aspect Text-Driven Image Editing with Attention Grouping",
+    "doi": "10.52202/079017-0710",
+    "decision": "out_of_scope",
+    "reason": "Edits multiple aspects of still images.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "2ba46441-81af-4c0f-8994-42213e155427",
+    "title": "Towards Unified Multimodal Editing with Enhanced Knowledge Collaboration",
+    "doi": "10.52202/079017-3500",
+    "decision": "out_of_scope",
+    "reason": "Edits the knowledge of multimodal language models.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "562960af-9fb8-441e-8217-f0f084810a77",
+    "title": "Diffusion Feature Field for Text-based 3D Editing with Gaussian Splatting",
+    "doi": "10.52202/085713-0007",
+    "decision": "out_of_scope",
+    "reason": "Edits 3D Gaussian splat scenes.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "8266930a-4399-4e4f-a33b-deaf4d9f620d",
+    "title": "EditMaster: Bridging Text instruction and Visual Example for Multimodal guided Image Editing",
+    "doi": "10.1145/3746027.3754926",
+    "decision": "out_of_scope",
+    "reason": "Uses instructions and reference images to edit static images.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "25765ddd-fdfc-4531-92b5-d0843cc287ff",
+    "title": "DisControlFace: Adding Disentangled Control to Diffusion Autoencoder for One-shot Explicit Facial Image Editing",
+    "doi": "10.1145/3664647.3680607",
+    "decision": "out_of_scope",
+    "reason": "Performs one-shot facial image editing.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  },
+  {
+    "lune_id": "f7c02933-3944-4059-9fea-56f5c4cfffd3",
+    "title": "SAT3D: Image-driven Semantic Attribute Transfer in 3D",
+    "doi": "10.1145/3664647.3681035",
+    "decision": "out_of_scope",
+    "reason": "Transfers semantic attributes for image-driven 3D editing.",
+    "evidence": "Paper abstract retained in historical gold_video.jsonl"
+  }
+]
