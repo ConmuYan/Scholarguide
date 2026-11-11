@@ -1,0 +1,107 @@
+{
+  "retrieved_at": "2026-11-08",
+  "source": "Lune list_conferences",
+  "venues": [
+    {
+      "short_name": "NeurIPS",
+      "full_name": "Conference on Neural Information Processing Systems",
+      "indexed_years": [
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2020
+      ],
+      "available_target_years": [
+        2024,
+        2025
+      ]
+    },
+    {
+      "short_name": "ICLR",
+      "full_name": "International Conference on Learning Representations",
+      "indexed_years": [
+        2026,
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2020
+      ],
+      "available_target_years": [
+        2024,
+        2025,
+        2026
+      ]
+    },
+    {
+      "short_name": "CVPR",
+      "full_name": "IEEE/CVF Conference on Computer Vision and Pattern Recognition",
+      "indexed_years": [
+        2026,
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2020
+      ],
+      "available_target_years": [
+        2024,
+        2025,
+        2026
+      ]
+    },
+    {
+      "short_name": "AAAI",
+      "full_name": "AAAI Conference on Artificial Intelligence",
+      "indexed_years": [
+        2026,
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2020
+      ],
+      "available_target_years": [
+        2024,
+        2025,
+        2026
+      ]
+    },
+    {
+      "short_name": "ICCV",
+      "full_name": "IEEE/CVF International Conference on Computer Vision",
+      "indexed_years": [
+        2025,
+        2023,
+        2021,
+        2019
+      ],
+      "available_target_years": [
+        2025
+      ]
+    },
+    {
+      "short_name": "ICML",
+      "full_name": "International Conference on Machine Learning",
+      "indexed_years": [
+        2026,
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2020
+      ],
+      "available_target_years": [
+        2024,
+        2025,
+        2026
+      ]
+    }
+  ]
+}

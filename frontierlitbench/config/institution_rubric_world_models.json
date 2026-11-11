@@ -1,0 +1,77 @@
+{
+  "version": "world_institution_single_reviewer_2026-11-09",
+  "track_fields": [
+    "AI",
+    "ML",
+    "CV"
+  ],
+  "window": [
+    2021,
+    2025
+  ],
+  "reviewer": "codex_primary_single_reviewer",
+  "unmapped_policy": 0.4,
+  "unmapped_policy_note": "User directed immediate single-reviewer completion; conservative floor used where stored affiliation could not be mapped.",
+  "top25": [
+    "Carnegie Mellon University",
+    "Chinese Academy of Sciences",
+    "Cornell University",
+    "Institute of Automation",
+    "National University of Singapore",
+    "Peking University",
+    "Shanghai Jiao Tong University",
+    "Stanford University",
+    "The University of Texas at Austin",
+    "Tsinghua University",
+    "University of California San Diego",
+    "University of California, Berkeley",
+    "University of Massachusetts Amherst",
+    "University of Michigan",
+    "University of Science and Technology of China",
+    "University of Toronto",
+    "Zhejiang University"
+  ],
+  "rank_26_50": [
+    "Chinese University of Hong Kong, Shenzhen",
+    "Harbin Institute of Technology",
+    "Hong Kong University of Science and Technology",
+    "Johns Hopkins University",
+    "McGill University",
+    "Mila - Quebec Artificial Intelligence Institute",
+    "Nanjing University",
+    "New York University",
+    "Northwestern University",
+    "Rutgers, The State University of New Jersey",
+    "Seoul National University",
+    "Shanghai Artificial Intelligence Laboratory",
+    "University of California, Davis",
+    "University of Cambridge",
+    "University of Chinese Academy of Sciences",
+    "University of Hong Kong",
+    "University of Virginia",
+    "Universit�� de Montr��al",
+    "Xi'an Jiaotong University"
+  ],
+  "rank_51_100": [
+    "Beijing Academy of Artificial Intelligence",
+    "Beijing Institute of Technology",
+    "Beijing Jiaotong University",
+    "Dalian University of Technology",
+    "Huazhong University of Science and Technology",
+    "Mohamed bin Zayed University of Artificial Intelligence",
+    "National University of Defense Technology",
+    "The University of Osaka",
+    "University of Bonn",
+    "University of W��rzburg",
+    "Yonsei University"
+  ],
+  "industrial_labs": {
+    "Google DeepMind (United Kingdom)": 1.0,
+    "ByteDance (China)": 1.0,
+    "Alibaba Group (China)": 0.8,
+    "Alibaba Group (United States)": 0.8,
+    "Xiaomi (China)": 0.6,
+    "Robert Bosch (United States)": 0.6
+  },
+  "source": "https://csrankings.org/#/fromyear/2021/toyear/2025/index?ai&vision&mlmining"
+}
