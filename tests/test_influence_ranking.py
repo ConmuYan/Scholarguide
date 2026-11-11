@@ -4,6 +4,29 @@ from source import merge_papers
 from workflow import select_papers, coverage
 
 class InfluenceRankingTests(unittest.TestCase):
+    def test_crossref_requires_matching_published_conference_identity(self):
+        from source import AcademicSource
+        from research_policy import matched_publication
+        source = AcademicSource.__new__(AcademicSource)
+        message = {'DOI': '10.1109/CVPR52733.2024.00715',
+                   'title': ['VidToMe: Video Token Merging for Zero-Shot Video Editing'],
+                   'container-title': ['2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)'],
+                   'type': 'proceedings-article', 'published': {'date-parts': [[2024, 6, 16]]}}
+        source._json = lambda *args, **kwargs: {'message': message}
+        paper = Paper(id='lune:x', title=message['title'][0], abstract='', url='',
+                      doi=message['DOI'], venue='CVPR', year=2024)
+        verified = source.verify_crossref_publication(paper)
+        self.assertTrue(matched_publication(verified, {'venue': 'CVPR', 'year_from': 2024,
+                                                       'year_to': 2024, 'publication_type': 'conference',
+                                                       'accepted_only': True}))
+        for field, bad in [('title', ['Different']), ('type', 'posted-content'),
+                           ('container-title', ['ICCV']), ('published', {'date-parts': [[2025]]}),
+                           ('DOI', '10.1109/other')]:
+            old = message[field]
+            message[field] = bad
+            self.assertIs(source.verify_crossref_publication(paper), paper)
+            message[field] = old
+
     def test_exact_openalex_conference_publication_verification(self):
         from types import SimpleNamespace
         from source import AcademicSource

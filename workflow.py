@@ -315,6 +315,7 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
     acl_checked: set[str] = set()
     openreview_checked: set[str] = set()
     openalex_publication_checked: set[str] = set()
+    crossref_publication_checked: set[str] = set()
     citation_checked: set[str] = set()
 
     def event(action: str, **details) -> None:
@@ -509,6 +510,29 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
                             or matched_publication(paper, asdict(request))):
                         continue
                     openalex_publication_checked.add(paper.id)
+                    try:
+                        candidates[index] = verifier(paper)
+                    except RunCancelled:
+                        raise
+                    except GuideError:
+                        pass
+                result['candidates'] = [p.to_dict() for p in candidates]
+            # Crossref is an independent fallback when OpenAlex cannot verify
+            # an IEEE proceedings DOI. Keep this within the multi-source mode.
+            verifier = getattr(source, 'verify_crossref_publication', None)
+            if (request.accepted_only and callable(verifier)
+                    and len(getattr(source, 'providers', ()) or ()) > 1):
+                from research_policy import matched_publication, venue_identity
+                from source import normalize_doi
+                for index, paper in enumerate(candidates):
+                    if len(crossref_publication_checked) >= 8 or budget.remaining() < 15:
+                        break
+                    if (paper.id in crossref_publication_checked or not paper.year
+                            or not re.fullmatch(r'10\.1109/[a-z0-9.]+', normalize_doi(paper.doi))
+                            or venue_identity(paper.venue or '') not in ('CVPR', 'ICCV')
+                            or matched_publication(paper, asdict(request))):
+                        continue
+                    crossref_publication_checked.add(paper.id)
                     try:
                         candidates[index] = verifier(paper)
                     except RunCancelled:

@@ -861,7 +861,7 @@ class AcademicSource:
         with self._lock:
             self.cooldown[provider] = max(self.cooldown.get(provider, 0),
                                           time.monotonic() + max(1, seconds))
-        if self.store is not None:
+        if self.store is not None and provider in PROVIDERS:
             try:
                 self.store.cooldown(provider, time.time() + max(1, seconds), errorcode=code)
             except RunCancelled:
@@ -892,7 +892,7 @@ class AcademicSource:
                 with self._lock:
                     if self.cooldown.get(provider, 0) <= time.monotonic():
                         self.cooldown.pop(provider, None)
-                if self.store is not None:
+                if self.store is not None and provider in PROVIDERS:
                     try:
                         scope = getattr(self.store, 'budget_scope', None)
                         with scope(Budget(.25)) if callable(scope) else nullcontext():
@@ -972,15 +972,16 @@ class AcademicSource:
             if body is not None:
                 _unknown_post(error)
             return error
+        label = PROVIDERS[provider].label if provider in PROVIDERS else provider
         if raw.lstrip()[:1] == b'<':
-            raise invalid_response(f'{PROVIDERS[provider].label} returned an HTML challenge '
+            raise invalid_response(f'{label} returned an HTML challenge '
                                    '(bot protection); use an API key or a cached browser session.')
         try:
             parsed = json.loads(raw)
         except (ValueError, UnicodeDecodeError):
-            raise invalid_response(f'{PROVIDERS[provider].label} returned invalid JSON.') from None
+            raise invalid_response(f'{label} returned invalid JSON.') from None
         if not isinstance(parsed, dict):
-            raise invalid_response(f'{PROVIDERS[provider].label} returned an invalid payload.')
+            raise invalid_response(f'{label} returned an invalid payload.')
         return parsed
 
     # -- providers -------------------------------------------------------
@@ -1523,6 +1524,36 @@ class AcademicSource:
         except Exception:
             return {}
         return _acl_html(html)
+
+    def verify_crossref_publication(self, paper: Paper) -> Paper:
+        """Verify an exact IEEE conference paper using Crossref metadata."""
+        from research_policy import venue_identity
+        doi = normalize_doi(paper.doi)
+        venue = venue_identity(paper.venue or '')
+        if not re.fullmatch(r'10\.1109/[a-z0-9.]+', doi) or not paper.year or venue not in ('CVPR', 'ICCV'):
+            return paper
+        url = 'https://api.crossref.org/works/' + quote(doi, safe='')
+        try:
+            message = self._json(url, provider='crossref').get('message') or {}
+        except RunCancelled:
+            raise
+        except GuideError:
+            return paper
+        key = lambda value: ''.join(re.findall(r'\w+', str(value or '').casefold()))
+        titles = message.get('title') or []
+        containers = message.get('container-title') or []
+        parts = (message.get('published') or {}).get('date-parts') or []
+        year = parts[0][0] if parts and parts[0] else None
+        if (normalize_doi(message.get('DOI') or '') != doi or len(titles) != 1
+                or key(titles[0]) != key(paper.title) or year != paper.year
+                or message.get('type') != 'proceedings-article'
+                or not any(venue_identity(name) == venue for name in containers)):
+            return paper
+        record = _record('conference', 'published', venue_name=next(name for name in containers if venue_identity(name) == venue),
+                         date=str(year), doi=doi, document_type='conference-paper', verified=True,
+                         evidence=[_evidence('crossref', url, 'message', message)])
+        existing = (paper.publication or {}).get('records') or []
+        return replace(paper, publication=merge_publication_records([*existing, record]))
 
     def verify_openalex_publication(self, paper: Paper) -> Paper:
         """Verify a conference publication using an exact DOI lookup."""

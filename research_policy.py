@@ -141,6 +141,7 @@ def _evidenced(record: Mapping[str, Any]) -> bool:
         hosts = {
             'openreview': {'openreview.net', 'api2.openreview.net', 'api.openreview.net'},
             'openalex': {'api.openalex.org', 'openalex.org'},
+            'crossref': {'api.crossref.org'},
             'semantic_scholar': {'api.semanticscholar.org', 'www.semanticscholar.org', 'semanticscholar.org'},
             'acl_anthology': {'aclanthology.org'},
             'arxiv': {'arxiv.org', 'export.arxiv.org'},
