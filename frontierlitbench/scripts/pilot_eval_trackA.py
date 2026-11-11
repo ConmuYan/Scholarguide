@@ -6,17 +6,15 @@ stage), match Top-5 against frozen Gold v1.2.1, and compute FB-1.0 §8 metrics.
 
 Honest scope: this is a RETRIEVAL PILOT, not the official system run — the full
 ScholarGuide agent (LLM reasoning + tools) was not executed here. One run per
-task (protocol suggests 3 for official runs). Results are optimistic-bound
-because Gold itself was discovered via Lune (same source).
+task (protocol suggests 3 for official runs). Unmatched papers require review.
 """
 import json, os, re, sys, unicodedata, datetime, collections
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '07_管线脚本'))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lune_client import LuneClient
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-GOLD = os.path.join(BASE, '02_最终语料', 'gold_video.jsonl')
-OUTD = os.path.join(BASE, '04_检查与报告')
+GOLD = os.path.join(BASE, 'corpus', 'gold_video.jsonl')
+OUTD = os.path.join(BASE, 'reports')
 
 TRACK_DESC = ("video generation and editing: text-to-video and image-to-video generation, "
               "video diffusion models and Diffusion Transformers, controllable video editing, "
@@ -57,11 +55,6 @@ def main():
     by_doi = {norm_doi(g.get('doi')): g for g in scored if g.get('doi')}
     by_title_year = {(norm_title(g['title']), g['year']): g for g in scored}
     by_pid = {g['lune_id']: g for g in scored}
-    # title-only fallback when exactly one gold candidate shares the title (guards year metadata drift)
-    title_groups = collections.defaultdict(list)
-    for g in scored:
-        title_groups[norm_title(g['title'])].append(g)
-
     client = LuneClient()
     client.initialize()
 
@@ -81,6 +74,7 @@ def main():
             seen, out = set(), []
             for it in order_items:
                 if year is not None and it.get('year') != year: continue
+                if year is None and it.get('year') not in (2024, 2025, 2026): continue
                 if venues is not None and it.get('conference') not in venues: continue
                 key = it.get('paper_id') or norm_doi(it.get('doi')) or (norm_title(it.get('title')), it.get('year'))
                 if key in seen: continue
@@ -97,10 +91,6 @@ def main():
                     g = by_doi.get(norm_doi(it.get('doi')))
                 if g is None:
                     g = by_title_year.get((norm_title(it.get('title')), it.get('year')))
-                if g is None:
-                    grp = title_groups.get(norm_title(it.get('title')))
-                    if grp and len(grp) == 1:
-                        g = grp[0]
                 if g is not None:
                     gain = {'S': 5, 'A': 3, 'B': 1}[g['tier']]
                     recs.append({'rank': rank, 'title': it['title'], 'venue': it.get('conference'), 'year': it.get('year'),
@@ -108,7 +98,7 @@ def main():
                     gains.append(gain)
                 else:
                     recs.append({'rank': rank, 'title': it['title'], 'venue': it.get('conference'), 'year': it.get('year'),
-                                 'matched': False, 'tier': None, 'gain': 0, 'doi': it.get('doi')})
+                                 'matched': False, 'tier': None, 'gain': None, 'doi': it.get('doi')})
                     gains.append(0)
                     pending.append(it['title'])
             while len(gains) < 5: gains.append(0)
@@ -117,10 +107,10 @@ def main():
             ideal = sorted(({'S': 5, 'A': 3, 'B': 1}[g['tier']] for g in pool), reverse=True)[:5]
             while len(ideal) < 5: ideal.append(0)
             idcg = sum(g / math.log2(i + 2) for i, g in enumerate(ideal))
-            return {'top5': recs, 'hits@5': sum(1 for r in recs if r['matched']),
-                    'WeightedHit@5_pct': round(sum(gains[:5]) / 25 * 100, 1),
-                    'nDCG@5': round(dcg / idcg, 4) if idcg else 0.0,
-                    'S_tier_hit@5': 1 if any(r['matched'] and r['tier'] == 'S' for r in recs) else 0,
+            return {'top5': recs, 'hits@5': None if pending else sum(1 for r in recs if r['matched']),
+                    'WeightedHit@5_pct': None if pending else round(sum(gains[:5]) / 25 * 100, 1),
+                    'nDCG@5': None if pending or not idcg else round(dcg / idcg, 4),
+                    'S_tier_hit@5': None if pending else int(any(r['matched'] and r['tier'] == 'S' for r in recs)),
                     'pending_adjudication': pending}
 
         probeA = score_top(build_top(items))                                  # Lune relevance order
@@ -131,13 +121,16 @@ def main():
               '| A: hits', probeA['hits@5'], 'nDCG', probeA['nDCG@5'],
               '| B: hits', probeB['hits@5'], 'nDCG', probeB['nDCG@5'])
 
-    avgA = sum(r['probeA_lune_relevance']['nDCG@5'] for r in results) / len(results)
-    avgB = sum(r['probeB_citation_rerank']['nDCG@5'] for r in results) / len(results)
+    def macro(key):
+        values = [r[key]['nDCG@5'] for r in results]
+        return None if any(v is None for v in values) else round(sum(values) / len(values), 4)
+    avgA = macro('probeA_lune_relevance')
+    avgB = macro('probeB_citation_rerank')
     out = {'run_version': 'trackA_pilot_lune_retrieval_2026-11-10',
            'as_of': '2026-11-10', 'corpus_version': 'trackA_video_v1.2.1',
-           'disclaimer': 'Retrieval pilot via Lune (same source as Gold construction) — optimistic bound; NOT the official ScholarGuide system run. 1 run/task.',
-           'macro_avg_nDCG@5_probeA_lune_relevance': round(avgA, 4),
-           'macro_avg_nDCG@5_probeB_citation_rerank': round(avgB, 4),
+           'disclaimer': 'Lune retrieval pilot, not a ScholarGuide system run. Unmatched papers await adjudication. One run per task.',
+           'macro_avg_nDCG@5_probeA_lune_relevance': avgA,
+           'macro_avg_nDCG@5_probeB_citation_rerank': avgB,
            'tasks': results}
     json.dump(out, open(os.path.join(OUTD, 'pilot_results_trackA.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     json.dump(raw_all, open(os.path.join(OUTD, 'pilot_raw_responses_trackA.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
@@ -154,22 +147,21 @@ Two probes, same retrieved pool:
 - **Probe A** — Top-5 in Lune's own relevance order (raw retrieval, no influence reranking).
 - **Probe B** — Top-5 re-ranked by Lune `citation_count` (metadata any system can see; approximates an "influential papers" intent).
 
-**Macro-average nDCG@5: Probe A = {avgA:.4f} / Probe B = {avgB:.4f}**
+**Macro-average nDCG@5: Probe A = {avgA} / Probe B = {avgB}**
 
 | Task | Valid pool | A: Hits@5 | A: nDCG@5 | A: WH@5 | B: Hits@5 | B: nDCG@5 | B: WH@5 |
 |---|---|---|---|---|---|---|---|
 """)
         for r in results:
             a, b = r['probeA_lune_relevance'], r['probeB_citation_rerank']
-            f.write(f"| {r['task']} | {r['n_pool']} | {a['hits@5']}/5 | {a['nDCG@5']:.4f} | {a['WeightedHit@5_pct']}% "
-                    f"| {b['hits@5']}/5 | {b['nDCG@5']:.4f} | {b['WeightedHit@5_pct']}% |\n")
+            f.write(f"| {r['task']} | {r['n_pool']} | {a['hits@5']} | {a['nDCG@5']} | {a['WeightedHit@5_pct']} "
+                    f"| {b['hits@5']} | {b['nDCG@5']} | {b['WeightedHit@5_pct']} |\n")
         f.write("""
 ## Caveats
-- Optimistic bound: Gold was itself discovered via Lune (same index), so retrieval overlap is inflated vs. an independent source.
 - A real ScholarGuide run (LLM + tools, 3 repeats per protocol §7.1) may score differently in either direction.
-- Unmatched Top-5 papers (pending_adjudication per §7.3) were counted as gain 0 here; they are listed in the JSON, not adjudicated. Several are plausibly valid papers sitting in the 322-paper review backup pool.
+- Unmatched Top-5 papers await adjudication. Affected metrics are not reported.
 """)
-    print('macro avg nDCG@5  A:', round(avgA, 4), ' B:', round(avgB, 4))
+    print('macro avg nDCG@5  A:', avgA, ' B:', avgB)
     print('written to', OUTD)
 
 if __name__ == '__main__':
