@@ -32,6 +32,12 @@ class ThreeTrackTests(unittest.TestCase):
         self.assertEqual(result['status'], 'run_incomplete')
         self.assertIsNone(result['metrics'])
 
+    def test_exhausted_search_without_results_is_incomplete(self):
+        result = score({'status': 'no_results', 'stop_reason': 'search_budget_exhausted',
+                        'papers': []}, load('gold_world_models.jsonl'), 'FB-02')
+        self.assertEqual(result['status'], 'run_incomplete')
+        self.assertIsNone(result['metrics'])
+
     def test_completed_bounded_search_with_fewer_papers_is_scored(self):
         gold = load('gold_world_models.jsonl')
         p = gold[0]

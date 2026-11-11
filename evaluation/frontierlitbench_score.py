@@ -231,7 +231,7 @@ def score(result, gold, task, adjudications=None):
     # A completed search may legitimately return fewer than five verified
     # papers; missing positions receive zero. An error or interruption is not
     # an empty recommendation and must never be presented as a scored run.
-    exhausted = (result.get('status') in ('partial', 'no_results') and
+    exhausted = (result.get('status') == 'partial' and bool(items) and
                  result.get('stop_reason') in ('search_budget_exhausted', 'repeated_query'))
     run_failed = result.get('status') not in (None, 'complete', 'completed') and not exhausted
     if not pending and not run_failed:
