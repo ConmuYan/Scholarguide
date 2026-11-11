@@ -1,5 +1,7 @@
 # Track B World Model review status
 
+> Historical FB-1.0 review record, superseded for new evaluations by `corpus_v1.1/gold_world_models.jsonl`. The v1.1 rebuild incorporated 13 citation observations, 13 affiliation reviews, two official repositories and recomputed all tiers; see `DELIVERY_PLAN.md` and `final_adjudication_report_v1.1.json`.
+
 - This is a working research snapshot, not a claim of exhaustive independent verification.
 - The corpus uses a primary single-reviewer policy; independent cross-review was explicitly waived. A deterministic 25% sample is retained for future sign-off.
 - Thirteen of the 128 Gold records have citation status `verified_absent_counted_zero_single_reviewer_freeze` and retain zero without an observed OpenAlex citation count. Missing counts are not verified zero; these records and their labels need re-adjudication before final release. The earlier count of nineteen was stale.

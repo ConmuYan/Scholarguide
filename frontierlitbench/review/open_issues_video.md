@@ -1,5 +1,7 @@
 # Track A open issues
 
+> Historical FB-1.0 review record, superseded for new evaluations by `corpus_v1.1/gold_video.jsonl`. The v1.1 corpus applies the reviewed scope decisions and the documented conservative institution policy; see `DELIVERY_PLAN.md`.
+
 1. **18 papers excluded from scoring** (protocol §4.4): first-author institution unverifiable via OpenAlex (rate-limited during re-verification; caches retained for resume). Affected titles listed in `corpus/gold_video.jsonl` with `institution_status=unverified_excluded`.
 2. **A-dimension evidence level**: 53 of the 94 re-verified papers use author-level evidence (OpenAlex `last_known_institutions`) instead of work-level authorships; flagged per-paper in gold records. May over/under-state affiliation at publication time.
 3. **Policy confirmations pending group sign-off** (see review_workbook.html header): citation source policy (OpenAlex single source), none_available=0.0, industry-lab quartile mapping population (labs observed in Track A pool).

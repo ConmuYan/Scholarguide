@@ -1,5 +1,7 @@
 # Unified evaluation smoke test — 2026-11-11
 
+> Historical pre-FB-1.1 smoke record. Final matrix results and the reviewed adjudication set are in `scholarguide_matrix_20261111.md` and `../review/final_adjudications_v1.1.json`.
+
 These are single-run engineering checks, not benchmark leaderboard results. All use ScholarGuide method A, DeepSeek `deepseek-flash`, `multi` configured sources, disabled cache, and the common task prompt. The snapshots and supplemental decisions remain provisional.
 
 | Task | Run outcome | Scoring status |

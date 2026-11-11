@@ -1,5 +1,7 @@
 # FrontierLitBench - Track B World Model data release
 
+> Historical FB-1.0 data record. New evaluations use [`corpus_v1.1/gold_world_models.jsonl`](corpus_v1.1/gold_world_models.jsonl), which contains the reviewed citation, affiliation, repository and recomputed tier corrections (128 papers, S/A/B = 26/51/51).
+
 This directory contains the FB-1.0 snapshot for **Track B: World Model**: latent dynamics, action-conditioned prediction, environment simulation, video world models, autonomous driving, and embodied or robot planning.
 
 **Historical corpus: 128 papers (S=26 / A=51 / B=51). Candidate pool: 150 papers from the 2024-2026 venue whitelist.** The five Track B tasks FB-02/07/08/09/14 can be run against this snapshot for exploratory evaluation, but the labels are provisional and should not be reported as final benchmark results until the issues below are resolved. The smallest year cell contains 34 papers.
