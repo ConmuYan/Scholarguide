@@ -1,0 +1,28 @@
+{
+  "status": "partial_review",
+  "note": "Official repository evidence found after the historical snapshot. Repository availability is time-dependent; verify the snapshot date and star counts before recalculating labels. These observations do not replace the historical Gold.",
+  "papers": [
+    {
+      "paper_id": "candidate:wm:v2:149",
+      "title": "VJEPA: Variational Joint Embedding Predictive Architectures as Probabilistic World Models",
+      "repository_url": "https://github.com/YongchaoHuang/VJEPA",
+      "venue_evidence_url": "https://proceedings.mlr.press/v306/huang26ba.html",
+      "github_created_at": "2026-01-20T00:20:43Z",
+      "github_stars_observed": 7,
+      "reviewed_at": "2026-11-11",
+      "historical_repo_status": "none_available",
+      "reason": "The repository identifies itself as the paper's code and contains the ICML poster. Historical zero requires rechecking."
+    },
+    {
+      "paper_id": "candidate:wm:v2:134",
+      "title": "Beyond Pixel Histories: World Models with Persistent 3D State",
+      "repository_url": "https://github.com/francelico/PERSIST",
+      "venue_evidence_url": "https://proceedings.mlr.press/v306/garcin26a.html",
+      "github_created_at": "2026-03-04T11:49:31Z",
+      "github_stars_observed": 129,
+      "reviewed_at": "2026-11-11",
+      "historical_repo_status": "none_available",
+      "reason": "The paper's project links to the PERSIST implementation. Historical zero requires rechecking."
+    }
+  ]
+}

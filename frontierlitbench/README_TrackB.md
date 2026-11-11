@@ -2,7 +2,7 @@
 
 This directory contains the FB-1.0 snapshot for **Track B: World Model**: latent dynamics, action-conditioned prediction, environment simulation, video world models, autonomous driving, and embodied or robot planning.
 
-**Corpus: 128 Gold papers (S=26 / A=51 / B=51). Candidate pool: 150 papers from the 2024-2026 venue whitelist.** The five Track B tasks FB-02/07/08/09/14 are eligible; the smallest year cell contains 34 Gold papers.
+**Historical corpus: 128 papers (S=26 / A=51 / B=51). Candidate pool: 150 papers from the 2024-2026 venue whitelist.** The five Track B tasks FB-02/07/08/09/14 can be run against this snapshot for exploratory evaluation, but the labels are provisional and should not be reported as final benchmark results until the issues below are resolved. The smallest year cell contains 34 papers.
 
 Scoring follows **Q = 0.55*C + 0.30*G + 0.15*A**. C and G use Track x Year midrank percentiles; tiers use S=round(0.20N), A=round(0.40N), B=rest, with paper-ID ascending as the stable tiebreaker.
 
@@ -17,6 +17,6 @@ Scoring follows **Q = 0.55*C + 0.30*G + 0.15*A**. C and G use Track x Year midra
 
 ## Review and limitations
 
-This is a working research dataset, not a claim of exhaustive verification. The repository feature was re-audited on 2026-11-11 after the initial snapshot undercounted official code repositories. Negative repository outcomes, unresolved OpenAlex citation counts, and conservative institution floors are disclosed in `review/open_issues_world_models.md`; a deterministic 25% sample is retained in `review/sample_for_human_review_world_models.csv`.
+This is a working research dataset. Thirteen citation counts were not observed, 54 institution scores used an unmapped default, and two additional official repositories were found after the historical re-audit. These affect the computed tiers, including potentially other papers' tiers. Details and the remaining work are in `review/open_issues_world_models.md`. Generate the paper-level review queue with `python frontierlitbench/scripts/track_b_review_queue.py`.
 
-ScholarGuide search runs and retrieval metrics are downstream evaluation artifacts and are not included in this data-construction PR. Integrity hashes are pinned in `manifests/corpus_sha256_world_models.json`; do not hand-edit frozen files without bumping the corpus version and hashes.
+ScholarGuide search runs and retrieval metrics are downstream evaluation artifacts. Preserve the historical snapshot when producing corrected labels, so earlier exploratory runs remain interpretable.

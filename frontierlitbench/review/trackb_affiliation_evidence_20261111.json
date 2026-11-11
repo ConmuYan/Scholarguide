@@ -59,6 +59,60 @@
       "reviewed_at": "2026-11-11"
     },
     {
+      "paper_id": "candidate:wm:v2:027",
+      "title": "Hieros: Hierarchical Imagination on Structured State Space Sequence World Models",
+      "first_author": "Paul Mattes",
+      "first_author_institutions": ["Hasso Plattner Institute, University of Potsdam"],
+      "evidence_url": "https://arxiv.org/pdf/2310.05167",
+      "evidence_location": "First page, affiliation 1; version 3 dated 2024-02-18",
+      "reviewed_at": "2026-11-11"
+    },
+    {
+      "paper_id": "candidate:wm:v2:018",
+      "title": "Learning to Act without Actions",
+      "first_author": "Dominik Schmidt",
+      "first_author_institutions": ["Weco AI"],
+      "evidence_url": "https://arxiv.org/pdf/2312.10812",
+      "evidence_location": "First page, author affiliation; ICLR 2024 version 2",
+      "reviewed_at": "2026-11-11"
+    },
+    {
+      "paper_id": "candidate:wm:v2:033",
+      "title": "RoboDreamer: Learning Compositional World Models for Robot Imagination",
+      "first_author": "Siyuan Zhou",
+      "first_author_institutions": ["Hong Kong University of Science and Technology"],
+      "evidence_url": "https://arxiv.org/pdf/2404.12377",
+      "evidence_location": "First page, affiliation 1; version 1 dated 2024-04-18",
+      "reviewed_at": "2026-11-11"
+    },
+    {
+      "paper_id": "candidate:wm:v2:076",
+      "title": "PlaySlot: Learning Inverse Latent Dynamics for Controllable Object-Centric Video Prediction and Planning",
+      "first_author": "Angel Villar-Corrales",
+      "first_author_institutions": ["University of Bonn"],
+      "evidence_url": "https://arxiv.org/pdf/2502.07600",
+      "evidence_location": "First page, affiliation 1; version 2 dated 2025-05-21",
+      "reviewed_at": "2026-11-11"
+    },
+    {
+      "paper_id": "candidate:wm:v2:144",
+      "title": "Learning Latent Action World Models in the Wild",
+      "first_author": "Quentin Garrido",
+      "first_author_institutions": ["FAIR at Meta"],
+      "evidence_url": "https://arxiv.org/pdf/2601.05230",
+      "evidence_location": "First page, affiliation 1; version 2 dated 2026-01-20",
+      "reviewed_at": "2026-11-11"
+    },
+    {
+      "paper_id": "candidate:wm:v2:135",
+      "title": "Causal-JEPA: Learning World Models through Object-Level Latent Masking",
+      "first_author": "Heejeong Nam",
+      "first_author_institutions": ["Brown University", "GalilAI"],
+      "evidence_url": "https://arxiv.org/pdf/2602.11389",
+      "evidence_location": "First page, affiliation 1; version 2 dated 2026-05-28",
+      "reviewed_at": "2026-11-11"
+    },
+    {
       "paper_id": "candidate:wm:v2:116",
       "title": "Planning in 8 Tokens: A Compact Discrete Tokenizer for Latent World Model",
       "first_author": "Dongwon Kim",
