@@ -1,5 +1,7 @@
 # FrontierLitBench track index
 
+For task prompts, ScholarGuide runs, chat-product baselines and shared scoring, see the [evaluation guide](EVALUATION_GUIDE.md). Current reference datasets and results remain under review.
+
 | Track | Scope | Corpus | Status and review |
 |---|---|---|---|
 | A | Video generation and editing | [Video corpus](corpus/gold_video.jsonl) | [Track A notes](README_TrackA.md), [open issues](review/open_issues_video.md) |

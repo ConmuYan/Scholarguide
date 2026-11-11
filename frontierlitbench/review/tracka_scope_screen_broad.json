@@ -1,0 +1,261 @@
+{
+  "method": "DeepSeek preliminary screen; human review required, not final labels",
+  "results": [
+    {
+      "id": "0d64743f-f153-4679-a32c-af911ca43835",
+      "decision": "uncertain",
+      "reason": "Character animation via motion diffusion; generates motion/animations rather than video pixels, so its relationship to video generation/editing is unclear."
+    },
+    {
+      "id": "792d6d98-e7ea-4efc-bb84-334dadb2b197",
+      "decision": "uncertain",
+      "reason": "Human motion in-betweening for character animation; motion/pose generation rather than video generation/editing, so relevance is unclear."
+    },
+    {
+      "id": "31529de5-0025-45f0-810c-077a96a66c01",
+      "decision": "out_of_scope",
+      "reason": "Unified visual understanding and image/visual generation via discrete tokens; does not specifically target video generation or editing."
+    },
+    {
+      "id": "95ba6f3f-6ba1-4d8d-972b-bc356c6db47a",
+      "decision": "uncertain",
+      "reason": "Uses video diffusion for novel-view synthesis and 3D consistency; not clearly video generation/editing, so relationship is unclear."
+    },
+    {
+      "id": "bd642a58-5045-4d78-aca3-5917c58ebb3e",
+      "decision": "out_of_scope",
+      "reason": "Protein conformation generation using diffusion; unrelated to video generation or editing."
+    },
+    {
+      "id": "b43cd685-c333-44ec-8f70-4e5254004222",
+      "decision": "out_of_scope",
+      "reason": "Sketch-based text-to-3D generation and editing of static 3D content; not video generation or editing."
+    },
+    {
+      "id": "3e0675dc-a15c-4daa-a1d7-a80c409e3a0e",
+      "decision": "out_of_scope",
+      "reason": "Video-to-audio generation; the output is audio rather than video generation or editing."
+    },
+    {
+      "id": "3cc5eef7-9798-480e-b973-d7e3b985edb0",
+      "decision": "out_of_scope",
+      "reason": "Text-to-vector graphics generation; targets static vector graphics, not video generation or editing."
+    },
+    {
+      "id": "e250d773-0ec2-4d22-ac9a-19d9feaf35e4",
+      "decision": "in_scope",
+      "reason": "Studies scaling laws for diffusion transformers, which are core backbones for video diffusion/generation and relevant to scaling video generation models."
+    },
+    {
+      "id": "253f1b07-8606-4a78-b20a-66696c56cb66",
+      "decision": "in_scope",
+      "reason": "Directly studies limitations of modern video generators as motion/world models and proposes trajectory generation using video-generator-style architectures, relevant to video prediction/generation."
+    },
+    {
+      "id": "b4b3c438-fb75-4c1f-9e06-5587b09bbc70",
+      "decision": "uncertain",
+      "reason": "Generates human motion for animation and robotics rather than video pixels; its relationship to video generation/editing is animation-adjacent but unclear."
+    },
+    {
+      "id": "7292245a-a3a7-49f6-94c9-117c9fed6240",
+      "decision": "in_scope",
+      "reason": "Uses video diffusion priors to synthesize novel views for 3D reconstruction, directly leveraging video generation as a component and generating video-like novel views."
+    },
+    {
+      "id": "4d114e65-bb7d-473d-bbb2-802dfa4e18e5",
+      "decision": "out_of_scope",
+      "reason": "Bayesian likelihood-free inference with score-based diffusion models; unrelated to video generation or editing."
+    },
+    {
+      "id": "9ae875c4-fe47-4039-8eb7-da157fbb598a",
+      "decision": "uncertain",
+      "reason": "Text-driven human motion diffusion for animation, not video generation/editing; relevance to video generation is animation-adjacent but unclear."
+    },
+    {
+      "id": "0e7f3515-beb7-4ced-b273-5e3021897c0b",
+      "decision": "out_of_scope",
+      "reason": "Instruction-based image manipulation/editing, even if trained on video frame pairs; target output is static image editing, not video generation/editing."
+    },
+    {
+      "id": "808c83fc-8f36-4397-a4f1-a8b8dcdcd14c",
+      "decision": "out_of_scope",
+      "reason": "Diffusion-based texture editing for 3D content pipelines; focused on texture/image editing rather than video generation or editing."
+    },
+    {
+      "id": "20a30611-625e-4904-a332-9c1fadd83ca9",
+      "decision": "in_scope",
+      "reason": "Introduces a diffusion-based model for generating realistic human interaction animation videos, directly relevant to video generation."
+    },
+    {
+      "id": "b3404f04-0eb6-4f08-aa02-8b50786f3517",
+      "decision": "in_scope",
+      "reason": "Focuses on long video diffusion generation with segmented cross-attention and curated video data, directly targeting video generation."
+    },
+    {
+      "id": "caa394fa-27f4-4ebd-86b5-3cc57d3c2403",
+      "decision": "in_scope",
+      "reason": "Presents a joint image-video tokenizer for visual generation, relevant to video tokenization and generative modeling."
+    },
+    {
+      "id": "ac8f7411-bcef-4ecf-8536-ee528257bc35",
+      "decision": "in_scope",
+      "reason": "Studies scaling laws for video diffusion transformers, directly relevant to video generation training and efficiency."
+    },
+    {
+      "id": "e2573276-4e80-4750-977f-8da42fb2fbee",
+      "decision": "out_of_scope",
+      "reason": "Applies video generative models as a component for reinforcement learning policy inference, but does not target video generation or editing itself."
+    },
+    {
+      "id": "aa48df56-a4d7-4b72-831b-023116987e98",
+      "decision": "out_of_scope",
+      "reason": "Targets photorealistic static image editing with camera parameters, which is explicitly outside the video generation/editing track."
+    },
+    {
+      "id": "1beac583-f1d5-41bb-8dc4-a2432e705918",
+      "decision": "in_scope",
+      "reason": "Proposes post-training quantization specifically for video diffusion models, relevant to compressing and accelerating video generation."
+    },
+    {
+      "id": "849cbe10-ec7a-43f7-8f80-af3c16ea3e24",
+      "decision": "out_of_scope",
+      "reason": "Addresses dynamic non-line-of-sight computational imaging and volume reconstruction, not video generation or editing."
+    },
+    {
+      "id": "739a8dd9-a626-4240-aa23-90ea4eab0208",
+      "decision": "out_of_scope",
+      "reason": "Focuses on localized multi-object image editing and an image editing benchmark, not video generation or editing."
+    },
+    {
+      "id": "28e08b72-32e8-4a68-a2d7-7ac77f72d484",
+      "decision": "uncertain",
+      "reason": "Character motion warping/editing is animation-related and does not clearly target video generation or editing."
+    },
+    {
+      "id": "9958f959-2050-41a4-a403-07a5f67865a1",
+      "decision": "uncertain",
+      "reason": "Synthesizes crowd animation for virtual environments; its relationship to video generation/editing is animation-dependent and unclear."
+    },
+    {
+      "id": "f24b6434-ed09-494b-8265-d4a7a6f68fa1",
+      "decision": "out_of_scope",
+      "reason": "Static GAN-based image dragging/editing, not video generation or editing."
+    },
+    {
+      "id": "f942c355-ec0f-4e25-b627-ef16cca0286e",
+      "decision": "out_of_scope",
+      "reason": "Uses a video-like sequential representation for 3D object generation, but the target is static 3D generation rather than video generation/editing."
+    },
+    {
+      "id": "5745fdcc-7fbf-4c39-9a08-8cdbed59527a",
+      "decision": "out_of_scope",
+      "reason": "Uses video diffusion models to extract neural material assets for 3D rendering, not to generate or edit videos as the target task."
+    },
+    {
+      "id": "9a66d1bb-699a-40ab-8837-a8f0e454d0ef",
+      "decision": "in_scope",
+      "reason": "Learns disentangled motion representations for open-world motion transfer with text-to-video/image-to-video generators, directly targeting video generation."
+    },
+    {
+      "id": "ff9d1bd0-8988-4062-a3ad-6f364275b59b",
+      "decision": "out_of_scope",
+      "reason": "Text-embedding control for static image editing, not video generation or editing."
+    },
+    {
+      "id": "04c87320-cbe8-473d-869f-62afa9bbaf8d",
+      "decision": "out_of_scope",
+      "reason": "Focuses on audio-visual representation learning and video-to-audio generation, not video generation or editing."
+    },
+    {
+      "id": "337d8b00-cdb7-4bf3-b142-d2ac95cfd73f",
+      "decision": "out_of_scope",
+      "reason": "General probabilistic forecasting framework for dynamical systems; video prediction is only an evaluation example rather than the target of video generation/editing."
+    },
+    {
+      "id": "4fd49d55-46e2-4add-af02-7e2ac7b59744",
+      "decision": "out_of_scope",
+      "reason": "Image matting/generation method, not video generation or editing."
+    },
+    {
+      "id": "c0297b03-aaee-4f08-b3df-7ebd0784835b",
+      "decision": "uncertain",
+      "reason": "Text-driven 3D human motion generation is animation-related, but its relationship to video generation/editing is not clearly established in the abstract."
+    },
+    {
+      "id": "dd2dfc56-53d0-4444-a6f0-a42e6b243b02",
+      "decision": "uncertain",
+      "reason": "Rigging and 3D character animation with motion synthesis; animation-related but not directly video generation/editing, so scope is unclear."
+    },
+    {
+      "id": "f0166f1a-9153-4004-934b-1dc66e6c2f37",
+      "decision": "out_of_scope",
+      "reason": "Text-driven image editing method, not video generation or editing."
+    },
+    {
+      "id": "05399394-4f9e-45c0-b5b9-6b2c6b9ed886",
+      "decision": "out_of_scope",
+      "reason": "Image generation/concept customization and layout control, not video generation or editing."
+    },
+    {
+      "id": "580c313e-a63a-4758-b36c-85359367c6b0",
+      "decision": "in_scope",
+      "reason": "Multi-view 3D object stylization/editing reframed as temporally coherent video editing, targeting video generation/editing and temporal consistency."
+    },
+    {
+      "id": "9e492074-afc1-407e-8dd9-06def18b65e6",
+      "decision": "in_scope",
+      "reason": "Adaptive video tokenizer for video reconstruction/generation, directly relevant to video generation tokenization."
+    },
+    {
+      "id": "b04b2a2c-f978-4a90-ad02-3ab85143965d",
+      "decision": "out_of_scope",
+      "reason": "Targets 3D reconstruction and novel view synthesis using generative models, not video generation or editing."
+    },
+    {
+      "id": "eef2ea94-ce4d-48ec-bc81-b2019656390a",
+      "decision": "out_of_scope",
+      "reason": "Focuses on relighting 3D reconstructions of scenes, using video diffusion as a component; not video generation/editing."
+    },
+    {
+      "id": "2ba46441-81af-4c0f-8994-42213e155427",
+      "decision": "out_of_scope",
+      "reason": "Multimodal LLM knowledge editing, unrelated to video generation or editing."
+    },
+    {
+      "id": "5165d931-6d09-4342-a7eb-c44c8f35f240",
+      "decision": "in_scope",
+      "reason": "Directly addresses video temporal consistency and stability for frame-based models, a listed relevant topic, with video enhancement/denoising applications."
+    },
+    {
+      "id": "562960af-9fb8-441e-8217-f0f084810a77",
+      "decision": "out_of_scope",
+      "reason": "Text-based 3D scene editing with Gaussian Splatting, not video generation or editing."
+    },
+    {
+      "id": "8266930a-4399-4e4f-a33b-deaf4d9f620d",
+      "decision": "out_of_scope",
+      "reason": "Static image editing framework guided by text and visual examples; not video generation/editing."
+    },
+    {
+      "id": "25765ddd-fdfc-4531-92b5-d0843cc287ff",
+      "decision": "out_of_scope",
+      "reason": "Facial image editing with diffusion autoencoders; not video generation or editing."
+    },
+    {
+      "id": "a755a38a-c493-44f0-9b73-bc158f7bbc43",
+      "decision": "out_of_scope",
+      "reason": "General controlled diffusion/flow-matching method evaluated on image, audio, and molecule tasks; no specific focus on video generation or editing."
+    },
+    {
+      "id": "f7c02933-3944-4059-9fea-56f5c4cfffd3",
+      "decision": "out_of_scope",
+      "reason": "3D-aware image attribute transfer/editing via StyleGAN; does not target video generation or video editing."
+    },
+    {
+      "id": "4e026fd6-4bf6-4e8a-b095-df43c54850b8",
+      "decision": "out_of_scope",
+      "reason": "General sequential disentanglement and representation learning with video as one benchmark modality, not a paper specifically targeting video generation or editing."
+    }
+  ],
+  "failed_batches": []
+}

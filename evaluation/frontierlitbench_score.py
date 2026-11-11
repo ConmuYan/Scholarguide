@@ -1,4 +1,4 @@
-"""Offline FrontierLitBench Track C scorer. Never supplies gold data to a system.
+"""Offline FrontierLitBench scorer. Never supplies gold data to a system.
 
 Example: python evaluation/frontierlitbench_score.py --result runs/.../result.json \
   --corpus frontierlitbench/corpus/gold_agents.jsonl --task FB-03 --out score.json
@@ -19,11 +19,23 @@ import unicodedata
 from urllib.parse import unquote
 
 TASKS = {
+    'FB-01': ({2024, 2025, 2026}, None),
+    'FB-04': ({2024}, None), 'FB-05': ({2025}, None), 'FB-06': ({2026}, None),
+    'FB-13': ({2024, 2025, 2026}, {'CVPR', 'ICCV'}),
+    'FB-02': ({2024, 2025, 2026}, None),
+    'FB-07': ({2024}, None), 'FB-08': ({2025}, None), 'FB-09': ({2026}, None),
+    'FB-14': ({2024, 2025, 2026}, {'ICLR', 'ICML'}),
     'FB-03': ({2024, 2025, 2026}, None),
     'FB-10': ({2024}, None), 'FB-11': ({2025}, None), 'FB-12': ({2026}, None),
     'FB-15': ({2024, 2025, 2026}, {'ACL', 'EMNLP'}),
 }
 GAINS = {'S': 5, 'A': 3, 'B': 1}
+TRACK_TASKS = {'A': {'FB-01','FB-04','FB-05','FB-06','FB-13'},
+               'B': {'FB-02','FB-07','FB-08','FB-09','FB-14'},
+               'C': {'FB-03','FB-10','FB-11','FB-12','FB-15'}}
+VENUES = {'A': {'CVPR','ICCV','ICLR','ICML','NeurIPS','ACM MM','SIGGRAPH'},
+          'B': {'AAAI','CVPR','ICCV','ICLR','ICML','NeurIPS'},
+          'C': {'ICLR','ICML','NeurIPS','ACL','EMNLP','AAAI'}}
 
 
 def doi(value):
@@ -51,6 +63,9 @@ def title(value):
 
 def identities(p):
     values = [p.get(k) for k in ('id', 'paper_id', 'doi', 'arxiv_id', 'arxiv_id_resolved', 'url')]
+    nested = p.get('identifiers') or {}
+    if isinstance(nested, dict):
+        values.extend(nested.get(k) for k in ('doi', 'arxiv_id', 'canonical_url'))
     values += list(p.get('dois') or []) + list(p.get('arxiv_ids') or [])
     return ({x for v in values if (x := doi(v))}, {x for v in values if (x := arxiv(v))})
 
@@ -60,6 +75,14 @@ def score(result, gold, task, adjudications=None):
         raise ValueError('unknown task: ' + str(task))
     if not isinstance(result, dict) or not isinstance(result.get('papers'), list):
         raise ValueError('result must have a papers list')
+    track = next(k for k, v in TRACK_TASKS.items() if task in v)
+    if isinstance(gold, list):
+        if track == 'A':
+            gold = [p for p in gold if not (isinstance(p, dict) and
+                    p.get('institution_status') == 'unverified_excluded' and p.get('tier') is None)]
+        gold = [dict(p, paper_id=p.get('paper_id') or p.get('lune_id'),
+                     tier=p.get('tier') or (p.get('impact') or {}).get('tier'))
+                if isinstance(p, dict) else p for p in gold]
     if not isinstance(gold, list) or any(not isinstance(p, dict) or p.get('tier') not in GAINS for p in gold):
         raise ValueError('gold must be a list of records with valid tier')
     gold_ids = [p.get('paper_id') for p in gold]
@@ -67,7 +90,7 @@ def score(result, gold, task, adjudications=None):
         raise ValueError('gold paper IDs must be present and unique')
     years, venues = TASKS[task]
     def eligible(p):
-        return p.get('year') in years and (venues is None or p.get('venue') in venues)
+        return p.get('year') in years and p.get('venue') in (venues or VENUES[track])
     valid = [p for p in gold if eligible(p)]
     if len(valid) < 5:
         raise ValueError('task requires at least five eligible Gold records')
@@ -87,7 +110,7 @@ def score(result, gold, task, adjudications=None):
         adjudications = []
     if not isinstance(adjudications, list):
         raise ValueError('adjudications must be a list')
-    adjud_index = {'doi': {}, 'arxiv': {}}
+    adjud_index = {'doi': {}, 'arxiv': {}, 'title_year': {}}
     for i, p in enumerate(adjudications):
         if not isinstance(p, dict):
             raise ValueError('adjudication must be an object')
@@ -100,9 +123,9 @@ def score(result, gold, task, adjudications=None):
         if decision not in ('eligible', 'invalid'):
             raise ValueError('adjudication decision must be eligible or invalid')
         if decision == 'eligible':
-            if (p.get('identity_verified') is not True or p.get('track') != 'C'
+            if (p.get('identity_verified') is not True or p.get('track') != track
                     or type(p.get('year')) is not int or p['year'] not in (2024, 2025, 2026)
-                    or p.get('venue') not in {'ICLR','ICML','NeurIPS','ACL','EMNLP','AAAI'}
+                    or p.get('venue') not in VENUES[track]
                     or p.get('tier') not in GAINS):
                 raise ValueError('eligible adjudication requires verified identity, track, year, venue and tier')
         elif p.get('tier') is not None:
@@ -114,6 +137,9 @@ def score(result, gold, task, adjudications=None):
                 if key in adjud_index[kind]:
                     raise ValueError('duplicate adjudication identity')
                 adjud_index[kind][key] = i
+        if title(p.get('title')) and p.get('year'):
+            key = (title(p['title']), str(p['year']))
+            adjud_index['title_year'].setdefault(key, set()).add(i)
     output, seen_gold, seen_adjud, seen_unknown = [], set(), set(), set()
     items = result['papers'][:5]
     for position in range(5):
@@ -137,6 +163,10 @@ def score(result, gold, task, adjudications=None):
         row = {'rank': position+1, 'title': p.get('title'), 'match_method': match_method}
         adj_hits = {adjud_index[kind][key] for kind, keys in (('doi', ds), ('arxiv', ars))
                     for key in keys if key in adjud_index[kind]}
+        adj_method = 'adjudicated_strong_id'
+        if not matches and not adj_hits and title(p.get('title')) and p.get('year'):
+            adj_hits = adjud_index['title_year'].get((title(p['title']), str(p['year'])), set())
+            adj_method = 'adjudicated_title_year'
         if matches and adj_hits:
             row.update(status='pending_adjudication', gain=None, reason='conflicting_identifiers')
             output.append(row)
@@ -174,7 +204,7 @@ def score(result, gold, task, adjudications=None):
                     row.update(status='duplicate', gain=0)
                 else:
                     seen_adjud.add(i)
-                    row['match_method'] = 'adjudicated_strong_id'
+                    row['match_method'] = adj_method
                     if adjud['decision'] == 'invalid':
                         row.update(status='invalid_adjudicated', gain=0)
                     elif eligible(adjud):
@@ -198,13 +228,19 @@ def score(result, gold, task, adjudications=None):
     idcg = sum(g / math.log2(i+2) for i, g in enumerate(ideal))
     pending = any(x['gain'] is None for x in output)
     metrics = None
-    if not pending:
+    # A completed search may legitimately return fewer than five verified
+    # papers; missing positions receive zero. An error or interruption is not
+    # an empty recommendation and must never be presented as a scored run.
+    exhausted = (result.get('status') in ('partial', 'no_results') and
+                 result.get('stop_reason') in ('search_budget_exhausted', 'repeated_query'))
+    run_failed = result.get('status') not in (None, 'complete', 'completed') and not exhausted
+    if not pending and not run_failed:
         gains = [x['gain'] for x in output]
         metrics = {'ndcg_at_5': sum(g / math.log2(i+2) for i, g in enumerate(gains)) / idcg,
                    'weighted_hit_at_5_percent': sum(gains) / 25 * 100,
                    's_tier_hit_at_5': sum(g == 5 for g in gains)}
     return {'task': task, 'run_id': result.get('run_id'), 'run_status': result.get('status'),
-            'status': 'pending_adjudication' if pending else 'scored', 'metrics': metrics,
+            'status': 'run_incomplete' if run_failed else ('pending_adjudication' if pending else 'scored'), 'metrics': metrics,
             'eligible_gold_count': len(valid), 'eligible_adjudicated_count': len(additions),
             'eligible_s_count': sum(p['tier']=='S' for p in valid + additions),
             'ideal_gains': ideal, 'idcg': idcg, 'positions': output,

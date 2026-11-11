@@ -1,0 +1,16 @@
+[
+  {
+    "doi": "10.1109/CVPR52734.2025.02127",
+    "title": "Learning Temporally Consistent Video Depth from Video Diffusion Priors",
+    "year": 2025,
+    "venue": "CVPR",
+    "track": "A",
+    "decision": "invalid",
+    "reason": "The paper uses video diffusion priors to estimate depth from video; its central task is video depth estimation rather than video generation or video editing. It is a real CVPR paper but outside this Track A scope.",
+    "evidence": {
+      "publication_url": "https://openaccess.thecvf.com/content/CVPR2025/html/Shao_Learning_Temporally_Consistent_Video_Depth_from_Video_Diffusion_Priors_CVPR_2025_paper.html",
+      "paper_url": "https://arxiv.org/abs/2406.01493",
+      "reviewed_at_utc": "2026-11-11"
+    }
+  }
+]

@@ -9,6 +9,15 @@ def gold():
             dict(paper_id='doi:10.1234/out', dois=['10.1234/out'], title='Outside', year=2025, venue='ICLR', tier='S')]
 
 class FrontierScoreTests(unittest.TestCase):
+    def test_adjudicated_exact_title_year_and_identifier_conflicts(self):
+        addition = dict(doi='10.9999/new1', title='New study', decision='eligible', identity_verified=True,
+                        track='C', year=2024, venue='ACL', tier='A')
+        report = score({'papers':[{'title':'New study','year':2024}]}, gold(), 'FB-10', [addition])
+        self.assertEqual(report['positions'][0]['match_method'], 'adjudicated_title_year')
+        self.assertEqual(report['positions'][0]['gain'], 3)
+        report = score({'papers':[{'title':'New study','year':2024,'doi':'10.9999/other'}]}, gold(), 'FB-10', [addition])
+        self.assertEqual(report['positions'][0]['status'], 'pending_adjudication')
+
     def test_adjudications_extend_ideal_and_score_by_strong_id(self):
         corpus = gold(); before = deepcopy(corpus)
         additions = [dict(doi='10.9999/new1', decision='eligible', identity_verified=True,

@@ -1524,6 +1524,36 @@ class AcademicSource:
             return {}
         return _acl_html(html)
 
+    def verify_openreview_paper(self, paper: Paper) -> Paper:
+        """Verify an exact candidate against its official OpenReview edition.
+
+        A database conference label alone is not an acceptance decision. Search
+        the specific edition, require an exact normalized title and year, and
+        retain only an independently verified published/accepted record.
+        """
+        from research_policy import venue_identity, publication_records
+        venue = venue_identity(paper.venue or '')
+        if venue not in {'ICLR', 'ICML', 'NeurIPS'} or not paper.year:
+            return paper
+        edition = f'{venue}.cc/{paper.year}/Conference'
+        try:
+            candidates = self._openreview(paper.title, 3, {'openreview_venue_ids': [edition]})
+        except RunCancelled:
+            raise
+        except GuideError:
+            return paper
+        key = lambda value: ''.join(re.findall(r'\w+', (value or '').casefold()))
+        matches = [p for p in candidates if key(p.title) == key(paper.title) and p.year == paper.year
+                   and paper.authors and p.authors and key(paper.authors[0]) == key(p.authors[0])]
+        if len(matches) != 1:
+            return paper
+        records = [r for r in publication_records(matches[0]) if r.get('verified')
+                   and r.get('status') in ('accepted', 'published')]
+        if not records:
+            return paper
+        existing = (paper.publication or {}).get('records') or []
+        return replace(paper, publication=merge_publication_records([*existing, *records]))
+
     def verify_acl_paper(self, paper: Paper) -> Paper:
         """Add publication evidence from the exact official Anthology page.
 

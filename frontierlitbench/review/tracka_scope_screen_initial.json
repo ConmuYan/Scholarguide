@@ -1,0 +1,996 @@
+{
+  "method": "DeepSeek preliminary screen; human review required, not final labels",
+  "results": [
+    {
+      "id": "b025b355-62b4-4220-a799-7a51b0b9e03f",
+      "decision": "in_scope",
+      "reason": "Central contribution is consistent and controllable image-to-video generation using explicit motion modeling."
+    },
+    {
+      "id": "fdebf8a7-fb76-4a85-853b-0e893254ccc6",
+      "decision": "in_scope",
+      "reason": "Proposes zero-shot video editing and explicitly improves temporal consistency of generated videos."
+    },
+    {
+      "id": "3968f4d6-59b4-4cf1-86b8-462c3620f74d",
+      "decision": "in_scope",
+      "reason": "Unified framework for video generation and video editing tasks."
+    },
+    {
+      "id": "0d64743f-f153-4679-a32c-af911ca43835",
+      "decision": "uncertain",
+      "reason": "Focuses on human character animation/motion generation, which is borderline human motion/animation under the screening rules."
+    },
+    {
+      "id": "35608cb2-b40d-4560-9de4-40b4de18c889",
+      "decision": "in_scope",
+      "reason": "Central task is video object removal, a video editing application using video diffusion models."
+    },
+    {
+      "id": "0447ed27-cc70-43f1-99c7-874c57773aa6",
+      "decision": "in_scope",
+      "reason": "Framework for text-guided video motion and appearance editing."
+    },
+    {
+      "id": "792d6d98-e7ea-4efc-bb84-334dadb2b197",
+      "decision": "uncertain",
+      "reason": "Generates human motion sequences for character animation, which is borderline human motion/animation under the screening rules."
+    },
+    {
+      "id": "00fb2de6-c5bc-42f2-a2ed-27467dd33c12",
+      "decision": "in_scope",
+      "reason": "Improves camera control in video diffusion transformers for camera-controlled video generation."
+    },
+    {
+      "id": "eda2dd6d-bafb-4e56-8ef1-66ce4f55ec18",
+      "decision": "in_scope",
+      "reason": "Central contribution is a unified video editing method that generates edited videos with temporal reasoning."
+    },
+    {
+      "id": "9457fa67-b160-4ed1-8210-e920e40c2d1b",
+      "decision": "in_scope",
+      "reason": "The method performs video-to-video dubbing and generates an edited video with synchronized facial motion, even though audio is jointly generated."
+    },
+    {
+      "id": "6b823196-b7fc-4510-bfb8-cc7931dbeed7",
+      "decision": "in_scope",
+      "reason": "Central contribution is an autoregressive video generation model producing generated videos."
+    },
+    {
+      "id": "afd0251d-6505-47a7-b5ae-f389c7425553",
+      "decision": "in_scope",
+      "reason": "The work accelerates video diffusion inference while preserving temporal continuity in generated videos."
+    },
+    {
+      "id": "95811d3c-ede6-40a5-b010-f1dafa2bbb96",
+      "decision": "in_scope",
+      "reason": "Central contribution is physics-aware text-to-video generation and a video dataset for T2V models."
+    },
+    {
+      "id": "31529de5-0025-45f0-810c-077a96a66c01",
+      "decision": "out_of_scope",
+      "reason": "Focuses on unified visual understanding and image/multimodal generation rather than video generation or editing."
+    },
+    {
+      "id": "790ccabf-4326-410e-9180-a84a5b28d60f",
+      "decision": "in_scope",
+      "reason": "Central contribution is a video diffusion model for generative transitions and long video generation."
+    },
+    {
+      "id": "8826ef4c-3b3b-42f6-b1c5-c3ee5458cf58",
+      "decision": "in_scope",
+      "reason": "Provides a movie-level dataset for training and evaluating long video generation models."
+    },
+    {
+      "id": "bd4dca2a-ca43-4f1f-b4fa-3837ec6e0141",
+      "decision": "in_scope",
+      "reason": "Central contribution is a diffusion model for video interpolation, directly generating short videos between frames."
+    },
+    {
+      "id": "1e0cce8b-8fdf-4693-a117-d63759ec1742",
+      "decision": "in_scope",
+      "reason": "Presents controllable image-to-video generation for cinematic shot design, with applications to video editing workflows."
+    },
+    {
+      "id": "1d334d14-e006-4b5f-9fbe-8e8f22c93976",
+      "decision": "in_scope",
+      "reason": "Proposes an adapter for text-guided image-to-video generation, directly generating coherent videos."
+    },
+    {
+      "id": "232f8e77-dd81-4adc-9ef3-f00b7a86b9a2",
+      "decision": "in_scope",
+      "reason": "Central contribution is physics-grounded image-to-video generation using generative physics to drive video models."
+    },
+    {
+      "id": "f289b544-7906-47a3-b86c-64a046981e46",
+      "decision": "in_scope",
+      "reason": "Title and teaser frame the work as 3D-trajectory-controlled image-to-video synthesis, directly generating videos."
+    },
+    {
+      "id": "1f34e1d5-b52e-4a2b-affd-72c4580dcc8e",
+      "decision": "in_scope",
+      "reason": "Presents a diffusion-based controllable video editing system for style transfer, foreground modification, and background replacement."
+    },
+    {
+      "id": "95ba6f3f-6ba1-4d8d-972b-bc356c6db47a",
+      "decision": "out_of_scope",
+      "reason": "Central output is novel-view synthesis for 3D/static scenes; video diffusion is used as a consistency aid rather than for generated or edited video as the main contribution."
+    },
+    {
+      "id": "3b987d54-5cb4-4694-a83e-3508dc16499c",
+      "decision": "in_scope",
+      "reason": "Introduces an instruction-based video editing dataset and trained model, directly addressing generated/edited video."
+    },
+    {
+      "id": "11575dd6-f3f2-413f-9566-aadc559f3484",
+      "decision": "in_scope",
+      "reason": "Central contribution is motion-controllable video generation with a new latent trajectory guidance method and benchmark."
+    },
+    {
+      "id": "8bb80a8c-a16c-4f53-9498-d5c90e0f5103",
+      "decision": "in_scope",
+      "reason": "Presents a dataset and director model for long-form narrative video generation, directly targeting generated video coherence."
+    },
+    {
+      "id": "16f2a082-3d70-4f81-b74d-5422d53deb57",
+      "decision": "in_scope",
+      "reason": "Proposes a unified controller for camera and object motion in video generation."
+    },
+    {
+      "id": "df9e4782-6f58-4d47-af62-cf396b16a852",
+      "decision": "in_scope",
+      "reason": "Introduces a reference-based framework for dynamic visual effect video generation."
+    },
+    {
+      "id": "a97044cc-40ce-4e12-85f6-e3a8b6ed196e",
+      "decision": "in_scope",
+      "reason": "Focuses on scaling long-form streaming video generation and mitigating temporal quality degradation."
+    },
+    {
+      "id": "2a6901f7-3404-4c1e-ac26-012856320cdf",
+      "decision": "in_scope",
+      "reason": "Central output is zero-shot video generation; audio is auxiliary and not the main contribution."
+    },
+    {
+      "id": "6d6ceb1b-c389-4929-b987-a9cd0f44be68",
+      "decision": "in_scope",
+      "reason": "Proposes 3D-aware video diffusion for controlled video generation and explicitly improves temporal consistency."
+    },
+    {
+      "id": "50488bfe-44c2-459d-823c-0d0b0a2a47e6",
+      "decision": "in_scope",
+      "reason": "Framework for general-purpose video synthesis, including video generation, editing, inpainting, and outpainting."
+    },
+    {
+      "id": "494115e3-666c-4afe-9752-2414e8b7616e",
+      "decision": "in_scope",
+      "reason": "Central contribution is a text-to-video model for generating coherent multi-shot cinematic long videos."
+    },
+    {
+      "id": "0e2d2fbc-99f6-47ae-862b-4eb575c5815b",
+      "decision": "in_scope",
+      "reason": "Central contribution is controllable human video generation with decomposed motion and video generation in world space."
+    },
+    {
+      "id": "bd642a58-5045-4d78-aca3-5917c58ebb3e",
+      "decision": "out_of_scope",
+      "reason": "Central output is protein conformation generation, not generated or edited video."
+    },
+    {
+      "id": "406b408a-10a6-4d7b-9afd-9910908c642f",
+      "decision": "in_scope",
+      "reason": "Unified multimodal model includes video generation as a central supported modality alongside image and text."
+    },
+    {
+      "id": "e47dcec5-afca-4d87-b727-5f6a7c2a5408",
+      "decision": "in_scope",
+      "reason": "Central contribution is subject-driven video customization and editing with multimodal control conditions."
+    },
+    {
+      "id": "1855819b-674f-4ffc-9042-0d1ebd249296",
+      "decision": "in_scope",
+      "reason": "Central contribution is panoramic video generation by adapting diffusion video generation models."
+    },
+    {
+      "id": "13df631c-fb4b-4352-bf26-2925c39ba503",
+      "decision": "in_scope",
+      "reason": "Central contribution is long-horizon panoramic video generation for scene wandering."
+    },
+    {
+      "id": "7ab2b177-731a-4df6-8e72-80537f1051e9",
+      "decision": "in_scope",
+      "reason": "Central contribution is a training paradigm for multi-shot video generation and temporal consistency across shots."
+    },
+    {
+      "id": "fe08912a-7911-4e1a-883a-7937209aea56",
+      "decision": "in_scope",
+      "reason": "Introduces a Transformer-based diffusion model for image and text-to-video generation, including motion guidance for video quality."
+    },
+    {
+      "id": "5c811094-e470-475a-bc7e-da2de1c820a3",
+      "decision": "in_scope",
+      "reason": "Presents controllable video generation and explicitly improves temporal coherence via frequency-based stabilization."
+    },
+    {
+      "id": "b43cd685-c333-44ec-8f70-4e5254004222",
+      "decision": "out_of_scope",
+      "reason": "Central output is static 3D/NeRF generation and editing from sketches and text, not generated or edited video."
+    },
+    {
+      "id": "a7cee276-1070-4ebc-a7a7-ac4ec534041c",
+      "decision": "in_scope",
+      "reason": "Focuses on quantization for Video Diffusion Transformers and evaluates generated video quality on video generation benchmarks."
+    },
+    {
+      "id": "f73c2c83-cd29-4d4b-846c-91ca45d42e40",
+      "decision": "in_scope",
+      "reason": "Introduces customized text-to-video generation with independent control of object motion and camera movement."
+    },
+    {
+      "id": "c6d3ef00-f108-47ab-8f9c-32d857fbd14f",
+      "decision": "in_scope",
+      "reason": "Proposes multi-view subject-consistent video generation, directly generating videos from reference views."
+    },
+    {
+      "id": "71b29eb7-a4d8-4e32-a44b-6b26334dff36",
+      "decision": "in_scope",
+      "reason": "Addresses long video generation with a sparse attention memory mechanism to preserve consistency over long contexts."
+    },
+    {
+      "id": "b107fa52-0687-4f26-8ef0-23ad645afc31",
+      "decision": "in_scope",
+      "reason": "Proposes auto-regressive diffusion for flexible asynchronous video generation while preserving temporal coherence."
+    },
+    {
+      "id": "1326c327-1a17-435b-9b93-7380f96104d7",
+      "decision": "in_scope",
+      "reason": "Central contribution is a video generation model controlled by motion trajectories, directly generating video content."
+    },
+    {
+      "id": "1ee3ba96-b093-4385-ad0e-07391eca90a1",
+      "decision": "in_scope",
+      "reason": "Proposes camera-pose control for pre-trained video diffusion models, improving controllable video generation."
+    },
+    {
+      "id": "970ebe67-8055-41dd-9745-d5add1f44fd7",
+      "decision": "in_scope",
+      "reason": "Introduces a diffusion-based video generation approach using first/last frame and text instructions."
+    },
+    {
+      "id": "69b8040c-26c2-4e6c-ae8a-d40233a45426",
+      "decision": "in_scope",
+      "reason": "Central contribution is a mask-aware LoRA method for controllable video editing with temporal consistency."
+    },
+    {
+      "id": "70b086df-26e1-493b-a1ea-d5f3634c84e7",
+      "decision": "in_scope",
+      "reason": "Focuses on inference-time alignment and perceptual quality improvement for generated text-to-video outputs."
+    },
+    {
+      "id": "04e51472-037e-40f6-b0cf-bfb8d1a56040",
+      "decision": "in_scope",
+      "reason": "Presents a high-performance video generation framework with architectural and reward-based training improvements."
+    },
+    {
+      "id": "3e0675dc-a15c-4daa-a1d7-a80c409e3a0e",
+      "decision": "out_of_scope",
+      "reason": "Central output is generated audio from video; video-to-audio generation is outside the video generation/editing scope."
+    },
+    {
+      "id": "2deceab2-f9b7-4235-8114-85ee6b03d60b",
+      "decision": "in_scope",
+      "reason": "Proposes a track-conditioned video-to-video framework for joint camera and object motion editing."
+    },
+    {
+      "id": "02f2b430-c92d-4156-95f3-85c0fe3b7476",
+      "decision": "in_scope",
+      "reason": "Proposes instruction-based video editing with temporal coherence and content preservation, directly generating/editing videos."
+    },
+    {
+      "id": "af65b07c-6317-461c-83a4-ab4e5896a2fe",
+      "decision": "in_scope",
+      "reason": "Central contribution is sketch-based video generation and editing, including propagation of edits in real videos."
+    },
+    {
+      "id": "d96f530b-38c8-4ef4-baa9-4597160e99a2",
+      "decision": "in_scope",
+      "reason": "Proposes a diffusion optimization method and evaluates it on text-to-video generation, aligning generated video content with prompts."
+    },
+    {
+      "id": "d32578fe-f0e0-4b83-8c46-2b48fa2613ae",
+      "decision": "in_scope",
+      "reason": "Explicitly improves temporal consistency and motion coherence in generated videos via optical-flow-guided prompt optimization."
+    },
+    {
+      "id": "5babd9b3-eef6-4024-85e5-23389029975e",
+      "decision": "in_scope",
+      "reason": "Introduces geometric regularization into video generation models to improve spatio-temporal coherence and structural consistency."
+    },
+    {
+      "id": "d742d525-3592-4065-8378-4b0f5a069797",
+      "decision": "in_scope",
+      "reason": "Enables 3D camera control for transformer-based video diffusion models, directly contributing to controllable video generation."
+    },
+    {
+      "id": "e71b6fc3-9130-412c-846d-2d626b95be0a",
+      "decision": "in_scope",
+      "reason": "Presents a unified framework for versatile video generation using video diffusion priors, including RGB video generation."
+    },
+    {
+      "id": "b36902a6-f213-429f-a43b-9d9e406bba6e",
+      "decision": "in_scope",
+      "reason": "Uses autoregressive video diffusion to generate long, temporally consistent street-view video sequences."
+    },
+    {
+      "id": "f77ad7d5-bf65-4b9d-bdb5-721f7ec3e464",
+      "decision": "in_scope",
+      "reason": "Introduces a personalized martial arts combat video generation task and model, centrally generating two-person videos with coherent action sequences and temporal consistency."
+    },
+    {
+      "id": "b2ac2ba2-86c7-4191-9028-306a95ed843a",
+      "decision": "in_scope",
+      "reason": "Focuses on motion-controlled image-to-video generation and spatial control for generated videos."
+    },
+    {
+      "id": "f58408fa-9f49-407f-a17d-4e8c13a65436",
+      "decision": "in_scope",
+      "reason": "Proposes a text-to-video synthesis model improving video quality, motion complexity, and temporal consistency."
+    },
+    {
+      "id": "a1b2cb33-2ef2-4542-91df-7d4549cdbd8e",
+      "decision": "in_scope",
+      "reason": "Proposes a framework for long video generation with long-term temporal and content coherence."
+    },
+    {
+      "id": "3cc5eef7-9798-480e-b973-d7e3b985edb0",
+      "decision": "out_of_scope",
+      "reason": "Central output is vector graphics/SVG generation, not generated or edited video."
+    },
+    {
+      "id": "e250d773-0ec2-4d22-ac9a-19d9feaf35e4",
+      "decision": "out_of_scope",
+      "reason": "Studies scaling laws for diffusion transformers and primarily predicts text-to-image generation performance; video generation is not the central contribution."
+    },
+    {
+      "id": "5956d8f7-f4a7-44a2-94de-8d5056d6eb70",
+      "decision": "in_scope",
+      "reason": "Proposes customized multi-subject text-to-video generation with temporal motion preservation and disentangled spatial control."
+    },
+    {
+      "id": "253f1b07-8606-4a78-b20a-66696c56cb66",
+      "decision": "out_of_scope",
+      "reason": "Central output is future motion point trajectories, not generated or edited video pixels."
+    },
+    {
+      "id": "96ab62ab-660a-4277-a6e7-29d8fe218bea",
+      "decision": "in_scope",
+      "reason": "Central contribution is a unified multimodal model for joint audio-video comprehension and generation, including temporally coherent video generation, so it falls within video generation."
+    },
+    {
+      "id": "b4097a65-919e-4973-9522-124f7c531c7a",
+      "decision": "in_scope",
+      "reason": "Proposes autoregressive adversarial post-training for real-time interactive video generation, directly improving generated video streaming and temporal consistency."
+    },
+    {
+      "id": "5914645d-2510-4a53-858e-9809d0986852",
+      "decision": "in_scope",
+      "reason": "Introduces an efficient video diffusion model via content-frame and motion-latent decomposition for video generation."
+    },
+    {
+      "id": "cfe25800-b8e6-43e1-a43f-c1e6e546224a",
+      "decision": "in_scope",
+      "reason": "Presents a video relighting framework that edits videos using video diffusion and explicitly targets temporal stability and physical consistency."
+    },
+    {
+      "id": "7703f313-cae0-4d9b-9aa5-b57f079346ba",
+      "decision": "in_scope",
+      "reason": "Addresses conditional image leakage in image-to-video diffusion models, improving motion and temporal consistency in generated videos."
+    },
+    {
+      "id": "d54686c6-9152-4ff0-a9c3-0b73d7dfd41e",
+      "decision": "in_scope",
+      "reason": "Proposes a framework for image-to-video generation that improves motion controllability and dynamics in generated videos."
+    },
+    {
+      "id": "0d85d1f4-c625-42ab-939a-a0678c887d6b",
+      "decision": "in_scope",
+      "reason": "Introduces a benchmark and baseline for text-to-audible-video generation; video generation and evaluation are central despite the joint audio component."
+    },
+    {
+      "id": "086f975a-18d8-422d-936c-f78a90e21fbc",
+      "decision": "in_scope",
+      "reason": "Introduces a large-scale dataset and framework for first-frame propagation in generalizable video editing, directly targeting video editing and temporal stability."
+    },
+    {
+      "id": "ac6c822b-3415-4124-bfe9-80e55c7d2874",
+      "decision": "in_scope",
+      "reason": "Central contribution is a multimodal-controlled video generative foundation model that generates high-quality videos."
+    },
+    {
+      "id": "22d5d5a1-ddf3-41c9-94e8-e7e8d09be3ea",
+      "decision": "in_scope",
+      "reason": "Proposes an image-to-video diffusion method focused on temporal coherence and video generation."
+    },
+    {
+      "id": "b4b3c438-fb75-4c1f-9e06-5587b09bbc70",
+      "decision": "uncertain",
+      "reason": "Focuses on real-time generative human motion synthesis for animation and robotics, so relevance to generated video is borderline."
+    },
+    {
+      "id": "a2f3321a-c573-465a-981a-cab24cf487df",
+      "decision": "in_scope",
+      "reason": "Central contribution is long video generation with improved temporal coherence via next-frame-rate prediction."
+    },
+    {
+      "id": "7d5b7261-ea07-4857-a2f3-af2e29fe1ec1",
+      "decision": "in_scope",
+      "reason": "Proposes controllable motion generation for video synthesis using video diffusion models."
+    },
+    {
+      "id": "980d8281-e1a9-4ae1-8072-7be17315486f",
+      "decision": "in_scope",
+      "reason": "Central contribution is controllable image-to-video generation producing dynamic videos with 3D guidance."
+    },
+    {
+      "id": "c84b3ea0-1358-4acb-8584-dd98e1bf1fc7",
+      "decision": "in_scope",
+      "reason": "Introduces collaborative video diffusion for consistent multi-video generation with camera control."
+    },
+    {
+      "id": "ae20d00c-600f-48da-a1b6-d83b27335dc0",
+      "decision": "in_scope",
+      "reason": "Generates synchronized audio-video content and includes video temporal consistency; video generation is central."
+    },
+    {
+      "id": "7292245a-a3a7-49f6-94c9-117c9fed6240",
+      "decision": "out_of_scope",
+      "reason": "Central output is 3D scene reconstruction via Gaussian Splatting; video diffusion is used as a prior for novel-view synthesis, not as the primary video generation/editing contribution."
+    },
+    {
+      "id": "7137c5c9-b89b-44d0-88f4-d223283c3301",
+      "decision": "in_scope",
+      "reason": "Central contribution is subject-consistent video generation using a diffusion transformer and multimodal conditioning."
+    },
+    {
+      "id": "0eb031c5-5572-4f3d-a5b2-7d000dfabf7b",
+      "decision": "in_scope",
+      "reason": "Central contribution is diffusion-based video editing that swaps objects in videos while preserving hand-object interaction."
+    },
+    {
+      "id": "1361844f-108f-4b38-a7a0-95fedaf8911e",
+      "decision": "in_scope",
+      "reason": "Introduces a semantic progress representation and retiming/linearization procedure to analyze and improve temporal coherence and pacing in generated videos."
+    },
+    {
+      "id": "4d114e65-bb7d-473d-bbb2-802dfa4e18e5",
+      "decision": "out_of_scope",
+      "reason": "Central contribution is likelihood-free Bayesian inference with conditional score-based diffusion models, not video generation, editing, or evaluation."
+    },
+    {
+      "id": "0dc63c10-ecff-43a1-8111-9f7ade3a5adc",
+      "decision": "in_scope",
+      "reason": "Central contribution is instructional video editing and grounded video concept generation using an MLLM and video diffusion model."
+    },
+    {
+      "id": "9611887a-ef40-4027-92ae-9ce999270248",
+      "decision": "in_scope",
+      "reason": "Central contribution is interpreting and controlling motion in video diffusion models for training-free video motion generation/control."
+    },
+    {
+      "id": "9ae875c4-fe47-4039-8eb7-da157fbb598a",
+      "decision": "uncertain",
+      "reason": "Central output is text-driven human motion generation for computer animation; this is borderline animation/human motion rather than clearly generated or edited video."
+    },
+    {
+      "id": "c247aebe-a880-4059-a437-0769993524ea",
+      "decision": "in_scope",
+      "reason": "Proposes Safe-Sora, a framework that embeds graphical watermarks directly into text-to-video generation, with video quality and robustness evaluation."
+    },
+    {
+      "id": "0e7f3515-beb7-4ced-b273-5e3021897c0b",
+      "decision": "out_of_scope",
+      "reason": "Central contribution is instruction-based image editing trained from video frame pairs; output is static image manipulation, not generated or edited video."
+    },
+    {
+      "id": "c7d8882b-6500-4dd7-98b6-bca057f46f3c",
+      "decision": "in_scope",
+      "reason": "Title and context indicate an image-to-video generation method using decoupled motion intensity modulation with a diffusion transformer."
+    },
+    {
+      "id": "9313c0b7-34ba-4984-b046-cc41f6cab287",
+      "decision": "in_scope",
+      "reason": "Customizes text-to-video diffusion models to generate videos with specified motion while separating motion from appearance."
+    },
+    {
+      "id": "808c83fc-8f36-4397-a4f1-a8b8dcdcd14c",
+      "decision": "out_of_scope",
+      "reason": "Focuses on diffusion-based texture editing in CLIP space for 3D content creation, not generated or edited video."
+    },
+    {
+      "id": "ecf379b5-36ba-4dce-bbcb-aeaea3136103",
+      "decision": "in_scope",
+      "reason": "Introduces a one-step image-to-video generation framework and evaluates video generation quality and efficiency."
+    },
+    {
+      "id": "6f0a82ed-a76e-4978-b996-cba7ccaa73bd",
+      "decision": "in_scope",
+      "reason": "Proposes video-specific distillation for few-step video generation, explicitly addressing temporal inconsistency and temporal collapse."
+    },
+    {
+      "id": "e79ce7bf-2be5-4792-90a7-a1cb9825eacc",
+      "decision": "in_scope",
+      "reason": "Presents spatiotemporal skip guidance to enhance video diffusion sampling and generated video quality."
+    },
+    {
+      "id": "ec9171b7-5c2a-4edb-ad82-745b4663a440",
+      "decision": "in_scope",
+      "reason": "Central contribution is sketch-based 3D-aware scene video editing, producing edited videos while preserving 3D/temporal consistency."
+    },
+    {
+      "id": "20a30611-625e-4904-a332-9c1fadd83ca9",
+      "decision": "uncertain",
+      "reason": "Human hand-face interaction animation with a diffusion model is borderline human motion/animation; direct video generation/editing scope is not fully clear."
+    },
+    {
+      "id": "23060c68-953e-4033-9dbc-0cd8fec7be68",
+      "decision": "in_scope",
+      "reason": "Reference-based animation colorization using video diffusion, directly editing video and targeting temporal consistency."
+    },
+    {
+      "id": "4d966578-eb6c-4c24-b619-033c3d42745f",
+      "decision": "in_scope",
+      "reason": "Image-to-video generation with motion-trajectory control and temporal coherence is directly in scope."
+    },
+    {
+      "id": "538e364a-6716-41b0-ac9f-186d0c9ebd47",
+      "decision": "in_scope",
+      "reason": "Acceleration framework for diffusion-based video generation that explicitly improves consistency across generated frames."
+    },
+    {
+      "id": "b3404f04-0eb6-4f08-aa02-8b50786f3517",
+      "decision": "uncertain",
+      "reason": "Title indicates long video diffusion generation, but the supplied abstract is only a figure caption/absent, so scope details cannot be verified."
+    },
+    {
+      "id": "56bbf4c9-6fb7-43f7-bc68-f7329ab55663",
+      "decision": "in_scope",
+      "reason": "Video remake/editing method with content and motion control, directly generating edited video content and trajectories."
+    },
+    {
+      "id": "caa394fa-27f4-4ebd-86b5-3cc57d3c2403",
+      "decision": "uncertain",
+      "reason": "Joint image-video tokenizer relevant to video generation and temporal modeling, but its central output is tokenization rather than direct video generation/editing."
+    },
+    {
+      "id": "7e2e8da6-f4d2-4425-91ed-ac9cf9708cea",
+      "decision": "in_scope",
+      "reason": "Proposes FRAG for diffusion video editing, improving consistency and fidelity on video editing benchmarks."
+    },
+    {
+      "id": "7653fdf6-b599-4cf1-ba73-35e23957155d",
+      "decision": "in_scope",
+      "reason": "Unified framework for interleaved language and video generation with controllable video generation trajectories."
+    },
+    {
+      "id": "ad2c248d-9c72-4bab-b554-6b15a42535b5",
+      "decision": "in_scope",
+      "reason": "Multi-shot video generation method using adaptive memory for coherent narrative video generation."
+    },
+    {
+      "id": "9045af85-4827-422b-8daf-5e952ea2b54b",
+      "decision": "in_scope",
+      "reason": "Controllable diffusion video generation conditioned on 3D scene/lighting, emphasizing temporal consistency."
+    },
+    {
+      "id": "71356ffa-7acb-42b1-9b4a-0536b178316f",
+      "decision": "in_scope",
+      "reason": "Video decomposition with a generative video prior enabling object removal and layer-based video editing."
+    },
+    {
+      "id": "cffc7e37-af66-4a31-9f70-04d756140038",
+      "decision": "in_scope",
+      "reason": "Training-free inference framework for video diffusion generation, reducing memory and compute for generating videos."
+    },
+    {
+      "id": "1981f63e-e5d7-49ac-98b8-329fd2b28bb4",
+      "decision": "in_scope",
+      "reason": "Text-to-multi-view video generation producing temporally coherent multi-view videos of dynamic objects."
+    },
+    {
+      "id": "e52fbf54-ec60-4245-a042-972923daca1f",
+      "decision": "in_scope",
+      "reason": "Diffusion framework for controllable video generation and relighting with temporally coherent outputs."
+    },
+    {
+      "id": "4cfb2421-8101-488e-b0f1-3cad00444064",
+      "decision": "in_scope",
+      "reason": "Proposes a generative approach to edit object compositions in videos using video generative priors; the central output is edited video."
+    },
+    {
+      "id": "d107d18e-bbf0-4055-bc39-b53446f5e1ef",
+      "decision": "in_scope",
+      "reason": "Introduces a spatio-temporal dual diffusion method for video generation and explicitly targets video consistency."
+    },
+    {
+      "id": "8382a5f4-db21-48c7-9e49-029e2fa8e9d7",
+      "decision": "in_scope",
+      "reason": "Presents audio-synchronized video generation; audio is a control signal and the central output is generated video."
+    },
+    {
+      "id": "4e7f7f08-a07b-4106-ac7a-2f3eb5d60043",
+      "decision": "in_scope",
+      "reason": "Generates adversarial video clips with video diffusion and enforces temporal consistency across frames."
+    },
+    {
+      "id": "404b1743-a89f-449a-b70a-b34a25c9897f",
+      "decision": "in_scope",
+      "reason": "Video diffusion distillation method that accelerates video generation and improves motion/frame consistency."
+    },
+    {
+      "id": "ac8f7411-bcef-4ecf-8536-ee528257bc35",
+      "decision": "out_of_scope",
+      "reason": "Central contribution is scaling-law analysis and hyperparameter prediction for video diffusion transformers, not a video generation/editing method or evaluation of generated video content."
+    },
+    {
+      "id": "900ac462-5266-4465-be3f-a94d5462b212",
+      "decision": "in_scope",
+      "reason": "Diffusion transformer for multi-entity motion- and appearance-customized video generation."
+    },
+    {
+      "id": "e2573276-4e80-4750-977f-8da42fb2fbee",
+      "decision": "out_of_scope",
+      "reason": "Uses video generation as an internal component to imagine observations for RL policy inference; the central output is a policy, not generated or edited video."
+    },
+    {
+      "id": "7ffb24e8-04dc-493d-9b63-f333d00e227d",
+      "decision": "in_scope",
+      "reason": "Central contribution is a generative model for long-range video synthesis, improving video generation quality and temporal consistency."
+    },
+    {
+      "id": "aa48df56-a4d7-4b72-831b-023116987e98",
+      "decision": "out_of_scope",
+      "reason": "Central contribution is photorealistic image editing with camera parameter control, not generated or edited video."
+    },
+    {
+      "id": "bec3275b-4d79-4a61-bcbe-8f38b8fb4088",
+      "decision": "in_scope",
+      "reason": "Central contribution is joint audio-video generation of sounding videos, with video generation and evaluation as core outputs."
+    },
+    {
+      "id": "f8a0df51-38a8-475a-804a-a57bfb21ddea",
+      "decision": "in_scope",
+      "reason": "Central contribution is fast high-quality text-to-video generation using consistency distillation and reward feedback."
+    },
+    {
+      "id": "a2436db8-9c7d-4eb6-8926-cf8962a05973",
+      "decision": "in_scope",
+      "reason": "Central contribution is long-horizon video generation with improved temporal consistency and reduced drift."
+    },
+    {
+      "id": "d3a486a1-f003-40d9-8da3-db10eec6e73e",
+      "decision": "in_scope",
+      "reason": "Central contribution is retrieval-augmented image-to-video generation for more realistic motion dynamics."
+    },
+    {
+      "id": "1beac583-f1d5-41bb-8dc4-a2432e705918",
+      "decision": "out_of_scope",
+      "reason": "Central contribution is post-training quantization for efficiency of video diffusion models, not video generation/editing or temporal-consistency improvement."
+    },
+    {
+      "id": "b2e32bd2-6aeb-4086-a6cb-878f8beed8ca",
+      "decision": "in_scope",
+      "reason": "Central contribution is zero-shot stereo video generation with improved temporal smoothness and view consistency."
+    },
+    {
+      "id": "aa6599c2-101c-48d7-97a2-5e98bf532a1d",
+      "decision": "in_scope",
+      "reason": "Central contribution is a text-to-video generation model producing temporally coherent generated videos."
+    },
+    {
+      "id": "b20c820b-4929-4638-84ad-db67e2b3dffb",
+      "decision": "in_scope",
+      "reason": "Training-free guidance method explicitly improves motion coherence and temporal fidelity in generated video."
+    },
+    {
+      "id": "4f95c939-8f92-4db3-90bd-805ad3f7ac23",
+      "decision": "in_scope",
+      "reason": "Instruction-guided video-to-video synthesis/editing with improved temporal coherence."
+    },
+    {
+      "id": "849cbe10-ec7a-43f7-8f80-af3c16ea3e24",
+      "decision": "out_of_scope",
+      "reason": "Dynamic non-line-of-sight imaging and 3D hidden-volume reconstruction, not generated or edited video."
+    },
+    {
+      "id": "6554c335-6487-4965-a401-3473a5a78378",
+      "decision": "in_scope",
+      "reason": "Efficient sparse attention framework for video generation diffusion transformers."
+    },
+    {
+      "id": "739a8dd9-a626-4240-aa23-90ea4eab0208",
+      "decision": "out_of_scope",
+      "reason": "Central contribution is localized image editing, with no generated or edited video."
+    },
+    {
+      "id": "28e08b72-32e8-4a68-a2d7-7ac77f72d484",
+      "decision": "uncertain",
+      "reason": "Character motion warping/animation editing is borderline; it does not clearly generate or edit video."
+    },
+    {
+      "id": "17b64dcc-55b1-4f2b-968d-d316b3fc0615",
+      "decision": "in_scope",
+      "reason": "Mask-guided subject swapping for customized video editing."
+    },
+    {
+      "id": "9958f959-2050-41a4-a403-07a5f67865a1",
+      "decision": "uncertain",
+      "reason": "Central output is crowd animation/agent behavior synthesis, a borderline human motion/animation case; not clearly a generated-video contribution."
+    },
+    {
+      "id": "f24b6434-ed09-494b-8265-d4a7a6f68fa1",
+      "decision": "out_of_scope",
+      "reason": "Image dragging/editing on GAN-generated images; no generated or edited video."
+    },
+    {
+      "id": "754dd5d2-6bce-450e-8278-d01b989b61af",
+      "decision": "in_scope",
+      "reason": "Text-driven video diffusion for customized motion transfer, generating videos with learned motion in new contexts."
+    },
+    {
+      "id": "f3020852-742e-4022-98f1-13a5830e66e9",
+      "decision": "in_scope",
+      "reason": "Joint text-to-audio-video generation with cross-modal alignment; video generation is central despite the audio component."
+    },
+    {
+      "id": "20d5edf9-002a-4f07-9753-12b5a5d2224e",
+      "decision": "in_scope",
+      "reason": "Video generation with compositional object references and trajectory control; central contribution is controllable video generation/editing."
+    },
+    {
+      "id": "f942c355-ec0f-4e25-b627-ef16cca0286e",
+      "decision": "out_of_scope",
+      "reason": "Sequential 3D representation for static 3D object generation; multi-frame format is for 3D assets, not video generation."
+    },
+    {
+      "id": "5745fdcc-7fbf-4c39-9a08-8cdbed59527a",
+      "decision": "out_of_scope",
+      "reason": "Extracts neural material/3D assets from video diffusion outputs; central output is material assets, not generated/edited video."
+    },
+    {
+      "id": "9a66d1bb-699a-40ab-8837-a8f0e454d0ef",
+      "decision": "uncertain",
+      "reason": "Learns abstract motion representations for motion transfer with video generators; borderline temporal representation and not solely a video generator/editor."
+    },
+    {
+      "id": "ff9d1bd0-8988-4062-a3ad-6f364275b59b",
+      "decision": "out_of_scope",
+      "reason": "Central contribution is training-free image editing via text embeddings; it does not generate or edit video."
+    },
+    {
+      "id": "04c87320-cbe8-473d-869f-62afa9bbaf8d",
+      "decision": "out_of_scope",
+      "reason": "Central output is audio generation/audio-visual representation learning, not generated or edited video."
+    },
+    {
+      "id": "337d8b00-cdb7-4bf3-b142-d2ac95cfd73f",
+      "decision": "out_of_scope",
+      "reason": "Core contribution is probabilistic forecasting for dynamical systems/general time series; video prediction is only an application benchmark."
+    },
+    {
+      "id": "4fd49d55-46e2-4add-af02-7e2ac7b59744",
+      "decision": "out_of_scope",
+      "reason": "Central task is image matting, producing static image mattes rather than generated or edited video."
+    },
+    {
+      "id": "056fc6aa-abde-40af-97a6-b260b9bea6cd",
+      "decision": "in_scope",
+      "reason": "Central contribution solves video inverse problems with image diffusion models and explicitly improves temporal consistency of generated videos."
+    },
+    {
+      "id": "c0297b03-aaee-4f08-b3df-7ebd0784835b",
+      "decision": "uncertain",
+      "reason": "Work generates stylized human motion sequences; it is borderline human motion/animation and not clearly generated or edited video."
+    },
+    {
+      "id": "dd2dfc56-53d0-4444-a6f0-a42e6b243b02",
+      "decision": "uncertain",
+      "reason": "Work focuses on rigging and animating 3D characters; it is borderline animation and not clearly a video generation or editing contribution."
+    },
+    {
+      "id": "74dc4b3d-6cff-4b3b-886a-e61a34c11d0a",
+      "decision": "in_scope",
+      "reason": "Central contribution adapts video diffusion models for controllable image-to-video and video-to-video generation."
+    },
+    {
+      "id": "5353087d-d5e1-4e57-8b6a-b0ac6003fe0c",
+      "decision": "in_scope",
+      "reason": "Proposes a video diffusion framework with 3D point regularization to improve generated video quality and object motion."
+    },
+    {
+      "id": "93c58a8c-06ef-4679-8d1e-74449d1e96ba",
+      "decision": "in_scope",
+      "reason": "Central contribution is consistent character video generation, including long-duration multi-view video generation."
+    },
+    {
+      "id": "99298910-0cc0-4dba-9160-e0b2b58cbf56",
+      "decision": "in_scope",
+      "reason": "Proposes controllable image-to-video animation generation and a benchmark for generated video."
+    },
+    {
+      "id": "f0166f1a-9153-4004-934b-1dc66e6c2f37",
+      "decision": "out_of_scope",
+      "reason": "Central contribution is text-driven image editing, with no generated or edited video output."
+    },
+    {
+      "id": "05399394-4f9e-45c0-b5b9-6b2c6b9ed886",
+      "decision": "out_of_scope",
+      "reason": "Focuses on relational image generation and layout control, not video generation or editing."
+    },
+    {
+      "id": "539e2fc7-8ccf-43e3-8547-0f5c2c42ed4e",
+      "decision": "in_scope",
+      "reason": "Central output is text-prompted future video/image sequence generation using diffusion transformers."
+    },
+    {
+      "id": "580c313e-a63a-4758-b36c-85359367c6b0",
+      "decision": "out_of_scope",
+      "reason": "Uses video-based techniques but the central output is stylized multi-view 3D objects, i.e., static 3D object editing rather than generated/edited video."
+    },
+    {
+      "id": "9e492074-afc1-407e-8dd9-06def18b65e6",
+      "decision": "uncertain",
+      "reason": "Contributes an adaptive video tokenizer for video generation, which is a borderline temporal representation component rather than a direct video generator/editor/evaluator."
+    },
+    {
+      "id": "8ca40423-ab37-486b-980f-7a83be0abf38",
+      "decision": "in_scope",
+      "reason": "Proposes a video concept transfer/generation framework for controllable video editing via spatio-temporal decomposition."
+    },
+    {
+      "id": "e1244b37-a5d9-4fb1-8ffa-150379798df9",
+      "decision": "in_scope",
+      "reason": "Introduces a video face swapping framework that edits videos and explicitly targets temporal consistency and flicker reduction."
+    },
+    {
+      "id": "b04b2a2c-f978-4a90-ad02-3ab85143965d",
+      "decision": "out_of_scope",
+      "reason": "Central contribution is enhancing 3D reconstruction/novel view synthesis, not generating or editing videos as the main output."
+    },
+    {
+      "id": "eef2ea94-ce4d-48ec-bc81-b2019656390a",
+      "decision": "out_of_scope",
+      "reason": "Central output is relighting 3D scene reconstructions; video diffusion is used as an intermediate prior rather than the main generated/edited video contribution."
+    },
+    {
+      "id": "609952e7-a13a-4bcc-b655-e93cacc5b5e1",
+      "decision": "in_scope",
+      "reason": "Proposes an object retexture method for both images and videos, with video editing as a central supported task."
+    },
+    {
+      "id": "a1b878fc-d03f-4d28-8533-4f1ba01b90f7",
+      "decision": "in_scope",
+      "reason": "Introduces an image-to-video generation framework with a benchmark for view-consistent identity-preserving video generation."
+    },
+    {
+      "id": "91b9b8b6-56d1-4d76-a458-d989b3ca50c0",
+      "decision": "in_scope",
+      "reason": "Proposes a personalized text-to-video generation framework and benchmark for identity-attribute-consistent video generation."
+    },
+    {
+      "id": "33f22703-edf7-4e6c-92ed-e9c058f1c3d9",
+      "decision": "in_scope",
+      "reason": "Proposes an instruction-based video editing framework with temporally coherent, spatially aligned edits."
+    },
+    {
+      "id": "a536ef10-d864-436d-8f9b-9ad7466aaa23",
+      "decision": "in_scope",
+      "reason": "Central contribution is a video diffusion model that generates subject-aware video backgrounds, directly addressing video generation."
+    },
+    {
+      "id": "2ba46441-81af-4c0f-8994-42213e155427",
+      "decision": "out_of_scope",
+      "reason": "Focuses on knowledge editing for multimodal LLMs, not video generation, video editing, or temporal consistency of generated video."
+    },
+    {
+      "id": "5897ff95-cae3-4d2c-a1f2-ab34fc5be8fc",
+      "decision": "in_scope",
+      "reason": "Proposes training-free video motion transfer and camera-object motion disentanglement for controllable video generation."
+    },
+    {
+      "id": "5165d931-6d09-4342-a7eb-c44c8f35f240",
+      "decision": "out_of_scope",
+      "reason": "Improves temporal stability for frame-based video inference on denoising, enhancement, depth, and segmentation tasks; it does not generate or edit video."
+    },
+    {
+      "id": "97ca5a87-c4fb-4944-8260-754c789f7fdf",
+      "decision": "in_scope",
+      "reason": "Though truncated, the abstract explicitly states the approach is extended for video generation and generates video samples with reduced compute."
+    },
+    {
+      "id": "c61aa9fd-560c-45ad-9a45-a0aad126b599",
+      "decision": "in_scope",
+      "reason": "Central contribution is text-driven video editing that suppresses undesired content and improves temporal consistency of edited videos."
+    },
+    {
+      "id": "562960af-9fb8-441e-8217-f0f084810a77",
+      "decision": "out_of_scope",
+      "reason": "Addresses text-based 3D editing using Gaussian Splatting; output is edited 3D/static multi-view content, not generated or edited video."
+    },
+    {
+      "id": "722984f1-1c4e-4797-bfb9-29d4385ed4b9",
+      "decision": "in_scope",
+      "reason": "Proposes a generative model for arbitrarily long virtual try-on videos, directly addressing long video generation and temporal consistency."
+    },
+    {
+      "id": "73e3bf4a-4897-4bd9-a64f-a5e747b65dd6",
+      "decision": "in_scope",
+      "reason": "Human-centric video editing framework focused on temporal consistency and visual coherence in generated/edited video."
+    },
+    {
+      "id": "8266930a-4399-4e4f-a33b-deaf4d9f620d",
+      "decision": "out_of_scope",
+      "reason": "Central contribution is multimodal image editing, not generated or edited video."
+    },
+    {
+      "id": "a0b9f9d4-f7cd-468f-98ab-07a1337bd40a",
+      "decision": "in_scope",
+      "reason": "Text-to-video generation method for identity-preserving video creation with temporal consistency."
+    },
+    {
+      "id": "a159c739-f87f-4def-99b6-e2b1de33884f",
+      "decision": "in_scope",
+      "reason": "Uses and distills video diffusion models to generate novel-view video sequences for sparse-view reconstruction."
+    },
+    {
+      "id": "25765ddd-fdfc-4531-92b5-d0843cc287ff",
+      "decision": "out_of_scope",
+      "reason": "Facial image editing method; no generated or edited video contribution."
+    },
+    {
+      "id": "9040da0e-8009-4038-abb6-38402eb0b8c7",
+      "decision": "in_scope",
+      "reason": "Generates novel-view videos along trajectories using panorama and video diffusion for scene view generation."
+    },
+    {
+      "id": "19a10b3f-06cc-4931-9c63-cbfab59d533f",
+      "decision": "in_scope",
+      "reason": "Panoramic video generation framework producing controllable, temporally continuable 360-degree videos from a single image."
+    },
+    {
+      "id": "67286eab-089c-439d-ad12-c979f2b80128",
+      "decision": "in_scope",
+      "reason": "Architecture search method for efficient video diffusion models; central output is video generation."
+    },
+    {
+      "id": "a755a38a-c493-44f0-9b73-bc158f7bbc43",
+      "decision": "out_of_scope",
+      "reason": "Controlled generation framework demonstrated on image/audio inverse problems and molecule generation; no central video generation, editing, or video temporal consistency contribution."
+    },
+    {
+      "id": "f7c02933-3944-4059-9fea-56f5c4cfffd3",
+      "decision": "out_of_scope",
+      "reason": "Focuses on 3D-aware image/static 3D semantic attribute transfer and image editing, not generated or edited video."
+    },
+    {
+      "id": "4e026fd6-4bf6-4e8a-b095-df43c54850b8",
+      "decision": "uncertain",
+      "reason": "Sequential disentanglement is a temporal representation method evaluated partly on video, but its central contribution is representation learning across time series, video, and audio rather than a clear video generation/editing benchmark contribution."
+    },
+    {
+      "id": "76930eb0-69f6-4ad7-8b5b-1d58a8916de9",
+      "decision": "in_scope",
+      "reason": "Central contribution is action in-context learning for text-to-video generation, improving generation of complex actions in videos."
+    },
+    {
+      "id": "a906f7a5-a18b-4fd9-bb78-5a23c49fba7c",
+      "decision": "in_scope",
+      "reason": "Introduces a structured taxonomy, benchmark, and automatic evaluator for professional video generation models."
+    },
+    {
+      "id": "28928140-f11d-4c90-a1e4-c85ff83959fd",
+      "decision": "in_scope",
+      "reason": "Includes video generation and explicitly boosts temporal consistency in generated video via reference feature guidance."
+    }
+  ],
+  "failed_batches": []
+}
