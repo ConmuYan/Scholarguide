@@ -94,11 +94,6 @@ def apply_constraints(task, constraints=None, *, message='', initial=False, goal
 
 
 # A clause is only treated as already satisfied on positive evidence: the plan
-# carries the scope, or the delivered result guarantees the presentation. Real
-# eligibility constraints (code, awards, authors, thresholds) are never dropped.
-_OUTPUT_GUARANTEE = re.compile(
-    r'\b(?:rank(?:ed|ing)?|number(?:ed|ing)?|null|json|gaps?|labels?|scores?'
-    r'|fabricat\w*|invent\w*|hallucinat\w*)\b', re.I)
 _HARD_CONSTRAINT = re.compile(
     r'\b(?:source\s+code|code|repositor(?:y|ies)|github|dataset|benchmark\s+dataset'
     r'|best[\s-]+paper|award|author|affiliation|institution|impact\s+factor'
@@ -112,14 +107,6 @@ _NEGATION = re.compile(
     r'\b(?:no|not|never|without|exclude|avoid|omit|do\s+not|don\'t)\b|不要|无需|不含|不包括|不能包含|避免',
     re.I)
 _LABEL_WORDS = re.compile(r'\b(?:labels?|scores?|benchmark\s+labels?)\b|标签|评分', re.I)
-_SCOPE_WORDS = re.compile(
-    r'\b(?:venues?|conferences?|whitelist|publication\s+years?|years?)\b|会议|年份|年限', re.I)
-_GENERIC_SCOPE = re.compile(r'\b(?:provided|given|specified|eligible|whitelist)\b|给定|指定|所列|白名单', re.I)
-# Excluding specific papers/venues/years is a real eligibility restriction; the
-# product cannot express it, so such a clause is never treated as satisfied.
-_EXCLUSION = re.compile(
-    r'\b(?:excluding|exclude[sd]?|except|skip(?:ping)?|without|omit(?:ting)?|but\s+not'
-    r'|not\s+including|\bnot\b)\b|排除|不含|不包括|跳过|除…?外', re.I)
 _STOPWORDS = frozenset({'ONLY', 'AND', 'OR', 'JSON', 'DOI', 'URL', 'USE', 'NOT', 'ALL', 'ANY',
                         'FROM', 'WITH', 'THE', 'FOR', 'ONLY.'})
 
@@ -158,6 +145,57 @@ def _scope_only(text: str, venue: str) -> bool:
     return True
 
 
+# A clause is satisfied only when every remaining token is either neutral scope
+# wording or wording whose effect the delivered result guarantees. There is one
+# decision path: any unknown token - an exclusion, a negation, a filter, another
+# venue, a threshold - keeps the clause unsupported. Listing display words as one
+# more allowed vocabulary (instead of an early "contains rank -> satisfied"
+# branch) means no combination of wording can bypass the eligibility checks.
+_SCOPE_ALLOWED = frozenset("""
+only use using provided give given specified eligible whitelist
+conference conferences venue venues publication publications year years
+paper papers article articles from to and or between restrict restricted
+limited limit within range inclusive the these those list as in of a an
+that are is be published select selected consider considered include included
+for should shall must contain contains have has by listed ones
+""".split())
+_DISPLAY_ALLOWED = frozenset("""
+rank ranked ranking order ordered number numbered numbering null json gap gaps
+label labels score scores fabricate fabricated invent invented hallucinate
+hallucinated cite cited citation citations count counts most least significant
+influential importance first last per each every return object with array output
+format structure field fields metadata title titles author authors doi url link
+links reason reasons evidence quote quotes abstract value values unknown detail
+details entry entries item items element elements record records key keys string
+strings integer int explicit explicitly report reported state states below above
+after before also all any none
+""".split())
+_CJK_SCOPE_ALLOWED = frozenset('只收的在仅年限会议期刊论文发表收录使用范围到等和与及内基于给定所列份表示信息用')
+_CJK_DISPLAY_ALLOWED = frozenset('编号排序名次未知空值缺口标签评分每篇均需给出并且返回输出对象数组字段按重要性度关键')
+# A negated label/score instruction is exactly what the result does; drop that
+# phrase, then keep checking whatever else the clause asks for.
+_LABEL_PHRASE = re.compile(
+    r"(?:do\s+not|don't|not|no|never|without|avoid|exclude|omit)\b[^.;]{0,40}?"
+    r"\b(?:labels?|scores?|benchmark\s+labels?)\b[^.;]{0,40}", re.I)
+# Words that name an eligibility filter the product cannot promise.
+_FILTER_WORDS = re.compile(
+    r'\b(?:survey|surveys|benchmark|benchmarks|journal|workshop|oral|spotlight'
+    r'|poster|preprint|preprints|dataset|datasets|code|github|english|chinese'
+    r'|pages?|main\s+text|industry|labs?)\b|综述|期刊|短文|长文|口头|海报|预印本|数据集|代码|英文|中文|作者'
+    r'|机构|企业|页', re.I)
+
+
+def _tokens(text: str, venue: str) -> list:
+    """Tokens left after removing applied venue names and four-digit years."""
+    from common import requested_venues
+    residue = text
+    for name in sorted(requested_venues(venue), key=len, reverse=True):
+        residue = re.sub(re.escape(name), ' ', residue, flags=re.I)
+    residue = re.sub('[0-9]{4}', ' ', residue)
+    residue = re.sub('[^0-9A-Za-z一-鿿]+', ' ', residue)
+    return residue.split()
+
+
 def clause_is_satisfied(plan: dict, clause) -> bool:
     """True only when the plan or the delivery contract already satisfies a clause.
 
@@ -169,41 +207,48 @@ def clause_is_satisfied(plan: dict, clause) -> bool:
     text = ' '.join(str(clause or '').split())
     if not text or not isinstance(plan, dict):
         return False
-    # Any eligibility, custom-layout or non-negated label requirement stays hard.
     if _HARD_CONSTRAINT.search(text) or _CUSTOM_FORMAT.search(text):
         return False
-    if _LABEL_WORDS.search(text) and not _NEGATION.search(text):
+    if _LABEL_WORDS.search(text):
+        if not _NEGATION.search(text):
+            return False
+        text = _LABEL_PHRASE.sub(' ', text)
+        if not text.strip():
+            return True
+    if _FILTER_WORDS.search(text):
         return False
-    has_range = bool(re.search(r'(?:19|20)\d{2}\s*(?:-|–|—|~|to|至|到)\s*(?:19|20)\d{2}', text))
-    mentioned = {int(value) for value in re.findall(r'\b(?:19|20)\d{2}\b', text)}
+    # Naming the publication type is a filter unless the plan carries it.
+    if (re.search(r'\bconference\s+papers?\b', text, re.I)
+            and plan.get('publication_type') != 'conference'):
+        return False
     venue = str(plan.get('venue') or '').strip()
     year_from, year_to = plan.get('year_from'), plan.get('year_to')
     bounded_years = isinstance(year_from, int) and isinstance(year_to, int)
-    if _OUTPUT_GUARANTEE.search(text) and not _SCOPE_WORDS.search(text):
-        if re.search(r'\b(?:citations?|influen\w*|impact)\b', text, re.I) \
-                and plan.get('ranking') != 'citations':
-            return False
-        # A clause that also states a period must be satisfied by that period too.
-        if mentioned:
-            return bounded_years and min(mentioned) <= year_from and year_to <= max(mentioned)
-        return True
+    mentioned = {int(value) for value in re.findall(r'\b(?:19|20)\d{2}\b', text)}
     from common import requested_venues
     from research_policy import venue_identity
     applied = {venue_identity(name) for name in requested_venues(venue)}
     named = {match.group(0) for match in re.finditer(r'\b[A-Z][A-Za-z0-9&.-]{1,19}\b', text)
              if match.start() > 0 and match.group(0) not in _STOPWORDS}
-    if not _SCOPE_WORDS.search(text) and not has_range and not named:
-        return False
-    if not _scope_only(text, venue):
-        return False
     if named and not all(venue_identity(token) in applied for token in named):
         return False
-    if mentioned:
-        # The applied window must sit inside the requested one, never the reverse.
-        return bounded_years and min(mentioned) <= year_from and year_to <= max(mentioned)
-    if named:
-        return True  # every named venue is already applied
-    return bool(venue) and bounded_years and bool(_GENERIC_SCOPE.search(text))
+    for token in _tokens(text, venue):
+        if token.isdigit():
+            return False  # a surviving number is a threshold, not the year window
+        if token.isascii():
+            if token.casefold() in _SCOPE_ALLOWED or token.casefold() in _DISPLAY_ALLOWED:
+                continue
+            if token.casefold() in ('conference', 'conferences', 'venue', 'venues') and applied:
+                continue
+            return False
+        if any(char not in _CJK_SCOPE_ALLOWED and char not in _CJK_DISPLAY_ALLOWED
+               for char in token):
+            return False
+    if mentioned and not (bounded_years and min(mentioned) <= year_from and year_to <= max(mentioned)):
+        return False
+    if re.search(r'\b(?:citations?|influen\w*|impact)\b', text, re.I) and plan.get('ranking') != 'citations':
+        return False
+    return True
 
 INFLUENCE_CLAUSE = re.compile(
     r'^(?:rank|order)(?:\s+the\s+papers)?\s+by\s+(?:research\s+)?'
