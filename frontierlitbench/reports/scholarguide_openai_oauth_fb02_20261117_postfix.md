@@ -66,8 +66,10 @@ once more through the same OAuth profile:
 `runs/frontier-fb02-openai-oauth-gpt6luna-20261117-7/`.
 
 - Status `complete / requirements_met`; five papers with integer `rank` 1–5 and
-  `null` for unknown metadata; `request.unsupported == []` because the planner
-  reported no unrepresentable restriction.
+  `null` for unknown metadata. The planner did list the conference whitelist as
+  `venue_subset`; the program resolved it into the `venue` field (which is a hard
+  filter) and removed exactly that duplicate, so `request.unsupported == []`.
+  Nothing was dropped without being expressed as a searchable field.
 - Same five gains (S/A/B = 3/1/1/1/1), **nDCG@5 = 0.3357**, WeightedHit 28%,
   S-Tier 0. Usage: 6,879 input and 1,541 output tokens.
 - The product no longer decides from wording whether a sentence is "already
