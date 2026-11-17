@@ -85,14 +85,6 @@ def validate_research_assessments(data: dict, papers: list[Paper]) -> None:
         raise GuideError('Research assessments require fit_score for every candidate.')
 
 
-def _calibrate_paired_significance(plan, user_input, unsupported):
-    """Ranking phrase calibration shared with the stateful session."""
-    from quantities import calibrate_ranking_requirements, PAIRED_SIGNIFICANCE
-    if not PAIRED_SIGNIFICANCE.search(user_input or ''):
-        return list(unsupported)
-    return calibrate_ranking_requirements(plan, user_input, unsupported)
-
-
 def _restore_explicit_conferences(plan, user_input):
     """Recover a literal conference whitelist only when it is unambiguous."""
     from common import requested_venues
@@ -333,11 +325,17 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
         parsed_count = quantity_constraints(user_input) if request_data is None else {}
         raw_plan = None
         if request_data is None:
+            from quantities import blocking_quotes
+
             def validate_plan(value):
                 parsed = Request.from_dict({**value, **parsed_count, **(constraints or {}), **preferences})
                 clean_query(value)
-                if any(len(x.strip()) < 3 or x.casefold() not in user_input.casefold() for x in parsed.unsupported):
-                    raise GuideError('unsupported may contain only exact excerpts actually present in the user input; otherwise return [].')
+                # The one and only stop signal is this structured array. It is
+                # validated here (closed kind, verbatim <=300-char quote) and
+                # written into the legacy string field Request already carries.
+                # No sentence is reinterpreted afterwards.
+                value['unsupported'] = blocking_quotes(
+                    value.get('blocking_requirements'), user_input)
             payload = {'user_input': user_input, 'current_date': date.today().isoformat()}
             if constraints is not None:
                 payload['request_constraints'] = deepcopy(constraints)
@@ -345,29 +343,11 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
                                 prompts.PLAN_SCHEMA, validate_plan, prompts.PLAN, meter)
             from quantities import calibrate_user_requirements
             plan = calibrate_user_requirements(dict(raw_plan), user_input)
-            # Correct an overly conservative planner only for this exact,
-            # now-supported ranking requirement, never for unrelated clauses.
-            influence = re.compile(r'^(?:rank|order)(?:\s+the\s+papers)?\s+by\s+(?:research\s+)?(?:influence|citation(?:\s+count)?s?)$', re.I)
-            unsupported = plan.get('unsupported') or []
-            # The benchmark's paired wording expresses the same broad ranking
-            # request; citations are disclosed below as an imperfect proxy.
-            # Do not suppress a standalone scientific-significance requirement.
-            unsupported = _calibrate_paired_significance(plan, user_input, unsupported)
-            plan['unsupported'] = unsupported
+            # A literal, unambiguous conference whitelist is restored to the
+            # venue field; that is the only remaining post-plan correction and
+            # it never deletes any other blocking quote.
+            plan['unsupported'] = list(plan.get('unsupported') or [])
             _restore_explicit_conferences(plan, user_input)
-            unsupported = plan.get('unsupported') or []
-            if any(influence.fullmatch(str(x).strip(' .')) for x in unsupported):
-                from quantities import calibrate_ranking_requirements
-                plan['ranking'] = 'citations'
-                plan['unsupported'] = calibrate_ranking_requirements(plan, user_input, unsupported)
-            # Drop only clauses the plan or the delivery contract provably
-            # satisfies (scope already applied, rank/null/gap guarantees).
-            from quantities import clause_is_satisfied
-            satisfied = [x for x in plan.get('unsupported') or []
-                         if clause_is_satisfied(plan, x)]
-            if satisfied:
-                plan['unsupported'] = [x for x in plan['unsupported'] if x not in satisfied]
-                plan['satisfied_requirements'] = satisfied
         else:
             plan = dict(request_data)
             plan.setdefault('query', plan.get('topic', ''))
@@ -402,10 +382,6 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
               llm_plan=deepcopy(raw_plan),
               **({'request_constraints': deepcopy(constraints),
                   'constraint_source': 'guided_form'} if constraints is not None else {}))
-        if plan.get('satisfied_requirements'):
-            result['warnings'].append(
-                'These requirements are already provided by the request or the result: '
-                + '; '.join(plan['satisfied_requirements']))
         if request.unsupported:
             result['status'] = 'unsupported'
             result['stop_reason'] = 'unsupported_requirements'

@@ -93,188 +93,93 @@ def apply_constraints(task, constraints=None, *, message='', initial=False, goal
     return merged
 
 
-# A clause is only treated as already satisfied on positive evidence: the plan
-_HARD_CONSTRAINT = re.compile(
-    r'\b(?:source\s+code|code|repositor(?:y|ies)|github|dataset|benchmark\s+dataset'
-    r'|best[\s-]+paper|award|author|affiliation|institution|impact\s+factor'
-    r'|acceptance\s+rate|h-index)\b|\d+\s*(?:citations?|stars?|downloads?)'
-    r'|代码|开源|仓库|数据集|最佳论文|获奖|作者|机构|引用数|下载量', re.I)
-# A custom layout is never satisfied by the JSON result above.
-_CUSTOM_FORMAT = re.compile(
-    r'\b(?:csv|tsv|excel|xlsx|spreadsheet|markdown\s+table|yaml|xml|html|sql|latex|bibtex)\b'
-    r'|表格|电子表格', re.I)
-_NEGATION = re.compile(
-    r'\b(?:no|not|never|without|exclude|avoid|omit|do\s+not|don\'t)\b|不要|无需|不含|不包括|不能包含|避免',
-    re.I)
-_LABEL_WORDS = re.compile(r'\b(?:labels?|scores?|benchmark\s+labels?)\b|标签|评分', re.I)
-_STOPWORDS = frozenset({'ONLY', 'AND', 'OR', 'JSON', 'DOI', 'URL', 'USE', 'NOT', 'ALL', 'ANY',
-                        'FROM', 'WITH', 'THE', 'FOR', 'ONLY.'})
+# The only accepted stop signal is a structured claim: a closed kind plus a
+# verbatim quote. Nothing here reads the wording, so no paraphrase can be
+# reclassified as "already satisfied" and no real restriction can be deleted by
+# the program. A previous design tried to decide in Python whether a clause was
+# already met; every wording change ("no scores, only surveys", "Only papers
+# with DOI", "只收录用的论文") bypassed it, so that decision now belongs to the
+# schema: either the planner names a kind that the product cannot verify, or the
+# array is empty and the search proceeds without further interpretation.
+BLOCKING_KINDS = (
+    'code_release', 'dataset', 'award', 'author_or_affiliation',
+    'citation_threshold', 'length_or_pages', 'language', 'venue_subset',
+    'year_subset', 'publication_type', 'presentation_type', 'version_or_status',
+    'topic_filter', 'output_format', 'other',
+)
+BLOCKING_QUOTE_LIMIT = 300
+# One description per kind, so the prompt text, the enum and the docs cannot
+# drift apart: the schema lists the enum, the prompt lists the same help.
+BLOCKING_KIND_HELP = {
+    'code_release': 'released source code or a repository link',
+    'dataset': 'a public dataset or benchmark artefact',
+    'award': 'best-paper or other award status',
+    'author_or_affiliation': 'a named author, group, institution or industry lab',
+    'citation_threshold': 'a citation count limit',
+    'length_or_pages': 'page or length limits',
+    'language': 'paper language',
+    'venue_subset': 'a narrower venue subset than the venue field expresses (workshop, sub-track)',
+    'year_subset': ('a year selection one inclusive range cannot express '
+                    '(e.g. "2024 or 2026" only, or excluding a year inside the range)'),
+    'publication_type': 'a publication type the publication_type field cannot express',
+    'presentation_type': 'a presentation class outside oral/spotlight/poster',
+    'version_or_status': 'preprint vs journal version, review or withdrawal status',
+    'topic_filter': ('an extra content filter on top of the topic '
+                     '(e.g. excluding surveys, only papers with DOI, 只收录…的论文)'),
+    'output_format': 'a layout other than the delivered JSON (e.g. CSV, spreadsheet, LaTeX table)',
+    'other': 'none of the above fits but the restriction still changes which papers qualify',
+}
 
 
-# Scope clauses are satisfied only on positive evidence. The text may name the
-# applied conferences and years plus neutral scope wording; anything else (a
-# negation, an exclusion, a filter, a different venue) is unknown content and
-# keeps the clause unsupported. A blacklist of negative words would leak as soon
-# as the wording changed, so the rule is an allow-list instead.
-_SCOPE_ALLOWED = frozenset("""
-only use using provided give given specified eligible whitelist
-conference conferences venue venues publication publications year years
-paper papers article articles from to and or between restrict restricted
-limited limit within range inclusive the these those list as in of a an
-that are is be published select selected consider considered include included
-""".split())
-_CJK_SCOPE_ALLOWED = frozenset('只收的在仅年限会议期刊论文发表收录使用范围到等和与及内')
+def blocking_kind_help() -> str:
+    """The kind list as prompt text, generated from the enum itself."""
+    assert tuple(BLOCKING_KIND_HELP) == BLOCKING_KINDS
+    return '; '.join(f'{kind} ({BLOCKING_KIND_HELP[kind]})' for kind in BLOCKING_KINDS)
 
 
-def _scope_only(text: str, venue: str) -> bool:
-    """True when nothing but the applied scope is being said."""
-    from common import requested_venues
-    residue = text
-    for name in sorted(requested_venues(venue), key=len, reverse=True):
-        residue = re.sub(re.escape(name), ' ', residue, flags=re.I)
-    residue = re.sub('[0-9]{4}', ' ', residue)
-    residue = re.sub('[^0-9A-Za-z一-鿿]+', ' ', residue)
-    for token in residue.split():
-        if token.isdigit():
-            continue
-        if token.isascii():
-            if token.casefold() not in _SCOPE_ALLOWED:
-                return False
-        elif any(char not in _CJK_SCOPE_ALLOWED for char in token):
-            return False
-    return True
+def blocking_quotes(items, source_text, *, field='blocking_requirements') -> list:
+    """Validate the structured stop contract shared by both entry points.
 
-
-# A clause is satisfied only when every remaining token is either neutral scope
-# wording or wording whose effect the delivered result guarantees. There is one
-# decision path: any unknown token - an exclusion, a negation, a filter, another
-# venue, a threshold - keeps the clause unsupported. Listing display words as one
-# more allowed vocabulary (instead of an early "contains rank -> satisfied"
-# branch) means no combination of wording can bypass the eligibility checks.
-_SCOPE_ALLOWED = frozenset("""
-only use using provided give given specified eligible whitelist
-conference conferences venue venues publication publications year years
-paper papers article articles from to and or between restrict restricted
-limited limit within range inclusive the these those list as in of a an
-that are is be published select selected consider considered include included
-for should shall must contain contains have has by listed ones
-""".split())
-_DISPLAY_ALLOWED = frozenset("""
-rank ranked ranking order ordered number numbered numbering null json gap gaps
-label labels score scores fabricate fabricated invent invented hallucinate
-hallucinated cite cited citation citations count counts most least significant
-influential importance first last per each every return object with array output
-format structure field fields metadata title titles author authors doi url link
-links reason reasons evidence quote quotes abstract value values unknown detail
-details entry entries item items element elements record records key keys string
-strings integer int explicit explicitly report reported state states below above
-after before also all any none
-""".split())
-_CJK_SCOPE_ALLOWED = frozenset('只收的在仅年限会议期刊论文发表收录使用范围到等和与及内基于给定所列份表示信息用')
-_CJK_DISPLAY_ALLOWED = frozenset('编号排序名次未知空值缺口标签评分每篇均需给出并且返回输出对象数组字段按重要性度关键')
-# A negated label/score instruction is exactly what the result does; drop that
-# phrase, then keep checking whatever else the clause asks for.
-_LABEL_PHRASE = re.compile(
-    r"(?:do\s+not|don't|not|no|never|without|avoid|exclude|omit)\b[^.;]{0,40}?"
-    r"\b(?:labels?|scores?|benchmark\s+labels?)\b[^.;]{0,40}", re.I)
-# Words that name an eligibility filter the product cannot promise.
-_FILTER_WORDS = re.compile(
-    r'\b(?:survey|surveys|benchmark|benchmarks|journal|workshop|oral|spotlight'
-    r'|poster|preprint|preprints|dataset|datasets|code|github|english|chinese'
-    r'|pages?|main\s+text|industry|labs?)\b|综述|期刊|短文|长文|口头|海报|预印本|数据集|代码|英文|中文|作者'
-    r'|机构|企业|页', re.I)
-
-
-def _tokens(text: str, venue: str) -> list:
-    """Tokens left after removing applied venue names and four-digit years."""
-    from common import requested_venues
-    residue = text
-    for name in sorted(requested_venues(venue), key=len, reverse=True):
-        residue = re.sub(re.escape(name), ' ', residue, flags=re.I)
-    residue = re.sub('[0-9]{4}', ' ', residue)
-    residue = re.sub('[^0-9A-Za-z一-鿿]+', ' ', residue)
-    return residue.split()
-
-
-def clause_is_satisfied(plan: dict, clause) -> bool:
-    """True only when the plan or the delivery contract already satisfies a clause.
-
-    The planner may echo a supported instruction into ``unsupported`` (for example
-    "number each paper" or "use the given venue list"). Stopping the search for
-    those would reject requests the product does implement, so they are recognized
-    here. Anything that could change which papers qualify stays unsupported.
+    Returns the verbatim quotes in order. The same array stops retrieval before
+    any search (one-shot workflow) or before the next turn (stateful session), so
+    one message cannot be judged differently by the two entry points.
     """
-    text = ' '.join(str(clause or '').split())
-    if not text or not isinstance(plan, dict):
-        return False
-    if _HARD_CONSTRAINT.search(text) or _CUSTOM_FORMAT.search(text):
-        return False
-    if _LABEL_WORDS.search(text):
-        if not _NEGATION.search(text):
-            return False
-        text = _LABEL_PHRASE.sub(' ', text)
-        if not text.strip():
-            return True
-    if _FILTER_WORDS.search(text):
-        return False
-    # Naming the publication type is a filter unless the plan carries it.
-    if (re.search(r'\bconference\s+papers?\b', text, re.I)
-            and plan.get('publication_type') != 'conference'):
-        return False
-    venue = str(plan.get('venue') or '').strip()
-    year_from, year_to = plan.get('year_from'), plan.get('year_to')
-    bounded_years = isinstance(year_from, int) and isinstance(year_to, int)
-    mentioned = {int(value) for value in re.findall(r'\b(?:19|20)\d{2}\b', text)}
-    from common import requested_venues
-    from research_policy import venue_identity
-    applied = {venue_identity(name) for name in requested_venues(venue)}
-    named = {match.group(0) for match in re.finditer(r'\b[A-Z][A-Za-z0-9&.-]{1,19}\b', text)
-             if match.start() > 0 and match.group(0) not in _STOPWORDS}
-    if named and not all(venue_identity(token) in applied for token in named):
-        return False
-    for token in _tokens(text, venue):
-        if token.isdigit():
-            return False  # a surviving number is a threshold, not the year window
-        if token.isascii():
-            if token.casefold() in _SCOPE_ALLOWED or token.casefold() in _DISPLAY_ALLOWED:
-                continue
-            if token.casefold() in ('conference', 'conferences', 'venue', 'venues') and applied:
-                continue
-            return False
-        if any(char not in _CJK_SCOPE_ALLOWED and char not in _CJK_DISPLAY_ALLOWED
-               for char in token):
-            return False
-    if mentioned and not (bounded_years and min(mentioned) <= year_from and year_to <= max(mentioned)):
-        return False
-    if re.search(r'\b(?:citations?|influen\w*|impact)\b', text, re.I) and plan.get('ranking') != 'citations':
-        return False
-    return True
-
-INFLUENCE_CLAUSE = re.compile(
-    r'^(?:rank|order)(?:\s+the\s+papers)?\s+by\s+(?:research\s+)?'
-    r'(?:influence|citation(?:\s+count)?s?)$', re.I)
-PAIRED_SIGNIFICANCE = re.compile(r'\bmost\s+influential\s+and\s+research-significant\b', re.I)
-_PAIRED_LABELS = frozenset({'research-significant', 'most influential and research-significant'})
+    if items is None:
+        # A missing field is not "no restrictions": the array is required so
+        # an omitted answer cannot silently pass as empty.
+        raise GuideError(f'{field} is required; use [] only when nothing blocks.')
+    if not isinstance(items, list) or isinstance(items, (str, bytes)):
+        raise GuideError(f'{field} must be an array of {{kind, quote}} objects.')
+    text = str(source_text or '').casefold()
+    quotes = []
+    for item in items:
+        if not isinstance(item, dict) or set(item) != {'kind', 'quote'}:
+            raise GuideError(f'{field} entries must contain exactly kind and quote.')
+        if item['kind'] not in BLOCKING_KINDS:
+            raise GuideError(f'{field} kind must be one of: ' + ', '.join(BLOCKING_KINDS))
+        quote = item['quote']
+        if not isinstance(quote, str) or not quote.strip():
+            raise GuideError(f'{field} quote must be a non-empty string.')
+        if len(quote) > BLOCKING_QUOTE_LIMIT:
+            raise GuideError(f'{field} quote must be at most {BLOCKING_QUOTE_LIMIT} characters.')
+        if quote.casefold() not in text:
+            raise GuideError(f'{field} quote must be an exact excerpt of the user input.')
+        if quote not in quotes:
+            quotes.append(quote)
+    return quotes
 
 
-def calibrate_ranking_requirements(plan: dict, message: str, unsupported) -> list:
-    """Recognize only ranking phrases the product can express, in one place.
-
-    Both the one-shot workflow and the stateful session use this so the same
-    message cannot be judged differently by the two entry points.
-    """
-    remaining = []
-    for clause in unsupported or []:
-        text = str(clause).strip(' .')
-        if INFLUENCE_CLAUSE.fullmatch(text):
-            plan['ranking'] = 'citations'
-            continue
-        if (PAIRED_SIGNIFICANCE.search(message or '')
-                and text.casefold() in _PAIRED_LABELS):
-            plan['ranking'] = 'citations'
-            continue
-        remaining.append(clause)
-    return remaining
+def blocking_requirement_schema() -> dict:
+    """One schema fragment for the planner and the task updater."""
+    return {'type': 'array', 'items': {
+        'type': 'object',
+        'properties': {
+            'kind': {'type': 'string', 'enum': list(BLOCKING_KINDS)},
+            'quote': {'type': 'string', 'maxLength': BLOCKING_QUOTE_LIMIT},
+        },
+        'required': ['kind', 'quote'],
+        'additionalProperties': False,
+    }}
 
 
 def calibrate_user_requirements(proposal, message, previous=None):

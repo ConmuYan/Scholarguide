@@ -133,7 +133,7 @@ class CancellationTests(unittest.TestCase):
                     raise AssertionError('model work continued after Stop')
                 chat.request_stop()
                 result = {'patch': {'topic': 'protein design'}, 'summary': 'new topic',
-                          'unresolved': []}
+                          'unresolved': [], 'blocking_requirements': []}
                 validate(result)
                 return result
         llm = UpdatingLLM()

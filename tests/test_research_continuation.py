@@ -264,7 +264,7 @@ class ResearchContinuationTests(unittest.TestCase):
                 'year_to': 2025, 'accepted_only': True, 'publication_type': 'conference'})
             chat._new_phase(first=True)
             raw = {'patch': {'year_from': None, 'year_to': None},
-                   'summary': 'Remove the year range.', 'unsupported': [], 'unresolved': []}
+                   'summary': 'Remove the year range.', 'blocking_requirements': [], 'unresolved': []}
             with patch('session.run_decision', return_value=raw):
                 updated = chat.update_task('Remove the year range, keeping accepted conference papers.')
             self.assertIsNone(updated['year_from'])

@@ -88,17 +88,26 @@ class InfluenceRankingTests(unittest.TestCase):
         self.assertEqual(asia['venue'], '')
         self.assertEqual(asia['unsupported'], ['SIGGRAPH Asia'])
 
-    def test_benchmark_significance_is_qualified_only_in_paired_ranking_request(self):
-        from workflow import _calibrate_paired_significance
-        plan = {'ranking': 'citations'}
-        text = 'Recommend the most influential and research-significant papers.'
-        self.assertEqual(_calibrate_paired_significance(plan, text, ['research-significant', 'code released']), ['code released'])
-        self.assertEqual(_calibrate_paired_significance(plan, text, ['most influential and research-significant', 'code released']), ['code released'])
-        self.assertEqual(_calibrate_paired_significance(plan, text, ['most influential and research-significant with code']), ['most influential and research-significant with code'])
-        self.assertEqual(_calibrate_paired_significance(plan, 'Find research-significant papers.', ['research-significant']), ['research-significant'])
-        corrected = {'ranking': 'relevance'}
-        self.assertEqual(_calibrate_paired_significance(corrected, text, ['research-significant']), [])
-        self.assertEqual(corrected['ranking'], 'citations')
+    def test_influence_ranking_is_a_disclosed_citation_proxy(self):
+        # Product semantics: "most influential" is expressed as ranking="citations",
+        # and the result discloses that citations are only a limited proxy. The
+        # former paired-wording text calibration is gone; the planner field and the
+        # warning are the contract now.
+        from common import Config
+        from workflow import run
+        from tests.test_search_constraints import Planner, Source
+        llm = Planner()
+        llm.raw.update(topic='agents', query='agents', target_count=2, category='none',
+                       minimum_category_count=0, venue='', year_from=None, year_to=None,
+                       reading_goal='general', ranking='citations',
+                       blocking_requirements=[])
+        result = run('Recommend the most influential and research-significant papers.',
+                     Config(), 'S', source=Source(), llm=llm)
+        self.assertEqual(result['request']['ranking'], 'citations')
+        self.assertNotEqual(result['status'], 'unsupported')
+        self.assertTrue(any('citation counts as a limited proxy' in warning
+                            for warning in result['warnings']))
+        self.assertEqual(result['request']['unsupported'], [])
 
     def test_ranking_and_missing_counts(self):
         papers = [Paper(id='a', title='A', abstract='evidence', url='', citation_count=0, citation_source='openalex'),

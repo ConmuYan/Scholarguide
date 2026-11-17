@@ -25,7 +25,7 @@ jobs:
       - name: Test the delivery contract, OAuth transport and local sign-in
         run: >-
           python -m unittest
-          tests.test_delivery_contract tests.test_requirement_satisfaction
+          tests.test_delivery_contract tests.test_blocking_requirements
           tests.test_openai_oauth tests.test_openai_oauth_transport
           tests.test_oauth_web_api tests.test_api_v1 tests.test_web_chat
           -v

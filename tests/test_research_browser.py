@@ -73,7 +73,7 @@ class BrowserLLM(OfflineLLM):
             patch = ({'purpose': data['message']} if data.get('task') else
                      {key: value for key, value in TASK.items() if key != 'query'})
             value = {'patch': patch, 'summary': 'Offline fixture task update',
-                     'unresolved': [], 'unsupported': [], 'assumptions': []}
+                     'unresolved': [], 'blocking_requirements': [], 'assumptions': []}
             validate(value)
             return value
         value = super().generate(stage, prompt, data, schema, validate)

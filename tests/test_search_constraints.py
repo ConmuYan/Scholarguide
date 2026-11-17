@@ -48,7 +48,7 @@ class Planner:
         self.raw = {'topic': 'visual language adaptation', 'query': 'visual adaptation benchmark',
                     'target_count': 4, 'category': 'survey', 'minimum_category_count': 2,
                     'venue': 'ACL', 'year_from': 2018, 'year_to': 2020,
-                    'reading_goal': 'comparison', 'unsupported': []}
+                    'reading_goal': 'comparison', 'blocking_requirements': []}
 
     def generate(self, stage, prompt, data, schema, validate):
         self.calls.append((stage, deepcopy(data)))
@@ -76,17 +76,19 @@ class GuidedConstraintTests(unittest.TestCase):
                 return super().generate(stage, prompt, data, schema, validate)
 
         llm, source = CapturingPlanner(), Source()
-        llm.raw['unsupported'] = ['released code']
+        llm.raw['blocking_requirements'] = [{'kind': 'code_release', 'quote': 'released code'}]
         result = run('Recommend visual papers with released code; return a ranked JSON papers array.',
                      Config(), 'S', source=source, llm=llm)
         self.assertEqual(result['status'], 'unsupported')
+        self.assertEqual(result['stop_reason'], 'unsupported_requirements')
         self.assertEqual(result['request']['unsupported'], ['released code'])
         self.assertEqual(source.queries, [])
         prompt = ' '.join(llm.plan_prompt.split())
-        self.assertIn('SUPPORTED presentation/safety instructions, not unsupported', prompt)
-        self.assertIn('copy only the exact unsupported clause', prompt)
+        self.assertIn('MUST be written into that field and MUST NOT appear here', prompt)
+        self.assertIn('copy only the exact restriction', prompt)
+        self.assertIn('are satisfied by construction and must not be listed', prompt)
         self.assertIn('explicit integer `rank` (1 is best)', prompt)
-        self.assertIn('A value that was not retrieved is `null`', prompt)
+        self.assertIn('`null` for values that were not retrieved', prompt)
         self.assertIn('does not promise complete metadata or an arbitrary custom layout', prompt)
 
     def test_formatting_only_plan_can_reach_search(self):
@@ -111,7 +113,7 @@ class GuidedConstraintTests(unittest.TestCase):
         schema = prompts.PLAN_SCHEMA
         self.assertEqual(schema['properties']['purpose'], {'type': 'string', 'maxLength': 500})
         self.assertNotIn('purpose', schema['required'])
-        self.assertIn('topic, purpose, reading_goal', prompts.PLAN)
+        self.assertIn('topic, purpose, reading_goal', ' '.join(prompts.PLAN.split()))
 
     def test_planner_receives_runtime_date_for_relative_years(self):
         class RelativePlanner(Planner):
@@ -158,7 +160,10 @@ class GuidedConstraintTests(unittest.TestCase):
         self.assertEqual([p['id'] for p in result['papers']], ['p1', 'p2', 'p5'])
         self.assertEqual(CONSTRAINTS, original)
         plan = next(step for step in result['trace'] if step['action'] == 'plan')
-        self.assertEqual(plan['llm_plan'], llm.raw)
+        # The validated plan carries the derived string list Request uses.
+        self.assertEqual(plan['llm_plan']['unsupported'], [])
+        self.assertEqual({k: v for k, v in plan['llm_plan'].items()
+                          if k != 'unsupported'}, llm.raw)
         self.assertEqual(plan['request_constraints'], CONSTRAINTS)
         self.assertEqual(plan['constraint_source'], 'guided_form')
         self.assertNotEqual(plan['llm_plan']['venue'], plan['request']['venue'])
@@ -289,7 +294,8 @@ class SingleSourceFiltersTests(unittest.TestCase):
         llm = Planner()
         llm.raw.update(topic='agents', query='agents', target_count=1, category='none',
                        minimum_category_count=0, venue='', year_from=2024, year_to=2026,
-                       reading_goal='general', unsupported=[field])
+                       reading_goal='general',
+                       blocking_requirements=[{'kind': 'venue_subset', 'quote': field}])
         class FilteredSource(Source):
             supports_search_filters = True
             def search(self, query, limit=10, *, filters=None):

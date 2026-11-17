@@ -124,7 +124,17 @@ SSE 的 `trace` 事件携带稳定的 `seq/event_id`、operation、session、tur
 
 两个端点与其余本地 UI 一样只接受 `127.0.0.1`/`localhost` 且校验 Origin；`use_system_proxy` 仅影响 OpenAI OAuth 认证与模型请求，取值为无凭据的本机 HTTP 回环代理，不改变论文来源的代理设置。
 
-范围条款只会在“已应用窗口完全落在请求窗口内”时视为已满足；请求更宽的年份窗口不会被回溯检索，交付结果也不会越界。
+### 结构化停止条件（`blocking_requirements`）
+
+规划器与任务更新器不再用自由文本申报“不支持”。二者的 JSON 契约里是同一个必填数组 `blocking_requirements`，元素为 `{kind, quote}`：`kind` 取自封闭枚举 `code_release`、`dataset`、`award`、`author_or_affiliation`、`citation_threshold`、`length_or_pages`、`language`、`venue_subset`、`year_subset`、`publication_type`、`presentation_type`、`version_or_status`、`topic_filter`、`output_format`、`other`；`quote` 必须是用户输入的大小写不敏感精确子串，且不超过 300 字符，否则该次计划或更新被拒绝（不进入检索，也不保存任务修订）。
+
+程序只按结构判定：数组非空即在检索前停止（`status=unsupported`、`stop_reason=unsupported_requirements`），并把这些原文片段写入 `request.unsupported` 与 `warnings`；数组为空则进入检索，程序不再对任何句子做“其实已满足”的文本推断。一次性 `workflow.run` 与 `ChatSession.update_task` 共用同一校验函数，因此同一输入给出一致结论。
+
+`topic`、`purpose`、`reading_goal`、`ranking`、类别及其最低篇数、目标/区间数量、`venue`、年份范围、`publication_type`、`venue_scope`、`accepted_only`、`presentation_types`，以及产品自身保证的展示契约（逐篇 `rank`、未知值 `null`、`gaps`、不添加 benchmark 标签或分数）都必须写入对应字段，不得放进 `blocking_requirements`。只有产品无法检索或无法核验的限制（代码、数据集、奖项、作者/机构、引用或页数阈值、语言、版本/评审状态、更窄的会议或年份子集、自定义输出格式、额外主题筛选等）才列入，并必须给出 `kind`。字段级的会议/年份范围仍由可验证出版记录统一判定；请求更宽的年份窗口不会被回溯检索，交付结果也不会越界。
+
+不再存在“某句话已被视作满足”的白名单：即使模型把已由产品保证的展示要求放进 `blocking_requirements`，程序也只按结构停止，不做文本豁免。
+
+两个 schema（`PLAN_SCHEMA` 与 `TASK_UPDATE_SCHEMA`）都把 `blocking_requirements` 列为必填；当供应商只能走 `json_object` 兼容路径（不发 `json_schema`）时，同一校验函数在本地执行，结构与原文子串要求不因此放松。旧的结构化 `request_data` 仍可携带 `unsupported` 字符串数组，它不是新的解析通道：非空即停止，空则照常执行，与 `blocking_requirements=[]` 一致。
 
 交付的每篇论文含 `rank`（从 1 开始，等于交付顺序）以及 `title`、`authors`、`year`、`venue`、`doi`、`url`、`arxiv_id`、`citation_count`、`citation_source`；未取得的元数据为 `null` 而非空字符串。CLI JSON、`report.md`、产品 API 与 Web 论文卡片共用这一形状，卡片序号取该 `rank`，筛选或仅展示性排序不会重新编号。
 

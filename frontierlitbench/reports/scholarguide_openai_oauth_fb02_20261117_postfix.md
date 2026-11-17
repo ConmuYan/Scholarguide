@@ -57,3 +57,20 @@ Five earlier luna attempts remain recorded and unscored: `...-1` (HTTP 400), `..
 the fixes above). The separate `gpt-6.1-terra` attempt also remains unscored. Corpus and adjudication
 coverage is not a claim that outside papers are scientifically invalid, and one completed run is not
 evidence about model ranking in general.
+
+## Re-run under the structured stop contract
+
+After replacing free-text clause classification with the required
+`blocking_requirements` array (`{kind, quote}` from a closed enum), FB-02 was run
+once more through the same OAuth profile:
+`runs/frontier-fb02-openai-oauth-gpt6luna-20261117-7/`.
+
+- Status `complete / requirements_met`; five papers with integer `rank` 1–5 and
+  `null` for unknown metadata; `request.unsupported == []` because the planner
+  reported no unrepresentable restriction.
+- Same five gains (S/A/B = 3/1/1/1/1), **nDCG@5 = 0.3357**, WeightedHit 28%,
+  S-Tier 0. Usage: 6,879 input and 1,541 output tokens.
+- The product no longer decides from wording whether a sentence is "already
+  satisfied": any `{kind, quote}` entry stops the search before it spends, and an
+  empty array proceeds without further interpretation.
+

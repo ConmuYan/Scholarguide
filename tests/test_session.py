@@ -60,7 +60,8 @@ class FakeLLM:
             if self.ask_first and not self.asked:
                 unresolved = [{'field': 'purpose', 'question': 'Is this for a survey or an experiment?',
                                'blocking': True}]
-            out = {'patch': patch, 'summary': 'fixture update', 'unresolved': unresolved}
+            out = {'patch': patch, 'summary': 'fixture update', 'unresolved': unresolved,
+                   'blocking_requirements': []}
             validate(out)
             return out
 

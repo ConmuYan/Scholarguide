@@ -107,7 +107,7 @@ class ScriptedLLM:
     mode = 'demo'
 
     def __init__(self, *, update_patch=None, action='FINISH', fail_stage=None,
-                 assess_payload=None, unsupported=None, assumptions=None,
+                 assess_payload=None, blocking_requirements=None, assumptions=None,
                  ask_on_assumption=False):
         self.update_patch = update_patch or {}
         self.action = action
@@ -117,7 +117,7 @@ class ScriptedLLM:
         self.last_assess_payload = {}
         self.last_update_payload = {}
         self.stages = []
-        self.unsupported = unsupported or []
+        self.unsupported = blocking_requirements or []
         self.assumptions = assumptions or []
         self.ask_on_assumption = ask_on_assumption
 
@@ -137,7 +137,7 @@ class ScriptedLLM:
             out = {'patch': patch, 'summary': 'scripted',
                    'assumptions': self.assumptions or
                                  [{'field': 'prefer_recent', 'text': 'fixture assumption'}],
-                   'unsupported': self.unsupported, 'unresolved': []}
+                   'blocking_requirements': self.unsupported, 'unresolved': []}
         elif stage == 'action':
             allowed = data['allowed']
             observation = data.get('observation') or {}
@@ -280,13 +280,15 @@ class SessionSemanticsTests(unittest.TestCase):
         self.assertNotIn(ordered[2], [p['id'] for p in result['papers']])
         self.assertIn('excluded_paper_ids', result['request'])
 
-    def test_unsupported_requirement_blocks_completion(self):
-        llm = ScriptedLLM(unsupported=['keep the two evaluation papers'])
+    def test_blocking_requirement_blocks_completion(self):
+        llm = ScriptedLLM(blocking_requirements=[
+            {'kind': 'topic_filter', 'quote': 'keep the two evaluation papers'}])
         chat = self.chat(llm)
         result = chat.start(message='Recommend RAG papers. keep the two evaluation papers.')
         self.assertEqual(result['status'], 'unsupported')
         self.assertEqual(result['stop_reason'], 'unsupported_requirements')
         self.assertEqual(result['unsupported'], ['keep the two evaluation papers'])
+        self.assertFalse(chat.source.calls)
 
     def test_blocking_assumption_is_surfaced_and_can_trigger_ask(self):
         llm = ScriptedLLM(assumptions=[{'field': 'purpose', 'text': 'maybe a survey'}],

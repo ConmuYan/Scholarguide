@@ -33,7 +33,7 @@ class DemoLLM:
     def generate(self, stage, system, data, schema, validate):
         if stage == 'plan':
             result = {'topic': 'retrieval augmented generation', 'category': 'evaluation',
-                      'minimum_category_count': 2, 'target_count': 5, 'unsupported': [],
+                      'minimum_category_count': 2, 'target_count': 5, 'blocking_requirements': [],
                       'query': 'retrieval augmented generation'}
         elif stage == 'refine':
             result = {'query': 'retrieval augmented generation evaluation benchmark'}
@@ -99,7 +99,8 @@ class ChatDemoLLM(DemoLLM):
                 unresolved = [{'field': 'purpose',
                                'question': 'Is this reading list for a survey or for experiments?',
                                'blocking': True}]
-            result = {'patch': patch, 'summary': 'demo task update', 'unresolved': unresolved}
+            result = {'patch': patch, 'summary': 'demo task update', 'unresolved': unresolved,
+                      'blocking_requirements': []}
             validate(result)
             return result
         if stage == 'action':

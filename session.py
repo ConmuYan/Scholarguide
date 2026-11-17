@@ -482,26 +482,32 @@ class ChatSession:
                     goal_hint: str | None = None) -> dict[str, Any]:
         """Merge the latest user message into the task and persist a new revision."""
         current = self.task()
-        from quantities import quantity_constraints
+        from quantities import blocking_quotes, quantity_constraints
         count_patch = quantity_constraints(message, default=not current)
+
+        def validate_update(value):
+            self._validate_update(value)
+            # Same contract as workflow.validate_plan: closed kind plus verbatim
+            # quote, checked before the revision is persisted. The message is
+            # needed here because a quote must be an exact excerpt of it.
+            blocking_quotes(value.get('blocking_requirements'), message)
+
         with self._llm_stage():
             raw = run_decision('update', self.llm,
                                {'task': current, 'message': message,
                                 'last_recommendations': self._last_delivery(),
                                 'recent_messages': self._recent_messages(),
                                 'current_date': date.today().isoformat()},
-                               prompts.TASK_UPDATE_SCHEMA, self._validate_update,
+                               prompts.TASK_UPDATE_SCHEMA, validate_update,
                                prompts.TASK_UPDATE, self.meter)
         patch = {k: v for k, v in raw['patch'].items()
                  if v is not None or k in ('year_from', 'year_to')}
         from quantities import calibrate_user_requirements
         patch = calibrate_user_requirements(patch, message, current)
-        unsupported = [str(x) for x in (raw.get('unsupported') or []) if str(x).strip()]
-        from quantities import calibrate_ranking_requirements
-        unsupported = calibrate_ranking_requirements(patch, message, unsupported)
-        for excerpt in unsupported:
-            if excerpt.casefold() not in message.casefold():
-                raise GuideError('unsupported must contain exact excerpts from the message.')
+        # Same structured contract as workflow.run: a closed kind plus a verbatim
+        # quote either stops the turn or the array is empty. Nothing here decides
+        # whether a sentence "looks satisfied".
+        unsupported = blocking_quotes(raw.get('blocking_requirements'), message)
         merged = dict(current)
         merged.pop('task_error', None)
         if current and not count_patch:
@@ -510,13 +516,7 @@ class ChatSession:
         merged.update(patch)
         merged.update(count_patch)
         merged['unresolved'] = [u for u in raw.get('unresolved', []) if isinstance(u, dict)]
-        # The plan and the delivered result may already satisfy a clause the
-        # planner echoed back; only genuinely unrepresentable ones remain.
-        from quantities import clause_is_satisfied
-        satisfied = [x for x in unsupported if clause_is_satisfied(merged, x)]
-        unsupported = [x for x in unsupported if x not in satisfied]
-        if satisfied:
-            merged['satisfied_requirements'] = satisfied
+        merged.pop('satisfied_requirements', None)
         merged['unsupported'] = unsupported
         merged['assumptions'] = [a for a in raw.get('assumptions', [])
                                  if isinstance(a, dict) and a.get('text')]
@@ -1891,9 +1891,6 @@ class ChatSession:
             'gaps': self.gaps(),
             'trace': self._trace,
             'warnings': self._warnings + (
-                [('These requirements are already provided by the request or the result: '
-                  + '; '.join(task['satisfied_requirements']))]
-                if task.get('satisfied_requirements') else []) + (
                 ['Influence ranking uses reported citation counts as a limited proxy among retrieved, relevant candidates; missing counts rank last. Sources and publication years can differ; this is not a measure of scientific quality.'] if task.get('ranking') == 'citations' else []),
             'metrics': metrics,
             'session_id': self.session_id,

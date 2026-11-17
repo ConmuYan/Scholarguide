@@ -48,7 +48,7 @@ class NaturalLLM(OfflineLLM):
         if match:
             patch['excluded_paper_ids'] = [match[1]]
         value = {'patch': patch, 'summary': 'Offline natural-language fixture.', 'unresolved': [],
-                 'unsupported': [], 'assumptions': []}
+                 'blocking_requirements': [], 'assumptions': []}
         validate(value)
         return value
 
@@ -113,7 +113,7 @@ class ChatQualityValidatorTests(unittest.TestCase):
                     self.calls.append({'stage': stage})
                     value = {'patch': {}, 'summary': 'Needs clarification.',
                              'unresolved': [{'field': 'topic', 'question': 'Which visual task?', 'blocking': True}],
-                             'unsupported': [], 'assumptions': []}
+                             'blocking_requirements': [], 'assumptions': []}
                     validate(value)
                     return value
                 return super().generate(stage, prompt, data, schema, validate)
