@@ -486,11 +486,13 @@ function provenanceRow(paper) {
 
 function paperCard(paper, index, request) {
   const article = element('article', undefined, 'paper');
+  // Delivered rank wins over the position in any filtered or sorted view.
+  const rank = Number.isInteger(paper.rank) && paper.rank > 0 ? paper.rank : index + 1;
   article.dataset.paperId = paper.id || '';
-  article.setAttribute('aria-label', `第 ${index + 1} 篇：${paper.title || paper.id}`);
+  article.setAttribute('aria-label', `第 ${rank} 篇：${paper.title || paper.id}`);
   article.dataset.sources = (paper.sources && paper.sources.length
     ? paper.sources : [paper.source]).filter(Boolean).join(' ');
-  article.append(element('span', String(index + 1).padStart(2, '0'), 'paper-index'));
+  article.append(element('span', String(rank).padStart(2, '0'), 'paper-index'));
   const body = element('div', undefined, 'paper-body');
   const heading = element('h3');
   const url = safeLink(paper.url);

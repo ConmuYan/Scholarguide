@@ -90,6 +90,12 @@ class WebChatTests(unittest.TestCase):
         self.service.send(sid, {'message': 'Add one survey paper.'})
         self.assertEqual(len(self.service.snapshot(sid)['history']), 2)
 
+    def test_public_turn_keeps_delivered_rank(self):
+        public = ChatService._public({'papers': [
+            {'id': 'a', 'title': 'A', 'rank': 1, 'doi': None},
+            {'id': 'b', 'title': 'B', 'rank': 2, 'doi': None}]})
+        self.assertEqual([paper['rank'] for paper in public['papers']], [1, 2])
+
     def test_stream_option_is_preserved_and_requires_a_boolean(self):
         for flag in (True, False):
             self.assertIs(ChatService.validate({'message': 'RAG', 'stream': flag})['stream'], flag)

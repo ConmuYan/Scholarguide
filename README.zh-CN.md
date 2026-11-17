@@ -76,6 +76,22 @@ python app.py web --open
 
 密钥只存本机，不回传浏览器。在线检索消耗**你自己**的模型与来源配额。
 
+### 使用 ChatGPT 官方 OAuth（源码运行）
+
+先安装或更新依赖 `python -m pip install -r requirements.txt`，再运行：
+
+```powershell
+python app.py openai-oauth-login --model gpt-6-luna
+```
+
+命令会打开浏览器，请由本人在 OpenAI 页面登录并同意授权。也可以直接在 Web 的 Models 页面点击「使用 ChatGPT 账号登录」：填写该账户可用的模型名，页面会拉起同一条授权流程并轮询结果，成功后自动登记 `openai-oauth` 档案。如需使用系统 `HTTPS_PROXY` 指定的本机 HTTP 代理，可显式勾选或附加 `--use-system-proxy`；该设置仅用于 OpenAI OAuth，默认不使用代理，且不接受包含凭据的代理地址。模型名必须是该账户可使用的模型，是否有权使用 `gpt-6-luna` 需要实际验证。成功后**不自动切换当前模型**；在 Models 页面选择该档案即可。CLI 可使用 `python app.py run --profile openai-oauth --request "你的问题"`，不会修改当前激活档案。
+
+该模式使用 OpenAI 的 [Sign in with ChatGPT](https://developers.openai.com/siwc/token-sharing-open-source)，消耗授权账户的适用套餐额度；不使用或读取已有 Pi/Codex 登录。令牌存于受支持的系统密钥库，刷新时按进程间锁串行处理；若刷新结果无法确认，为避免重放旧令牌会要求重新登录。只支持单个已验证账户；删除模型档案不会自动撤销授权，可在 ChatGPT 设置中断开应用。该档案只支持 JSON 动作协议；若把 `SG_ACTION_PROTOCOL` 设为 `responses_native`，需同时设置 `SG_NATIVE_FALLBACK=json_on_unsupported` 才会回退，否则会明确报错而不是静默失败。
+
+### 交付结果格式（rank 与 null）
+
+无论使用哪种模型，交付的 `papers` 数组遵循同一个契约：每篇论文带从 1 开始的整数 `rank`，等于交付顺序；未获取到的元数据（如 doi、venue、year、citation_count）为 `null`，不会用空字符串冒充已知值。CLI JSON、`report.md`、HTTP API 与 Web 论文卡片都使用这一份形状，因此“按顺序编号 / 未知写 null”的要求由产品本身满足，不需要在提示词里把它当作无法实现的条件。
+
 ## 当 API 用
 
 ```bash

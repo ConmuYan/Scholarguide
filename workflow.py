@@ -86,11 +86,11 @@ def validate_research_assessments(data: dict, papers: list[Paper]) -> None:
 
 
 def _calibrate_paired_significance(plan, user_input, unsupported):
-    paired = re.search(r'\bmost\s+influential\s+and\s+research-significant\b', user_input, re.I)
-    if not paired:
+    """Ranking phrase calibration shared with the stateful session."""
+    from quantities import calibrate_ranking_requirements, PAIRED_SIGNIFICANCE
+    if not PAIRED_SIGNIFICANCE.search(user_input or ''):
         return list(unsupported)
-    plan['ranking'] = 'citations'
-    return [x for x in unsupported if str(x).strip(' .').casefold() != 'research-significant']
+    return calibrate_ranking_requirements(plan, user_input, unsupported)
 
 
 def _restore_explicit_conferences(plan, user_input):
@@ -357,8 +357,17 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
             _restore_explicit_conferences(plan, user_input)
             unsupported = plan.get('unsupported') or []
             if any(influence.fullmatch(str(x).strip(' .')) for x in unsupported):
+                from quantities import calibrate_ranking_requirements
                 plan['ranking'] = 'citations'
-                plan['unsupported'] = [x for x in unsupported if not influence.fullmatch(str(x).strip(' .'))]
+                plan['unsupported'] = calibrate_ranking_requirements(plan, user_input, unsupported)
+            # Drop only clauses the plan or the delivery contract provably
+            # satisfies (scope already applied, rank/null/gap guarantees).
+            from quantities import clause_is_satisfied
+            satisfied = [x for x in plan.get('unsupported') or []
+                         if clause_is_satisfied(plan, x)]
+            if satisfied:
+                plan['unsupported'] = [x for x in plan['unsupported'] if x not in satisfied]
+                plan['satisfied_requirements'] = satisfied
         else:
             plan = dict(request_data)
             plan.setdefault('query', plan.get('topic', ''))
@@ -393,6 +402,10 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
               llm_plan=deepcopy(raw_plan),
               **({'request_constraints': deepcopy(constraints),
                   'constraint_source': 'guided_form'} if constraints is not None else {}))
+        if plan.get('satisfied_requirements'):
+            result['warnings'].append(
+                'These requirements are already provided by the request or the result: '
+                + '; '.join(plan['satisfied_requirements']))
         if request.unsupported:
             result['status'] = 'unsupported'
             result['stop_reason'] = 'unsupported_requirements'
@@ -710,4 +723,7 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
             trace=result.get('trace'), candidates=result.get('candidates'),
             selected=result.get('papers'), source_health=health,
             stop_reason=result.get('stop_reason') or '')
+    # One delivery shape for CLI JSON, report, HTTP API and the web UI.
+    from report import delivered_papers
+    result['papers'] = delivered_papers(result['papers'])
     return result

@@ -156,7 +156,7 @@ def _reap(process):
 
 
 def urlopen(url, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, *, source_request=False,
-            reject_redirects=False, **kwargs):
+            reject_redirects=False, model_proxy=None, **kwargs):
     """A buffered urllib response with DNS/connect/read in an absolute cap.
 
     Local buffers retain with/read/close and HTTPError headers/body semantics.
@@ -178,7 +178,10 @@ def urlopen(url, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, *, source_re
     request_end = min(now + timeout, outer_end) if outer_end is not None else now + timeout
     # Source HTTP stays direct by default. A user running a local academic
     # proxy can opt in explicitly; this is separate from model traffic.
-    proxy = os.environ.get('SG_SOURCE_PROXY', '').strip() if source_request else ''
+    if source_request and model_proxy is not None:
+        raise ValueError('A model proxy cannot be used for source requests.')
+    proxy = (os.environ.get('SG_SOURCE_PROXY', '').strip() if source_request else
+             (model_proxy or ''))
     if isinstance(url, Request):
         payload = {'url': url.full_url, 'data': data if data is not None else url.data,
                    'headers': dict(url.header_items()), 'method': url.get_method(),

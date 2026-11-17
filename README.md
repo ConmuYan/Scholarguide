@@ -98,6 +98,16 @@ On v0.1.0 or v0.1.1? `update` was added in v0.1.2 — install the current releas
 
 Keys are stored locally and never returned to the browser. Live runs bill **your** provider account; ScholarGuide ships no shared credits.
 
+### Sign in with ChatGPT (source installation)
+
+After installing `requirements.txt`, run `python app.py openai-oauth-login --model YOUR_MODEL_SLUG` and complete OpenAI's browser authorization, or press **Sign in with ChatGPT** on the Models page: the page starts the same authorization, polls its state, and registers the `openai-oauth` profile when it completes. The account must be eligible and the model available to it. The active model is not changed; select the profile in Models. For a one-off CLI run use `python app.py run --profile openai-oauth --request "your question"`.
+
+This uses OpenAI's [Sign in with ChatGPT](https://developers.openai.com/siwc/token-sharing-open-source), not an existing Pi or Codex login. Network access is direct by default; pass `--use-system-proxy` to explicitly use the configured `HTTPS_PROXY` for OpenAI OAuth only (HTTP loopback proxy without credentials). Credentials are stored in a supported operating-system keyring. Refreshes are serialized across processes; if rotation cannot be confirmed, sign in again rather than replaying the old token. Currently one verified account and the JSON action protocol are supported. With `SG_ACTION_PROTOCOL=responses_native` this profile refuses locally unless `SG_NATIVE_FALLBACK=json_on_unsupported` is also set, so the refusal is explicit rather than silently degraded. Deleting the provider profile does not revoke authorization: disconnect the app in ChatGPT settings.
+
+### Delivered result shape (`rank` and `null`)
+
+Every delivered `papers` array follows one contract regardless of model: each paper carries a 1-based integer `rank` equal to its delivered order, and metadata that was not retrieved (`doi`, `venue`, `year`, `citation_count`, ...) is `null` rather than an empty string that looks like a retrieved value. The CLI JSON, `report.md`, HTTP API and web paper cards all use that single shape, so "number the results / use null for unknown details" is satisfied by the product instead of being treated as an unsupported request.
+
 ## Use it as an API
 
 ```bash

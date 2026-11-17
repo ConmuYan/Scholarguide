@@ -272,7 +272,11 @@ def public_result(raw):
               'metadata_only', 'snippet', 'publication', 'provenance_conflict',
               'paper_type', 'category_status', 'fit_score', 'reason', 'evidence_quote',
               'evidence_verified', 'relevance', 'citation_count', 'citation_source', 'citation_observed_at')
-    for rank, paper in enumerate(raw.get('papers') or (), start=1):
+    for position, paper in enumerate(raw.get('papers') or (), start=1):
+        if not isinstance(paper, dict):
+            continue
+        # The delivered rank is authoritative; never renumber a kept paper.
+        rank = paper.get('rank') if isinstance(paper.get('rank'), int) and not isinstance(paper.get('rank'), bool) and paper.get('rank') > 0 else position
         item = {key: deepcopy(paper.get(key)) for key in fields
                 if key in paper and key not in ('url', 'open_access_url', 'publication')}
         for key in ('url', 'open_access_url'):
@@ -284,6 +288,8 @@ def public_result(raw):
             item['publication'] = publication
         item['rank'] = rank
         item['paper_id'] = paper.get('id') or paper.get('paper_id')
+        from report import unknown_as_null
+        unknown_as_null(item)
         item['evidence'] = ([{'quote': paper['evidence_quote'],
                              'source': paper.get('abstract_source') or paper.get('source'),
                              'quote_verified': bool(paper.get('evidence_verified'))}]

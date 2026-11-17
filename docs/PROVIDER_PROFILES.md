@@ -133,3 +133,46 @@ not a provider invoice.
   recorded model/profile metadata.
 - The settings API is loopback-only and same-origin guarded like the rest of the
   local service.
+
+## OpenAI / ChatGPT OAuth profile
+
+`openai-oauth` is a reserved profile id for OpenAI's Sign in with ChatGPT. It is
+created by `python app.py openai-oauth-login --model <slug>` or by **Sign in with
+ChatGPT** on `/settings`. Both paths run the same authorization code + PKCE flow
+in the user's browser and store the tokens in an approved OS keyring; the active
+profile is never changed implicitly.
+
+- The profile is pinned to `provider=openai`, `protocol=responses` and
+  `https://api.openai.com/v1`; redirects are refused and the credential is never
+  sent to a custom endpoint.
+- A requested loopback HTTP proxy (`--use-system-proxy`, or the checkbox) applies
+  to OpenAI OAuth requests only and is validated to be a local, credential-free
+  URL. Source retrieval keeps its own separate proxy setting.
+- Stored profiles never contain the token: the settings payload exposes only a
+  boolean `has_key`-style state for API-key profiles, and OAuth status exposes
+  neither tokens nor a masked token.
+- Refresh is serialized across processes. Before a refresh the record is marked
+  pending; if the outcome cannot be confirmed the profile asks for a new sign-in
+  instead of replaying a possibly rotated refresh token.
+- Native Responses tool calls are not available on this profile. With
+  `SG_ACTION_PROTOCOL=responses_native` the local refusal is reported and the
+  session's `json_on_unsupported` fallback (if enabled) takes over; otherwise the
+  error names both settings.
+- A Stop that arrives after the durable pre-refresh marker is written does not
+  cancel the refresh request; it runs to a definite outcome inside the caller's
+  deadline so a rotated token is never abandoned and replayed. Stop still
+  prevents any model request afterwards.
+- SSO status endpoints used by the settings page: `GET
+  /api/providers/oauth/openai` and `POST /api/providers/oauth/openai/login`
+  (`{"model": "...", "use_system_proxy": false}`). They are loopback-only and
+  follow the same Host/Origin checks as the rest of the local UI.
+
+## Delivered paper shape
+
+Every delivered `papers` entry carries a 1-based integer `rank` equal to its
+delivered order, plus the bibliographic fields `title`, `authors`, `year`,
+`venue`, `doi`, `url`, `arxiv_id`, `citation_count` and `citation_source`.
+Values that were not retrieved are `null` rather than an empty string. The CLI
+JSON, `report.md`, the product API and the web paper cards all read this single
+shape; the card badge shows the delivered `rank` and is not renumbered by
+filtering or presentation-only sorting.

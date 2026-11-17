@@ -10,6 +10,41 @@ import tempfile
 from urllib.parse import urlsplit
 
 
+#: Fields whose absence means "unknown" in a delivered recommendation. The
+#: delivery contract states these explicitly as null so a caller never has to
+#: guess between an empty string and a value that was not retrieved.
+UNKNOWN_AS_NULL = ('doi', 'arxiv_id', 'url', 'open_access_url', 'venue', 'year',
+                   'citation_count', 'citation_source', 'citation_observed_at',
+                   'abstract_source', 'snippet', 'paper_type')
+
+
+def unknown_as_null(row: dict) -> dict:
+    """Return one paper record with unknown bibliographic values as null."""
+    for key in UNKNOWN_AS_NULL:
+        if key not in row or row[key] == '' or row[key] == [] or row[key] == {}:
+            row[key] = None
+    if not isinstance(row.get('authors'), list):
+        row['authors'] = []
+    return row
+
+
+def delivered_papers(papers) -> list[dict]:
+    """The one delivery shape shared by CLI, HTTP API and the web UI.
+
+    Rank is the delivered order (1-based). It is written once here instead of
+    being re-derived by every consumer, and unknown metadata stays null rather
+    than an empty string that could be mistaken for a retrieved value.
+    """
+    delivered = []
+    for paper in papers or []:
+        if not isinstance(paper, dict):
+            continue
+        # Rank follows the delivered list, so re-applying is idempotent even
+        # when an invalid record was skipped.
+        delivered.append(unknown_as_null({**paper, 'rank': len(delivered) + 1}))
+    return delivered
+
+
 def bibtex(result: dict) -> str:
     """Export only retrieved metadata; missing bibliographic fields stay absent."""
     escapes = {'\\': r'\textbackslash{}', '{': r'\{', '}': r'\}', '%': r'\%',

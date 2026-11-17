@@ -68,6 +68,35 @@ class Planner:
 
 
 class GuidedConstraintTests(unittest.TestCase):
+    def test_planner_receives_output_format_guidance_without_dropping_real_constraints(self):
+        class CapturingPlanner(Planner):
+            def generate(self, stage, prompt, data, schema, validate):
+                if stage == 'plan':
+                    self.plan_prompt = prompt
+                return super().generate(stage, prompt, data, schema, validate)
+
+        llm, source = CapturingPlanner(), Source()
+        llm.raw['unsupported'] = ['released code']
+        result = run('Recommend visual papers with released code; return a ranked JSON papers array.',
+                     Config(), 'S', source=source, llm=llm)
+        self.assertEqual(result['status'], 'unsupported')
+        self.assertEqual(result['request']['unsupported'], ['released code'])
+        self.assertEqual(source.queries, [])
+        prompt = ' '.join(llm.plan_prompt.split())
+        self.assertIn('SUPPORTED presentation/safety instructions, not unsupported', prompt)
+        self.assertIn('copy only the exact unsupported clause', prompt)
+        self.assertIn('explicit integer `rank` (1 is best)', prompt)
+        self.assertIn('A value that was not retrieved is `null`', prompt)
+        self.assertIn('does not promise complete metadata or an arbitrary custom layout', prompt)
+
+    def test_formatting_only_plan_can_reach_search(self):
+        llm, source = Planner(), Source()
+        result = run('Find visual papers. Return a ranked JSON papers array; use null for unknown fields.',
+                     Config(), 'S', source=source, llm=llm)
+        self.assertNotEqual(result['status'], 'unsupported')
+        self.assertEqual(result['request']['unsupported'], [])
+        self.assertTrue(source.queries)
+
     def test_explicit_purpose_reaches_request_and_assessment_while_old_plans_remain_valid(self):
         for purpose in ('用于设计可复现的实验并比较评测方案', None):
             with self.subTest(purpose=purpose):

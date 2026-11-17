@@ -115,6 +115,19 @@ SSE 的 `trace` 事件携带稳定的 `seq/event_id`、operation、session、tur
 
 参数错误为 400，找不到资源为 404，忙碌会话或幂等冲突为 409。来源的 429、认证、超时、空响应和部分失败在来源健康、事件及结果诊断中保留。错误可能额外提供受限的 `remote_outcome`：`not_started`（该受控尝试未派发）、`unknown`（结果不明）、`response_received`（已收到响应，但本地未能交付）、`error`（远端明确报告错误）或 `completed`（远端完成但本地后续处理受阻）。也可能提供 `transaction_outcome` 和 `retry_safe: false`；有这些分类时 `retryable` 为 false，客户端不能盲目重新派发。`not_started` 不证明同一操作中其他页或认证请求未发生；远端明确报错也不保证没有副作用。
 
+
+## 模型供应商（本地 Web）
+
+- `GET /api/providers` / `POST /api/providers`：读取与保存模型档案；密钥只写不读，响应仅含是否已存储。
+- `GET /api/providers/oauth/openai`：读取 ChatGPT 登录状态 `{"state":"idle|running|succeeded|failed","message":"…","profile":{…}|null,"has_profile":bool,"running":bool}`。不返回令牌、验证码或回调地址。
+- `POST /api/providers/oauth/openai/login`：`{"model":"<该账户可用的模型>","use_system_proxy":false}`，在本机浏览器拉起 OpenAI 授权；`202` 表示已开始，`409` 表示已有登录在进行，`400` 表示参数无效或保留档案冲突。授权完成后自动登记 `openai-oauth` 档案但**不切换**当前模型。成功后浏览器轮询上述 GET 获取终态。
+
+两个端点与其余本地 UI 一样只接受 `127.0.0.1`/`localhost` 且校验 Origin；`use_system_proxy` 仅影响 OpenAI OAuth 认证与模型请求，取值为无凭据的本机 HTTP 回环代理，不改变论文来源的代理设置。
+
+范围条款只会在“已应用窗口完全落在请求窗口内”时视为已满足；请求更宽的年份窗口不会被回溯检索，交付结果也不会越界。
+
+交付的每篇论文含 `rank`（从 1 开始，等于交付顺序）以及 `title`、`authors`、`year`、`venue`、`doi`、`url`、`arxiv_id`、`citation_count`、`citation_source`；未取得的元数据为 `null` 而非空字符串。CLI JSON、`report.md`、产品 API 与 Web 论文卡片共用这一形状，卡片序号取该 `rank`，筛选或仅展示性排序不会重新编号。
+
 ## Sources
 
 - `GET /api/v1/sources`：读取配置、能力、最近实际健康观测和已知额度；不自动探测。响应中的 `routing` 只列出当前可执行的来源顺序，`cooling_down` 列出启用但仍在冷却的来源。

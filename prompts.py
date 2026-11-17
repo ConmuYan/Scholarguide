@@ -43,6 +43,19 @@ or an explicit year range in unsupported. Copy EXACT words only for truly
 unrepresentable requirements (e.g. "best paper", "code released", two category quotas).
 Examples such as "including VGGT", "such as VGGT" or "e.g. VGGT" are illustrative, not
 unsupported requirements; include VGGT in query when it is a paper/model name, never in unsupported.
+The product's own result already satisfies ordinary output-shape requests. Recommendations are
+returned as a ranked `papers` array; every paper carries an explicit integer `rank` (1 is best),
+the bibliographic fields title, authors, year, venue, doi, url and citation_count, plus an
+evidence-grounded reason. A value that was not retrieved is `null`, never invented. So requests to
+rank the list, to number each paper, to use null for unknown details, to avoid fabrications, or to
+report fewer verified results are SUPPORTED presentation/safety instructions, not unsupported
+requirements. The result also lists any shortfall in `gaps` and never adds benchmark labels or
+scores, so "report the gap" and "do not include labels/scores" are already satisfied and must not
+be recorded in unsupported. This does not promise complete metadata or an arbitrary custom layout.
+unsupported is only for constraints that change which papers qualify or how they are searched —
+for example requiring released code, a best-paper award, a format that is neither JSON nor the
+result above, or mandatory fields that cannot be verified. When a sentence mixes supported
+formatting and an unsupported condition, copy only the exact unsupported clause.
 Return the JSON object only.
 '''
 
@@ -210,7 +223,9 @@ presentation_types is a list of requested oral/spotlight/poster classes; use [] 
 These fields ARE representable, not unsupported. Use current_date supplied in the input for relative
 dates: "近两年"/"last two years" means current calendar year and its preceding year, not just prefer_recent.
 Do not change explicit written years. Examples ("such as VGGT", "including LDM") are
-illustrative, not unsupported requirements; include the named model/paper in query when useful. If the message asks for something this schema cannot
+illustrative, not unsupported requirements; include the named model/paper in query when useful.
+Ranked output, explicit per-paper rank numbers and null for unknown metadata are provided by the
+product; do not record them as unsupported. If the message asks for something this schema cannot
 represent (for example two category quotas at once, "best paper", or keeping a quota while switching to
 another), copy the EXACT words of that requirement into "unsupported". Do not hide a requirement in
 "assumptions"; assumptions are only tentative interpretations of otherwise vague wording.

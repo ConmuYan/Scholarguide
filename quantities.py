@@ -93,6 +93,111 @@ def apply_constraints(task, constraints=None, *, message='', initial=False, goal
     return merged
 
 
+# A clause is only treated as already satisfied on positive evidence: the plan
+# carries the scope, or the delivered result guarantees the presentation. Real
+# eligibility constraints (code, awards, authors, thresholds) are never dropped.
+_OUTPUT_GUARANTEE = re.compile(
+    r'\b(?:rank(?:ed|ing)?|number(?:ed|ing)?|null|json|gaps?|labels?|scores?'
+    r'|fabricat\w*|invent\w*|hallucinat\w*)\b', re.I)
+_HARD_CONSTRAINT = re.compile(
+    r'\b(?:source\s+code|code|repositor(?:y|ies)|github|dataset|benchmark\s+dataset'
+    r'|best[\s-]+paper|award|author|affiliation|institution|impact\s+factor'
+    r'|acceptance\s+rate|h-index)\b|\d+\s*(?:citations?|stars?|downloads?)'
+    r'|代码|开源|仓库|数据集|最佳论文|获奖|作者|机构|引用数|下载量', re.I)
+# A custom layout is never satisfied by the JSON result above.
+_CUSTOM_FORMAT = re.compile(
+    r'\b(?:csv|tsv|excel|xlsx|spreadsheet|markdown\s+table|yaml|xml|html|sql|latex|bibtex)\b'
+    r'|表格|电子表格', re.I)
+_NEGATION = re.compile(
+    r'\b(?:no|not|never|without|exclude|avoid|omit|do\s+not|don\'t)\b|不要|无需|不含|不包括|不能包含|避免',
+    re.I)
+_LABEL_WORDS = re.compile(r'\b(?:labels?|scores?|benchmark\s+labels?)\b|标签|评分', re.I)
+_SCOPE_WORDS = re.compile(
+    r'\b(?:venues?|conferences?|whitelist|publication\s+years?|years?)\b|会议|年份|年限', re.I)
+_GENERIC_SCOPE = re.compile(r'\b(?:provided|given|specified|eligible|whitelist)\b|给定|指定|所列|白名单', re.I)
+# Excluding specific papers/venues/years is a real eligibility restriction; the
+# product cannot express it, so such a clause is never treated as satisfied.
+_EXCLUSION = re.compile(
+    r'\b(?:excluding|exclude[sd]?|except|skip(?:ping)?|without|omit(?:ting)?|but\s+not'
+    r'|not\s+including|\bnot\b)\b|排除|不含|不包括|跳过|除…?外', re.I)
+_STOPWORDS = frozenset({'ONLY', 'AND', 'OR', 'JSON', 'DOI', 'URL', 'USE', 'NOT', 'ALL', 'ANY',
+                        'FROM', 'WITH', 'THE', 'FOR', 'ONLY.'})
+
+
+def clause_is_satisfied(plan: dict, clause) -> bool:
+    """True only when the plan or the delivery contract already satisfies a clause.
+
+    The planner may echo a supported instruction into ``unsupported`` (for example
+    "number each paper" or "use the given venue list"). Stopping the search for
+    those would reject requests the product does implement, so they are recognized
+    here. Anything that could change which papers qualify stays unsupported.
+    """
+    text = ' '.join(str(clause or '').split())
+    if not text or not isinstance(plan, dict):
+        return False
+    # Any eligibility, custom-layout or non-negated label requirement stays hard.
+    if _HARD_CONSTRAINT.search(text) or _CUSTOM_FORMAT.search(text):
+        return False
+    if _LABEL_WORDS.search(text) and not _NEGATION.search(text):
+        return False
+    has_range = bool(re.search(r'(?:19|20)\d{2}\s*(?:-|–|—|~|to|至|到)\s*(?:19|20)\d{2}', text))
+    mentioned = {int(value) for value in re.findall(r'\b(?:19|20)\d{2}\b', text)}
+    venue = str(plan.get('venue') or '').strip()
+    year_from, year_to = plan.get('year_from'), plan.get('year_to')
+    bounded_years = isinstance(year_from, int) and isinstance(year_to, int)
+    if _OUTPUT_GUARANTEE.search(text):
+        if re.search(r'\b(?:citations?|influen\w*|impact)\b', text, re.I) \
+                and plan.get('ranking') != 'citations':
+            return False
+        # A clause that also states a period must be satisfied by that period too.
+        if mentioned:
+            return bounded_years and min(mentioned) <= year_from and year_to <= max(mentioned)
+        return True
+    if not _SCOPE_WORDS.search(text) and not has_range:
+        return False
+    if _EXCLUSION.search(text):
+        return False
+    # A named venue outside the applied list is a real restriction, not presentation.
+    from common import requested_venues
+    from research_policy import venue_identity
+    applied = {venue_identity(name) for name in requested_venues(venue)}
+    named = {match.group(0) for match in re.finditer(r'\b[A-Z][A-Za-z0-9&.-]{1,19}\b', text)
+             if match.start() > 0 and match.group(0) not in _STOPWORDS}
+    if named and not all(venue_identity(token) in applied for token in named):
+        return False
+    if mentioned:
+        # The applied window must sit inside the requested one, never the reverse.
+        return bounded_years and min(mentioned) <= year_from and year_to <= max(mentioned)
+    return bool(venue) and bounded_years and bool(_GENERIC_SCOPE.search(text))
+
+
+INFLUENCE_CLAUSE = re.compile(
+    r'^(?:rank|order)(?:\s+the\s+papers)?\s+by\s+(?:research\s+)?'
+    r'(?:influence|citation(?:\s+count)?s?)$', re.I)
+PAIRED_SIGNIFICANCE = re.compile(r'\bmost\s+influential\s+and\s+research-significant\b', re.I)
+_PAIRED_LABELS = frozenset({'research-significant', 'most influential and research-significant'})
+
+
+def calibrate_ranking_requirements(plan: dict, message: str, unsupported) -> list:
+    """Recognize only ranking phrases the product can express, in one place.
+
+    Both the one-shot workflow and the stateful session use this so the same
+    message cannot be judged differently by the two entry points.
+    """
+    remaining = []
+    for clause in unsupported or []:
+        text = str(clause).strip(' .')
+        if INFLUENCE_CLAUSE.fullmatch(text):
+            plan['ranking'] = 'citations'
+            continue
+        if (PAIRED_SIGNIFICANCE.search(message or '')
+                and text.casefold() in _PAIRED_LABELS):
+            plan['ranking'] = 'citations'
+            continue
+        remaining.append(clause)
+    return remaining
+
+
 def calibrate_user_requirements(proposal, message, previous=None):
     """Keep model inferences from becoming unrequested acceptance conditions."""
     result, previous = dict(proposal), previous or {}

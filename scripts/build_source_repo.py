@@ -24,7 +24,7 @@ TOP_LEVEL_FILES = ('app.py', 'app_mcp.py', 'activity.py', 'agent_runtime.py', 'a
                    'execution_events.py', 'intent.py', 'llm.py', 'lune_quota.py', 'lune_quota_schedule.py', 'mcp_client.py',
                    'mcp_lune.py', 'mcp_lune_policy.py', 'mcp_plugin.py', 'mcp_skills.py',
                    'memory_context.py', 'memory_store.py', 'memory_view.py', 'model_identity.py',
-                   'model_policy.py', 'native_tool_protocol.py', 'network.py', 'preflight.py',
+                   'model_policy.py', 'native_tool_protocol.py', 'network.py', 'openai_oauth.py', 'preflight.py',
                    'prompts.py', 'providers.py', 'quantities.py', 'recovery.py', 'report.py',
                    'research_brief.py', 'research_landscape.py', 'research_policy.py',
                    'research_runtime.py', 'research_specialist.py', 'retrieval.py', 'reuse.py',

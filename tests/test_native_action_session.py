@@ -7,7 +7,7 @@ from pathlib import Path
 import socket
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from common import Config, GuideError, RunCancelled
 from controller import PolicyError
@@ -136,6 +136,46 @@ class NativeSessionTests(unittest.TestCase):
         self.assertEqual(stop, '')
         self.assertIsNotNone(decision)
         self.assertFalse(self.chat._native_operation_open())
+
+    def _oauth_native_chat(self, fallback):
+        config = Config(provider='openai', protocol='responses', profile_id='openai-oauth',
+                        base_url='https://api.openai.com/v1', action_protocol='responses_native',
+                        native_fallback=fallback, model='fake')
+        chat = ChatSession(config, self.store, source=FakeSource(), llm=FakeLLM())
+        llm = JsonLLM(config, chat.budget)
+        chat.llm = llm
+        self.store.save_task(chat.session_id, 1, {'topic': 'RAG', 'target_count': 5,
+                                                  'category': 'none', 'minimum_category_count': 0})
+        chat._new_phase(first=True)
+        return chat, llm
+
+    def test_oauth_native_local_refusal_uses_json_fallback_without_token(self):
+        chat, llm = self._oauth_native_chat('json_on_unsupported')
+        fallback = FakeLLM()
+        llm.generate = fallback.generate
+        token = Mock()
+        with patch('openai_oauth.access_token', token), patch('llm.urlopen') as opened:
+            decision, stop = chat.next_decision()
+        self.assertEqual((decision.action, stop), ('SEARCH', ''))
+        self.assertIn('action', fallback.stages)
+        self.assertTrue(any(e['action'] == 'native_fallback'
+                            for e in self.store.events(chat.session_id)))
+        self.assertFalse(chat._native_operation_open())
+        token.assert_not_called()
+        opened.assert_not_called()
+
+    def test_oauth_native_disabled_is_actionable_and_sends_nothing(self):
+        chat, _ = self._oauth_native_chat('disabled')
+        token = Mock()
+        with patch('openai_oauth.access_token', token), patch('llm.urlopen') as opened:
+            with self.assertRaises(GuideError) as caught:
+                chat.next_decision()
+        message = str(caught.exception)
+        self.assertIn('SG_NATIVE_FALLBACK=json_on_unsupported', message)
+        self.assertIn('SG_ACTION_PROTOCOL=json', message)
+        self.assertFalse(chat._native_operation_open())
+        token.assert_not_called()
+        opened.assert_not_called()
 
     def test_cancelled_local_proposal_closes_unstarted_marker(self):
         def cancel(*args, **kwargs):

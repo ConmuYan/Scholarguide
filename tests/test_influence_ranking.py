@@ -93,6 +93,8 @@ class InfluenceRankingTests(unittest.TestCase):
         plan = {'ranking': 'citations'}
         text = 'Recommend the most influential and research-significant papers.'
         self.assertEqual(_calibrate_paired_significance(plan, text, ['research-significant', 'code released']), ['code released'])
+        self.assertEqual(_calibrate_paired_significance(plan, text, ['most influential and research-significant', 'code released']), ['code released'])
+        self.assertEqual(_calibrate_paired_significance(plan, text, ['most influential and research-significant with code']), ['most influential and research-significant with code'])
         self.assertEqual(_calibrate_paired_significance(plan, 'Find research-significant papers.', ['research-significant']), ['research-significant'])
         corrected = {'ranking': 'relevance'}
         self.assertEqual(_calibrate_paired_significance(corrected, text, ['research-significant']), [])

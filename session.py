@@ -20,6 +20,7 @@ from typing import Any, Mapping, Sequence
 from common import (Budget, BudgetExceeded, CancellationToken, Config, GuideError,
                     Paper, Request, RunCancelled, utc_now)
 from costing import apply_cost, paid_cost_may_be_unknown
+from report import delivered_papers
 from model_identity import assessment_prompt_version, research_model_identity
 from controller import (
     ACTIONS,
@@ -496,10 +497,8 @@ class ChatSession:
         from quantities import calibrate_user_requirements
         patch = calibrate_user_requirements(patch, message, current)
         unsupported = [str(x) for x in (raw.get('unsupported') or []) if str(x).strip()]
-        influence = re.compile(r'^(?:rank|order)(?:\s+the\s+papers)?\s+by\s+(?:research\s+)?(?:influence|citation(?:\s+count)?s?)$', re.I)
-        if any(influence.fullmatch(x.strip(' .')) for x in unsupported):
-            patch['ranking'] = 'citations'
-            unsupported = [x for x in unsupported if not influence.fullmatch(x.strip(' .'))]
+        from quantities import calibrate_ranking_requirements
+        unsupported = calibrate_ranking_requirements(patch, message, unsupported)
         for excerpt in unsupported:
             if excerpt.casefold() not in message.casefold():
                 raise GuideError('unsupported must contain exact excerpts from the message.')
@@ -511,6 +510,13 @@ class ChatSession:
         merged.update(patch)
         merged.update(count_patch)
         merged['unresolved'] = [u for u in raw.get('unresolved', []) if isinstance(u, dict)]
+        # The plan and the delivered result may already satisfy a clause the
+        # planner echoed back; only genuinely unrepresentable ones remain.
+        from quantities import clause_is_satisfied
+        satisfied = [x for x in unsupported if clause_is_satisfied(merged, x)]
+        unsupported = [x for x in unsupported if x not in satisfied]
+        if satisfied:
+            merged['satisfied_requirements'] = satisfied
         merged['unsupported'] = unsupported
         merged['assumptions'] = [a for a in raw.get('assumptions', [])
                                  if isinstance(a, dict) and a.get('text')]
@@ -1879,12 +1885,16 @@ class ChatSession:
             'status': status,
             'stop_reason': stop_reason,
             'queries': self.store.query_history(self.session_id),
-            'papers': papers,
+            'papers': delivered_papers(papers),
             'candidates': self.store.candidate_papers(self.session_id),
             'assessments': self._assessments(task),
             'gaps': self.gaps(),
             'trace': self._trace,
-            'warnings': self._warnings + (['Influence ranking uses reported citation counts as a limited proxy among retrieved, relevant candidates; missing counts rank last. Sources and publication years can differ; this is not a measure of scientific quality.'] if task.get('ranking') == 'citations' else []),
+            'warnings': self._warnings + (
+                [('These requirements are already provided by the request or the result: '
+                  + '; '.join(task['satisfied_requirements']))]
+                if task.get('satisfied_requirements') else []) + (
+                ['Influence ranking uses reported citation counts as a limited proxy among retrieved, relevant candidates; missing counts rank last. Sources and publication years can differ; this is not a measure of scientific quality.'] if task.get('ranking') == 'citations' else []),
             'metrics': metrics,
             'session_id': self.session_id,
             'revision': self.revision,

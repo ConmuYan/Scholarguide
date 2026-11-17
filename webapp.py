@@ -1519,17 +1519,18 @@ class ChatService:
 
     @staticmethod
     def _public(result: dict) -> dict:
-        papers = [{'id': p.get('id'), 'title': p.get('title'), 'url': p.get('url', ''),
+        papers = [{'rank': p.get('rank'), 'id': p.get('id'), 'title': p.get('title'), 'url': p.get('url'),
                    'authors': p.get('authors') or [], 'year': p.get('year'),
                    'venue': p.get('venue') or p.get('conference'),
                    'sources': p.get('sources') or ([p.get('source')] if p.get('source') else []),
-                   'doi': p.get('doi') or '',
-                   'open_access_url': p.get('open_access_url') or '',
-                   'abstract_source': p.get('abstract_source') or '',
-                   'abstract': p.get('abstract') or '',
+                   # Unknown stays null, matching the delivered contract.
+                   'doi': p.get('doi'),
+                   'open_access_url': p.get('open_access_url'),
+                   'abstract_source': p.get('abstract_source'),
+                   'abstract': p.get('abstract'),
                    'metadata_only': bool(p.get('metadata_only')),
                    'provenance_conflict': bool(p.get('provenance_conflict')),
-                   'snippet': p.get('snippet') or '',
+                   'snippet': p.get('snippet'),
                    'category_status': p.get('category_status', 'unknown'),
                    'paper_type': p.get('paper_type', 'unknown'),
                    'publication': deepcopy(p.get('publication') or {}),
@@ -1837,6 +1838,81 @@ def _read_json(handler, limit: int = 16000, *, reject_duplicates=False) -> dict:
     return json.loads(handler.rfile.read(length), object_pairs_hook=unique_object if reject_duplicates else None)
 
 
+class OpenAIOAuthLogin:
+    """Single-user ChatGPT OAuth sign-in state for the local web UI.
+
+    The browser authorization runs in one background thread so the polling
+    request never blocks for minutes. Only fixed status text and the public
+    profile are exposed; tokens stay in the OS keyring.
+    """
+
+    PROFILE_ID = 'openai-oauth'
+    PROFILE_NAME = 'OpenAI / ChatGPT OAuth'
+    BASE_URL = 'https://api.openai.com/v1'
+
+    def __init__(self, providers: 'ProviderStore'):
+        self.providers = providers
+        self._lock = threading.Lock()
+        self._state = {'state': 'idle', 'message': '', 'started_at': None, 'finished_at': None}
+        self._thread: threading.Thread | None = None
+
+    def status(self) -> dict:
+        with self._lock:
+            state = dict(self._state)
+        profile = self.providers.get(self.PROFILE_ID)
+        state['profile'] = profile.public() if profile else None
+        state['has_profile'] = profile is not None
+        state['running'] = state['state'] == 'running'
+        return state
+
+    def start(self, model, *, use_system_proxy: bool = False) -> dict:
+        from providers import validate_profile
+        from common import GuideError
+        model = str(model or '').strip()
+        validate_profile({'id': self.PROFILE_ID, 'name': self.PROFILE_NAME,
+                          'protocol': 'responses', 'base_url': self.BASE_URL,
+                          'model': model, 'api_key': ''})
+        existing = self.providers.get(self.PROFILE_ID)
+        if existing and (existing.base_url != self.BASE_URL or existing.protocol != 'responses'
+                         or existing.api_key):
+            raise GuideError('The reserved openai-oauth profile conflicts with an existing profile; resolve it first.')
+        with self._lock:
+            if self._state['state'] == 'running':
+                raise GuideError('A ChatGPT sign-in is already in progress.')
+            self._state = {'state': 'running', 'message': 'Waiting for the browser sign-in.',
+                           'started_at': utc_now(), 'finished_at': None}
+            self._thread = threading.Thread(target=self._run, args=(model, bool(use_system_proxy)),
+                                            name='ScholarGuide ChatGPT sign-in', daemon=True)
+            self._thread.start()
+        return self.status()
+
+    def _finish(self, state: str, message: str) -> None:
+        with self._lock:
+            self._state = {**self._state, 'state': state, 'message': message,
+                           'finished_at': utc_now()}
+
+    def _run(self, model: str, use_system_proxy: bool) -> None:
+        try:
+            from openai_oauth import login
+            if use_system_proxy:
+                from openai_oauth import configure_system_proxy
+                configure_system_proxy()
+            login()
+        except Exception as exc:
+            # Only GuideError text is authored by this project; keep anything else generic.
+            message = str(exc) if type(exc).__name__ == 'GuideError' else 'ChatGPT sign-in did not complete.'
+            self._finish('failed', message)
+            return
+        try:
+            self.providers.upsert({'id': self.PROFILE_ID, 'name': self.PROFILE_NAME,
+                                   'protocol': 'responses', 'base_url': self.BASE_URL,
+                                   'model': model, 'api_key': ''}, activate=False)
+        except Exception:
+            self._finish('failed', 'Authorization succeeded, but the model profile could not be saved; retry setup.')
+            return
+        self._finish('succeeded', 'ChatGPT sign-in completed. The active model was not changed.')
+
+
 def create_server(port: int = 8765, jobs: Jobs | None = None,
                   chat: ChatService | None = None,
                   activity: ActivityFeed | None = None,
@@ -1863,6 +1939,7 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
     if sources.quota_path is not None and sources.quota_path.resolve() != default_quota_path().resolve():
         raise GuideError('Lune quota interface and transport must use the same ledger.')
     jobs.sources = chat.sources = sources
+    oauth_login = OpenAIOAuthLogin(providers)
     jobs.session_service = chat
     product_api = ProductApi(jobs, chat, runs_root / 'api')
     version_files = sorted([*ROOT.glob('*.py'), *STATIC.glob('*.js'), *STATIC.glob('*.css'), *STATIC.glob('*.html')])
@@ -2251,6 +2328,9 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
             if path == '/api/providers':
                 self._json(200, providers.public_state())
                 return
+            if path == '/api/providers/oauth/openai':
+                self._json(200, oauth_login.status())
+                return
             if path == '/api/config':
                 try:
                     config = providers.config(Config.from_env()) if providers else Config.from_env()
@@ -2448,6 +2528,16 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
                     self._json(409, {'error': str(exc)})
                     return
                 self._json(202, {'id': job_id})
+                return
+            if path == '/api/providers/oauth/openai/login':
+                if not isinstance(raw, dict) or set(raw) - {'model', 'use_system_proxy'}:
+                    self._json(400, {'error': 'Sign-in accepts only model and use_system_proxy.'})
+                    return
+                try:
+                    self._json(202, oauth_login.start(raw.get('model'),
+                                                      use_system_proxy=bool(raw.get('use_system_proxy'))))
+                except GuideError as exc:
+                    self._json(409 if 'already in progress' in str(exc) else 400, {'error': str(exc)})
                 return
             if path == '/api/providers':
                 if not isinstance(raw, dict):

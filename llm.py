@@ -11,7 +11,7 @@ from urllib.parse import urlsplit
 from urllib.request import Request
 from network import urlopen
 
-from common import Budget, Config, GuideError
+from common import Budget, Config, GuideError, RunCancelled
 
 # Measured on the current flagship profile: synthesis latencies straddled the
 # generic per-request deadline (86.8 s returned, 95.2 s and 95.9 s were cut off),
@@ -204,6 +204,116 @@ class _Rejected(Exception):
         self.code, self.detail, self.message = code, detail, message
 
 
+_OAUTH_ERROR_CODES = frozenset({
+    'subscription_sharing_user_not_eligible', 'subscription_sharing_usage_limit_exceeded',
+    'subscription_sharing_usage_unavailable', 'subscription_sharing_unsupported_capability',
+    'subscription_sharing_route_not_supported', 'subscription_sharing_invalid_user',
+    'chatpass_v2_scope_not_authorized', 'chatpass_v2_invalid_authorization_context',
+    'subscription_sharing_user_unavailable',
+})
+
+
+def _oauth_error_code(value) -> str:
+    if not isinstance(value, dict):
+        return ''
+    error = value.get('error')
+    if not isinstance(error, dict):
+        response = value.get('response')
+        error = response.get('error') if isinstance(response, dict) else None
+    code = error.get('code') if isinstance(error, dict) else None
+    return code if isinstance(code, str) and code in _OAUTH_ERROR_CODES else ''
+
+
+def _valid_usage(usage) -> tuple:
+    usage = usage if isinstance(usage, dict) else {}
+    return tuple(n if type(n) is int and n >= 0 else None
+                 for n in (usage.get('input_tokens'), usage.get('output_tokens')))
+
+
+def _record_usage(budget: Budget, tokens: tuple) -> None:
+    if all(n is not None for n in tokens):
+        budget.usage_observed = True
+        budget.usage_calls += 1
+        budget.input_tokens += tokens[0]
+        budget.output_tokens += tokens[1]
+
+
+def _oauth_stream(body: bytes, budget: Budget) -> dict:
+    """Parse a bounded SSE transcript; only an explicit completed response succeeds."""
+    try:
+        text = body.decode('utf-8-sig')
+    except UnicodeDecodeError:
+        raise GuideError('Model API returned invalid event stream.') from None
+    completed = None
+    done = False
+    event, fields = '', []
+
+    def dispatch():
+        nonlocal completed, done, event, fields
+        if not fields:
+            event = ''
+            return
+        raw = '\n'.join(fields)
+        fields = []
+        if done:
+            raise GuideError('Model API returned events after completion.')
+        if raw == '[DONE]':
+            if completed is None:
+                raise GuideError('Model API event stream ended without completion.')
+            done = True
+            event = ''
+            return
+        try:
+            value = json.loads(raw)
+        except (ValueError, RecursionError):
+            raise GuideError('Model API returned invalid event stream.') from None
+        if not isinstance(value, dict) or not isinstance(value.get('type'), str):
+            raise GuideError('Model API returned invalid event stream.')
+        kind = value['type']
+        if event and event != kind:
+            raise GuideError('Model API returned invalid event stream.')
+        event = ''
+        if completed is not None:
+            raise GuideError('Model API returned events after completion.')
+        if kind in ('error', 'response.failed', 'response.incomplete', 'response.cancelled'):
+            # A failed/cancelled/incomplete response can still have consumed
+            # tokens. The server reports that usage in the same event; account
+            # for it before failing so the budget cannot undercount paid work.
+            response = value.get('response')
+            usage = value.get('usage')
+            if isinstance(response, dict) and response.get('usage') is not None:
+                usage = response.get('usage')
+            _record_usage(budget, _valid_usage(usage))
+            code = _oauth_error_code(value)
+            raise GuideError('Model API returned a failed or incomplete response' +
+                             (': ' + code if code else '') + '.')
+        if kind == 'response.completed':
+            response = value.get('response')
+            if not isinstance(response, dict) or response.get('status') != 'completed':
+                raise GuideError('Model API returned invalid completed response.')
+            completed = response
+
+    for line in text.splitlines():
+        budget.check_cancelled()
+        budget.remaining()
+        if not line:
+            dispatch()
+        elif line.startswith(':'):
+            continue
+        else:
+            name, _, value = line.partition(':')
+            if value.startswith(' '):
+                value = value[1:]
+            if name == 'event':
+                event = value
+            elif name == 'data':
+                fields.append(value)
+    # An event without its terminating blank line may be a truncated stream.
+    if fields or event or completed is None:
+        raise GuideError('Model API event stream ended without completion.')
+    return completed
+
+
 class JsonLLM:
     def __init__(self, config: Config, budget: Budget):
         self.config, self.budget = config, budget
@@ -263,22 +373,74 @@ class JsonLLM:
 
     def _post_raw(self, url: str, payload: dict, headers: dict) -> dict:
         c = self.config
+        oauth = getattr(c, 'profile_id', None) == 'openai-oauth'
+        if oauth:
+            # Never send a ChatGPT credential to a configured proxy or redirect.
+            if (c.provider != 'openai' or c.protocol != 'responses'
+                    or c.base_url != 'https://api.openai.com/v1'
+                    or url != 'https://api.openai.com/v1/responses'):
+                raise GuideError('OpenAI OAuth requires the official Responses endpoint.')
+            self.budget.check_cancelled()
+            # Absolute deadline for token retrieval: a slow keyring, a lock held
+            # by another process, or a hung refresh must not outlive the task
+            # budget. The caller polls the same cancellation token afterwards.
+            deadline = time.monotonic() + self.budget.remaining()
+            try:
+                from openai_oauth import access_token, proxy_url
+                token = access_token(deadline=deadline,
+                                     cancelled=lambda: self.budget.cancel_token.requested)
+                proxy = proxy_url(deadline=deadline,
+                                  cancelled=lambda: self.budget.cancel_token.requested)
+                if (not isinstance(token, str) or not token
+                        or any(ord(ch) < 33 or ord(ch) > 126 for ch in token)):
+                    raise ValueError
+            except RunCancelled:
+                raise
+            except Exception:
+                raise GuideError('OpenAI OAuth access token unavailable.') from None
+            self.budget.check_cancelled()
+            self.budget.remaining()
+            headers = {**headers, 'Authorization': 'Bearer ' + token, 'Accept': 'text/event-stream'}
         req = Request(url, data=json.dumps(payload).encode('utf-8'), headers=headers, method='POST')
         self.budget.llm_calls += 1
         self.last_http_status = None
         self.last_model = c.model
         try:
             deadline = c.request_timeout * STAGE_DEADLINE_FACTOR.get(self._stage, 1.0)
-            with urlopen(req, timeout=min(deadline, self.budget.remaining())) as response:
-                self.last_http_status = getattr(response, 'status', 200)
-                body = response.read(2_000_001)
-                self.last_model = response.headers.get('x-model') or c.model
+            timeout = min(deadline, self.budget.remaining())
+            if oauth:
+                from network import execution_context
+                with execution_context(cancelled=lambda: self.budget.cancel_token.requested):
+                    with urlopen(req, timeout=timeout, reject_redirects=True,
+                                 model_proxy=proxy) as response:
+                        self.last_http_status = getattr(response, 'status', 200)
+                        body = response.read(2_000_001)
+                        self.last_model = response.headers.get('x-model') or c.model
+            else:
+                with urlopen(req, timeout=timeout) as response:
+                    self.last_http_status = getattr(response, 'status', 200)
+                    body = response.read(2_000_001)
+                    self.last_model = response.headers.get('x-model') or c.model
             if len(body) > 2_000_000:
                 raise GuideError('Model response exceeded 2 MB.')
+            if oauth:
+                return _oauth_stream(body, self.budget)
             return json.loads(body)
         except HTTPError as exc:
             self.last_http_status = exc.code
-            detail, message = _error_detail(exc, c.api_key)
+            if oauth:
+                # Only fixed known codes may escape provider-controlled bodies.
+                # Never expose raw error text, which can contain credentials.
+                try:
+                    raw = exc.read(64_001)
+                    code = _oauth_error_code(json.loads(raw)) if len(raw) <= 64_000 else ''
+                except (ValueError, OSError, TypeError):
+                    code = ''
+                finally:
+                    exc.close()
+                detail, message = (' — ' + code if code else ''), ''
+            else:
+                detail, message = _error_detail(exc, c.api_key)
             rejected = _Rejected(exc.code, detail, message)
             raise rejected from None
         except TimeoutError:
@@ -293,6 +455,12 @@ class JsonLLM:
             raise GuideError('Model API unavailable.') from None
         except ValueError:
             raise GuideError('Model API returned invalid JSON.') from None
+        except GuideError:
+            raise
+        except Exception:
+            if oauth:
+                raise GuideError('Model API unavailable.') from None
+            raise
 
     def _call(self, messages: list[dict], schema: dict) -> str:
         self.budget.check_cancelled()
@@ -303,6 +471,10 @@ class JsonLLM:
             guard()
         c = self.config
         protocol = getattr(c, 'protocol', 'chat_completions')
+        oauth = getattr(c, 'profile_id', None) == 'openai-oauth'
+        if oauth and (c.provider != 'openai' or protocol != 'responses'
+                      or c.base_url != 'https://api.openai.com/v1'):
+            raise GuideError('OpenAI OAuth requires the official Responses endpoint and protocol.')
         base = c.base_url.rstrip('/')
         if c.provider == 'ollama':
             url = base if base.endswith('/api/chat') else base + '/api/chat'
@@ -317,7 +489,27 @@ class JsonLLM:
                 payload['reasoning'] = {'effort': policy['reasoning_effort']}
             else:
                 payload['reasoning_effort'] = policy['reasoning_effort']
-        if c.api_key:
+        if oauth:
+            payload.pop('temperature', None)
+            # Live verification (2026-11-17: one synthetic 64-token request to
+            # https://api.openai.com/v1/responses over the ChatGPT OAuth route,
+            # HTTP 200, usage reported): the endpoint accepts max_output_tokens,
+            # so the configured cap stays an explicit promise instead of being
+            # silently dropped. It is omitted only when a reasoning policy is
+            # requested, where output budget is shared with hidden reasoning
+            # tokens and the policy delta, not this cap, governs the request.
+            if policy['reasoning_effort']:
+                payload.pop('max_output_tokens', None)
+            # SIWC requires strict JSON schemas. Legacy schemas with optional
+            # properties cannot be sent as json_schema; keep their schema in
+            # the prompt and apply the existing local validation/repair path.
+            if not strict_schema_compatible(schema):
+                payload['text'] = {'format': {'type': 'json_object'}}
+            payload['stream'] = True
+            payload['store'] = False
+            payload['input'] = [{**item, 'role': 'developer'} if item.get('role') == 'system' else item
+                                for item in messages]
+        elif c.api_key:
             headers['Authorization'] = 'Bearer ' + c.api_key
         for attempt in range(2):
             try:
@@ -326,7 +518,7 @@ class JsonLLM:
             except _Rejected as exc:
                 # One bounded retry, only for a field the provider itself named.
                 reduced = (compat_downgrade(payload, exc.message)
-                           if attempt == 0 and exc.code in (400, 422) else None)
+                           if not oauth and attempt == 0 and exc.code in (400, 422) else None)
                 if reduced is None:
                     raise GuideError(
                         f'Model API HTTP {exc.code}{exc.detail}; '
@@ -393,6 +585,14 @@ class JsonLLM:
         self.last_native_request_sent = False
         self.budget.check_cancelled()
         self.budget.remaining()
+        if getattr(self.config, 'profile_id', None) == 'openai-oauth':
+            # Local, fail-closed refusal: no token is read and no request is
+            # sent. NativeUnsupported lets the session apply its explicit
+            # json_on_unsupported fallback; with the fallback disabled the
+            # message names both actionable settings.
+            raise NativeUnsupported(
+                'OpenAI OAuth does not support native actions; set '
+                'SG_NATIVE_FALLBACK=json_on_unsupported or SG_ACTION_PROTOCOL=json.')
         self.last_http_status = None
         guard = getattr(self.budget, 'request_guard', None)
         if guard is not None:

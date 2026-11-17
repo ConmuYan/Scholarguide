@@ -29,6 +29,11 @@ def build_parser() -> argparse.ArgumentParser:
     task.add_argument('--no-cache', action='store_true', help='Disable retrieval cache for online timing.')
     task.add_argument('--timeout', type=float, help='Total task time budget in seconds.')
     task.add_argument('--out', type=Path, help='New output directory; existing results are never silently overwritten.')
+    task.add_argument('--profile', help='Use a saved model profile for this run without changing the active profile.')
+    oauth = sub.add_parser('openai-oauth-login', help='Sign in with ChatGPT and add an OpenAI OAuth model profile.')
+    oauth.add_argument('--model', required=True, help='Model slug available to your ChatGPT account.')
+    oauth.add_argument('--use-system-proxy', action='store_true',
+                       help='Explicitly use the configured loopback HTTPS proxy for OpenAI OAuth only.')
     demo = sub.add_parser('demo', help='Offline, explicitly labelled fixture demo; no network or model.')
     demo.add_argument('--scenario', choices=['followup', 'satisfied', 'insufficient'], default='followup')
     demo.add_argument('--method', choices=['S', 'A'], default='A')
@@ -249,7 +254,39 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == 'chat':
             return _chat_command(args)
+        if args.command == 'openai-oauth-login':
+            from openai_oauth import configure_system_proxy, login
+            from providers import ProviderStore, validate_profile
+            profile_data = {'id': 'openai-oauth', 'name': 'OpenAI / ChatGPT OAuth',
+                            'protocol': 'responses', 'base_url': 'https://api.openai.com/v1',
+                            'model': args.model, 'api_key': ''}
+            validate_profile(profile_data)  # Reject invalid input before browser authorization.
+            def checked_store():
+                store = ProviderStore()
+                existing = store.get('openai-oauth')
+                if existing and (existing.base_url != 'https://api.openai.com/v1' or
+                                 existing.protocol != 'responses' or existing.api_key):
+                    raise GuideError('The reserved openai-oauth profile conflicts with an existing profile; resolve it first.')
+                return store
+            checked_store()
+            if args.use_system_proxy:
+                configure_system_proxy()
+            login()
+            # Reload after browser authorization so changes made during login
+            # are not overwritten by the stale pre-authorization snapshot.
+            try:
+                checked_store().upsert(profile_data, activate=False)
+            except GuideError:
+                raise GuideError('OpenAI authorization succeeded, but the model profile could not be saved; retry setup.') from None
+            print('OpenAI OAuth profile saved. The active model was not changed.')
+            return 0
         config = Config() if args.command == 'demo' else Config.from_env()
+        if args.command == 'run' and args.profile:
+            from providers import ProviderStore
+            profile = ProviderStore().get(args.profile)
+            if profile is None:
+                raise GuideError('Provider profile not found.')
+            config = profile.config(config)
         config.validate()
         if args.command == 'doctor':
             print(json.dumps({'python': sys.version.split()[0], 'config': config.public()}, ensure_ascii=False, indent=2))

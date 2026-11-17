@@ -116,6 +116,26 @@ class UiStaticTests(unittest.TestCase):
             self.assertIn(snippet, self.chatjs)
         self.assertIn('clipboard', self.app + self.chatjs)
 
+    def test_delivered_rank_is_never_renumbered(self):
+        # The delivered papers array carries an integer rank (1..n). Search
+        # cards, chat rows and filtered views must display that rank rather
+        # than the position in the current view.
+        for script in (self.app, self.chatjs):
+            self.assertIn('paper.rank', script)
+            self.assertIn('Number.isInteger(paper.rank) && paper.rank > 0 ? paper.rank : index + 1', script)
+        self.assertIn("String(rank).padStart(2, '0'), 'paper-index'", self.app)
+        self.assertIn("className: \"p-n\", textContent: String(rank).padStart(2, \"0\")", self.chatjs)
+        self.assertIn('`第 ${rank} 篇：', self.app)
+        self.assertIn('"第 {rank} 位：{title}"', self.chatjs)
+        self.assertNotIn("String(index + 1).padStart(2, '0')", self.app + self.chatjs)
+        self.assertNotIn("String(index + 1).padStart(2, \"0\")", self.app + self.chatjs)
+        # Filtering keeps the original position for the fallback and the rank.
+        self.assertIn('all.indexOf(paper)', self.app)
+        # Rank badges stay in the existing grid columns for both surfaces.
+        self.assertIn('.paper-index {', self.css)
+        self.assertIn('.p-n {', self.css)
+        self.assertIn('font-variant-numeric: tabular-nums', self.css)
+
     def test_text_contrast_tokens(self):
         def luminance(value):
             value = value.lstrip('#')

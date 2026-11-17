@@ -32,6 +32,7 @@ function syncControls() {
   el("discard-provider-draft").disabled = state.busy;
   el("save-provider").textContent = readOnly ? settingsT("环境配置为只读") : settingsT("保存配置");
   el("provider-list").querySelectorAll("button").forEach(node => { node.disabled = state.busy; });
+  syncOAuthControls();
 }
 function setBusy(busy) { state.busy = busy; syncControls(); }
 function rememberDraft() {
@@ -80,7 +81,11 @@ async function api(path, options = {}) {
     throw new Error(settingsT("无法连接本地服务。"));
   }
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.error || settingsT("请求失败（{status}）", {status: response.status}));
+  if (!response.ok) {
+    const error = new Error(data.error || settingsT("请求失败（{status}）", {status: response.status}));
+    error.status = response.status;
+    throw error;
+  }
   return data;
 }
 
@@ -95,8 +100,276 @@ function badge(textValue, kind = "") {
   return node;
 }
 
+/* ---------- ChatGPT sign-in (OpenAI OAuth) ----------
+   The browser only polls fixed status text; tokens stay in the OS keychain and
+   are never requested, rendered or stored by this page. */
+const OAUTH_ID = "openai-oauth";
+const OAUTH_POLL_MS = 1500;
+const OAUTH_WAIT_MS = 10 * 60 * 1000;
+const OAUTH_MESSAGES = {
+  "Waiting for the browser sign-in.": "正在等待浏览器完成授权。",
+  "ChatGPT sign-in completed. The active model was not changed.": "ChatGPT 授权完成，当前模型未改变。",
+  "ChatGPT sign-in did not complete.": "ChatGPT 登录未完成。",
+  "OpenAI authorization was declined.": "OpenAI 授权被拒绝。",
+  "A ChatGPT sign-in is already in progress.": "已有登录正在进行，请等待这次授权结束。",
+  "Authorization succeeded, but the model profile could not be saved; retry setup.": "授权成功，但模型配置未能保存，请重试。",
+  "Authorization timed out; try again.": "登录等待超时，请重试。",
+  "The reserved openai-oauth profile conflicts with an existing profile; resolve it first.": "保留的 openai-oauth 配置与已有配置冲突；请先处理该配置。",
+  "Sign-in accepts only model and use_system_proxy.": "登录请求只接受模型标识与代理选项。",
+  "Model must be 1–200 characters.": "模型标识需为 1–200 个字符。",
+  "OpenAI login timed out.": "OpenAI 登录超时，请重试。",
+  "Could not open a browser for OpenAI login.": "无法打开浏览器完成 OpenAI 登录。",
+  "A supported OS keyring is required for OpenAI OAuth; no token was saved.": "需要受支持的系统钥匙串才能保存 OpenAI 令牌。",
+  "OpenAI OAuth credentials are unavailable or refresh could not be confirmed; please log in again.": "OpenAI 授权不可用或刷新未确认；请重新登录。",
+  "OpenAI identity verification failed; please retry login.": "OpenAI 身份验证失败，请重新登录。",
+  "OpenAI OAuth request failed; please retry login.": "OpenAI 登录请求失败，请重试。",
+  "OpenAI returned invalid OAuth credentials.": "OpenAI 返回了无效的授权凭据。",
+  "OpenAI did not grant the required ChatGPT plan permission.": "OpenAI 未授予所需的 ChatGPT 套餐权限。",
+};
+// Variables such as the identity-verification category or a deadline message are
+// normalized to one localized sentence instead of leaking English text.
+const OAUTH_MESSAGE_PREFIXES = [
+  ["OpenAI identity verification failed", "OpenAI 身份验证失败，请重新登录。"],
+  ["OpenAI OAuth", "OpenAI 登录超时，请重试。"],
+];
+const oauth = { state: "idle", message: "", profile: null, hasProfile: false, loadError: false,
+  localError: "", polling: false, timer: null, token: 0, startedAt: 0, seenRunning: false, slugEdited: false,
+  listState: "idle" };
+
+function oauthMessage(message) {
+  const raw = String(message || "").trim();
+  if (OAUTH_MESSAGES[raw]) return settingsT(OAUTH_MESSAGES[raw]);
+  for (const [prefix, key] of OAUTH_MESSAGE_PREFIXES) {
+    if (raw.startsWith(prefix)) return settingsT(key);
+  }
+  return raw;
+}
+
+function oauthLive(key, kind = "", params = null) {
+  const node = el("oauth-status");
+  if (!node) return;
+  node.dataset.kind = kind;
+  if (params) {
+    delete node.dataset.i18n;
+    node.textContent = settingsT(key, params);
+  } else {
+    node.dataset.i18n = key;
+    node.textContent = settingsT(key);
+  }
+}
+
+function syncOAuthControls() {
+  if (!el("oauth-login")) return;
+  const running = oauth.state === "running";
+  el("oauth-model").disabled = state.busy || running;
+  el("oauth-proxy").disabled = state.busy || running;
+  const button = el("oauth-login");
+  button.disabled = state.busy || running;
+  button.setAttribute("aria-busy", String(running));
+  const key = running ? "等待授权…" : "登录 ChatGPT";
+  button.dataset.i18n = key;
+  button.textContent = settingsT(key);
+}
+
+function renderOAuthConnected(profile) {
+  const node = el("oauth-connected");
+  if (!node) return;
+  node.replaceChildren();
+  if (!profile) { node.hidden = true; return; }
+  node.hidden = false;
+  const model = document.createElement("span");
+  model.className = "oauth-connected-model";
+  model.textContent = settingsT("已连接模型：{model}", {model: profile.model || settingsT("未知")});
+  const note = document.createElement("span");
+  note.className = "oauth-connected-note";
+  note.textContent = settingsT("已通过 ChatGPT 授权，令牌保存在系统钥匙串。");
+  node.append(model, note);
+}
+
+function renderOAuth() {
+  const card = el("settings-oauth");
+  if (!card) return;
+  const running = oauth.state === "running";
+  const failed = oauth.state === "failed";
+  const connected = !running && !failed && Boolean(oauth.profile);
+  const view = running ? "running" : failed ? "failed" : connected ? "connected" : "idle";
+  card.dataset.oauthState = view;
+  const badgeNode = el("oauth-badge");
+  const badgeKey = view === "running" ? "正在等待授权" : view === "connected" ? "已连接"
+    : view === "failed" ? "登录失败" : "未连接";
+  badgeNode.dataset.i18n = badgeKey;
+  badgeNode.dataset.kind = view;
+  badgeNode.textContent = settingsT(badgeKey);
+  const model = el("oauth-model");
+  if (!oauth.slugEdited && oauth.profile && oauth.profile.model && !model.value.trim()) {
+    model.value = oauth.profile.model;
+  }
+  syncOAuthControls();
+  if (running) oauthLive("正在等待浏览器完成授权…", "running");
+  else if (connected) oauthLive("ChatGPT 账号已连接。", "ok");
+  else if (failed) oauthLocalOrServerError();
+  else if (oauth.loadError) oauthLive("无法读取登录状态；请刷新页面后重试。", "error");
+  else oauthLive("尚未连接 ChatGPT 账号。", "");
+  renderOAuthConnected(connected ? oauth.profile : null);
+  if (oauth.listState !== view) {
+    oauth.listState = view;
+    if (state.profiles.length) renderList();
+  }
+}
+
+function oauthLocalOrServerError() {
+  if (oauth.localError) oauthLive(oauth.localError, "error");
+  else oauthLive("登录未完成：{message}", "error",
+    {message: oauthMessage(oauth.message) || settingsT("未知")});
+}
+
+function applyOAuthStatus(data) {
+  if (!data || typeof data !== "object") return;
+  oauth.loadError = false;
+  oauth.localError = "";
+  oauth.state = ["idle", "running", "succeeded", "failed"].includes(data.state) ? data.state : "failed";
+  oauth.message = typeof data.message === "string" ? data.message : "";
+  const profile = data.profile && typeof data.profile === "object" ? data.profile : null;
+  oauth.profile = data.has_profile === false ? null : profile;
+  oauth.hasProfile = Boolean(data.has_profile || oauth.profile);
+  if (!oauth.hasProfile) oauth.profile = null;
+  if (oauth.state === "running") oauth.seenRunning = true;
+  renderOAuth();
+}
+
+function stopOAuthPolling() {
+  oauth.polling = false;
+  if (oauth.timer !== null) { clearTimeout(oauth.timer); oauth.timer = null; }
+}
+
+async function afterOAuthSettled(data) {
+  if (data && data.state === "succeeded") {
+    try {
+      await load();
+    } catch (error) {
+      setStatus(error.message, "error");
+    }
+  }
+  renderOAuth();
+  const card = el("settings-oauth");
+  const wasOurs = card.contains(document.activeElement) || document.activeElement === document.body;
+  if (!wasOurs) return;
+  if (data && data.state === "failed") {
+    el("oauth-login").focus({ preventScroll: true });
+    return;
+  }
+  const target = el("oauth-connected").hidden ? el("oauth-status") : el("oauth-connected");
+  target.setAttribute("tabindex", "-1");
+  target.focus({ preventScroll: true });
+}
+
+function startOAuthPolling() {
+  if (oauth.polling) return;
+  oauth.polling = true;
+  oauth.startedAt = Date.now();
+  const token = ++oauth.token;
+  const schedule = () => {
+    if (!oauth.polling || token !== oauth.token) return;
+    oauth.timer = setTimeout(check, OAUTH_POLL_MS);
+  };
+  const check = async () => {
+    if (!oauth.polling || token !== oauth.token) return;
+    oauth.timer = null;
+    if (Date.now() - oauth.startedAt > OAUTH_WAIT_MS) {
+      stopOAuthPolling();
+      oauth.state = "failed";
+      oauth.message = "Authorization timed out; try again.";
+      renderOAuth();
+      return;
+    }
+    let data = null;
+    try {
+      data = await api("/api/providers/oauth/openai");
+    } catch (_) {
+      schedule();
+      return;
+    }
+    if (!oauth.polling || token !== oauth.token) return;
+    // A poll can arrive before the background thread reports "running"; the
+    // idle state is not a terminal outcome while a sign-in was just started.
+    if (data && data.state === "idle" && !oauth.seenRunning) { schedule(); return; }
+    applyOAuthStatus(data || {});
+    if (data && data.running) { schedule(); return; }
+    stopOAuthPolling();
+    await afterOAuthSettled(data || {});
+  };
+  schedule();
+}
+
+async function loadOAuth() {
+  try {
+    const data = await api("/api/providers/oauth/openai");
+    oauth.seenRunning = false;
+    applyOAuthStatus(data || {});
+    if (data && data.running) { oauth.seenRunning = true; startOAuthPolling(); }
+    return data;
+  } catch (error) {
+    oauth.state = "idle";
+    oauth.message = "";
+    oauth.profile = null;
+    oauth.hasProfile = false;
+    oauth.loadError = true;
+    renderOAuth();
+    return null;
+  }
+}
+
+async function oauthLogin(event) {
+  if (event) event.preventDefault();
+  if (oauth.state === "running" || state.busy) return;
+  const body = {model: el("oauth-model").value.trim(),
+    use_system_proxy: el("oauth-proxy").checked};
+  if (!body.model && oauth.profile && oauth.profile.model) body.model = oauth.profile.model;
+  if (!body.model) {
+    oauth.state = "failed";
+    oauth.message = "";
+    oauth.loadError = false;
+    oauth.localError = "请输入模型标识（slug）后重试。";
+    renderOAuth();
+    el("oauth-model").focus();
+    return;
+  }
+  oauth.loadError = false;
+  oauth.localError = "";
+  oauth.state = "running";
+  oauth.message = "";
+  renderOAuth();
+  try {
+    const data = await api("/api/providers/oauth/openai/login", {method: "POST", body: JSON.stringify(body)});
+    applyOAuthStatus(data || {});
+    if (el("settings-oauth").dataset.oauthState === "running") startOAuthPolling();
+  } catch (error) {
+    if (error.status === 409) {
+      // Another sign-in is running: keep the waiting state and wait for it.
+      oauth.state = "running";
+      oauth.message = error.message;
+      renderOAuth();
+      oauth.seenRunning = true;
+      startOAuthPolling();
+      return;
+    }
+    stopOAuthPolling();
+    oauth.state = "failed";
+    oauth.message = error.message;
+    oauth.localError = "";
+    renderOAuth();
+  }
+}
+
 function profileById(id) {
   return state.profiles.find(profile => profile.id === id);
+}
+
+function editorBadgeText(profile) {
+  if (!profile) return settingsT("自定义");
+  if (profile.source === "env") return settingsT("环境 · 只读");
+  if (profile.id === OAUTH_ID) return settingsT("ChatGPT 登录");
+  return profile.protocol;
 }
 
 function fillForm(profile) {
@@ -123,7 +396,7 @@ function fillForm(profile) {
   el("provider-currency").value = profile ? profile.currency : "CNY";
   el("provider-activate").checked = !profile || profile.id === state.active;
   el("editor-title").textContent = profile ? profile.name : settingsT("新建供应商");
-  el("editor-badge").textContent = profile ? (profile.source === "env" ? settingsT("环境 · 只读") : profile.protocol) : settingsT("自定义");
+  el("editor-badge").textContent = editorBadgeText(profile);
   const readOnly = profile && profile.source === "env";
   el("delete-provider").disabled = !profile || readOnly;
   el("activate-provider").disabled = !profile || profile.id === state.active;
@@ -163,12 +436,24 @@ function renderList() {
     button.disabled = state.busy;
     const head = document.createElement("span");
     head.className = "provider-item-head";
+    const isOAuth = profile.id === OAUTH_ID;
+    if (isOAuth) {
+      const mark = document.createElement("span");
+      mark.className = "provider-mark";
+      mark.setAttribute("aria-hidden", "true");
+      mark.textContent = "GPT";
+      head.append(mark);
+    }
     head.append(document.createTextNode(profile.name));
+    if (isOAuth) head.append(badge(settingsT("ChatGPT 登录"), "verified oauth-brand"));
     if (profile.id === state.active) head.append(badge(settingsT("当前"), "yes"));
     if (profile.source === "env") head.append(badge("env"));
+    if (isOAuth && oauth.state === "running") head.append(badge(settingsT("正在登录"), "no"));
+    if (isOAuth && oauth.state === "failed") head.append(badge(settingsT("登录失败"), "warn"));
     const meta = document.createElement("span");
     meta.className = "provider-item-meta";
-    meta.textContent = [profile.protocol, profile.model, profile.has_key ? settingsT("已存储密钥") : settingsT("无密钥"),
+    meta.textContent = [isOAuth ? "ChatGPT OAuth" : profile.protocol, profile.model,
+      isOAuth ? settingsT("钥匙串令牌") : profile.has_key ? settingsT("已存储密钥") : settingsT("无密钥"),
       profile.input_price != null || profile.output_price != null
         ? `${text(profile.input_price)}/${text(profile.output_price)} ${profile.currency}/1M`
         : settingsT("价格未知")].join(" · ");
@@ -384,19 +669,25 @@ el("toggle-provider-key").addEventListener("click", () => {
 });
 document.addEventListener("keydown", event => {
   if ((event.ctrlKey || event.metaKey) && event.key === "Enter" && !event.isComposing && !state.busy
-      && !el("save-provider").disabled) {
+      && !el("save-provider").disabled && !el("settings-oauth").contains(document.activeElement)) {
     event.preventDefault(); el("provider-form").requestSubmit();
   }
 });
 window.addEventListener("sg:language-change", () => {
   syncControls();
   renderList();
+  renderOAuth();
   if (lastTestResult && !el("test-result").hidden) renderTestResult(lastTestResult);
   el("toggle-provider-key").textContent = settingsT(el("provider-key").type === "password" ? "显示" : "隐藏");
   const profile = profileById(state.selected);
   el("editor-title").textContent = profile ? profile.name : settingsT("新建供应商");
-  el("editor-badge").textContent = profile ? (profile.source === "env" ? settingsT("环境 · 只读") : profile.protocol) : settingsT("自定义");
+  el("editor-badge").textContent = editorBadgeText(profile);
   el("provider-key").placeholder = profile && profile.has_key ? settingsT("已存储密钥 · {key}（留空以保留）", {key: profile.masked_key}) : settingsT("接口不需要密钥时请留空");
   el("key-hint").textContent = settingsT(profile && profile.has_key ? "密钥存储在服务端；不会在此显示。" : "此配置未存储密钥。");
 });
+if (el("oauth-form")) {
+  el("oauth-form").addEventListener("submit", oauthLogin);
+  el("oauth-model").addEventListener("input", () => { oauth.slugEdited = true; });
+}
 load().catch(error => setStatus(error.message, "error"));
+loadOAuth();

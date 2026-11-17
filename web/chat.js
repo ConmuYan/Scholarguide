@@ -721,8 +721,13 @@ function citationText(paper) {
 function paperRow(paper, index) {
   const item = document.createElement("li");
   item.className = "turn-paper";
+  // The delivered rank is authoritative: filtering and presentation-only
+  // sorting must never renumber the papers.
+  const rank = Number.isInteger(paper.rank) && paper.rank > 0 ? paper.rank : index + 1;
+  uiAttributeFormat(item, "aria-label", "第 {rank} 位：{title}",
+    {rank: String(rank), title: paper.title || paper.id});
   item.append(Object.assign(document.createElement("span"), {
-    className: "p-n", textContent: String(index + 1).padStart(2, "0"),
+    className: "p-n", textContent: String(rank).padStart(2, "0"),
   }));
   const body = document.createElement("div");
   const title = document.createElement("h4");

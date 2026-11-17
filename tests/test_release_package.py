@@ -12,7 +12,7 @@ class ReleasePackageTests(unittest.TestCase):
             archive=next(path for path in assets if path.suffix=='.gz')
             with tarfile.open(archive,'r:gz') as tar:
                 names=tar.getnames();root='scholarguide-v0.1.0/'
-                for expected in ('app.py','requirements.txt','web/index.html','web/theme.js','docs/API.md','LICENSE','NOTICE.md','vendor/gptr_arxiv.py','vendor/LICENSE-gpt-researcher'):
+                for expected in ('app.py','openai_oauth.py','requirements.txt','web/index.html','web/settings.js','web/theme.js','docs/API.md','LICENSE','NOTICE.md','vendor/gptr_arxiv.py','vendor/LICENSE-gpt-researcher'):
                     self.assertIn(root+expected,names)
                 for forbidden in ('.env','runs','tests','evaluation','archive','.pi','.codex','cloudflare-worker','cloudflare-pages'):
                     self.assertFalse(any(name==root+forbidden or name.startswith(root+forbidden+'/') for name in names),forbidden)
