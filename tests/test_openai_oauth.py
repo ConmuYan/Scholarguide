@@ -108,17 +108,24 @@ class OAuthTests(unittest.TestCase):
                 oauth._verify_id_token(forged, 'client', 'nonce', self.discovery['jwks_uri'])
 
     def test_callback_slow_client_is_bounded(self):
+        import contextlib, io
+        captured = io.StringIO()
         server = oauth._callback_server('state')
         server.deadline = time.monotonic() + 0.3
         worker = threading.Thread(target=server.handle_request, daemon=True)
         worker.start()
         try:
-            with socket.create_connection(('127.0.0.1', server.server_port), timeout=2) as client:
-                client.sendall(b'GET /auth/callback HTTP/1.1\r\nHost:')
-                worker.join(3)
-                self.assertFalse(worker.is_alive())
+            with contextlib.redirect_stderr(captured):
+                with socket.create_connection(('127.0.0.1', server.server_port), timeout=2) as client:
+                    client.sendall(b'GET /auth/callback HTTP/1.1' + bytes([13, 10]) + b'Host:')
+                    worker.join(3)
+                    self.assertFalse(worker.is_alive())
         finally:
             server.server_close()
+        # The deadline timer shuts the socket down mid-response; that local
+        # disconnect is not an authorization failure and must stay quiet.
+        self.assertNotIn('Traceback', captured.getvalue())
+
 
     def test_discovery_requires_trusted_oidc_not_registration(self):
         with patch.object(oauth, '_request', return_value=self.discovery):

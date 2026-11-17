@@ -321,6 +321,15 @@ def _callback_server(state, expected_client=None):
                 self._timer.cancel()
 
         def do_GET(self):
+            # A local peer may disconnect at any point (the deadline timer, a
+            # cancelled browser tab). That is not an authorization failure, so
+            # it must not escape as an unhandled server traceback.
+            try:
+                self._respond()
+            except OSError:
+                return
+
+        def _respond(self):
             try:
                 code, client = _parse_callback(self.path, state, expected_client)
             except _AccessDenied:
