@@ -54,9 +54,21 @@ class SatisfiedClauseTests(unittest.TestCase):
                        'Only 2024-2026 papers that are not benchmarks',
                        'Only papers from 2024 to 2026 excluding the year 2025',
                        'Restrict to 2024-2026 but skip 2025',
-                       'Only papers from 2024 to 2026 without survey papers'):
+                       'Only papers from 2024 to 2026 without survey papers',
+                       'Only papers from 2024 to 2026, no surveys',
+                       'Only papers from 2024 to 2026, no benchmark papers',
+                       'Only 2024-2026 papers, none of them surveys',
+                       'Only papers from 2024 to 2026 and no preprints',
+                       'Only papers from 2024 to 2026, never position papers',
+                       'Only papers from 2024 to 2026, avoid survey articles',
+                       'Only papers from 2024 to 2026 outside of 2025',
+                       'Only papers from 2024 to 2026 about robotics',
+                       '只收 2024 到 2026 年的论文，不要综述'):
             with self.subTest(clause=clause):
                 self.assertFalse(clause_is_satisfied(PLAN, clause))
+        for clause in ('Only AAAI papers', 'Only 2024-2026 papers'):
+            with self.subTest(clause=clause):
+                self.assertTrue(clause_is_satisfied(PLAN, clause))
         # A narrower applied window is inside a wider request, never the opposite.
         self.assertTrue(clause_is_satisfied({**PLAN, 'year_from': 2024, 'year_to': 2026},
                                             'Only papers from 2024 to 2026'))

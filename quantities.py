@@ -124,6 +124,40 @@ _STOPWORDS = frozenset({'ONLY', 'AND', 'OR', 'JSON', 'DOI', 'URL', 'USE', 'NOT',
                         'FROM', 'WITH', 'THE', 'FOR', 'ONLY.'})
 
 
+# Scope clauses are satisfied only on positive evidence. The text may name the
+# applied conferences and years plus neutral scope wording; anything else (a
+# negation, an exclusion, a filter, a different venue) is unknown content and
+# keeps the clause unsupported. A blacklist of negative words would leak as soon
+# as the wording changed, so the rule is an allow-list instead.
+_SCOPE_ALLOWED = frozenset("""
+only use using provided give given specified eligible whitelist
+conference conferences venue venues publication publications year years
+paper papers article articles from to and or between restrict restricted
+limited limit within range inclusive the these those list as in of a an
+that are is be published select selected consider considered include included
+""".split())
+_CJK_SCOPE_ALLOWED = frozenset('只收的在仅年限会议期刊论文发表收录使用范围到等和与及内')
+
+
+def _scope_only(text: str, venue: str) -> bool:
+    """True when nothing but the applied scope is being said."""
+    from common import requested_venues
+    residue = text
+    for name in sorted(requested_venues(venue), key=len, reverse=True):
+        residue = re.sub(re.escape(name), ' ', residue, flags=re.I)
+    residue = re.sub('[0-9]{4}', ' ', residue)
+    residue = re.sub('[^0-9A-Za-z一-鿿]+', ' ', residue)
+    for token in residue.split():
+        if token.isdigit():
+            continue
+        if token.isascii():
+            if token.casefold() not in _SCOPE_ALLOWED:
+                return False
+        elif any(char not in _CJK_SCOPE_ALLOWED for char in token):
+            return False
+    return True
+
+
 def clause_is_satisfied(plan: dict, clause) -> bool:
     """True only when the plan or the delivery contract already satisfies a clause.
 
@@ -145,7 +179,7 @@ def clause_is_satisfied(plan: dict, clause) -> bool:
     venue = str(plan.get('venue') or '').strip()
     year_from, year_to = plan.get('year_from'), plan.get('year_to')
     bounded_years = isinstance(year_from, int) and isinstance(year_to, int)
-    if _OUTPUT_GUARANTEE.search(text):
+    if _OUTPUT_GUARANTEE.search(text) and not _SCOPE_WORDS.search(text):
         if re.search(r'\b(?:citations?|influen\w*|impact)\b', text, re.I) \
                 and plan.get('ranking') != 'citations':
             return False
@@ -153,23 +187,23 @@ def clause_is_satisfied(plan: dict, clause) -> bool:
         if mentioned:
             return bounded_years and min(mentioned) <= year_from and year_to <= max(mentioned)
         return True
-    if not _SCOPE_WORDS.search(text) and not has_range:
-        return False
-    if _EXCLUSION.search(text):
-        return False
-    # A named venue outside the applied list is a real restriction, not presentation.
     from common import requested_venues
     from research_policy import venue_identity
     applied = {venue_identity(name) for name in requested_venues(venue)}
     named = {match.group(0) for match in re.finditer(r'\b[A-Z][A-Za-z0-9&.-]{1,19}\b', text)
              if match.start() > 0 and match.group(0) not in _STOPWORDS}
+    if not _SCOPE_WORDS.search(text) and not has_range and not named:
+        return False
+    if not _scope_only(text, venue):
+        return False
     if named and not all(venue_identity(token) in applied for token in named):
         return False
     if mentioned:
         # The applied window must sit inside the requested one, never the reverse.
         return bounded_years and min(mentioned) <= year_from and year_to <= max(mentioned)
+    if named:
+        return True  # every named venue is already applied
     return bool(venue) and bounded_years and bool(_GENERIC_SCOPE.search(text))
-
 
 INFLUENCE_CLAUSE = re.compile(
     r'^(?:rank|order)(?:\s+the\s+papers)?\s+by\s+(?:research\s+)?'

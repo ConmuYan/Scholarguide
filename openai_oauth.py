@@ -16,6 +16,7 @@ import os
 from pathlib import Path
 import secrets
 import socket
+import sys
 import threading
 import time
 import uuid
@@ -350,7 +351,16 @@ def _callback_server(state, expected_client=None):
             self.end_headers()
             self.wfile.write(b'Authorization received. You may close this window.')
 
-    server = HTTPServer(('127.0.0.1', 0), Handler)
+    class QuietServer(HTTPServer):
+        """Local single-user callback: a peer resetting mid-request is not an error."""
+
+        def handle_error(self, request, client_address):
+            failure = sys.exc_info()[1]
+            if isinstance(failure, (OSError, ConnectionError)):
+                return
+            super().handle_error(request, client_address)
+
+    server = QuietServer(('127.0.0.1', 0), Handler)
     server.code = None
     server.client_id = None
     server.denied = False

@@ -127,6 +127,25 @@ class OAuthTests(unittest.TestCase):
         self.assertNotIn('Traceback', captured.getvalue())
 
 
+    def test_callback_peer_reset_before_headers_is_quiet(self):
+        import contextlib, io
+        captured = io.StringIO()
+        server = oauth._callback_server('state')
+        server.deadline = time.monotonic() + 1
+        worker = threading.Thread(target=server.handle_request, daemon=True)
+        worker.start()
+        try:
+            with contextlib.redirect_stderr(captured):
+                client = socket.create_connection(('127.0.0.1', server.server_port), timeout=2)
+                client.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,
+                                  bytes([1, 0, 0, 0, 0, 0, 0, 0]))
+                client.close()
+                worker.join(5)
+        finally:
+            server.server_close()
+        # A reset request line is not an authorization failure and must stay quiet.
+        self.assertNotIn('Traceback', captured.getvalue())
+
     def test_discovery_requires_trusted_oidc_not_registration(self):
         with patch.object(oauth, '_request', return_value=self.discovery):
             self.assertEqual(oauth._discovery(), self.discovery)
