@@ -328,11 +328,18 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
             from quantities import blocking_quotes
 
             def validate_plan(value):
+                # Scope entries that merely restate the venue/year values this
+                # same plan already applied are redundant, not unmet. Compare
+                # explicit values only; a narrower request still blocks.
+                from quantities import redundant_scope_requirements
+                kept, dropped = redundant_scope_requirements(
+                    value, value.get('blocking_requirements') or [])
+                if dropped:
+                    value['blocking_requirements'] = kept
+                    value['redundant_scope'] = dropped
                 parsed = Request.from_dict({**value, **parsed_count, **(constraints or {}), **preferences})
                 clean_query(value)
-                # The one and only stop signal is this structured array. It is
-                # validated here (closed kind, verbatim <=300-char quote) and
-                # written into the legacy string field Request already carries.
+                # The one and only stop signal is the remaining structured array.
                 # No sentence is reinterpreted afterwards.
                 value['unsupported'] = blocking_quotes(
                     value.get('blocking_requirements'), user_input)
@@ -348,6 +355,10 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
             # it never deletes any other blocking quote.
             plan['unsupported'] = list(plan.get('unsupported') or [])
             _restore_explicit_conferences(plan, user_input)
+            if plan.pop('redundant_scope', None):
+                result['warnings'].append(
+                    'The planner restated scope that this request already applies; '
+                    'those entries were treated as redundant, not unmet.')
         else:
             plan = dict(request_data)
             plan.setdefault('query', plan.get('topic', ''))

@@ -169,6 +169,77 @@ def blocking_quotes(items, source_text, *, field='blocking_requirements') -> lis
     return quotes
 
 
+def redundant_scope_requirements(plan, items) -> tuple:
+    """Split off scope entries that merely restate an already applied value.
+
+    A planner sometimes writes the venue whitelist or the year coverage it has
+    already put into ``venue``/``year_from``/``year_to`` back into the blocking
+    array. That is not a restriction the product fails to honour, so it must not
+    stop the search. Only two exact, structural comparisons are allowed:
+
+    * ``venue_subset`` whose named venues are exactly the applied venue set, or
+      which names no venue at all (it then refers to the provided whitelist).
+    * ``year_subset`` whose years are exactly the applied inclusive range, or
+      which names no year at all.
+
+    A genuinely narrower request (for example "only CVPR and ICCV" while six
+    venues are applied, or "2025 only" inside 2024-2026) is kept and still
+    blocks. No sentence is interpreted, only explicit values are compared.
+    """
+    kept, dropped = [], []
+    for item in items or []:
+        if not isinstance(item, dict):
+            kept.append(item)  # malformed entries are rejected by the validator
+            continue
+        kind = item.get('kind')
+        quote = str(item.get('quote') or '')
+        if kind == 'venue_subset' and _redundant_venue(plan, quote):
+            dropped.append(quote)
+            continue
+        if kind == 'year_subset' and _redundant_years(plan, quote):
+            dropped.append(quote)
+            continue
+        kept.append(item)
+    return kept, dropped
+
+
+def _applied_venues(plan) -> dict:
+    from common import requested_venues
+    from research_policy import venue_identity
+    value = str(plan.get('venue') or '').strip()
+    return {name: venue_identity(name) for name in requested_venues(value) if venue_identity(name)}
+
+
+def _redundant_venue(plan, quote: str) -> bool:
+    applied = _applied_venues(plan)
+    if not applied:
+        return False
+    folded = str(quote).casefold()
+    named = {identity for name, identity in applied.items() if name.casefold() in folded}
+    if not named:
+        return True  # refers to the provided whitelist without naming a venue
+    return named == set(applied.values())
+
+
+def _redundant_years(plan, quote: str) -> bool:
+    year_from, year_to = plan.get('year_from'), plan.get('year_to')
+    if not isinstance(year_from, int) or not isinstance(year_to, int) or year_from > year_to:
+        return False
+    text = str(quote)
+    mentioned = {int(value) for value in re.findall(r'\b(?:19|20)\d{2}\b', text)}
+    if not mentioned:
+        return True  # refers to the provided year scope without naming a year
+    if mentioned == set(range(year_from, year_to + 1)):
+        return True
+    # '2024-2026' names only the endpoints of the same inclusive range.
+    span = re.search(r'((?:19|20)\d{2})\s*(?:-|–|—|~|to|至|到)\s*((?:19|20)\d{2})', text)
+    if span:
+        low, high = int(span.group(1)), int(span.group(2))
+        if low == year_from and high == year_to:
+            return True
+    return False
+
+
 def blocking_requirement_schema() -> dict:
     """One schema fragment for the planner and the task updater."""
     return {'type': 'array', 'items': {

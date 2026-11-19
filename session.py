@@ -504,10 +504,6 @@ class ChatSession:
                  if v is not None or k in ('year_from', 'year_to')}
         from quantities import calibrate_user_requirements
         patch = calibrate_user_requirements(patch, message, current)
-        # Same structured contract as workflow.run: a closed kind plus a verbatim
-        # quote either stops the turn or the array is empty. Nothing here decides
-        # whether a sentence "looks satisfied".
-        unsupported = blocking_quotes(raw.get('blocking_requirements'), message)
         merged = dict(current)
         merged.pop('task_error', None)
         if current and not count_patch:
@@ -515,6 +511,16 @@ class ChatSession:
                 patch.pop(key, None)
         merged.update(patch)
         merged.update(count_patch)
+        # Same structural rule as the one-shot planner: an entry that only
+        # restates the venue/year values this task already applies is redundant.
+        from quantities import redundant_scope_requirements
+        kept, dropped = redundant_scope_requirements(
+            merged, raw.get('blocking_requirements') or [])
+        unsupported = blocking_quotes(kept, message)
+        if dropped:
+            self._warnings.append(
+                'The task update restated scope that the task already applies; '
+                'those entries were treated as redundant, not unmet.')
         merged['unresolved'] = [u for u in raw.get('unresolved', []) if isinstance(u, dict)]
         merged.pop('satisfied_requirements', None)
         merged['unsupported'] = unsupported
