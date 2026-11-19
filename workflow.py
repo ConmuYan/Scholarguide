@@ -331,6 +331,9 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
                 # Scope entries that merely restate the venue/year values this
                 # same plan already applied are redundant, not unmet. Compare
                 # explicit values only; a narrower request still blocks.
+                # Restore a literal whitelist from the task text first, so the
+                # redundancy test can see the venue the request actually applies.
+                _restore_explicit_conferences(value, user_input)
                 from quantities import redundant_scope_requirements
                 kept, dropped = redundant_scope_requirements(
                     value, value.get('blocking_requirements') or [])
@@ -354,7 +357,7 @@ def run(user_input: str, config: Config, method: str = 'A', *, request_data: dic
             # venue field; that is the only remaining post-plan correction and
             # it never deletes any other blocking quote.
             plan['unsupported'] = list(plan.get('unsupported') or [])
-            _restore_explicit_conferences(plan, user_input)
+            _restore_explicit_conferences(plan, user_input)  # idempotent
             if plan.pop('redundant_scope', None):
                 result['warnings'].append(
                     'The planner restated scope that this request already applies; '
