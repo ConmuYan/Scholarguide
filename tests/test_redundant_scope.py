@@ -48,12 +48,19 @@ class RedundantScopeTests(unittest.TestCase):
                 kept, dropped = keeps(PLAN, [item])
                 self.assertEqual((kept, dropped), (1, []))
 
-    def test_without_applied_values_nothing_is_redundant(self):
-        empty = {}
-        for item in ({'kind': 'venue_subset', 'quote': 'conference whitelist'},
-                     {'kind': 'year_subset', 'quote': '2024, 2025, 2026'}):
-            with self.subTest(item=item):
-                self.assertEqual(keeps(empty, [item]), (1, []))
+    def test_empty_plan_absorbs_the_named_scope(self):
+        # Without applied values the quote is the only statement of the scope,
+        # so it is applied rather than silently dropped or blindly trusted.
+        venue_plan = {}
+        self.assertEqual(keeps(venue_plan, [{'kind': 'venue_subset', 'quote': 'only CVPR and ICCV'}]),
+                         (0, ['only CVPR and ICCV']))
+        self.assertEqual(venue_plan['venue'], 'CVPR, ICCV')
+        year_plan = {}
+        self.assertEqual(keeps(year_plan, [{'kind': 'year_subset', 'quote': '2024, 2025, 2026'}]),
+                         (0, ['2024, 2025, 2026']))
+        self.assertEqual((year_plan['year_from'], year_plan['year_to']), (2024, 2026))
+        # A phrase naming no venue/year cannot be applied and still blocks.
+        self.assertEqual(keeps({}, [{'kind': 'venue_subset', 'quote': 'conference whitelist'}]), (1, []))
 
     def test_mixed_entries_keep_only_the_real_one(self):
         items = [{'kind': 'venue_subset', 'quote': 'conference whitelist'},

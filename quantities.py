@@ -170,21 +170,21 @@ def blocking_quotes(items, source_text, *, field='blocking_requirements') -> lis
 
 
 def redundant_scope_requirements(plan, items) -> tuple:
-    """Split off scope entries that merely restate an already applied value.
+    """Absorb scope entries that restate a value the plan already carries.
 
-    A planner sometimes writes the venue whitelist or the year coverage it has
-    already put into ``venue``/``year_from``/``year_to`` back into the blocking
-    array. That is not a restriction the product fails to honour, so it must not
-    stop the search. Only two exact, structural comparisons are allowed:
+    The planner sometimes reports the venue list or the years it already set, or
+    reports them *instead of* setting the field. Both are handled structurally,
+    without interpreting prose:
 
-    * ``venue_subset`` whose named venues are exactly the applied venue set, or
-      which names no venue at all (it then refers to the provided whitelist).
-    * ``year_subset`` whose years are exactly the applied inclusive range, or
-      which names no year at all.
+    * a ``venue_subset`` whose quote names only venues from the curated catalogue
+      fills ``venue`` when it is empty, and is redundant when it equals the
+      applied set (or names no venue at all);
+    * a ``year_subset`` whose quote names years fills ``year_from``/``year_to``
+      when they are unset and form one contiguous range, and is redundant when it
+      equals the applied range (or names no year at all).
 
-    A genuinely narrower request (for example "only CVPR and ICCV" while six
-    venues are applied, or "2025 only" inside 2024-2026) is kept and still
-    blocks. No sentence is interpreted, only explicit values are compared.
+    A genuinely narrower request (only CVPR while six are applied, 2025 inside
+    2024-2026) is kept and still blocks. Only explicit values are compared.
     """
     kept, dropped = [], []
     for item in items or []:
@@ -193,14 +193,65 @@ def redundant_scope_requirements(plan, items) -> tuple:
             continue
         kind = item.get('kind')
         quote = str(item.get('quote') or '')
-        if kind == 'venue_subset' and _redundant_venue(plan, quote):
-            dropped.append(quote)
-            continue
-        if kind == 'year_subset' and _redundant_years(plan, quote):
-            dropped.append(quote)
-            continue
+        if kind == 'venue_subset':
+            if _absorb_venue(plan, quote):
+                dropped.append(quote)
+                continue
+            if _redundant_venue(plan, quote):
+                dropped.append(quote)
+                continue
+        elif kind == 'year_subset':
+            if _absorb_years(plan, quote):
+                dropped.append(quote)
+                continue
+            if _redundant_years(plan, quote):
+                dropped.append(quote)
+                continue
         kept.append(item)
     return kept, dropped
+
+
+def _absorb_venue(plan, quote: str) -> bool:
+    """Fill an empty venue field from a quote that names only known venues."""
+    if str(plan.get('venue') or '').strip():
+        return False
+    import re as _re
+    from research_policy import curated_venue_catalog
+    names = [v['name'] for v in curated_venue_catalog()['venues']] + ['ACM MM', 'SIGGRAPH']
+    # Longest names first so "ACM MM" is not split into two tokens.
+    found = []
+    for name in sorted(set(names), key=len, reverse=True):
+        match = _re.search(r'(?<![A-Za-z0-9])' + _re.escape(name) + r'(?![A-Za-z0-9])', quote, _re.I)
+        if match:
+            found.append((match.start(), name))
+    if not found:
+        return False
+    ordered = []
+    for _, name in sorted(found):
+        if name.upper() not in {item.upper() for item in ordered}:
+            ordered.append(name)
+    plan['venue'] = ', '.join(ordered)
+    return True
+
+
+def _absorb_years(plan, quote: str) -> bool:
+    """Fill an unset year range from a quote that names one contiguous range."""
+    if plan.get('year_from') is not None or plan.get('year_to') is not None:
+        return False
+    text = str(quote)
+    years = sorted({int(value) for value in re.findall(r'\b(?:19|20)\d{2}\b', text)})
+    if not years or years[0] < 1900 or years[-1] > 2100:
+        return False
+    if len(years) > 1 and years[-1] - years[0] + 1 != len(years):
+        span = re.search(r'((?:19|20)\d{2})\s*(?:-|–|—|~|to|至|到)\s*((?:19|20)\d{2})', text)
+        if not span:
+            return False
+        low, high = int(span.group(1)), int(span.group(2))
+        if high < low:
+            return False
+        years = list(range(low, high + 1))
+    plan['year_from'], plan['year_to'] = years[0], years[-1]
+    return True
 
 
 def _applied_venues(plan) -> dict:
@@ -231,7 +282,7 @@ def _redundant_years(plan, quote: str) -> bool:
         return True  # refers to the provided year scope without naming a year
     if mentioned == set(range(year_from, year_to + 1)):
         return True
-    # '2024-2026' names only the endpoints of the same inclusive range.
+    # "2024-2026" names only the endpoints of the same inclusive range.
     span = re.search(r'((?:19|20)\d{2})\s*(?:-|–|—|~|to|至|到)\s*((?:19|20)\d{2})', text)
     if span:
         low, high = int(span.group(1)), int(span.group(2))
