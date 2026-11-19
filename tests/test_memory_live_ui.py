@@ -42,6 +42,8 @@ class MemoryLiveUiTests(unittest.TestCase):
                     driver = webdriver.Chrome(options=options)
                     driver.set_window_size(390, 900)
                     driver.get(f'http://127.0.0.1:{server.server_port}/settings')
+                    # Deferred from the settings UI but still implemented.
+                    driver.execute_script("document.getElementById('memory-section').hidden = false")
                     wait = WebDriverWait(driver, 10)
                     wait.until(lambda d: '已读取本机偏好' in d.find_element(By.ID, 'memory-status').text)
                     self.assertTrue((root / 'memory.sqlite3').exists())

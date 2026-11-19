@@ -798,11 +798,90 @@
   "OpenAI 未授予所需的 ChatGPT 套餐权限。": {
     "en": "OpenAI did not grant the required ChatGPT plan permission.",
     "zh-Hant": "OpenAI 未授予所需的 ChatGPT 方案權限。"
+  },
+  "通过 OpenAI 官方授权连接，使用你的 ChatGPT 套餐。": {
+    "en": "Connect through OpenAI and use your ChatGPT plan.",
+    "zh-Hant": "透過 OpenAI 官方授權連接，使用你的 ChatGPT 方案。"
+  },
+  "测试连接与模型": {
+    "en": "Test connection & models",
+    "zh-Hant": "測試連線與模型"
+  },
+  "点击测试读取可用模型，并验证当前模型；不会切换已保存配置。": {
+    "en": "Test to load available models and verify the selected model. Your saved profile stays unchanged.",
+    "zh-Hant": "點擊測試讀取可用模型並驗證目前模型；不會切換已儲存設定。"
+  },
+  "连接设置": {
+    "en": "Connection settings",
+    "zh-Hant": "連線設定"
+  },
+  "查看 ChatGPT 用量": {
+    "en": "Manage ChatGPT usage",
+    "zh-Hant": "查看 ChatGPT 用量"
+  },
+  "正在测试…": {
+    "en": "Testing…",
+    "zh-Hant": "正在測試…"
+  },
+  "正在读取模型目录并发送小型测试请求…": {
+    "en": "Loading available models and sending a small test request…",
+    "zh-Hant": "正在讀取模型目錄並傳送小型測試請求…"
+  },
+  "测试未完成，请重试或重新登录。": {
+    "en": "Test did not complete. Retry or sign in again.",
+    "zh-Hant": "測試未完成，請重試或重新登入。"
+  },
+  "模型可用": {
+    "en": "Model verified",
+    "zh-Hant": "模型可用"
+  },
+  "模型测试失败": {
+    "en": "Model test failed",
+    "zh-Hant": "模型測試失敗"
+  },
+  "响应时间": {
+    "en": "Response time",
+    "zh-Hant": "回應時間"
+  },
+  "测试输入 token": {
+    "en": "Test input tokens",
+    "zh-Hant": "測試輸入 token"
+  },
+  "测试输出 token": {
+    "en": "Test output tokens",
+    "zh-Hant": "測試輸出 token"
+  },
+  "HTTP 状态": {
+    "en": "HTTP status",
+    "zh-Hant": "HTTP 狀態"
+  },
+  "当前模型未通过测试；可选择目录中的其它模型重试，或重新登录。": {
+    "en": "The selected model did not pass. Try another model from the catalog or sign in again.",
+    "zh-Hant": "目前模型未通過測試；可選擇目錄中的其他模型重試，或重新登入。"
+  },
+  "可用模型（{count}）": {
+    "en": "Available models ({count})",
+    "zh-Hant": "可用模型（{count}）"
+  },
+  "该账户未返回可展示模型。": {
+    "en": "This account returned no models for display.",
+    "zh-Hant": "該帳戶未傳回可顯示模型。"
+  },
+  "模型目录读取失败；模型测试结果单独显示。": {
+    "en": "Could not load the model catalog. The model test result is shown separately.",
+    "zh-Hant": "模型目錄讀取失敗；模型測試結果單獨顯示。"
+  },
+  "以上仅为本次测试用量；账户套餐总用量请在 ChatGPT 查看。": {
+    "en": "Usage above is for this test only. Review your plan usage in ChatGPT.",
+    "zh-Hant": "以上僅為本次測試用量；帳戶方案總用量請在 ChatGPT 查看。"
   }
 }
 </script>
   <script src="/theme.js" defer></script>
   <script src="/settings.js" defer></script>
+  <!-- Local preferences UI is deferred from this page (the section stays
+       hidden). The script is still loaded so the implemented panel can be
+       exercised by tests without exposing it to users. -->
   <script src="/memory.js" defer></script>
 </head>
 <body>
@@ -851,30 +930,36 @@
       <div class="settings-shell">
         <section class="card settings-oauth" id="settings-oauth" aria-labelledby="oauth-title" data-oauth-state="idle">
           <div class="settings-oauth-head">
-            <span class="oauth-mark" aria-hidden="true">GPT</span>
+            <span class="oauth-mark" aria-hidden="true"><img src="/assets/logos/chatgpt-logo.svg" width="28" height="28" alt=""></span>
             <div class="settings-oauth-intro">
-              <p class="page-label" data-i18n="第三方登录">第三方登录</p>
               <h2 id="oauth-title" data-i18n="使用 ChatGPT 账号登录">使用 ChatGPT 账号登录</h2>
-              <p class="settings-oauth-note" data-i18n="通过 OpenAI 官方授权页完成登录；本页不会显示或索取任何令牌或验证码。">通过 OpenAI 官方授权页完成登录；本页不会显示或索取任何令牌或验证码。</p>
+              <p class="settings-oauth-note" data-i18n="通过 OpenAI 官方授权连接，使用你的 ChatGPT 套餐。">通过 OpenAI 官方授权连接，使用你的 ChatGPT 套餐。</p>
             </div>
             <span class="badge oauth-badge oauth-brand" id="oauth-badge" data-i18n="未连接">未连接</span>
           </div>
           <form id="oauth-form" autocomplete="off" novalidate>
             <div class="settings-grid">
               <div class="field settings-wide">
-                <label for="oauth-model" data-i18n="模型标识（slug）">模型标识（slug）</label>
-                <input id="oauth-model" maxlength="200" spellcheck="false" placeholder="例如 gpt-5.4" data-i18n-placeholder="例如 gpt-5.4" aria-describedby="oauth-model-help">
-                <p class="field-help" id="oauth-model-help" data-i18n="留空时沿用该账号已有的模型标识。">留空时沿用该账号已有的模型标识。</p>
+                <label for="oauth-model" data-i18n="模型">模型</label>
+                <div class="oauth-model-controls">
+                  <input id="oauth-model" maxlength="200" spellcheck="false" list="oauth-model-options" placeholder="例如 gpt-5.4" data-i18n-placeholder="例如 gpt-5.4" aria-describedby="oauth-model-help">
+                  <datalist id="oauth-model-options"></datalist>
+                  <button type="button" class="btn" id="oauth-test" data-i18n="测试连接与模型">测试连接与模型</button>
+                </div>
+                <p class="field-help" id="oauth-model-help" data-i18n="点击测试读取可用模型，并验证当前模型；不会切换已保存配置。">点击测试读取可用模型，并验证当前模型；不会切换已保存配置。</p>
               </div>
-              <div class="settings-wide oauth-proxy">
+              <details class="settings-wide oauth-proxy">
+                <summary data-i18n="连接设置">连接设置</summary>
                 <label class="settings-check" for="oauth-proxy"><input id="oauth-proxy" type="checkbox"> <span data-i18n="使用本机回环代理">使用本机回环代理</span></label>
                 <p class="field-help" id="oauth-proxy-help" data-i18n="仅影响 OpenAI OAuth 认证与模型请求；不会改变其它供应商或检索请求。">仅影响 OpenAI OAuth 认证与模型请求；不会改变其它供应商或检索请求。</p>
-              </div>
+              </details>
             </div>
             <div class="settings-actions oauth-actions">
               <button type="submit" class="btn btn-primary" id="oauth-login" data-i18n="登录 ChatGPT">登录 ChatGPT</button>
+              <a class="btn-text oauth-manage" href="https://chatgpt.com/settings/usage" target="_blank" rel="noopener noreferrer" data-i18n="查看 ChatGPT 用量">查看 ChatGPT 用量</a>
             </div>
           </form>
+          <div id="oauth-diagnostics" class="oauth-diagnostics" aria-live="polite" aria-atomic="true" hidden></div>
           <p id="oauth-status" class="oauth-status" role="status" aria-live="polite" aria-atomic="true" data-i18n="尚未连接 ChatGPT 账号。">尚未连接 ChatGPT 账号。</p>
           <p id="oauth-connected" class="oauth-connected" hidden></p>
         </section>
@@ -955,7 +1040,8 @@
           </form>
         </section>
       </div>
-      <section id="memory-section" class="memory-section" aria-labelledby="memory-title">
+      <!-- Deferred: reading_goal is not integrated; recency is display-only. -->
+      <section id="memory-section" class="memory-section" aria-labelledby="memory-title" hidden>
         <p class="page-label" data-i18n="本机偏好">本机偏好</p>
         <h2 id="memory-title" data-i18n="本机偏好">本机偏好</h2>
         <p class="memory-intro" data-i18n="偏好默认不应用。授权近期偏好后，可在当前会话中主动选择仅调整显示顺序；不会改变任务或发送到模型。删除只影响本机偏好，不删除历史或远端数据。">偏好默认不应用。授权近期偏好后，可在当前会话中主动选择仅调整显示顺序；不会改变任务或发送到模型。删除只影响本机偏好，不删除历史或远端数据。</p>

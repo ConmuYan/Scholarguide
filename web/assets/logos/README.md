@@ -1,7 +1,7 @@
-# Third-party source marks
+# Third-party marks
 
-These files are the **official marks** of the scholarly sources ScholarGuide can
-search. They are used only to identify the source a result came from; the
+These files identify the scholarly sources ScholarGuide can search and the
+ChatGPT provider available in model settings. They are used only to identify a source or model provider; the
 copyright and trademark rights stay with their respective owners, and their
 inclusion here is not an endorsement.
 
@@ -14,6 +14,7 @@ inclusion here is not an endorsement.
 | `dblp-logo.png` | DBLP (Schloss Dagstuhl) | the official `https://dblp.org/favicon.ico` (64 px frame) |
 | `acl-logo.svg` | ACL Anthology (ACL) | `https://aclanthology.org/images/acl-logo.svg` |
 | `lune-logo-text.svg` | Lune Research | `https://luneresearch.com/lune-logo-text.svg` |
+| `chatgpt-logo.svg` | OpenAI | `https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg` (unchanged local copy, used to identify the ChatGPT sign-in provider) |
 
 Rules for this directory:
 
@@ -23,6 +24,6 @@ Rules for this directory:
   hotlink a third-party host at runtime.
 - The landing page shows them on a neutral plate so the official colours stay
   legible in both the light and the dark theme.
-- A mark identifies a source. It is never evidence about a paper, an acceptance
+- A mark identifies a source or provider. It is never evidence about a paper, an acceptance
   decision or a publication record — that still comes from the source's own
   records.

@@ -99,6 +99,9 @@ class WebOAuthUiTests(unittest.TestCase):
         self.assertIn('dataset.i18n', SETTINGS_JS)
         # The OAuth profile gets a recognizable, non-network mark in the list.
         self.assertIn('provider-mark', SETTINGS_JS)
+        self.assertIn('/assets/logos/chatgpt-logo.svg', SETTINGS_JS)
+        self.assertIn('/assets/logos/chatgpt-logo.svg', OAUTH_SECTION)
+        self.assertNotIn('>GPT</span>', OAUTH_SECTION)
         self.assertIn('openai-oauth', SETTINGS_JS)
         self.assertIsNone(re.search(r'<img|https?://', SETTINGS_JS))
 

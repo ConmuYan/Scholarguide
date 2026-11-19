@@ -6,7 +6,7 @@
 
 ## 本地偏好
 
-初版偏好管理 API 已可用。偏好默认不进入新会话、任务或模型；只有用户在当前 Chat 结果中主动点击“按近期偏好查看”时，`prefer_recent` 才可能对**已提交、已展示的当前轮次**做一次本地显示排序。该排序不改变检索、任务硬条件、模型输入、checkpoint、activity 或原始历史结果；撤回不能撤销已看到的内容。`reading_goal` 目前仅可管理，未接入任务或模型。
+初版偏好管理 API 已可用；设置页暂**不展示**该面板（UI 延后，功能与数据保留，`/memory.js` 仍加载以便测试），因此日常界面看不到本地偏好入口。偏好默认不进入新会话、任务或模型；只有用户在当前 Chat 结果中主动点击“按近期偏好查看”时，`prefer_recent` 才可能对**已提交、已展示的当前轮次**做一次本地显示排序。该排序不改变检索、任务硬条件、模型输入、checkpoint、activity 或原始历史结果；撤回不能撤销已看到的内容。`reading_goal` 目前仅可管理，未接入任务或模型。
 
 - `GET /api/v1/memory/preferences` 返回 `{"api_version":"v1","preferences":{},"active":{},"store_id":"…"}`。`preferences` 含每个已记录键的 `revision`、`state`、`value`、`consent`、`expires_at`；`active` 仅含有效值。GET 会把观察到的过期项持久标记为 `expired`；库不存在时会安全创建**不含偏好值和授权的空库**，用于建立稳定身份。读取本身不等于同意使用偏好。
 - `POST /api/v1/memory/preferences/{key}` 的 JSON 必须恰含 `value`、`consent`、`expires_at`、`expected_revision`、`store_id`。`store_id` 必须来自最新 GET；`consent` 必须是 `true`，过期时间必须是未来的有限 Unix 秒数。`reading_goal` 的值为 `orientation`、`comparison`、`frontier`、`general` 之一；`prefer_recent` 为布尔值。
@@ -122,7 +122,9 @@ SSE 的 `trace` 事件携带稳定的 `seq/event_id`、operation、session、tur
 - `GET /api/providers/oauth/openai`：读取 ChatGPT 登录状态 `{"state":"idle|running|succeeded|failed","message":"…","profile":{…}|null,"has_profile":bool,"running":bool}`。不返回令牌、验证码或回调地址。
 - `POST /api/providers/oauth/openai/login`：`{"model":"<该账户可用的模型>","use_system_proxy":false}`，在本机浏览器拉起 OpenAI 授权；`202` 表示已开始，`409` 表示已有登录在进行，`400` 表示参数无效或保留档案冲突。授权完成后自动登记 `openai-oauth` 档案但**不切换**当前模型。成功后浏览器轮询上述 GET 获取终态。
 
-两个端点与其余本地 UI 一样只接受 `127.0.0.1`/`localhost` 且校验 Origin；`use_system_proxy` 仅影响 OpenAI OAuth 认证与模型请求，取值为无凭据的本机 HTTP 回环代理，不改变论文来源的代理设置。
+- `POST /api/providers/oauth/openai/test`：接受 `{}`（测试已保存模型）或 `{"model":"<slug>"}`（仅测试，不保存）。从官方 `/v1/models` 返回 `visibility=list` 的模型目录，并向所选模型发送小型 JSON 请求；输出 `catalog` 和 `probe` 的独立状态、HTTP 状态、响应耗时及本次测试的输入／输出 token。只有点击测试才发请求；并发测试返回 `409`。失败时用量可能为 `null`，不代表免费。账户套餐总用量不由此接口查询，`account_usage.available=false`，应到 [ChatGPT 用量设置](https://chatgpt.com/settings/usage) 查看。
+
+这些端点与其余本地 UI 一样只接受 `127.0.0.1`/`localhost` 且校验 Origin；`use_system_proxy` 仅影响 OpenAI OAuth 认证与模型请求，取值为无凭据的本机 HTTP 回环代理，不改变论文来源的代理设置。
 
 ### 结构化停止条件（`blocking_requirements`）
 
@@ -133,6 +135,8 @@ SSE 的 `trace` 事件携带稳定的 `seq/event_id`、operation、session、tur
 `topic`、`purpose`、`reading_goal`、`ranking`、类别及其最低篇数、目标/区间数量、`venue`、年份范围、`publication_type`、`venue_scope`、`accepted_only`、`presentation_types`，以及产品自身保证的展示契约（逐篇 `rank`、未知值 `null`、`gaps`、不添加 benchmark 标签或分数）都必须写入对应字段，不得放进 `blocking_requirements`。只有产品无法检索或无法核验的限制（代码、数据集、奖项、作者/机构、引用或页数阈值、语言、版本/评审状态、更窄的会议或年份子集、自定义输出格式、额外主题筛选等）才列入，并必须给出 `kind`。字段级的会议/年份范围仍由可验证出版记录统一判定；请求更宽的年份窗口不会被回溯检索，交付结果也不会越界。
 
 不再存在“某句话已被视作满足”的白名单：即使模型把已由产品保证的展示要求放进 `blocking_requirements`，程序也只按结构停止，不做文本豁免。
+
+唯一的结构性例外是**重复申报已应用范围**：`venue_subset` 未点名任何会议、或点名的会议集合恰好等于已应用的 `venue`；`year_subset` 未点名年份、或年份恰好等于已应用的（连续）区间——这类条目会被视为冗余，记一条警告后继续；若这两个字段为空而引文里点名了已知会议/连续年份，则先写入字段再视为冗余。**范围更窄的要求（如已应用六会却要求只 CVPR 和 ICCV、或只 2025）仍会停止**。该判断只比较显式值，不解析句子。
 
 两个 schema（`PLAN_SCHEMA` 与 `TASK_UPDATE_SCHEMA`）都把 `blocking_requirements` 列为必填；当供应商只能走 `json_object` 兼容路径（不发 `json_schema`）时，同一校验函数在本地执行，结构与原文子串要求不因此放松。旧的结构化 `request_data` 仍可携带 `unsupported` 字符串数组，它不是新的解析通道：非空即停止，空则照常执行，与 `blocking_requirements=[]` 一致。
 

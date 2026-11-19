@@ -1005,7 +1005,9 @@
           <div><p class="page-label">Lune Research · MCP</p><h2 id="lune-heading" data-i18n="顶会语料与工具">顶会语料与工具</h2><p class="board-note" data-i18n="目录按需读取。论文全文与相关论文是独立工具，不会自动把摘要当作全文。">目录按需读取。论文全文与相关论文是独立工具，不会自动把摘要当作全文。</p></div>
           <button type="button" class="btn-text" id="reload-catalog" data-i18n="读取会议目录">读取会议目录</button>
         </div>
-        <div id="lune-quota" class="lune-quota" aria-labelledby="lune-quota-heading">
+        <!-- Manual quota management is deferred from the Sources UI. Keep
+             read-only quota summaries in the Lune card and backend safeguards. -->
+        <div id="lune-quota" class="lune-quota" aria-labelledby="lune-quota-heading" hidden>
           <h3 id="lune-quota-heading" data-i18n="账户共享额度">账户共享额度</h3>
           <p id="lune-quota-status" class="source-hint" role="status" aria-live="polite" data-i18n="正在读取本机快照…">正在读取本机快照…</p>
           <p class="source-hint" data-i18n="本机记录不包含其他客户端用量；账户余额以服务商为准。">本机记录不包含其他客户端用量；账户余额以服务商为准。</p>

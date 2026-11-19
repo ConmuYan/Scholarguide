@@ -91,8 +91,14 @@ class MemoryBrowserTests(unittest.TestCase):
         self.driver.set_window_size(1280, 1000)
         self.driver.get(self.base + '/settings')
         self.wait = WebDriverWait(self.driver, 5)
+        # Local preferences is deferred from the settings UI, so it is hidden by
+        # default; reveal it here to exercise the implemented controls.
+        self.driver.execute_script("document.getElementById('memory-section').hidden = false")
 
     def ready(self):
+        # Reveal the deferred panel after any navigation/refresh before reading
+        # rendered text from it (hidden elements report empty text).
+        self.driver.execute_script("document.getElementById('memory-section').hidden = false")
         self.wait.until(lambda d: d.find_element(By.CSS_SELECTOR, '[data-key="reading_goal"] select').is_enabled())
 
     def click(self, selector):
@@ -113,7 +119,9 @@ class MemoryBrowserTests(unittest.TestCase):
         self.wait.until(lambda d: text in d.find_element(By.ID, 'memory-status').text)
 
     def test_initial_section_exists_and_never_posts(self):
-        self.assertTrue(self.driver.find_element(By.ID, 'memory-section').is_displayed())
+        # Deferred by product decision, but present and inert on load.
+        self.assertTrue(self.driver.execute_script(
+            "return !!document.getElementById('memory-section')"))
         self.ready()
         self.assertFalse(any(r[0] == 'POST' for r in Fixture.requests))
         self.assertIn('未启用', self.driver.find_element(By.ID, 'memory-section').text)
@@ -174,7 +182,8 @@ class MemoryBrowserTests(unittest.TestCase):
         self.wait_status('版本冲突')
         self.assertEqual(len([r for r in Fixture.requests if r[0] == 'POST']), 1)
         self.assertIn('已撤回', self.driver.find_element(By.CSS_SELECTOR, '[data-key="reading_goal"] .memory-current').text)
-        self.assertNotIn('<img', self.driver.page_source)
+        section = self.driver.find_element(By.ID, 'memory-section')
+        self.assertNotIn('<img', section.get_attribute('innerHTML'))
         self.assertNotIn('secret', self.driver.find_element(By.ID, 'memory-section').text.lower())
 
     def test_two_tabs_replacement_conflicts_without_replay(self):
@@ -183,6 +192,7 @@ class MemoryBrowserTests(unittest.TestCase):
         self.driver.switch_to.new_window('tab')
         second = self.driver.current_window_handle
         self.driver.get(self.base + '/settings')
+        self.driver.execute_script("document.getElementById('memory-section').hidden = false")
         self.ready()
         Fixture.store_id = 'b' * 64
         self.driver.switch_to.window(first)

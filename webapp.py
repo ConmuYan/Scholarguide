@@ -24,6 +24,7 @@ import webbrowser
 
 from activity import ActivityFeed
 from providers import ProviderStore
+from oauth_diagnostics import OpenAIOAuthDiagnostics, OAuthDiagnosticsBusy
 from common import Budget, CancellationToken, Config, DATA_DIR, GuideError, Paper, ROOT, RUNS_DIR, SOURCE_NAMES, Request, source_names, utc_now
 from diagnosis import diagnose
 from demo import ChatDemoLLM, DemoSource, demo_run
@@ -1917,7 +1918,7 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
                   chat: ChatService | None = None,
                   activity: ActivityFeed | None = None,
                   providers: ProviderStore | None = None,
-                  sources=None) -> ThreadingHTTPServer:
+                  sources=None, oauth_diagnostics=None) -> ThreadingHTTPServer:
     from source_store import RetainedSourceResult, SourceStore
     providers = providers or ProviderStore()
     jobs = jobs or Jobs(providers=providers)
@@ -1940,6 +1941,7 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
         raise GuideError('Lune quota interface and transport must use the same ledger.')
     jobs.sources = chat.sources = sources
     oauth_login = OpenAIOAuthLogin(providers)
+    oauth_diagnostics = oauth_diagnostics or OpenAIOAuthDiagnostics(providers)
     jobs.session_service = chat
     product_api = ProductApi(jobs, chat, runs_root / 'api')
     version_files = sorted([*ROOT.glob('*.py'), *STATIC.glob('*.js'), *STATIC.glob('*.css'), *STATIC.glob('*.html')])
@@ -2485,7 +2487,8 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
                 return
             path = urlsplit(self.path).path
             try:
-                raw = _read_json(self, reject_duplicates=(path.endswith('/presentation') or path == '/api/v1/memory/preferences' or
+                raw = _read_json(self, reject_duplicates=(path == '/api/providers/oauth/openai/test' or
+                                                         path.endswith('/presentation') or path == '/api/v1/memory/preferences' or
                                                          path.startswith('/api/v1/memory/preferences/')))
             except GuideError as exc:
                 status = 415 if 'application/json' in str(exc) else 413
@@ -2528,6 +2531,14 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
                     self._json(409, {'error': str(exc)})
                     return
                 self._json(202, {'id': job_id})
+                return
+            if path == '/api/providers/oauth/openai/test':
+                try:
+                    self._json(200, oauth_diagnostics.test(raw))
+                except OAuthDiagnosticsBusy as exc:
+                    self._json(409, {'error': str(exc)})
+                except GuideError as exc:
+                    self._json(400, {'error': str(exc)})
                 return
             if path == '/api/providers/oauth/openai/login':
                 if not isinstance(raw, dict) or set(raw) - {'model', 'use_system_proxy'}:

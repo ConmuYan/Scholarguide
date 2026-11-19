@@ -123,7 +123,9 @@ class ModelsI18nTests(unittest.TestCase):
             d.execute_script('window.SGI18n.set(arguments[0])', lang)
             self.assertEqual(d.find_element('css selector', '.page-title').text, title)
             self.assertEqual(d.find_element('id', 'save-provider').text, save)
-            self.assertIn(status, d.find_element('css selector', '[data-key=reading_goal] .memory-current').text)
+            # Preferences are deferred from the settings UI: the panel stays
+            # hidden, and switching language must not reveal or post anything.
+            self.assertFalse(d.find_element('id', 'memory-section').is_displayed())
             self.assertEqual(d.find_element('id', 'editor-title').text, 'Server free text')
             self.assertEqual(d.find_element('id', 'settings-status').text, 'Server message: 保持原文')
             self.assertEqual(d.find_element('css selector', '.test-error').text, 'Server error: 保持原文')

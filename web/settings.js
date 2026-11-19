@@ -69,13 +69,13 @@ function localizedStatus(key, kind = "") {
   el("settings-status").dataset.i18n = key;
 }
 
-async function api(path, options = {}) {
+async function api(path, options = {}, timeoutMs = 35000) {
   let response;
   try {
     response = await fetch(path, {
       ...options,
       headers: { "Content-Type": "application/json", ...(options.headers || {}) },
-      signal: AbortSignal.timeout(35000),
+      signal: AbortSignal.timeout(timeoutMs),
     });
   } catch (_) {
     throw new Error(settingsT("无法连接本地服务。"));
@@ -132,6 +132,7 @@ const OAUTH_MESSAGE_PREFIXES = [
   ["OpenAI identity verification failed", "OpenAI 身份验证失败，请重新登录。"],
   ["OpenAI OAuth", "OpenAI 登录超时，请重试。"],
 ];
+const oauthDiagnostics = {busy: false, result: null, error: ""};
 const oauth = { state: "idle", message: "", profile: null, hasProfile: false, loadError: false,
   localError: "", polling: false, timer: null, token: 0, startedAt: 0, seenRunning: false, slugEdited: false,
   listState: "idle" };
@@ -161,14 +162,125 @@ function oauthLive(key, kind = "", params = null) {
 function syncOAuthControls() {
   if (!el("oauth-login")) return;
   const running = oauth.state === "running";
-  el("oauth-model").disabled = state.busy || running;
-  el("oauth-proxy").disabled = state.busy || running;
+  el("oauth-model").disabled = state.busy || running || oauthDiagnostics.busy;
+  el("oauth-proxy").disabled = state.busy || running || oauthDiagnostics.busy;
+  const test = el("oauth-test");
+  if (test) {
+    test.disabled = state.busy || running || oauthDiagnostics.busy || !oauth.hasProfile;
+    test.setAttribute("aria-busy", String(oauthDiagnostics.busy));
+    test.textContent = settingsT(oauthDiagnostics.busy ? "正在测试…" : "测试连接与模型");
+  }
   const button = el("oauth-login");
-  button.disabled = state.busy || running;
+  button.disabled = state.busy || running || oauthDiagnostics.busy;
   button.setAttribute("aria-busy", String(running));
   const key = running ? "等待授权…" : "登录 ChatGPT";
   button.dataset.i18n = key;
   button.textContent = settingsT(key);
+}
+
+function oauthDiagnosticNode(tag, content, className = "") {
+  const node = document.createElement(tag);
+  node.textContent = content;
+  if (className) node.className = className;
+  return node;
+}
+
+function renderOAuthDiagnostics() {
+  const host = el("oauth-diagnostics");
+  if (!host) return;
+  host.replaceChildren();
+  host.hidden = !oauthDiagnostics.busy && !oauthDiagnostics.result && !oauthDiagnostics.error;
+  host.setAttribute("aria-busy", String(oauthDiagnostics.busy));
+  if (oauthDiagnostics.busy) {
+    host.append(oauthDiagnosticNode("p", settingsT("正在读取模型目录并发送小型测试请求…"), "oauth-test-pending"));
+    return;
+  }
+  if (oauthDiagnostics.error) {
+    host.append(oauthDiagnosticNode("p", settingsT("测试未完成，请重试或重新登录。"), "oauth-test-error"));
+    return;
+  }
+  const result = oauthDiagnostics.result;
+  if (!result) return;
+  const probe = result.probe || {};
+  const catalog = result.catalog || {};
+  const heading = oauthDiagnosticNode("div", "", "oauth-test-heading");
+  heading.append(oauthDiagnosticNode("strong", settingsT(probe.ok ? "模型可用" : "模型测试失败")));
+  heading.append(oauthDiagnosticNode("span", probe.model || "", "oauth-tested-model"));
+  heading.dataset.kind = probe.ok ? "ok" : "error";
+  host.append(heading);
+  const summary = oauthDiagnosticNode("dl", "", "oauth-test-summary");
+  const metric = (label, value) => {
+    const pair = document.createElement("div");
+    pair.append(oauthDiagnosticNode("dt", settingsT(label)), oauthDiagnosticNode("dd", value));
+    summary.append(pair);
+  };
+  metric("响应时间", Number.isFinite(probe.latency_ms) ? `${(probe.latency_ms / 1000).toFixed(2)} s` : settingsT("未知"));
+  metric("测试输入 token", Number.isSafeInteger(probe.usage?.input_tokens) ? String(probe.usage.input_tokens) : settingsT("未知"));
+  metric("测试输出 token", Number.isSafeInteger(probe.usage?.output_tokens) ? String(probe.usage.output_tokens) : settingsT("未知"));
+  metric("HTTP 状态", probe.http_status != null ? String(probe.http_status) : settingsT("未知"));
+  host.append(summary);
+  if (!probe.ok) host.append(oauthDiagnosticNode("p", settingsT("当前模型未通过测试；可选择目录中的其它模型重试，或重新登录。"), "oauth-test-error"));
+  const models = Array.isArray(result.models) ? result.models : [];
+  if (catalog.ok && models.length) {
+    const details = document.createElement("details");
+    details.className = "oauth-model-catalog";
+    const toggle = oauthDiagnosticNode("summary", settingsT("可用模型（{count}）", {count: models.length}));
+    const choices = oauthDiagnosticNode("div", "", "oauth-model-choices");
+    for (const model of models) {
+      const choice = oauthDiagnosticNode("button", model.display_name || model.slug, "oauth-model-choice");
+      choice.type = "button";
+      choice.title = model.slug;
+      choice.setAttribute("aria-pressed", String(model.slug === probe.model));
+      choice.addEventListener("click", () => {
+        el("oauth-model").value = model.slug;
+        oauth.slugEdited = true;
+        for (const peer of choices.children) peer.setAttribute("aria-pressed", String(peer === choice));
+        el("oauth-model").focus();
+      });
+      choices.append(choice);
+    }
+    details.append(toggle, choices);
+    host.append(details);
+  } else {
+    host.append(oauthDiagnosticNode("p", settingsT(catalog.ok ? "该账户未返回可展示模型。" : "模型目录读取失败；模型测试结果单独显示。"), "field-help"));
+  }
+  host.append(oauthDiagnosticNode("p", settingsT("以上仅为本次测试用量；账户套餐总用量请在 ChatGPT 查看。"), "field-help"));
+}
+
+async function testOAuthAccount() {
+  if (oauthDiagnostics.busy || state.busy || oauth.state === "running" || !oauth.hasProfile) return;
+  oauthDiagnostics.busy = true;
+  oauthDiagnostics.error = "";
+  oauthDiagnostics.result = null;
+  syncOAuthControls();
+  renderOAuthDiagnostics();
+  try {
+    const model = el("oauth-model").value.trim() || oauth.profile?.model;
+    // The diagnostic has a 45 s server budget; allow its terminal reply to arrive.
+    const result = await api("/api/providers/oauth/openai/test", {method: "POST", body: JSON.stringify(model ? {model} : {})}, 55000);
+    oauthDiagnostics.result = result;
+    const options = el("oauth-model-options");
+    options.replaceChildren();
+    for (const model of result.models || []) {
+      const option = document.createElement("option");
+      option.value = model.slug;
+      option.label = model.display_name || model.slug;
+      options.append(option);
+    }
+    // A failed reauthorization does not revoke a working saved credential.
+    // Only an actual successful probe clears that stale sign-in error.
+    if (result.probe?.ok && oauth.state === "failed") {
+      oauth.state = "idle";
+      oauth.localError = "";
+      oauth.message = "";
+    }
+  } catch (error) {
+    oauthDiagnostics.error = "test_failed";
+  } finally {
+    oauthDiagnostics.busy = false;
+    renderOAuth();
+    renderOAuthDiagnostics();
+  }
 }
 
 function renderOAuthConnected(profile) {
@@ -321,7 +433,10 @@ async function loadOAuth() {
 
 async function oauthLogin(event) {
   if (event) event.preventDefault();
-  if (oauth.state === "running" || state.busy) return;
+  if (oauth.state === "running" || state.busy || oauthDiagnostics.busy) return;
+  oauthDiagnostics.result = null;
+  oauthDiagnostics.error = "";
+  renderOAuthDiagnostics();
   const body = {model: el("oauth-model").value.trim(),
     use_system_proxy: el("oauth-proxy").checked};
   if (!body.model && oauth.profile && oauth.profile.model) body.model = oauth.profile.model;
@@ -441,7 +556,12 @@ function renderList() {
       const mark = document.createElement("span");
       mark.className = "provider-mark";
       mark.setAttribute("aria-hidden", "true");
-      mark.textContent = "GPT";
+      const logo = document.createElement("img");
+      logo.src = "/assets/logos/chatgpt-logo.svg";
+      logo.alt = "";
+      logo.width = 16;
+      logo.height = 16;
+      mark.append(logo);
       head.append(mark);
     }
     head.append(document.createTextNode(profile.name));
@@ -677,6 +797,7 @@ window.addEventListener("sg:language-change", () => {
   syncControls();
   renderList();
   renderOAuth();
+  renderOAuthDiagnostics();
   if (lastTestResult && !el("test-result").hidden) renderTestResult(lastTestResult);
   el("toggle-provider-key").textContent = settingsT(el("provider-key").type === "password" ? "显示" : "隐藏");
   const profile = profileById(state.selected);
@@ -687,6 +808,7 @@ window.addEventListener("sg:language-change", () => {
 });
 if (el("oauth-form")) {
   el("oauth-form").addEventListener("submit", oauthLogin);
+  el("oauth-test").addEventListener("click", testOAuthAccount);
   el("oauth-model").addEventListener("input", () => { oauth.slugEdited = true; });
 }
 load().catch(error => setStatus(error.message, "error"));

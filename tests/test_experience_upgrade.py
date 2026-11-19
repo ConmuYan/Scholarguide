@@ -298,6 +298,7 @@ class ExperienceUpgradeTests(unittest.TestCase):
             window.__quotaRequests.push({path: String(url), method: options.method || 'GET'});
             return real(url, options);
           };
+          document.getElementById('lune-quota').hidden = false;
           document.querySelector('#lune-quota-remaining').value = '3';
           const d = new Date(Date.now() + 300000);
           const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
