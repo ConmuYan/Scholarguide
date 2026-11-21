@@ -942,8 +942,8 @@
               <div class="field settings-wide">
                 <label for="oauth-model" data-i18n="模型">模型</label>
                 <div class="oauth-model-controls">
-                  <input id="oauth-model" maxlength="200" spellcheck="false" list="oauth-model-options" placeholder="例如 gpt-5.4" data-i18n-placeholder="例如 gpt-5.4" aria-describedby="oauth-model-help">
-                  <datalist id="oauth-model-options"></datalist>
+                  <select id="oauth-model-select" aria-label="预置模型"></select>
+                  <input id="oauth-model" maxlength="200" spellcheck="false" placeholder="自定义模型 ID（可留空）" aria-describedby="oauth-model-help">
                   <button type="button" class="btn" id="oauth-test" data-i18n="测试连接与模型">测试连接与模型</button>
                 </div>
                 <p class="field-help" id="oauth-model-help" data-i18n="点击测试读取可用模型，并验证当前模型；不会切换已保存配置。">点击测试读取可用模型，并验证当前模型；不会切换已保存配置。</p>
@@ -956,6 +956,7 @@
             </div>
             <div class="settings-actions oauth-actions">
               <button type="submit" class="btn btn-primary" id="oauth-login" data-i18n="登录 ChatGPT">登录 ChatGPT</button>
+              <button type="button" class="btn" id="oauth-save" data-i18n="保存模型">保存模型</button>
               <a class="btn-text oauth-manage" href="https://chatgpt.com/settings/usage" target="_blank" rel="noopener noreferrer" data-i18n="查看 ChatGPT 用量">查看 ChatGPT 用量</a>
             </div>
           </form>

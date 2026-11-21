@@ -2336,6 +2336,10 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
             if path == '/api/providers/oauth/openai':
                 self._json(200, oauth_login.status())
                 return
+            if path == '/api/providers/oauth/openai/catalog':
+                from oauth_models import catalogue
+                self._json(200, {'models': catalogue()})
+                return
             if path == '/api/providers/oauth/openai/models':
                 try:
                     from openai_oauth import list_models

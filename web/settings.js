@@ -810,10 +810,51 @@ window.addEventListener("sg:language-change", () => {
   el("provider-key").placeholder = profile && profile.has_key ? settingsT("已存储密钥 · {key}（留空以保留）", {key: profile.masked_key}) : settingsT("接口不需要密钥时请留空");
   el("key-hint").textContent = settingsT(profile && profile.has_key ? "密钥存储在服务端；不会在此显示。" : "此配置未存储密钥。");
 });
+
+async function loadOAuthCatalogue() {
+  const select = el("oauth-model-select");
+  if (!select) return;
+  try {
+    const data = await api("/api/providers/oauth/openai/catalog");
+    const models = data.models || [];
+    select.innerHTML = '<option value="">预置模型…</option>' + models.map(
+      (m) => `<option value="${m.id}">${m.label}（${m.id}）</option>`).join("");
+  } catch (_) {
+    select.innerHTML = '<option value="">预置模型不可用</option>';
+  }
+}
+
+async function saveOAuthModel(event) {
+  if (event) event.preventDefault();
+  const select = el("oauth-model-select");
+  const id = ((el("oauth-model").value || (select ? select.value : "")) || "").trim();
+  if (!id) {
+    setStatus("请选择预置模型，或填写模型 ID。", "error");
+    return;
+  }
+  try {
+    await api("/api/providers", {method: "POST", body: JSON.stringify({
+      id: "openai-oauth", name: "OpenAI / ChatGPT OAuth", protocol: "responses",
+      base_url: "https://api.openai.com/v1", model: id, source: "custom", activate: true})});
+    await load();
+    setStatus("已保存并启用：" + id, "ok");
+  } catch (error) {
+    setStatus(error.message, "error");
+  }
+}
+
 if (el("oauth-form")) {
   el("oauth-form").addEventListener("submit", oauthLogin);
   el("oauth-test").addEventListener("click", testOAuthAccount);
   el("oauth-model").addEventListener("input", () => { oauth.slugEdited = true; });
+  if (el("oauth-model-select")) {
+    el("oauth-model-select").addEventListener("change", () => {
+      const value = el("oauth-model-select").value;
+      if (value) el("oauth-model").value = value;
+    });
+    loadOAuthCatalogue();
+  }
+  if (el("oauth-save")) el("oauth-save").addEventListener("click", saveOAuthModel);
 }
 load().catch(error => setStatus(error.message, "error"));
 loadOAuth();

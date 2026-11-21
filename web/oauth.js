@@ -38,56 +38,9 @@ $('complete').addEventListener('click', async () => {
     const data = await call('/api/providers/oauth/openai/complete', {
       method: 'POST', body: JSON.stringify({callback}),
     });
-    setStatus('complete-status', '登录成功：' + (data.subject || '已连接'), 'ok');
-    $('model-section').hidden = false;
-    await loadModels();
+    setStatus('complete-status', '登录成功：' + (data.subject || '已连接') + '。下一步去设置里选模型。', 'ok');
+    $('next-step').hidden = false;
   } catch (error) {
     setStatus('complete-status', '失败：' + error.message, 'err');
   }
 });
-
-async function loadModels() {
-  $('model').innerHTML = '<option>正在读取…</option>';
-  $('model-manual').hidden = true;
-  try {
-    const data = await call('/api/providers/oauth/openai/models');
-    const models = data.models || [];
-    if (!models.length) {
-      $('model').innerHTML = '';
-      $('model-manual').hidden = false;
-      setStatus('model-status',
-        (data.note ? '拉取失败：' + data.note + '。' : '该账号没有可用模型。') + '请手动填写模型标识。', 'err');
-      return;
-    }
-    $('model').innerHTML = models.map((m) => `<option value="${m}">${m}</option>`).join('');
-    setStatus('model-status', `共 ${models.length} 个可用模型。`, 'ok');
-  } catch (error) {
-    $('model').innerHTML = '';
-    $('model-manual').hidden = false;
-    setStatus('model-status', '拉取失败：' + error.message + '；可手动填写模型标识。', 'err');
-  }
-}
-$('reload').addEventListener('click', loadModels);
-
-$('save').addEventListener('click', async () => {
-  const model = ($('model').value || $('model-manual').value || '').trim();
-  if (!model) { setStatus('model-status', '请先选择模型。', 'err'); return; }
-  setStatus('model-status', '正在保存…');
-  try {
-    await call('/api/providers', {
-      method: 'POST',
-      body: JSON.stringify({
-        id: 'openai-oauth', name: 'OpenAI / ChatGPT OAuth', protocol: 'responses',
-        base_url: 'https://api.openai.com/v1', model, source: 'custom', activate: true,
-      }),
-    });
-    setStatus('model-status', '已保存并启用：' + model, 'ok');
-  } catch (error) {
-    setStatus('model-status', '保存失败：' + error.message, 'err');
-  }
-});
-
-const back = document.createElement('p');
-back.className = 'hint';
-back.innerHTML = '完成后可返回 <a href="/settings">设置</a> 查看当前服务。';
-document.querySelector('main').appendChild(back);
