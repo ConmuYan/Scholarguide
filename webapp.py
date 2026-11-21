@@ -2303,6 +2303,7 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
                       '/activity.js': ('activity.js', 'text/javascript'),
                       '/activity-story.js': ('activity-story.js', 'text/javascript'),
                       '/settings': ('settings.html', 'text/html'),
+                      '/oauth': ('oauth.html', 'text/html'),
                       '/settings.js': ('settings.js', 'text/javascript'),
                       '/memory.js': ('memory.js', 'text/javascript'),
                       '/memory.css': ('memory.css', 'text/css'),
@@ -2332,6 +2333,13 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
                 return
             if path == '/api/providers/oauth/openai':
                 self._json(200, oauth_login.status())
+                return
+            if path == '/api/providers/oauth/openai/models':
+                try:
+                    from openai_oauth import list_models
+                    self._json(200, {'models': list_models()})
+                except GuideError as exc:
+                    self._json(400, {'error': str(exc)})
                 return
             if path == '/api/config':
                 try:
@@ -2549,6 +2557,29 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
                                                       use_system_proxy=bool(raw.get('use_system_proxy'))))
                 except GuideError as exc:
                     self._json(409 if 'already in progress' in str(exc) else 400, {'error': str(exc)})
+                return
+            if path == '/api/providers/oauth/openai/begin':
+                try:
+                    from openai_oauth import begin_login
+                    url, state = begin_login()
+                    self._json(200, {'url': url, 'state': state})
+                except GuideError as exc:
+                    self._json(400, {'error': str(exc)})
+                return
+            if path == '/api/providers/oauth/openai/complete':
+                if not isinstance(raw, dict):
+                    self._json(400, {'error': 'Callback must be a JSON object.'})
+                    return
+                try:
+                    from openai_oauth import complete_login, list_models
+                    summary = complete_login(raw.get('callback'))
+                    try:
+                        models = list_models()
+                    except GuideError:
+                        models = []
+                    self._json(200, {**summary, 'models': models})
+                except GuideError as exc:
+                    self._json(400, {'error': str(exc)})
                 return
             if path == '/api/providers':
                 if not isinstance(raw, dict):

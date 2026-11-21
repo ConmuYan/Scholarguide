@@ -147,7 +147,7 @@ def _bounded_local(call, *, deadline, cancelled):
 def proxy_url(deadline=None, cancelled=None):
     """Return only an explicitly authorized, validated local proxy or direct mode."""
     try:
-        value = _bounded_local(lambda: _keyring().get_password(_service(), PROXY_ACCOUNT) or '',
+        value = _bounded_local(lambda: _store().get_password(_service(), PROXY_ACCOUNT) or '',
                                deadline=deadline, cancelled=cancelled)
         return _validated_proxy(value)
     except RunCancelled:
@@ -496,7 +496,7 @@ def login():
 
 
 def _login():
-    store = _keyring()
+    store = _store()
     try:
         host = store.get_password(_service(), HOST_ACCOUNT)
         if host is None:
@@ -588,7 +588,7 @@ def access_token(deadline=None, cancelled=None):
         timeout = 30.0 if left is None else min(30.0, left)
         with _acquired_lock(timeout, deadline, cancelled):
             _check_stop(deadline, cancelled)
-            store = _bounded_local(_keyring, deadline=deadline, cancelled=cancelled)
+            store = _bounded_local(_store, deadline=deadline, cancelled=cancelled)
             record = _bounded_local(lambda: _load_record(store), deadline=deadline, cancelled=cancelled)
             _check_stop(deadline, cancelled)
             if record is None:
@@ -637,3 +637,213 @@ def access_token(deadline=None, cancelled=None):
         raise
     except Exception:
         raise GuideError('OpenAI OAuth credentials are unavailable or refresh could not be confirmed; please log in again.') from None
+
+
+# ---------------------------------------------------------------------------
+# Hosted deployments: file-backed credentials and a paste-back callback.
+#
+# A container has no OS keyring and its loopback is not the visitor's machine,
+# so the interactive flow cannot receive the redirect directly. The two-phase
+# flow below returns the authorization URL, then accepts the redirect URL the
+# browser failed to open and exchanges its code with the PKCE verifier that is
+# still held server-side.
+# ---------------------------------------------------------------------------
+
+REMOTE_CALLBACK_PORT = 1455
+PENDING_TTL = 900
+_PENDING_FILE = 'openai-oauth-pending.json'
+
+
+class _FileStore:
+    """Minimal keyring-compatible store: {service: {username: value}}."""
+
+    def __init__(self, path: Path) -> None:
+        self.path = Path(path)
+        self.path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+
+    def _read(self):
+        try:
+            data = json.loads(self.path.read_text(encoding='utf-8'))
+        except FileNotFoundError:
+            return {}
+        return data if isinstance(data, dict) else {}
+
+    def _write(self, data):
+        tmp = self.path.with_suffix('.tmp')
+        tmp.write_text(json.dumps(data, ensure_ascii=True), encoding='utf-8')
+        try:
+            tmp.chmod(0o600)
+        except OSError:
+            pass
+        tmp.replace(self.path)
+
+    def get_password(self, service, username):
+        return (self._read().get(str(service)) or {}).get(str(username))
+
+    def set_password(self, service, username, value):
+        data = self._read()
+        data.setdefault(str(service), {})[str(username)] = value
+        self._write(data)
+
+    def delete_password(self, service, username):
+        data = self._read()
+        bucket = data.get(str(service)) or {}
+        bucket.pop(str(username), None)
+        if bucket:
+            data[str(service)] = bucket
+        else:
+            data.pop(str(service), None)
+        self._write(data)
+
+
+def file_store_enabled() -> bool:
+    value = os.environ.get('SG_OAUTH_FILE_STORE', '').strip().lower()
+    return value in ('1', 'true', 'yes', 'on')
+
+
+def _store():
+    if not file_store_enabled():
+        return _keyring()
+    root = Path(os.environ.get('SG_DATA_DIR') or (Path.home() / '.scholarguide'))
+    return _FileStore(root / 'oauth' / 'openai-credentials.json')
+
+
+def _pending_path() -> Path:
+    root = Path(os.environ.get('SG_DATA_DIR') or (Path.home() / '.scholarguide'))
+    return root / 'oauth' / _PENDING_FILE
+
+
+def _read_pending():
+    try:
+        data = json.loads(_pending_path().read_text(encoding='utf-8'))
+    except Exception:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def _write_pending(data):
+    path = _pending_path()
+    path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    tmp = path.with_suffix('.tmp')
+    tmp.write_text(json.dumps(data, ensure_ascii=True), encoding='utf-8')
+    try:
+        tmp.chmod(0o600)
+    except OSError:
+        pass
+    tmp.replace(path)
+
+
+def begin_login():
+    """Start a sign-in and return (authorization_url, state) without blocking."""
+    store = _store()
+    try:
+        host = store.get_password(_service(), HOST_ACCOUNT)
+        if not host:
+            host = 'urn:uuid:' + str(uuid.uuid4())
+            store.set_password(_service(), HOST_ACCOUNT, host)
+        previous = _load_record(store)
+        pending_client = store.get_password(_service(), PENDING_CLIENT_ACCOUNT)
+        saved_client = previous['client_id'] if previous else pending_client
+    except Exception:
+        raise GuideError('Could not securely load OpenAI registration; no login was started.') from None
+
+    d = _discovery()
+    state, nonce, verifier = (secrets.token_urlsafe(32) for _ in range(3))
+    redirect = 'http://127.0.0.1:%d/auth/callback' % REMOTE_CALLBACK_PORT
+    params = {'client_id': saved_client or DYNAMIC_CLIENT, 'ext_agent_host_id': host,
+              'redirect_uri': redirect, 'response_type': 'code', 'scope': SCOPES,
+              'resource': RESOURCE, 'state': state, 'nonce': nonce,
+              'code_challenge_method': 'S256',
+              'code_challenge': _b64(hashlib.sha256(verifier.encode('ascii')).digest())}
+    if not saved_client:
+        params['agent_name_hint'] = 'ScholarGuide'
+    url = d['authorization_endpoint'] + '?' + urlencode(params)
+
+    now = time.time()
+    pending = {k: v for k, v in _read_pending().items()
+               if isinstance(v, dict) and now - float(v.get('created_at') or 0) < PENDING_TTL}
+    pending[state] = {'nonce': nonce, 'verifier': verifier, 'client': saved_client,
+                      'redirect': redirect, 'created_at': now,
+                      'token_endpoint': d['token_endpoint'], 'jwks_uri': d['jwks_uri']}
+    _write_pending(pending)
+    return url, state
+
+
+def _parse_pasted_callback(text):
+    """Accept a full redirect URL, a bare code, or a 'code=...&state=...' fragment."""
+    if not isinstance(text, str) or not text.strip():
+        raise GuideError('Paste the address the browser stopped at, or the code itself.')
+    raw = text.strip()
+    if len(raw) > 8192:
+        raise GuideError('The pasted value is too long.')
+    try:
+        if raw.startswith('http://') or raw.startswith('https://'):
+            values = parse_qs(urlsplit(raw).query)
+        elif 'code=' in raw:
+            values = parse_qs(raw.split('?', 1)[-1])
+        else:
+            return {'code': raw, 'state': None, 'error': None}
+    except Exception:
+        raise GuideError('The pasted value is not a valid callback URL.') from None
+    code = (values.get('code') or [''])[0]
+    state = (values.get('state') or [''])[0]
+    error = (values.get('error') or [''])[0]
+    if not code and not error:
+        raise GuideError('The pasted URL has no authorization code.')
+    return {'code': code, 'state': state or None, 'error': error or None}
+
+
+def complete_login(pasted):
+    """Finish a sign-in started by begin_login(); returns a small summary."""
+    parsed = _parse_pasted_callback(pasted)
+    if parsed['error']:
+        raise GuideError('OpenAI authorization was declined.')
+    pending = _read_pending()
+    state = parsed['state']
+    if state is None:
+        if len(pending) != 1:
+            raise GuideError('Paste the full callback address so the request can be matched.')
+        state = next(iter(pending))
+    entry = pending.get(state)
+    if not isinstance(entry, dict):
+        raise GuideError('This sign-in is unknown or expired; start again.')
+    if time.time() - float(entry.get('created_at') or 0) > PENDING_TTL:
+        pending.pop(state, None)
+        _write_pending(pending)
+        raise GuideError('This sign-in expired; start again.')
+
+    client = entry.get('client') or DYNAMIC_CLIENT
+    response = _request(entry['token_endpoint'], {
+        'grant_type': 'authorization_code', 'client_id': client,
+        'redirect_uri': entry['redirect'], 'code': parsed['code'],
+        'code_verifier': entry['verifier'], 'resource': RESOURCE})
+    started = time.time()
+    credentials = _credential_response(response, started)
+    claims = _verify_id_token(response.get('id_token'), client, entry['nonce'], entry['jwks_uri'])
+    record = {**credentials, 'client_id': client, 'subject': claims['sub']}
+    store = _store()
+    _save_record(store, record)
+    if entry.get('client'):
+        try:
+            store.set_password(_service(), PENDING_CLIENT_ACCOUNT, entry['client'])
+        except Exception:
+            pass
+    pending.pop(state, None)
+    _write_pending(pending)
+    return {'subject': record.get('subject', ''), 'client_id': record.get('client_id', '')}
+
+
+def list_models():
+    """Return the model ids the signed-in account can use."""
+    token = access_token()
+    request = Request('https://api.openai.com/v1/models',
+                      headers={'Authorization': 'Bearer ' + token, 'Accept': 'application/json'})
+    opener = build_opener(ProxyHandler(_validated_proxy(proxy_url())))
+    try:
+        with opener.open(request, timeout=30) as response:
+            payload = json.loads(response.read().decode('utf-8'))
+    except Exception:
+        raise GuideError('Could not list models for this account; try again.') from None
+    items = payload.get('data') if isinstance(payload, dict) else None
+    return sorted({item.get('id') for item in (items or []) if isinstance(item, dict)
+                   and isinstance(item.get('id'), str) and item['id']})

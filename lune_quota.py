@@ -191,6 +191,17 @@ def _finite(value: Any) -> Optional[float]:
     return number
 
 
+def precheck_enabled() -> bool:
+    """Whether the local allowance snapshot gates a call.
+
+    Hosted deployments often have no local snapshot: the upstream service owns the
+    balance and reports exhaustion itself (callback/error), so pre-emptively
+    refusing the call only hides a working feature behind a local bookkeeping gap.
+    Set SG_LUNE_QUOTA_PRECHECK=off to let the request through.
+    """
+    value = os.environ.get('SG_LUNE_QUOTA_PRECHECK', 'on').strip().lower()
+    return value not in ('0', 'false', 'no', 'off', 'disabled')
+
 class LuneQuotaStore:
     """A durable, cross-process ledger of the local share of a Lune allowance.
 
@@ -451,6 +462,22 @@ class LuneQuotaStore:
             row = conn.execute(
                 'SELECT window_id, remaining, expires_at FROM quota_snapshot WHERE id = 1'
             ).fetchone()
+            if not precheck_enabled():
+                # Do not gate on local bookkeeping; keep the ledger row so settlement
+                # still works after the upstream answers.
+                window_id = 0
+                if row is not None:
+                    try:
+                        window_id = int(row[0])
+                    except (TypeError, ValueError, OverflowError):
+                        window_id = 0
+                reservation_id = uuid.uuid4().hex
+                conn.execute(
+                    'INSERT INTO quota_events (id, window_id, created_at, method, status, owner_pid) '
+                    'VALUES (?, ?, ?, ?, ?, ?)',
+                    (reservation_id, window_id, moment, method, STATUS_RESERVED, os.getpid()),
+                )
+                return reservation_id
             if row is None:
                 raise _error(
                     CODE_NO_SNAPSHOT,

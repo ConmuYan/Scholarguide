@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ScholarGuide · 使用 ChatGPT 账号登录</title>
+<style>
+  :root { --ink:#19352f; --line:#dfe8e3; --wash:#f4f8f5; --accent:#1b5e4b; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:16px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+         color:var(--ink); background:var(--wash); }
+  main { max-width:720px; margin:48px auto; padding:0 20px 64px; }
+  h1 { font-size:24px; margin:0 0 8px; }
+  p.lead { color:#526a63; margin:0 0 28px; }
+  section { background:#fff; border:1px solid var(--line); border-radius:12px; padding:20px 22px; margin-bottom:18px; }
+  h2 { font-size:16px; margin:0 0 12px; }
+  ol { margin:0; padding-left:20px; }
+  li { margin:6px 0; }
+  textarea, input, select { width:100%; font:14px/1.5 inherit; padding:10px 12px; border:1px solid var(--line);
+                            border-radius:8px; background:#fff; color:var(--ink); }
+  textarea { min-height:84px; resize:vertical; }
+  button { font:inherit; padding:9px 16px; border-radius:8px; border:1px solid var(--accent);
+           background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); }
+  button:disabled { opacity:.55; cursor:default; }
+  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px; }
+  .status { margin-top:12px; font-size:14px; min-height:20px; }
+  .status.err { color:#a12f24; }
+  .status.ok { color:#1b5e4b; }
+  code { background:#eef4f1; padding:1px 5px; border-radius:4px; font-size:13px; }
+  .hint { color:#6b7f78; font-size:13px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>使用 ChatGPT 账号登录</h1>
+  <p class="lead">浏览器完成授权后无法自动回到本服务，把地址栏里的链接粘回来即可完成登录。凭据只保存在当前实例。</p>
+
+  <section>
+    <h2>1. 打开授权页</h2>
+    <div class="row">
+      <button id="begin">获取授权链接</button>
+      <button id="open" class="secondary" disabled>在新标签打开</button>
+    </div>
+    <div class="status" id="begin-status"></div>
+    <div class="row" id="link-row" hidden>
+      <input id="auth-url" readonly>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. 粘贴回跳地址</h2>
+    <p class="hint">授权后浏览器会跳到 <code>http://127.0.0.1:1455/...</code>，页面打不开是正常的；复制那整条地址粘到下面。</p>
+    <textarea id="callback" placeholder="http://127.0.0.1:1455/auth/callback?code=...&state=..."></textarea>
+    <div class="row">
+      <button id="complete">完成登录</button>
+    </div>
+    <div class="status" id="complete-status"></div>
+  </section>
+
+  <section id="model-section" hidden>
+    <h2>3. 选择模型</h2>
+    <p class="hint">下面是从该账号实际拉到的可用模型。</p>
+    <select id="model"></select>
+    <div class="row">
+      <button id="save">保存为当前服务</button>
+      <button id="reload" class="secondary">重新拉取</button>
+    </div>
+    <div class="status" id="model-status"></div>
+  </section>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const setStatus = (id, text, kind) => {
+  const node = $(id);
+  node.textContent = text || '';
+  node.className = 'status' + (kind ? ' ' + kind : '');
+};
+
+async function call(path, options = {}) {
+  const response = await fetch(path, {
+    headers: {'Content-Type': 'application/json'},
+    ...options,
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || ('HTTP ' + response.status));
+  return data;
+}
+
+$('begin').addEventListener('click', async () => {
+  setStatus('begin-status', '正在获取…');
+  try {
+    const data = await call('/api/providers/oauth/openai/begin', {method: 'POST', body: '{}'});
+    $('auth-url').value = data.url;
+    $('link-row').hidden = false;
+    const open = $('open');
+    open.disabled = false;
+    open.onclick = () => window.open(data.url, '_blank', 'noopener');
+    setStatus('begin-status', '已生成，点“在新标签打开”完成授权。', 'ok');
+  } catch (error) {
+    setStatus('begin-status', '失败：' + error.message, 'err');
+  }
+});
+
+$('complete').addEventListener('click', async () => {
+  const callback = $('callback').value.trim();
+  if (!callback) { setStatus('complete-status', '请先粘贴回跳地址。', 'err'); return; }
+  setStatus('complete-status', '正在换取令牌…');
+  try {
+    const data = await call('/api/providers/oauth/openai/complete', {
+      method: 'POST', body: JSON.stringify({callback}),
+    });
+    setStatus('complete-status', '登录成功：' + (data.subject || '已连接'), 'ok');
+    $('model-section').hidden = false;
+    await loadModels();
+  } catch (error) {
+    setStatus('complete-status', '失败：' + error.message, 'err');
+  }
+});
+
+async function loadModels() {
+  $('model').innerHTML = '<option>正在读取…</option>';
+  try {
+    const data = await call('/api/providers/oauth/openai/models');
+    const models = data.models || [];
+    if (!models.length) throw new Error('该账号没有可用模型');
+    $('model').innerHTML = models.map((m) => `<option value="${m}">${m}</option>`).join('');
+    setStatus('model-status', `共 ${models.length} 个可用模型。`, 'ok');
+  } catch (error) {
+    $('model').innerHTML = '';
+    setStatus('model-status', '拉取失败：' + error.message, 'err');
+  }
+}
+$('reload').addEventListener('click', loadModels);
+
+$('save').addEventListener('click', async () => {
+  const model = $('model').value;
+  if (!model) { setStatus('model-status', '请先选择模型。', 'err'); return; }
+  setStatus('model-status', '正在保存…');
+  try {
+    await call('/api/providers', {
+      method: 'POST',
+      body: JSON.stringify({
+        id: 'openai-oauth', name: 'OpenAI / ChatGPT OAuth', protocol: 'responses',
+        base_url: 'https://api.openai.com/v1', model, source: 'custom', activate: true,
+      }),
+    });
+    setStatus('model-status', '已保存并启用：' + model, 'ok');
+  } catch (error) {
+    setStatus('model-status', '保存失败：' + error.message, 'err');
+  }
+});
+</script>
+</body>
+</html>
