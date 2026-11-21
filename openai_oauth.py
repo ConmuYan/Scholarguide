@@ -788,9 +788,13 @@ def _parse_pasted_callback(text):
     code = (values.get('code') or [''])[0]
     state = (values.get('state') or [''])[0]
     error = (values.get('error') or [''])[0]
+    client = (values.get('client_id') or [None])[0]
+    if client is not None and (not client or len(client) > 4096 or client == DYNAMIC_CLIENT
+                               or any(ord(c) < 33 or ord(c) > 126 for c in client)):
+        raise GuideError('The pasted URL carries an invalid client registration.')
     if not code and not error:
         raise GuideError('The pasted URL has no authorization code.')
-    return {'code': code, 'state': state or None, 'error': error or None}
+    return {'code': code, 'state': state or None, 'error': error or None, 'client': client}
 
 
 def complete_login(pasted):
@@ -812,7 +816,11 @@ def complete_login(pasted):
         _write_pending(pending)
         raise GuideError('This sign-in expired; start again.')
 
-    client = entry.get('client') or DYNAMIC_CLIENT
+    client = parsed.get('client') or entry.get('client')
+    if not client or client == DYNAMIC_CLIENT:
+        raise GuideError('OpenAI returned no usable client registration; start again.')
+    if entry.get('client') and parsed.get('client') and parsed['client'] != entry['client']:
+        raise GuideError('OpenAI returned an inconsistent client registration; start again.')
     response = _request(entry['token_endpoint'], {
         'grant_type': 'authorization_code', 'client_id': client,
         'redirect_uri': entry['redirect'], 'code': parsed['code'],
