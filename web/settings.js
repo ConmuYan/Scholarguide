@@ -434,6 +434,10 @@ async function loadOAuth() {
 async function oauthLogin(event) {
   if (event) event.preventDefault();
   if (oauth.state === "running" || state.busy || oauthDiagnostics.busy) return;
+  // Hosted instances cannot complete a loopback callback, so sign-in continues on
+  // the dedicated page, which also lists the account's models before saving.
+  window.location.assign("/oauth");
+  return;
   oauthDiagnostics.result = null;
   oauthDiagnostics.error = "";
   renderOAuthDiagnostics();

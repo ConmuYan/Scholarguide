@@ -1,0 +1,24 @@
+  :root { --ink:#19352f; --line:#dfe8e3; --wash:#f4f8f5; --accent:#1b5e4b; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:16px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+         color:var(--ink); background:var(--wash); }
+  main { max-width:720px; margin:48px auto; padding:0 20px 64px; }
+  h1 { font-size:24px; margin:0 0 8px; }
+  p.lead { color:#526a63; margin:0 0 28px; }
+  section { background:#fff; border:1px solid var(--line); border-radius:12px; padding:20px 22px; margin-bottom:18px; }
+  h2 { font-size:16px; margin:0 0 12px; }
+  ol { margin:0; padding-left:20px; }
+  li { margin:6px 0; }
+  textarea, input, select { width:100%; font:14px/1.5 inherit; padding:10px 12px; border:1px solid var(--line);
+                            border-radius:8px; background:#fff; color:var(--ink); }
+  textarea { min-height:84px; resize:vertical; }
+  button { font:inherit; padding:9px 16px; border-radius:8px; border:1px solid var(--accent);
+           background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); }
+  button:disabled { opacity:.55; cursor:default; }
+  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px; }
+  .status { margin-top:12px; font-size:14px; min-height:20px; }
+  .status.err { color:#a12f24; }
+  .status.ok { color:#1b5e4b; }
+  code { background:#eef4f1; padding:1px 5px; border-radius:4px; font-size:13px; }
+  .hint { color:#6b7f78; font-size:13px; }
