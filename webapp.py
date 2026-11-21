@@ -2582,6 +2582,8 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
                     self._json(200, {**summary, 'models': models})
                 except GuideError as exc:
                     self._json(400, {'error': str(exc)})
+                except Exception as exc:  # noqa: BLE001 - surface the cause instead of a 502
+                    self._json(400, {'error': f'{type(exc).__name__}: {exc}'})
                 return
             if path == '/api/providers':
                 if not isinstance(raw, dict):
