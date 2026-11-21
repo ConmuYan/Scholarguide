@@ -38,8 +38,10 @@ $('complete').addEventListener('click', async () => {
     const data = await call('/api/providers/oauth/openai/complete', {
       method: 'POST', body: JSON.stringify({callback}),
     });
-    setStatus('complete-status', '登录成功：' + (data.subject || '已连接') + '。下一步去设置里选模型。', 'ok');
-    $('next-step').hidden = false;
+    setStatus('complete-status', '登录成功：' + (data.subject || '已连接') + '。', 'ok');
+    const next = $('next-step');
+    if (next) next.hidden = false;
+    setTimeout(() => window.location.assign('/settings'), 1200);
   } catch (error) {
     setStatus('complete-status', '失败：' + error.message, 'err');
   }
