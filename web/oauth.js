@@ -48,21 +48,29 @@ $('complete').addEventListener('click', async () => {
 
 async function loadModels() {
   $('model').innerHTML = '<option>正在读取…</option>';
+  $('model-manual').hidden = true;
   try {
     const data = await call('/api/providers/oauth/openai/models');
     const models = data.models || [];
-    if (!models.length) throw new Error('该账号没有可用模型');
+    if (!models.length) {
+      $('model').innerHTML = '';
+      $('model-manual').hidden = false;
+      setStatus('model-status',
+        (data.note ? '拉取失败：' + data.note + '。' : '该账号没有可用模型。') + '请手动填写模型标识。', 'err');
+      return;
+    }
     $('model').innerHTML = models.map((m) => `<option value="${m}">${m}</option>`).join('');
     setStatus('model-status', `共 ${models.length} 个可用模型。`, 'ok');
   } catch (error) {
     $('model').innerHTML = '';
-    setStatus('model-status', '拉取失败：' + error.message, 'err');
+    $('model-manual').hidden = false;
+    setStatus('model-status', '拉取失败：' + error.message + '；可手动填写模型标识。', 'err');
   }
 }
 $('reload').addEventListener('click', loadModels);
 
 $('save').addEventListener('click', async () => {
-  const model = $('model').value;
+  const model = ($('model').value || $('model-manual').value || '').trim();
   if (!model) { setStatus('model-status', '请先选择模型。', 'err'); return; }
   setStatus('model-status', '正在保存…');
   try {

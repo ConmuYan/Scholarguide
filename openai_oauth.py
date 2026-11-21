@@ -866,6 +866,19 @@ def list_models():
     try:
         with opener.open(request, timeout=30) as response:
             payload = json.loads(response.read().decode('utf-8'))
+    except HTTPError as exc:
+        code = ''
+        try:
+            body = json.loads(exc.read(4096).decode('utf-8', 'replace'))
+            error = body.get('error')
+            code = (error.get('code') if isinstance(error, dict) else error) or ''
+            if not isinstance(code, str) or len(code) > 80:
+                code = ''
+            code = ''.join(ch for ch in code if 32 <= ord(ch) < 127)
+        except Exception:
+            code = ''
+        raise GuideError('Model list was rejected (HTTP %d%s)' % (
+            exc.code, ', ' + code if code else '')) from None
     except Exception:
         raise GuideError('Could not list models for this account; try again.') from None
     items = payload.get('data') if isinstance(payload, dict) else None

@@ -2339,9 +2339,9 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
             if path == '/api/providers/oauth/openai/models':
                 try:
                     from openai_oauth import list_models
-                    self._json(200, {'models': list_models()})
+                    self._json(200, {'models': list_models(), 'note': ''})
                 except GuideError as exc:
-                    self._json(400, {'error': str(exc)})
+                    self._json(200, {'models': [], 'note': str(exc)})
                 return
             if path == '/api/config':
                 try:
@@ -2575,11 +2575,12 @@ def create_server(port: int = 8765, jobs: Jobs | None = None,
                 try:
                     from openai_oauth import complete_login, list_models
                     summary = complete_login(raw.get('callback'))
+                    note = ''
                     try:
                         models = list_models()
-                    except GuideError:
-                        models = []
-                    self._json(200, {**summary, 'models': models})
+                    except GuideError as exc:
+                        models, note = [], str(exc)
+                    self._json(200, {**summary, 'models': models, 'note': note})
                 except GuideError as exc:
                     self._json(400, {'error': str(exc)})
                 except Exception as exc:  # noqa: BLE001 - surface the cause instead of a 502
