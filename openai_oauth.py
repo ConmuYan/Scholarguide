@@ -861,7 +861,8 @@ def list_models():
     token = access_token()
     request = Request('https://api.openai.com/v1/models',
                       headers={'Authorization': 'Bearer ' + token, 'Accept': 'application/json'})
-    opener = build_opener(ProxyHandler(_validated_proxy(proxy_url())))
+    proxy = _validated_proxy(proxy_url())
+    opener = build_opener(ProxyHandler({'https': proxy} if proxy else {}))
     try:
         with opener.open(request, timeout=30) as response:
             payload = json.loads(response.read().decode('utf-8'))
