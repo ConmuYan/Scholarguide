@@ -21,9 +21,8 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from common import GuideError
+from common import GuideError, ROOT
 
-ROOT = Path(__file__).resolve().parent
 LUNE_SKILLS = ROOT / 'mcp_skills_lune.json'
 
 

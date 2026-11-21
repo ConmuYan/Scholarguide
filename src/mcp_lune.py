@@ -31,13 +31,12 @@ from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import Request, build_opener
 
-from common import Budget, BudgetExceeded, GuideError, Paper, REMOTE_OUTCOMES, RunCancelled, requested_venues, utc_now
+from common import Budget, BudgetExceeded, GuideError, Paper, REMOTE_OUTCOMES, ROOT, RunCancelled, requested_venues, utc_now
 from mcp_client import McpClient, McpError, McpResult, ServerConfig, load_servers, structured
 from source import ProviderSpec
 
 import mcp_plugin
 
-ROOT = Path(__file__).resolve().parent
 CONFIG_PATH = Path(os.environ.get('SG_MCP_CONFIG') or ROOT / 'mcp_servers.json')
 RUN_DIR = Path(os.environ.get('SG_MCP_RUN_DIR') or ROOT / 'runs' / 'mcp-20261024').expanduser()
 LEDGER_PATH = Path(os.environ.get('SG_LUNE_LEDGER') or Path.home() / '.scholarguide' / 'lune-ledger.json')
