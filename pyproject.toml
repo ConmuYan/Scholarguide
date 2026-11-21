@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scholarguide-source"
+version = "0.0.0"
+requires-python = ">=3.11"
+description = "Editable module path for ScholarGuide source checkouts"
+
+[tool.setuptools]
+py-modules = [
+  "activity",
+  "agent_runtime",
+  "agent_tools",
+  "api_schema",
+  "api_v1",
+  "controller",
+  "costing",
+  "deletion_lifecycle",
+  "demo",
+  "diagnosis",
+  "domain_skill_runtime",
+  "execution_events",
+  "intent",
+  "llm",
+  "lune_quota",
+  "lune_quota_schedule",
+  "mcp_client",
+  "mcp_lune",
+  "mcp_lune_policy",
+  "mcp_plugin",
+  "mcp_skills",
+  "memory_context",
+  "memory_store",
+  "memory_view",
+  "model_identity",
+  "model_policy",
+  "native_tool_protocol",
+  "network",
+  "oauth_diagnostics",
+  "oauth_models",
+  "openai_oauth",
+  "preflight",
+  "prompts",
+  "providers",
+  "quantities",
+  "recovery",
+  "report",
+  "research_brief",
+  "research_landscape",
+  "research_policy",
+  "research_runtime",
+  "research_specialist",
+  "retrieval",
+  "reuse",
+  "session",
+  "source",
+  "source_parallel",
+  "source_scheduler",
+  "source_store",
+  "specialist_pilot",
+  "tool_governance",
+  "tools",
+  "update_cli",
+  "webapp",
+  "workflow",
+]
+
+[tool.setuptools.package-dir]
+"" = "src"

@@ -7,6 +7,13 @@ import json
 from pathlib import Path
 import sys
 import uuid
+
+# Editable source checkouts keep implementation modules in src/.
+# Published release bundles retain the original flat module layout.
+_SOURCE_MODULES = Path(__file__).resolve().parent / 'src'
+if _SOURCE_MODULES.is_dir():
+    sys.path.insert(0, str(_SOURCE_MODULES))
+
 from network import urlopen
 
 from common import Budget, Config, DATA_DIR, GuideError, ROOT, RUNS_DIR, SOURCE_NAMES, utc_now

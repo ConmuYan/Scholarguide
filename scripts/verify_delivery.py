@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT))
 
 
 def source_manifest():
-    files = list(ROOT.glob('*.py')) + list(ROOT.glob('requirements*.txt'))
+    files = list(ROOT.glob('*.py')) + list((ROOT / 'src').glob('*.py')) + list(ROOT.glob('requirements*.txt')) + [ROOT / 'pyproject.toml']
     files.extend([ROOT / 'state_schema.sql', ROOT / 'README.md', ROOT / '.env.example',
                   ROOT / 'scripts' / 'offline_test_site' / 'sitecustomize.py',
                   ROOT / 'tests' / 'fixtures' / 'offline_mcp_servers.json'])
@@ -107,7 +107,7 @@ def isolated_environment(out: Path, inherited=None):
         'SG_SKIP_PROJECT_ENV': '1',
         'SG_OFFLINE_NETWORK_GUARD': '1',
         'PYTHONPATH': os.pathsep.join((str(ROOT / 'scripts' / 'offline_test_site'),
-                                      str(ROOT), str(ROOT / 'tests'))),
+                                      str(ROOT / 'src'), str(ROOT), str(ROOT / 'tests'))),
         'SE_OFFLINE': 'true',
         'SE_AVOID_STATS': 'true',
         'SE_CACHE_PATH': str(out / 'offline-selenium-cache'),

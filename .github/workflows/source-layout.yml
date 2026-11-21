@@ -1,0 +1,28 @@
+name: Source layout checks
+
+on:
+  push:
+    branches:
+      - main
+      - chore/clean-root-layout-preview
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  source-layout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source and test dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Check imported source modules and offline release contract
+        run: python -m unittest tests.test_source_export tests.test_release_package tests.test_delivery_contract tests.test_blocking_requirements -v
+      - name: Validate offline CLI demo
+        run: python app.py demo --scenario satisfied --out /tmp/scholarguide-demo
+      - name: Check staged source export
+        run: python scripts/build_source_repo.py --out /tmp/scholarguide-source

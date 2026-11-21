@@ -143,6 +143,10 @@ for paper in op["result"]["papers"]:
 
 Full contract: [`docs/API.md`](docs/API.md) · machine-readable: `http://127.0.0.1:8765/openapi.json`
 
+## Source layout
+
+The GitHub source tree keeps only the launchers and compatibility-sensitive storage modules at the repository root. The other Python modules live in `src/` (installed as top-level imports by `pip install -r requirements.txt`). You can still run `python app.py web --open`, `python app.py demo`, and the existing development scripts without changing their command names. Release archives deliberately retain the original flat runtime layout for installer compatibility.
+
 ## Architecture
 
 ```text

@@ -72,11 +72,17 @@ def build(version: str, repository: str, output: Path) -> list[Path]:
         stage.mkdir()
         for name in MODULES + FILES:
             source = ROOT / name
+            if not source.is_file() and name.endswith('.py'):
+                source = ROOT / 'src' / name
             if not source.is_file() or source.is_symlink():
                 raise FileNotFoundError(f'missing or unsafe release input: {name}')
             target = stage / name
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, target)
+            if name == 'requirements.txt':
+                requirements = target.read_text(encoding='utf-8')
+                requirements = requirements.split('\n# Make source-only src/ modules', 1)[0].rstrip() + '\n'
+                target.write_text(requirements, encoding='utf-8', newline='\n')
         shutil.copyfile(ROOT / 'PUBLIC_README.md', stage / 'README.md')
         for public_doc in (stage / 'README.md', stage / 'docs' / 'INSTALL.md'):
             text = public_doc.read_text(encoding='utf-8')

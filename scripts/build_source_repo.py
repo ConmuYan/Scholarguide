@@ -18,24 +18,29 @@ import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
 
-TOP_LEVEL_FILES = ('app.py', 'app_mcp.py', 'activity.py', 'agent_runtime.py', 'agent_tools.py',
-                   'api_schema.py', 'api_v1.py', 'common.py', 'controller.py', 'costing.py',
-                   'deletion_lifecycle.py', 'demo.py', 'diagnosis.py', 'domain_skill_runtime.py',
-                   'execution_events.py', 'intent.py', 'llm.py', 'lune_quota.py', 'lune_quota_schedule.py', 'mcp_client.py',
-                   'mcp_lune.py', 'mcp_lune_policy.py', 'mcp_plugin.py', 'mcp_skills.py',
-                   'memory_context.py', 'memory_store.py', 'memory_view.py', 'model_identity.py',
-                   'model_policy.py', 'native_tool_protocol.py', 'network.py', 'openai_oauth.py', 'oauth_diagnostics.py', 'preflight.py',
-                   'prompts.py', 'providers.py', 'quantities.py', 'recovery.py', 'report.py',
-                   'research_brief.py', 'research_landscape.py', 'research_policy.py',
-                   'research_runtime.py', 'research_specialist.py', 'retrieval.py', 'reuse.py',
-                   'session.py', 'source.py', 'source_parallel.py', 'source_scheduler.py',
-                   'source_store.py', 'specialist_pilot.py', 'state.py', 'tool_governance.py',
-                   'tools.py', 'update_cli.py', 'webapp.py', 'workflow.py',
-                   'README.md', 'README.zh-CN.md', 'PUBLIC_README.md', 'UPSTREAM.md', 'VERIFICATION.md',
-                   'LICENSE', 'NOTICE.md', '.gitattributes', 'requirements.txt', 'requirements-dev.txt',
-                   '.gitignore', '.env.example', 'state_schema.sql', 'mcp_servers.json',
-                   'mcp_skills_lune.json')
-SOURCE_DIRS = ('web', 'tests', 'docs', 'scripts', 'examples', 'vendor', 'install', '.github', 'evaluation')
+TOP_LEVEL_FILES = (
+    'app.py',
+    'app_mcp.py',
+    'common.py',
+    'state.py',
+    'README.md',
+    'README.zh-CN.md',
+    'PUBLIC_README.md',
+    'UPSTREAM.md',
+    'VERIFICATION.md',
+    'LICENSE',
+    'NOTICE.md',
+    '.gitattributes',
+    'requirements.txt',
+    'requirements-dev.txt',
+    '.gitignore',
+    '.env.example',
+    'state_schema.sql',
+    'mcp_servers.json',
+    'mcp_skills_lune.json',
+    'pyproject.toml'
+)
+SOURCE_DIRS = ('web', 'tests', 'docs', 'scripts', 'examples', 'vendor', 'install', '.github', 'evaluation', 'src')
 ALWAYS_EXCLUDED_DIRS = {
     '__pycache__', '.venv', '.venv-upstream', '.cache', 'runs', 'archive', 'node_modules',
     'cloudflare-worker', 'cloudflare-pages', '.pi', '.codex', '.git', '.idea', '.vscode',
@@ -73,7 +78,7 @@ def posix(relative: Path) -> str:
 
 def included(relative: Path, all_docs: bool = False) -> bool:
     parts = relative.parts
-    if any(part in ALWAYS_EXCLUDED_DIRS for part in parts):
+    if any(part in ALWAYS_EXCLUDED_DIRS or part.endswith(('.egg-info', '.dist-info')) for part in parts):
         return False
     if any(tuple(parts[:len(prefix)]) == prefix for prefix in EXCLUDED_PATH_PARTS):
         return False

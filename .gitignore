@@ -35,3 +35,4 @@ frontierlitbench/cache/
 # Local research credentials
 keys.local.env
 .alma-snapshots
+*.egg-info/

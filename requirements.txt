@@ -8,3 +8,7 @@ PyJWT[crypto]==2.15.1
 cryptography==50.0.2
 keyring==25.7.0
 filelock==4.2.10
+
+# Make source-only src/ modules available to scripts and tests.
+# The release builder strips this local editable install from release requirements.
+-e .
