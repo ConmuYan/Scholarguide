@@ -23,6 +23,7 @@ import uuid
 import webbrowser
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs, urlencode, urlsplit
+from urllib.error import HTTPError
 from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 
 from common import GuideError, RunCancelled
@@ -184,6 +185,20 @@ def _request(url, data=None, json_body=False, *, deadline=None, cancelled=None):
         return value
     except GuideError:
         raise
+    except HTTPError as exc:
+        code = ''
+        try:
+            payload = json.loads(exc.read(4096).decode('utf-8', 'replace'))
+            error = payload.get('error')
+            code = (error.get('code') if isinstance(error, dict) else error) or ''
+            if not isinstance(code, str) or len(code) > 80:
+                code = ''
+            code = ''.join(ch for ch in code if 32 <= ord(ch) < 127)
+        except Exception:
+            code = ''
+        raise GuideError('OpenAI OAuth request was rejected'
+                         + (f' ({code})' if code else '')
+                         + '; please retry login.') from None
     except Exception:
         raise GuideError('OpenAI OAuth request failed; please retry login.') from None
 
