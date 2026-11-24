@@ -9,12 +9,12 @@ import tempfile
 import unittest
 from unittest.mock import Mock, patch
 
-from common import Config, GuideError, RunCancelled
-from controller import PolicyError
-from llm import JsonLLM, _Rejected
+from scholarguide.common import Config, GuideError, RunCancelled
+from scholarguide.controller import PolicyError
+from scholarguide.llm import JsonLLM, _Rejected
 from scripts.verify_delivery import isolated_environment
-from session import ChatSession
-from state import StateStore
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
 from test_session import FakeLLM, FakeSource
 
 
@@ -126,7 +126,7 @@ class NativeSessionTests(unittest.TestCase):
         self.assertTrue(self.chat._native_operation_open())
 
     def test_explicit_unsupported_fallback_closes_native_marker(self):
-        from llm import _Rejected
+        from scholarguide.llm import _Rejected
         self.config.native_fallback = 'json_on_unsupported'
         self.llm._post = lambda *args, **kwargs: (_ for _ in ()).throw(
             _Rejected(400, '', 'function calling is not supported'))
@@ -154,7 +154,7 @@ class NativeSessionTests(unittest.TestCase):
         fallback = FakeLLM()
         llm.generate = fallback.generate
         token = Mock()
-        with patch('openai_oauth.access_token', token), patch('llm.urlopen') as opened:
+        with patch('scholarguide.openai_oauth.access_token', token), patch('scholarguide.llm.urlopen') as opened:
             decision, stop = chat.next_decision()
         self.assertEqual((decision.action, stop), ('SEARCH', ''))
         self.assertIn('action', fallback.stages)
@@ -167,7 +167,7 @@ class NativeSessionTests(unittest.TestCase):
     def test_oauth_native_disabled_is_actionable_and_sends_nothing(self):
         chat, _ = self._oauth_native_chat('disabled')
         token = Mock()
-        with patch('openai_oauth.access_token', token), patch('llm.urlopen') as opened:
+        with patch('scholarguide.openai_oauth.access_token', token), patch('scholarguide.llm.urlopen') as opened:
             with self.assertRaises(GuideError) as caught:
                 chat.next_decision()
         message = str(caught.exception)
@@ -187,7 +187,7 @@ class NativeSessionTests(unittest.TestCase):
         self.assertFalse(self.chat._native_operation_open())
 
     def test_no_budget_for_continuation(self):
-        from common import BudgetExceeded
+        from scholarguide.common import BudgetExceeded
         decision, _ = self.chat.next_decision()
         limits = self.chat.limits()
         limits['llm_left'] = 0
@@ -367,7 +367,7 @@ class NativeSessionTests(unittest.TestCase):
                             for event in self.store.events(self.chat.session_id)))
 
     def test_continuation_budget_exhaustion_propagates(self):
-        from common import BudgetExceeded
+        from scholarguide.common import BudgetExceeded
         original = self.llm._post
         def exhausted(url, payload, headers):
             if self.requests:
@@ -397,7 +397,7 @@ class NativeSessionTests(unittest.TestCase):
         self.assertNotIn('synthetic private', repr(self.chat._warnings))
 
     def test_graph_critic_program_search_has_bound_native_authorization(self):
-        from demo import ChatDemoLLM, DemoSource
+        from scholarguide.demo import ChatDemoLLM, DemoSource
         with tempfile.TemporaryDirectory() as directory:
             store = StateStore(Path(directory) / 'state.sqlite3')
             try:

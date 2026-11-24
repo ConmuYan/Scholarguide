@@ -9,8 +9,8 @@ import sys
 from urllib.parse import urlencode
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import Budget, Config, Paper, utc_now
-from source import AcademicSource
+from scholarguide.common import Budget, Config, Paper, utc_now
+from scholarguide.source import AcademicSource
 from vendor.gptr_arxiv import API, ArxivSearch
 
 IDS = ['2005.11401', '2004.04906', '2007.01282', '2002.08909', '2309.15217', '2311.09476']

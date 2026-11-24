@@ -145,6 +145,8 @@ Full contract: [`docs/API.md`](docs/API.md) · machine-readable: `http://127.0.0
 
 ## Architecture
 
+The Python implementation lives in `scholarguide/`; experimental evaluation components are under `scholarguide/experimental/`. Existing documented commands such as `python app.py` remain available. For old scripts that import internal modules directly (for example, `import session`), enable the compatibility directory as described in [the development guide](docs/DEVELOPMENT.md). New code can use package imports such as `from scholarguide.common import Config`.
+
 ```text
 ┌──────────────────────────────────────────────────────────────┐
 │  Web UI  (vanilla HTML/CSS/JS, no build step)                 │

@@ -1,19 +1,19 @@
 from copy import deepcopy
 from unittest.mock import patch
 
-from common import Config, Request
-from demo import DemoLLM, DemoSource
+from scholarguide.common import Config, Request
+from scholarguide.demo import DemoLLM, DemoSource
 from tests.test_checkpoint_preview import CheckpointPreviewTests
-from webapp import Jobs
-from api_v1 import public_result
-from workflow import grounded_assessments, select_papers, run
+from scholarguide.webapp import Jobs
+from scholarguide.api_v1 import public_result
+from scholarguide.workflow import grounded_assessments, select_papers, run
 
 
 class AuthorizationTests(CheckpointPreviewTests):
     def test_assessment_cannot_replace_paper_metadata(self):
         cp = deepcopy(self.checkpoint)
         paper = next(p for p in cp['candidates'] if p['id'] == cp['papers'][0]['id'])
-        from common import Paper
+        from scholarguide.common import Paper
         original = Paper(**paper)
         row = deepcopy(cp['assessments'][original.id])
         row.update(id='forged', source='lune', title='forged', publication={'status': 'accepted'}, fit_score=87)
@@ -80,8 +80,8 @@ class AuthorizationTests(CheckpointPreviewTests):
                                  'reading_goal': 'orientation'},
                 'reading_goal': 'comparison'}
         with patch.object(Jobs, '_config', return_value=Config(research_mode=False)), \
-             patch('webapp.AcademicSource', return_value=DemoSource('satisfied')), \
-             patch('webapp.JsonLLM', return_value=DemoLLM()):
+             patch('scholarguide.webapp.AcademicSource', return_value=DemoSource('satisfied')), \
+             patch('scholarguide.webapp.JsonLLM', return_value=DemoLLM()):
             result = Jobs()._execute(data, lambda event: None)
         self.assertEqual(result['request']['topic'], 'explicit topic')
         self.assertEqual(result['request']['target_count'], 3)

@@ -12,12 +12,12 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from common import Config, GuideError, Paper
-from quantities import BLOCKING_KINDS, BLOCKING_QUOTE_LIMIT, blocking_quotes
-import prompts
-from session import ChatSession
-from state import StateStore
-from workflow import run
+from scholarguide.common import Config, GuideError, Paper
+from scholarguide.quantities import BLOCKING_KINDS, BLOCKING_QUOTE_LIMIT, blocking_quotes
+from scholarguide import prompts
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
+from scholarguide.workflow import run
 
 QUOTE = 'This paper introduces a reproducible benchmark for visual language adaptation.'
 PAPERS = [
@@ -310,7 +310,7 @@ class SchemaContractTests(unittest.TestCase):
         self.assertIn('never record those', prompts.TASK_UPDATE)
 
     def test_json_object_path_is_still_validated_locally(self):
-        from llm import strict_schema_compatible
+        from scholarguide.llm import strict_schema_compatible
         self.assertFalse(strict_schema_compatible(prompts.PLAN_SCHEMA))
         source = Source()
         result = run(message_for('released code'), Config(), 'S', source=source,

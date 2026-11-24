@@ -3,7 +3,7 @@ import unittest
 
 from jsonschema import Draft202012Validator
 
-from api_schema import openapi_document
+from scholarguide.api_schema import openapi_document
 
 
 class MemorySchemaTests(unittest.TestCase):

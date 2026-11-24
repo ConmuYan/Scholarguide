@@ -46,7 +46,7 @@ class I18nWorkspaceBrowserTests(unittest.TestCase):
             self.assertEqual(self.driver.execute_script('return SGI18n.get()'),'zh-CN')
 
     def test_language_switch_keeps_request_and_research_content_unchanged(self):
-        from demo import demo_run
+        from scholarguide.demo import demo_run
         d=self.driver
         d.get(self.base+'/search')
         self.wait.until(lambda x:x.execute_script('return !!window.SGI18n && state.configLoaded && !state.configLoading'))

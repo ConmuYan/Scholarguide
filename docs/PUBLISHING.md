@@ -12,9 +12,9 @@ python scripts/build_source_repo.py --out /tmp/scholarguide-public
 
 导出器行为：
 
-- 只按白名单收录源码、`web/`、`tests/`、`scripts/`、`examples/`、`vendor/`、`install/`、`.github/`、`evaluation/`、公开文档；
+- 只按白名单收录 `scholarguide/` 源码、`web/`、`tests/`、`scripts/`、`examples/`、`vendor/`、`install/`、`.github/`、`evaluation/`、`frontierlitbench/`、公开文档；`--without-evaluation` 同时排除两个评测目录；
 - 丢弃 `.env*`（保留 `.env.example`）、`runs/`、`archive/`、`cloudflare-*`、`.pi`、`.codex`、`.cache`、PDF、`*.sqlite*`、日志、`NUL`；
-- 丢弃 `examples/live_result.json` 等真实 provider 输出；
+- 丢弃 `examples/live_result.json` 等真实 provider 输出，以及含本机路径的历史 PaperSeek 报告；
 - `docs/` 默认只发布公开文档集合；加 `--all-docs` 才会带上历史内部记录（含个人路径，不推荐）；
 - 扫描凭证形态字符串和开发者主目录路径，命中则**删除导出并失败**；
 - 写入 `SOURCE_MANIFEST.json`（文件数与逐文件 SHA-256）。

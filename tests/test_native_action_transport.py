@@ -3,9 +3,9 @@ import json
 import unittest
 from unittest.mock import patch
 
-from common import Budget, BudgetExceeded, Config, GuideError, RunCancelled
-from llm import JsonLLM
-from native_tool_protocol import PROBE_TOOL
+from scholarguide.common import Budget, BudgetExceeded, Config, GuideError, RunCancelled
+from scholarguide.llm import JsonLLM
+from scholarguide.native_tool_protocol import PROBE_TOOL
 
 
 def first(arguments='{"value":"fixed"}', name='native_probe'):
@@ -42,12 +42,12 @@ class NativeActionTests(unittest.TestCase):
         return self.llm.propose_action('private prompt', {'x': 1}, [PROBE_TOOL])
 
     def test_raw_transport_counts_and_status(self):
-        from network import BufferedResponse
+        from scholarguide.network import BufferedResponse
         replies = [first(), second()]
         def open_fake(request, timeout):
             return BufferedResponse(json.dumps(replies.pop(0)).encode(), status=200,
                                     headers=[('x-model', 'header-model')])
-        with patch('llm.urlopen', side_effect=open_fake) as opened:
+        with patch('scholarguide.llm.urlopen', side_effect=open_fake) as opened:
             proposal = self.propose()
             self.llm.continue_action(proposal, '{}')
         self.assertEqual(opened.call_count, 2)
@@ -89,7 +89,7 @@ class NativeActionTests(unittest.TestCase):
                 self.assertNotIn('fixed', str(caught.exception))
 
     def test_rejection_and_no_retry(self):
-        from llm import NativeUnsupported, _Rejected
+        from scholarguide.llm import NativeUnsupported, _Rejected
         for error, expected in [(_Rejected(400, '', 'tools are not supported'), NativeUnsupported),
                                 (_Rejected(400, '', 'invalid model'), GuideError),
                                 (_Rejected(422, '', 'tools parameter: temperature is not supported'), GuideError),
@@ -102,7 +102,7 @@ class NativeActionTests(unittest.TestCase):
             self.assertEqual(len(self.requests), before + 1)
 
     def test_additional_boundaries(self):
-        from llm import NativeUnsupported, _Rejected
+        from scholarguide.llm import NativeUnsupported, _Rejected
         for response in [first('{"value":1e999}'), first('{"value":' + '[' * 40 + '0' + ']' * 40 + '}'),
                          {**first(), 'output': first()['output'] + [{'type': 'computer_call'}]},
                          {**first(), 'output': [{'type': 'function_call', 'name': 'native_probe', 'arguments': '{}'}]}]:

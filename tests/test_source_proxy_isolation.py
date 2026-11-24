@@ -7,10 +7,10 @@ from unittest.mock import patch
 from urllib.error import URLError
 from urllib.request import Request
 
-from common import Budget, Config, GuideError
-import llm
-import mcp_client
-import source
+from scholarguide.common import Budget, Config, GuideError
+from scholarguide import llm
+from scholarguide import mcp_client
+from scholarguide import source
 
 
 class RecordingProxy(BaseHTTPRequestHandler):

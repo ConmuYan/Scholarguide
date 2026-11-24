@@ -8,9 +8,9 @@ import unittest
 from pathlib import Path
 from urllib.error import HTTPError
 
-from common import Budget, GuideError
-from lune_quota import LuneQuotaStore
-from mcp_client import McpClient, ServerConfig
+from scholarguide.common import Budget, GuideError
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.mcp_client import McpClient, ServerConfig
 
 
 class MockTransport:
@@ -106,8 +106,8 @@ class LuneQuotaIntegrationTests(unittest.TestCase):
         self.assertEqual(self.transport.calls, [])
 
     def test_source_skill_propagates_caller_cancellation(self):
-        from common import RunCancelled
-        from source_store import SourceStore
+        from scholarguide.common import RunCancelled
+        from scholarguide.source_store import SourceStore
         from unittest.mock import patch
         store = SourceStore(Path(self.tmp.name) / 'sources.sqlite3')
         budget = Budget(5)
@@ -120,8 +120,8 @@ class LuneQuotaIntegrationTests(unittest.TestCase):
             store.close()
 
     def test_source_mcp_queue_observes_cancellation_while_waiting(self):
-        from common import RunCancelled
-        from source_store import SourceStore, _MCP_LOCK
+        from scholarguide.common import RunCancelled
+        from scholarguide.source_store import SourceStore, _MCP_LOCK
         budget = Budget(3)
         observed = []
         ready = threading.Event()

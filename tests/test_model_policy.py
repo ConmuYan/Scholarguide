@@ -8,10 +8,10 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from common import Budget,Config
-from llm import JsonLLM
-from model_identity import backend_identity,research_model_identity
-from model_policy import inference_policy
+from scholarguide.common import Budget,Config
+from scholarguide.llm import JsonLLM
+from scholarguide.model_identity import backend_identity,research_model_identity
+from scholarguide.model_policy import inference_policy
 
 class Reply(BytesIO):
     status=200
@@ -34,7 +34,7 @@ class ModelPolicyTests(unittest.TestCase):
                       'usage':{'prompt_tokens':12,'completion_tokens':9}}
             return Reply(json.dumps(data).encode())
         llm=JsonLLM(config,Budget(10))
-        with patch('llm.urlopen',side_effect=fetch):
+        with patch('scholarguide.llm.urlopen',side_effect=fetch):
             self.assertEqual(llm.generate(stage,'Return JSON.',{}, {'type':'object'},lambda value:None),{'ok':True})
         return captured[0],llm
 
@@ -74,7 +74,7 @@ class ModelPolicyTests(unittest.TestCase):
         for budget in (1000,120):
             for stage in ('assess','synthesis'):
                 llm=JsonLLM(self.config(),Budget(budget))
-                with patch('llm.urlopen',side_effect=fetch):
+                with patch('scholarguide.llm.urlopen',side_effect=fetch):
                     llm.generate(stage,'Return JSON.',{}, {'type':'object'},lambda value:None)
         self.assertAlmostEqual(deadlines[0],90)
         self.assertAlmostEqual(deadlines[1],180)

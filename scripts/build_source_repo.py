@@ -18,30 +18,22 @@ import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
 
-TOP_LEVEL_FILES = ('app.py', 'app_mcp.py', 'activity.py', 'agent_runtime.py', 'agent_tools.py',
-                   'api_schema.py', 'api_v1.py', 'common.py', 'controller.py', 'costing.py',
-                   'deletion_lifecycle.py', 'demo.py', 'diagnosis.py', 'domain_skill_runtime.py',
-                   'execution_events.py', 'intent.py', 'llm.py', 'lune_quota.py', 'lune_quota_schedule.py', 'mcp_client.py',
-                   'mcp_lune.py', 'mcp_lune_policy.py', 'mcp_plugin.py', 'mcp_skills.py',
-                   'memory_context.py', 'memory_store.py', 'memory_view.py', 'model_identity.py',
-                   'model_policy.py', 'native_tool_protocol.py', 'network.py', 'openai_oauth.py', 'oauth_diagnostics.py', 'preflight.py',
-                   'prompts.py', 'providers.py', 'quantities.py', 'recovery.py', 'report.py',
-                   'research_brief.py', 'research_landscape.py', 'research_policy.py',
-                   'research_runtime.py', 'research_specialist.py', 'retrieval.py', 'reuse.py',
-                   'session.py', 'source.py', 'source_parallel.py', 'source_scheduler.py',
-                   'source_store.py', 'specialist_pilot.py', 'state.py', 'tool_governance.py',
-                   'tools.py', 'update_cli.py', 'webapp.py', 'workflow.py',
+# The documented launchers and source registry retain their historical paths.
+TOP_LEVEL_MODULES = ('app.py', 'app_mcp.py', 'lune_quota_schedule.py', 'mcp_skills.py',
+                     'source.py', 'update_cli.py')
+TOP_LEVEL_FILES = TOP_LEVEL_MODULES + (
                    'README.md', 'README.zh-CN.md', 'PUBLIC_README.md', 'UPSTREAM.md', 'VERIFICATION.md',
                    'LICENSE', 'NOTICE.md', '.gitattributes', 'requirements.txt', 'requirements-dev.txt',
                    '.gitignore', '.env.example', 'state_schema.sql', 'mcp_servers.json',
                    'mcp_skills_lune.json')
-SOURCE_DIRS = ('web', 'tests', 'docs', 'scripts', 'examples', 'vendor', 'install', '.github', 'evaluation')
+SOURCE_DIRS = ('scholarguide', 'compat', 'web', 'tests', 'docs', 'scripts', 'examples', 'vendor', 'install', '.github', 'evaluation', 'frontierlitbench')
 ALWAYS_EXCLUDED_DIRS = {
     '__pycache__', '.venv', '.venv-upstream', '.cache', 'runs', 'archive', 'node_modules',
     'cloudflare-worker', 'cloudflare-pages', '.pi', '.codex', '.git', '.idea', '.vscode',
     'dist', 'build', 'outputs',
 }
-EXCLUDED_PATH_PARTS = {('evaluation', 'results'), ('scripts', 'offline_test_site')}
+EXCLUDED_PATH_PARTS = {('evaluation', 'results'),
+                       ('frontierlitbench', 'reports', 'paperseek_closed_world_fb11.md')}
 EXCLUDED_SUFFIXES = ('.pdf', '.pyc', '.pyo', '.log', '.sqlite', '.sqlite3', '.sqlite3-wal',
                      '.sqlite3-shm', '.zip', '.tar', '.gz', '.png', '.jpg', '.jpeg', '.gif', '.webp')
 EXCLUDED_NAMES = {'.env', 'NUL', 'auth.json', 'providers.json', 'sources.sqlite3',
@@ -148,7 +140,7 @@ def export(output: Path, include_evaluation: bool = True, all_docs: bool = False
     copied = []
     for path in candidates(all_docs=all_docs):
         relative = path.relative_to(ROOT)
-        if not include_evaluation and relative.parts[0] == 'evaluation':
+        if not include_evaluation and relative.parts[0] in ('evaluation', 'frontierlitbench'):
             continue
         if 'install' in relative.parts and path.suffix == '.in':
             pass  # Installer templates are published source, deliberately included.

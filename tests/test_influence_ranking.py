@@ -1,12 +1,12 @@
 import unittest
-from common import Paper, Request
-from source import merge_papers
-from workflow import select_papers, coverage
+from scholarguide.common import Paper, Request
+from scholarguide.source import merge_papers
+from scholarguide.workflow import select_papers, coverage
 
 class InfluenceRankingTests(unittest.TestCase):
     def test_crossref_rate_limit_does_not_use_unregistered_store_source(self):
         from types import SimpleNamespace
-        from source import AcademicSource
+        from scholarguide.source import AcademicSource
         source = AcademicSource.__new__(AcademicSource)
         source.store = SimpleNamespace(wait_for_rate=lambda *args: self.fail('unexpected store call'))
         source.last_call = {}
@@ -14,8 +14,8 @@ class InfluenceRankingTests(unittest.TestCase):
         self.assertIn('crossref', source.last_call)
 
     def test_crossref_requires_matching_published_conference_identity(self):
-        from source import AcademicSource
-        from research_policy import matched_publication
+        from scholarguide.source import AcademicSource
+        from scholarguide.research_policy import matched_publication
         source = AcademicSource.__new__(AcademicSource)
         message = {'DOI': '10.1109/CVPR52733.2024.00715',
                    'title': ['VidToMe: Video Token Merging for Zero-Shot Video Editing'],
@@ -38,8 +38,8 @@ class InfluenceRankingTests(unittest.TestCase):
 
     def test_exact_openalex_conference_publication_verification(self):
         from types import SimpleNamespace
-        from source import AcademicSource
-        from research_policy import matched_publication
+        from scholarguide.source import AcademicSource
+        from scholarguide.research_policy import matched_publication
         source = AcademicSource.__new__(AcademicSource)
         source.providers = ['openalex']
         source.config = SimpleNamespace(openalex_key='')
@@ -62,7 +62,7 @@ class InfluenceRankingTests(unittest.TestCase):
         self.assertIs(source.verify_openalex_publication(paper), paper)
 
     def test_recovers_only_a_literal_known_conference_whitelist(self):
-        from workflow import _restore_explicit_conferences
+        from scholarguide.workflow import _restore_explicit_conferences
         field = 'Eligible conferences: ICLR, ICML, NeurIPS, ACL, EMNLP, AAAI'
         plan = {'venue': '', 'unsupported': [field, 'code released']}
         _restore_explicit_conferences(plan, 'Only use the whitelist.\n' + field + '\nCount: 5')
@@ -93,8 +93,8 @@ class InfluenceRankingTests(unittest.TestCase):
         # and the result discloses that citations are only a limited proxy. The
         # former paired-wording text calibration is gone; the planner field and the
         # warning are the contract now.
-        from common import Config
-        from workflow import run
+        from scholarguide.common import Config
+        from scholarguide.workflow import run
         from tests.test_search_constraints import Planner, Source
         llm = Planner()
         llm.raw.update(topic='agents', query='agents', target_count=2, category='none',
@@ -132,8 +132,8 @@ class InfluenceRankingTests(unittest.TestCase):
 
     def test_exact_doi_citation_enrichment_and_bounded_calls(self):
         from types import SimpleNamespace
-        from common import Budget
-        from source import AcademicSource
+        from scholarguide.common import Budget
+        from scholarguide.source import AcademicSource
         source = AcademicSource.__new__(AcademicSource)
         source.store = None
         source.config = SimpleNamespace(openalex_key='')
@@ -159,8 +159,8 @@ class InfluenceRankingTests(unittest.TestCase):
 
     def test_enrichment_requires_authorized_provider(self):
         from types import SimpleNamespace
-        from common import Budget, GuideError
-        from source import AcademicSource
+        from scholarguide.common import Budget, GuideError
+        from scholarguide.source import AcademicSource
         source = AcademicSource.__new__(AcademicSource)
         source.store = None
         source.config = SimpleNamespace(openalex_key='')
@@ -174,10 +174,10 @@ class CitationPersistenceTests(unittest.TestCase):
         import sqlite3, tempfile
         from pathlib import Path
         from types import SimpleNamespace
-        from state import StateStore, SCHEMA_PATH
-        from session import ChatSession
-        from api_v1 import public_result
-        from api_schema import openapi_document
+        from scholarguide.state import StateStore, SCHEMA_PATH
+        from scholarguide.session import ChatSession
+        from scholarguide.api_v1 import public_result
+        from scholarguide.api_schema import openapi_document
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'state.sqlite'
             old_schema = SCHEMA_PATH.read_text(encoding='utf8').replace('  citation_count INTEGER,\n  citation_source TEXT NOT NULL DEFAULT \'\',\n  citation_observed_at TEXT NOT NULL DEFAULT \'\',\n', '')
@@ -210,8 +210,8 @@ class CitationEnrichmentPipelineTests(unittest.TestCase):
     def test_enrichment_bounded_before_assessment(self):
         from dataclasses import replace
         from tests.test_search_constraints import Planner, QUOTE
-        from common import Config
-        from workflow import run
+        from scholarguide.common import Config
+        from scholarguide.workflow import run
         class FakeSource:
             mode='demo'; providers=['openalex']
             def __init__(self): self.calls=[]
@@ -228,8 +228,8 @@ class CitationEnrichmentPipelineTests(unittest.TestCase):
 
     def test_unresolved_paid_failure_blocks_enrichment(self):
         from tests.test_search_constraints import Planner
-        from common import Config, GuideError
-        from workflow import run
+        from scholarguide.common import Config, GuideError
+        from scholarguide.workflow import run
         class FailedSource:
             mode='demo'; providers=['lune','openalex']
             def __init__(self): self.calls=0

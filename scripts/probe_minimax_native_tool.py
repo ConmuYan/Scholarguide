@@ -22,14 +22,14 @@ from urllib.request import Request
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, GuideError
-from native_tool_protocol import (
+from scholarguide.common import Budget, GuideError
+from scholarguide.native_tool_protocol import (
     PROBE_TOOL,
     extract_responses_tool_calls,
     responses_followup_input,
     responses_tool_payload,
 )
-from providers import ProviderStore
+from scholarguide.providers import ProviderStore
 
 MAX_REQUESTS = 2
 SCRIPT_VERSION = 'minimax-responses-native-tool-v5'
@@ -95,7 +95,7 @@ def _post(config, payload: dict[str, Any]) -> tuple[dict[str, Any], int, float]:
                                'Authorization': 'Bearer ' + config.api_key},
                       method='POST')
     started = time.monotonic()
-    with __import__('network').urlopen(request, timeout=min(float(config.request_timeout), 45.0)) as response:
+    with __import__('scholarguide.network', fromlist=['']).urlopen(request, timeout=min(float(config.request_timeout), 45.0)) as response:
         body = response.read(2_000_001)
         status = int(getattr(response, 'status', 200))
     if len(body) > 2_000_000:
@@ -126,7 +126,7 @@ def _script_sha256() -> str:
 
 
 def _protocol_sha256() -> str:
-    return hashlib.sha256((ROOT / 'native_tool_protocol.py').read_bytes()).hexdigest()
+    return hashlib.sha256((ROOT / 'scholarguide' / 'native_tool_protocol.py').read_bytes()).hexdigest()
 
 
 def _http_success(status: int) -> bool:

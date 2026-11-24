@@ -6,13 +6,13 @@ from types import SimpleNamespace
 import tempfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import Config, Paper
-from controller import BudgetView, ControlState, allowed_actions
-from demo import DemoSource
-from preflight import constraint_papers
-from recovery import recovery_patch
-from session import ChatSession
-from state import StateStore
+from scholarguide.common import Config, Paper
+from scholarguide.controller import BudgetView, ControlState, allowed_actions
+from scholarguide.demo import DemoSource
+from scholarguide.preflight import constraint_papers
+from scholarguide.recovery import recovery_patch
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
 
 
 def paper(venue='', year=None):

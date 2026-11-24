@@ -14,10 +14,10 @@ from urllib.request import Request
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from common import Budget, Config, GuideError
-from network import source_urlopen as urlopen
-from research_policy import publication_matches
-from source import AcademicSource
+from scholarguide.common import Budget, Config, GuideError
+from scholarguide.network import source_urlopen as urlopen
+from scholarguide.research_policy import publication_matches
+from scholarguide.source import AcademicSource
 
 
 def main():

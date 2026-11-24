@@ -9,12 +9,12 @@ from contextlib import nullcontext
 from unittest.mock import patch
 from pathlib import Path
 
-import mcp_client
-import mcp_lune
-import mcp_plugin
-import source as source_mod
-from common import GuideError
-from source import classify_source_error
+from scholarguide import mcp_client
+from scholarguide import mcp_lune
+from scholarguide import mcp_plugin
+from scholarguide import source as source_mod
+from scholarguide.common import GuideError
+from scholarguide.source import classify_source_error
 from tests.test_mcp_client import MockMcp, _result
 from tests.lune_quota_fixture import confirmed_quota
 
@@ -54,9 +54,9 @@ def _refresh_worker(path, barrier, results, force):
             f.write('1\n')
         return Response()
     try:
-        with patch('mcp_lune._read_token_data', side_effect=synchronized_read), \
-             patch('mcp_lune.urlopen', side_effect=transport), \
-             patch('mcp_lune._oauth_quota', return_value=nullcontext()):
+        with patch('scholarguide.mcp_lune._read_token_data', side_effect=synchronized_read), \
+             patch('scholarguide.mcp_lune.urlopen', side_effect=transport), \
+             patch('scholarguide.mcp_lune._oauth_quota', return_value=nullcontext()):
             result = mcp_lune.access_token(force_refresh=force)
         results.put(result == 'synthetic-new')
     except BaseException:
@@ -77,7 +77,7 @@ class TokenPersistenceTests(unittest.TestCase):
             original = b'{"access_token":"synthetic-old"}'
             path.write_bytes(original)
             with patch.dict(os.environ, {'SG_MCP_TOKEN_FILE': str(path)}), \
-                 patch('mcp_lune.os.replace', side_effect=OSError):
+                 patch('scholarguide.mcp_lune.os.replace', side_effect=OSError):
                 with self.assertRaises(OSError):
                     mcp_lune._save_tokens({'access_token': 'synthetic-new'})
             self.assertTrue(path.read_bytes() == original)
@@ -106,7 +106,7 @@ class TokenPersistenceTests(unittest.TestCase):
 
     def test_process_lock_wait_observes_cancellation(self):
         import threading
-        from common import Budget, RunCancelled
+        from scholarguide.common import Budget, RunCancelled
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'tokens.json'
             path.write_text(json.dumps({'access_token': 'synthetic-old', 'refresh_token': 'synthetic-refresh'}))
@@ -119,7 +119,7 @@ class TokenPersistenceTests(unittest.TestCase):
                 budget = Budget(2)
                 timer = threading.Timer(.15, budget.cancel_token.request)
                 with patch.dict(os.environ, {'SG_MCP_TOKEN_FILE': str(path)}), \
-                     patch('mcp_lune.urlopen') as transport:
+                     patch('scholarguide.mcp_lune.urlopen') as transport:
                     timer.start()
                     try:
                         with self.assertRaises(RunCancelled):
@@ -132,7 +132,7 @@ class TokenPersistenceTests(unittest.TestCase):
                 if worker.is_alive(): worker.terminate(); worker.join()
 
     def test_process_lock_released_on_process_exit(self):
-        from common import Budget
+        from scholarguide.common import Budget
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'tokens.json'
             ctx = multiprocessing.get_context('spawn')
@@ -151,7 +151,7 @@ class TokenPersistenceTests(unittest.TestCase):
 
     def test_oversized_oauth_response_is_bounded_and_unknown(self):
         from contextlib import nullcontext
-        from common import Budget, GuideError
+        from scholarguide.common import Budget, GuideError
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'tokens.json'
             original = json.dumps({'access_token': 'synthetic-old', 'refresh_token': 'synthetic-refresh',
@@ -165,8 +165,8 @@ class TokenPersistenceTests(unittest.TestCase):
                     sizes.append(size)
                     return b'x' * size
             with patch.dict(os.environ, {'SG_MCP_TOKEN_FILE': str(path)}), \
-                 patch('mcp_lune.urlopen', return_value=Response()), \
-                 patch('mcp_lune._oauth_quota', return_value=nullcontext()):
+                 patch('scholarguide.mcp_lune.urlopen', return_value=Response()), \
+                 patch('scholarguide.mcp_lune._oauth_quota', return_value=nullcontext()):
                 with self.assertRaises(GuideError) as caught:
                     mcp_lune.access_token(budget=Budget(2))
             self.assertEqual(caught.exception.code, 'oauth_refresh_unknown')
@@ -175,7 +175,7 @@ class TokenPersistenceTests(unittest.TestCase):
 
     def test_failed_rotated_token_save_stops_before_using_old_token(self):
         from contextlib import nullcontext
-        from common import Budget, GuideError
+        from scholarguide.common import Budget, GuideError
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'tokens.json'
             original = json.dumps({'access_token': 'synthetic-old', 'refresh_token': 'synthetic-refresh',
@@ -187,9 +187,9 @@ class TokenPersistenceTests(unittest.TestCase):
                 def read(self, size=-1):
                     return b'{"access_token":"synthetic-new","refresh_token":"synthetic-rotated"}'
             with patch.dict(os.environ, {'SG_MCP_TOKEN_FILE': str(path)}), \
-                 patch('mcp_lune.urlopen', return_value=Response()), \
-                 patch('mcp_lune._oauth_quota', return_value=nullcontext()), \
-                 patch('mcp_lune._save_tokens', side_effect=OSError('synthetic-private')):
+                 patch('scholarguide.mcp_lune.urlopen', return_value=Response()), \
+                 patch('scholarguide.mcp_lune._oauth_quota', return_value=nullcontext()), \
+                 patch('scholarguide.mcp_lune._save_tokens', side_effect=OSError('synthetic-private')):
                 with self.assertRaises(GuideError) as caught:
                     mcp_lune.access_token(budget=Budget(2))
             self.assertEqual(caught.exception.code, 'oauth_rotation_persist_failed')
@@ -202,7 +202,7 @@ class TokenPersistenceTests(unittest.TestCase):
             path.write_text(json.dumps({'access_token': 'synthetic-new', 'refresh_token': 'synthetic-rotated',
                                         'expires_at': int(time.time()) + 3600}))
             with patch.dict(os.environ, {'SG_MCP_TOKEN_FILE': str(path)}), \
-                 patch('mcp_lune.urlopen') as transport:
+                 patch('scholarguide.mcp_lune.urlopen') as transport:
                 result = mcp_lune.access_token(force_refresh=True, rejected_token='synthetic-old')
             self.assertTrue(result == 'synthetic-new')
             transport.assert_not_called()
@@ -218,8 +218,8 @@ class TokenPersistenceTests(unittest.TestCase):
                 def read(self, size=-1):
                     return b'{"access_token":"synthetic-new","refresh_token":"synthetic-rotated"}'
             with patch.dict(os.environ, {'SG_MCP_TOKEN_FILE': str(path)}), \
-                 patch('mcp_lune.urlopen', return_value=Response()) as transport, \
-                 patch('mcp_lune._oauth_quota', return_value=nullcontext()):
+                 patch('scholarguide.mcp_lune.urlopen', return_value=Response()) as transport, \
+                 patch('scholarguide.mcp_lune._oauth_quota', return_value=nullcontext()):
                 result = mcp_lune.access_token(force_refresh=True, rejected_token='synthetic-old')
             self.assertTrue(result == 'synthetic-new')
             self.assertEqual(transport.call_count, 1)
@@ -296,7 +296,7 @@ class ProviderTests(unittest.TestCase):
     def test_oauth_refresh_uses_budget_and_saves_rotated_token_before_cancel(self):
         from unittest.mock import patch
         from contextlib import nullcontext
-        from common import Budget, RunCancelled
+        from scholarguide.common import Budget, RunCancelled
         budget = Budget(2)
         observed = {}
         class Response:
@@ -309,10 +309,10 @@ class ProviderTests(unittest.TestCase):
             observed['timeout'] = timeout
             return Response()
         old = {'access_token': 'old-synthetic', 'refresh_token': 'original-synthetic', 'expires_at': 0}
-        with patch('mcp_lune._read_token_data', return_value=old), \
-             patch('mcp_lune.urlopen', side_effect=transport), \
-             patch('mcp_lune._oauth_quota', return_value=nullcontext(), create=True), \
-             patch('mcp_lune._save_tokens') as save:
+        with patch('scholarguide.mcp_lune._read_token_data', return_value=old), \
+             patch('scholarguide.mcp_lune.urlopen', side_effect=transport), \
+             patch('scholarguide.mcp_lune._oauth_quota', return_value=nullcontext(), create=True), \
+             patch('scholarguide.mcp_lune._save_tokens') as save:
             with self.assertRaises(RunCancelled):
                 mcp_lune.access_token(budget=budget)
         self.assertLessEqual(observed['timeout'], 2)
@@ -339,9 +339,9 @@ class ProviderTests(unittest.TestCase):
         server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
         thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
         try:
-            with patch('mcp_lune.ISSUER', f'http://127.0.0.1:{server.server_port}'), \
-                 patch('mcp_lune._oauth_quota', return_value=nullcontext()), \
-                 patch('mcp_lune._save_tokens'):
+            with patch('scholarguide.mcp_lune.ISSUER', f'http://127.0.0.1:{server.server_port}'), \
+                 patch('scholarguide.mcp_lune._oauth_quota', return_value=nullcontext()), \
+                 patch('scholarguide.mcp_lune._save_tokens'):
                 with self.assertRaises(HTTPError) as caught:
                     mcp_lune._refresh({'refresh_token': 'synthetic'})
                 caught.exception.close()
@@ -353,13 +353,13 @@ class ProviderTests(unittest.TestCase):
         import tempfile
         from pathlib import Path
         from unittest.mock import patch
-        from common import Budget
+        from scholarguide.common import Budget
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'quota.sqlite3'
             old = {'access_token': 'old-synthetic', 'refresh_token': 'refresh-synthetic', 'expires_at': 0}
-            with patch('lune_quota.default_quota_path', return_value=path), \
-                 patch('mcp_lune._read_token_data', return_value=old), \
-                 patch('mcp_lune.urlopen') as transport:
+            with patch('scholarguide.lune_quota.default_quota_path', return_value=path), \
+                 patch('scholarguide.mcp_lune._read_token_data', return_value=old), \
+                 patch('scholarguide.mcp_lune.urlopen') as transport:
                 with self.assertRaises(GuideError) as caught:
                     mcp_lune.access_token(budget=Budget(2))
             self.assertEqual(caught.exception.code, 'quota_no_snapshot')
@@ -370,17 +370,17 @@ class ProviderTests(unittest.TestCase):
         import time
         from pathlib import Path
         from unittest.mock import patch
-        from common import Budget
-        from lune_quota import LuneQuotaStore
+        from scholarguide.common import Budget
+        from scholarguide.lune_quota import LuneQuotaStore
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'quota.sqlite3'
             store = LuneQuotaStore(path)
             store.confirm(2, time.time() + 60)
             try:
                 old = {'access_token': 'old-synthetic', 'refresh_token': 'refresh-synthetic', 'expires_at': 0}
-                with patch('lune_quota.default_quota_path', return_value=path), \
-                     patch('mcp_lune._read_token_data', return_value=old), \
-                     patch('mcp_lune.urlopen', side_effect=TimeoutError('synthetic')):
+                with patch('scholarguide.lune_quota.default_quota_path', return_value=path), \
+                     patch('scholarguide.mcp_lune._read_token_data', return_value=old), \
+                     patch('scholarguide.mcp_lune.urlopen', side_effect=TimeoutError('synthetic')):
                     with self.assertRaises(GuideError) as caught:
                         mcp_lune.access_token(budget=Budget(2))
                     self.assertEqual(caught.exception.code, 'oauth_refresh_unknown')
@@ -392,7 +392,7 @@ class ProviderTests(unittest.TestCase):
     def test_oauth_lock_wait_observes_cancellation(self):
         import threading
         import time
-        from common import Budget, RunCancelled
+        from scholarguide.common import Budget, RunCancelled
         budget, entered, errors = Budget(3), threading.Event(), []
         def worker():
             entered.set()
@@ -429,7 +429,7 @@ class ProviderTests(unittest.TestCase):
     def test_waiting_for_shared_provider_lock_observes_cancellation(self):
         import threading
         import time
-        from common import Budget, RunCancelled
+        from scholarguide.common import Budget, RunCancelled
         budget = Budget(3)
         provider, _ = self.provider(search_script(), max_requests=5)
         entered, errors = threading.Event(), []
@@ -506,7 +506,7 @@ class ProviderTests(unittest.TestCase):
             'url': 'http://example.invalid/mcp', 'headers': {'Authorization': 'Bearer local'}}}}),
             encoding='utf-8')
         provider = mcp_lune.LuneProvider(config_path=cfg, ledger_path=self.ledger, max_requests=1)
-        with patch('mcp_lune.access_token') as token:
+        with patch('scholarguide.mcp_lune.access_token') as token:
             with self.assertRaises(GuideError):
                 provider.client()
         token.assert_not_called()

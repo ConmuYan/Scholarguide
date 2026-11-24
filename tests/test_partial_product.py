@@ -3,13 +3,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from api_v1 import public_result
-from common import Budget, Config, Paper, RunCancelled
-from demo import ChatDemoLLM, DemoLLM, DemoSource
-from session import ChatSession
-from source import SearchBatch, SourceRun
-from state import StateStore
-from workflow import run
+from scholarguide.api_v1 import public_result
+from scholarguide.common import Budget, Config, Paper, RunCancelled
+from scholarguide.demo import ChatDemoLLM, DemoLLM, DemoSource
+from scholarguide.session import ChatSession
+from scholarguide.source import SearchBatch, SourceRun
+from scholarguide.state import StateStore
+from scholarguide.workflow import run
 
 
 class PartialSource(DemoSource):
@@ -50,8 +50,8 @@ class PartialProductTests(unittest.TestCase):
         self.assertNotIn('evidence', public['candidates'][0])
 
     def test_partial_batch_is_bound_to_query_provider_and_outcome(self):
-        from common import GuideError
-        from source import retained_partial_batch
+        from scholarguide.common import GuideError
+        from scholarguide.source import retained_partial_batch
         source = PartialSource(Budget(5))
         with self.assertRaises(RunCancelled) as caught:
             source.search('fixture', 1)
@@ -66,9 +66,9 @@ class PartialProductTests(unittest.TestCase):
         self.assertIsNone(retained_partial_batch(fake, 'fixture', ['lune'], 1))
 
     def test_partial_batch_obeys_year_filter(self):
-        from common import GuideError
+        from scholarguide.common import GuideError
         from unittest.mock import patch
-        from source import AcademicSource
+        from scholarguide.source import AcademicSource
         source = AcademicSource(Config(source='lune', cache=False), Budget(3))
         error = GuideError('synthetic failure')
         error.remote_outcome, error.retry_safe, error.partial_search = 'unknown', False, True

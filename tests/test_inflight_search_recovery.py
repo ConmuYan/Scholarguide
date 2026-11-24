@@ -21,17 +21,17 @@ from urllib.request import Request
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, Config, GuideError, RunCancelled
-from demo import DemoLLM, DemoSource
-from network import execution_context, urlopen
-from recovery import (JobLease, JournalLLM, JournalSource, RecoveryUnsafe,
+from scholarguide.common import Budget, Config, GuideError, RunCancelled
+from scholarguide.demo import DemoLLM, DemoSource
+from scholarguide.network import execution_context, urlopen
+from scholarguide.recovery import (JobLease, JournalLLM, JournalSource, RecoveryUnsafe,
                       SearchJournal, atomic_json)
-from webapp import Jobs, create_server
+from scholarguide.webapp import Jobs, create_server
 
 
 def _fixture_worker(directory, action, gate):
     """Executed in a genuinely separate process; the parent can hard-kill it."""
-    import webapp
+    from scholarguide import webapp
     directory = Path(directory)
     config = Config(provider='openai', base_url='http://fixture.invalid/v1',
                     model='recovery-local-fixture', batch_size=2, research_mode=False,
@@ -288,7 +288,7 @@ class DurableSearchRecoveryTests(unittest.TestCase):
         self.assertFalse(snapshot['result']['config']['research_mode'])
 
     def test_export_preserves_research_coverage_and_escapes_model_fields(self):
-        from report import markdown
+        from scholarguide.report import markdown
         text = markdown({'mode': 'live', 'method': 'A', 'status': 'partial',
                          'stop_reason': 'budget', 'papers': [],
                          'research_coverage': {'scope': 'landscape', 'status': 'partial',

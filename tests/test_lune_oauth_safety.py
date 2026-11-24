@@ -13,7 +13,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from unittest.mock import patch
 
-from lune_quota import LuneQuotaStore
+from scholarguide.lune_quota import LuneQuotaStore
 
 spec = importlib.util.spec_from_file_location('lune_oauth_safety', Path(__file__).resolve().parents[1] / 'scripts' / 'lune_oauth.py')
 oauth = importlib.util.module_from_spec(spec)

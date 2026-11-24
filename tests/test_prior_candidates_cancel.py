@@ -6,9 +6,9 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.verify_delivery import isolated_environment
-from common import Budget, BudgetExceeded, Config, GuideError, Paper, RunCancelled
-from source import AcademicSource, SearchBatch, SourceRun, retained_partial_batch
-from source_store import SourceStore
+from scholarguide.common import Budget, BudgetExceeded, Config, GuideError, Paper, RunCancelled
+from scholarguide.source import AcademicSource, SearchBatch, SourceRun, retained_partial_batch
+from scholarguide.source_store import SourceStore
 
 
 class PriorCandidatesCancelTests(unittest.TestCase):
@@ -111,8 +111,8 @@ class PriorCandidatesCancelTests(unittest.TestCase):
         import time
         from contextlib import nullcontext
         from unittest.mock import patch
-        from common import Budget, Config
-        from source import AcademicSource
+        from scholarguide.common import Budget, Config
+        from scholarguide.source import AcademicSource
         budget = Budget(.7)
         source = AcademicSource(Config(source='deepseek', deepseek_search_key='fixture', cache=False), budget)
         original = source._deepseek_target_key
@@ -125,7 +125,7 @@ class PriorCandidatesCancelTests(unittest.TestCase):
             return io.BytesIO(b'{}')
         with patch.object(source, '_source_slot', return_value=nullcontext()), \
              patch.object(source, '_wait_for'), patch.object(source, '_wait_for_cooldown', return_value=False), \
-             patch.object(source, '_deepseek_target_key', side_effect=delayed), patch('source.urlopen', side_effect=send):
+             patch.object(source, '_deepseek_target_key', side_effect=delayed), patch('scholarguide.source.urlopen', side_effect=send):
             source._request_bytes('https://api.deepseek.com/v1/tools/search', 'deepseek',
                                   {'Authorization': 'Bearer fixture'}, b'{}', 'POST', 1)
         self.assertEqual(len(captured), 1)

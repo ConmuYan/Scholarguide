@@ -13,12 +13,12 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tests')]
-from common import Config, GuideError
-from controller import Decision
-from llm import JsonLLM
+from scholarguide.common import Config, GuideError
+from scholarguide.controller import Decision
+from scholarguide.llm import JsonLLM
 from scripts.verify_delivery import isolated_environment
-from session import ChatSession
-from state import StateStore
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
 from test_session import FakeLLM, FakeSource
 
 

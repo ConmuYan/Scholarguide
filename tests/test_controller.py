@@ -9,8 +9,8 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import GuideError
-from controller import (
+from scholarguide.common import GuideError
+from scholarguide.controller import (
     ACTIONS,
     BudgetView,
     ControlState,
@@ -22,7 +22,7 @@ from controller import (
     partial_reason,
     validate_decision,
 )
-from tools import CostMeter
+from scholarguide.tools import CostMeter
 
 
 def state(**kw):
@@ -205,8 +205,8 @@ class RecordDecisionTests(unittest.TestCase):
     def test_rejection_is_recorded_as_invalid_action(self):
         import tempfile
         from pathlib import Path as _Path
-        from state import StateStore
-        from controller import record_decision
+        from scholarguide.state import StateStore
+        from scholarguide.controller import record_decision
 
         with tempfile.TemporaryDirectory() as tmp:
             store = StateStore(_Path(tmp) / 's.sqlite3')

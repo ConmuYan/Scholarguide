@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from deletion_lifecycle import DeletionLifecycle, Tombstoned, UnsupportedPlatform
+from scholarguide.experimental.deletion_lifecycle import DeletionLifecycle, Tombstoned, UnsupportedPlatform
 
 ID = "a" * 32
 OTHER = "b" * 32
@@ -61,14 +61,14 @@ def crash_during_tombstone(root):
         if os.readlink('/proc/self/fd/' + str(fd)).endswith('.tombstone'):
             os._exit(73)
         return real_fsync(fd)
-    with mock.patch('deletion_lifecycle.os.fsync', side_effect=crash):
+    with mock.patch('scholarguide.experimental.deletion_lifecycle.os.fsync', side_effect=crash):
         DeletionLifecycle(root).tombstone('session', ID)
 
 
 class UnsupportedTests(unittest.TestCase):
     def test_windows_fails_before_any_path_access(self):
-        with mock.patch("deletion_lifecycle.sys.platform", "win32"), \
-                mock.patch("deletion_lifecycle.os.open") as opened:
+        with mock.patch("scholarguide.experimental.deletion_lifecycle.sys.platform", "win32"), \
+                mock.patch("scholarguide.experimental.deletion_lifecycle.os.open") as opened:
             with self.assertRaises(UnsupportedPlatform):
                 DeletionLifecycle(r"C:\anything\junction")
             opened.assert_not_called()
@@ -96,7 +96,7 @@ class WindowsFailClosedTests(unittest.TestCase):
                 with self.assertRaises(UnsupportedPlatform):
                     DeletionLifecycle(junction)
                 # A fresh, real Windows process must also refuse the real junction.
-                script = ("import sys; from deletion_lifecycle import "
+                script = ("import sys; from scholarguide.experimental.deletion_lifecycle import "
                           "DeletionLifecycle, UnsupportedPlatform\n"
                           "try: DeletionLifecycle(sys.argv[1])\n"
                           "except UnsupportedPlatform: sys.exit(73)\n"
@@ -252,7 +252,7 @@ class LifecycleTests(unittest.TestCase):
             if os.readlink('/proc/self/fd/' + str(fd)).endswith('.tombstone'):
                 raise OSError('synthetic fsync failure')
             return real_fsync(fd)
-        with mock.patch('deletion_lifecycle.os.fsync', side_effect=fail_tombstone):
+        with mock.patch('scholarguide.experimental.deletion_lifecycle.os.fsync', side_effect=fail_tombstone):
             with self.assertRaises(OSError):
                 self.lifecycle.tombstone('session', ID)
         # Existing but not-yet-confirmed marker is never treated as reusable.
@@ -304,10 +304,10 @@ class LifecycleTests(unittest.TestCase):
         with self.assertRaises(PermissionError):
             DeletionLifecycle(self.root)
         self.root.chmod(0o700)
-        with mock.patch('deletion_lifecycle.os.mkdir', side_effect=PermissionError('denied')):
+        with mock.patch('scholarguide.experimental.deletion_lifecycle.os.mkdir', side_effect=PermissionError('denied')):
             with self.assertRaises(PermissionError):
                 self.lifecycle.tombstone('session', ID)
-        with mock.patch('deletion_lifecycle.os.fsync', side_effect=PermissionError('denied')):
+        with mock.patch('scholarguide.experimental.deletion_lifecycle.os.fsync', side_effect=PermissionError('denied')):
             with self.assertRaises(PermissionError):
                 self.lifecycle.tombstone('session', ID)
 

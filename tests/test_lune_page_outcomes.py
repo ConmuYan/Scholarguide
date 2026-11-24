@@ -8,11 +8,11 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from common import Budget, BudgetExceeded, Config, RunCancelled
-from lune_quota import LuneQuotaStore
-from mcp_client import McpClient, ServerConfig
-from mcp_lune import LuneProvider
-from source import AcademicSource
+from scholarguide.common import Budget, BudgetExceeded, Config, RunCancelled
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.mcp_client import McpClient, ServerConfig
+from scholarguide.mcp_lune import LuneProvider
+from scholarguide.source import AcademicSource
 
 
 class PageOutcomeTests(unittest.TestCase):
@@ -56,8 +56,8 @@ class PageOutcomeTests(unittest.TestCase):
             def run():
                 try:
                     if router:
-                        from retrieval import RetrievalRouter
-                        from agent_tools import ToolRegistry
+                        from scholarguide.retrieval import RetrievalRouter
+                        from scholarguide.agent_tools import ToolRegistry
                         tools = ToolRegistry.from_source(source) if router == 'registry' else None
                         results.append(RetrievalRouter(source.config, source, tools=tools).retrieve(
                             {'topic': 'fixture', 'target_count': 10}, 'fixture'))
@@ -65,7 +65,7 @@ class PageOutcomeTests(unittest.TestCase):
                         source.search_batch('fixture', limit=10)
                 except BaseException as exc:
                     errors.append(exc)
-            with patch('mcp_lune.install', return_value=provider), \
+            with patch('scholarguide.mcp_lune.install', return_value=provider), \
                  patch.object(source, 'available', return_value=True), \
                  patch.object(source, '_wait_for'), \
                  patch.object(quota, 'reserve', side_effect=reserve), \
@@ -136,10 +136,10 @@ class PageOutcomeTests(unittest.TestCase):
                                    quota_store=quota)
                 provider = LuneProvider(client=client, ledger_path=root / 'ledger.json')
                 source = AcademicSource(Config(source='lune', cache=False), Budget(3))
-                with patch('mcp_lune.install', return_value=provider), \
+                with patch('scholarguide.mcp_lune.install', return_value=provider), \
                      patch.object(source, 'available', return_value=True), \
                      patch.object(source, '_wait_for'):
-                    from common import GuideError
+                    from scholarguide.common import GuideError
                     with self.assertRaises(GuideError) as caught:
                         source.search_batch('fixture', limit=10)
                 self.assertEqual(offsets, [0, 1])

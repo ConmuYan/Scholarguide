@@ -7,10 +7,10 @@ import threading
 import time
 import unittest
 
-from demo import demo_run
-from providers import ProviderStore
-from report import bibtex, markdown
-from webapp import ChatService, Jobs, create_server
+from scholarguide.demo import demo_run
+from scholarguide.providers import ProviderStore
+from scholarguide.report import bibtex, markdown
+from scholarguide.webapp import ChatService, Jobs, create_server
 
 
 class BibliographyTests(unittest.TestCase):

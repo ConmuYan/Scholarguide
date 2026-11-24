@@ -1,7 +1,7 @@
 """Offline contracts for the unfinished opt-in session lifecycle."""
 import unittest
 
-from mcp_client import McpClient, McpError, ServerConfig, _validate_session_id, _validate_session_protocol
+from scholarguide.mcp_client import McpClient, McpError, ServerConfig, _validate_session_id, _validate_session_protocol
 
 
 class LifecycleFailClosedTests(unittest.TestCase):

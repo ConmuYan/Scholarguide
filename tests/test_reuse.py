@@ -5,8 +5,8 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from reuse import plan_reuse, record_reuse, verify_delivery
-from state import StateStore, semantic_key
+from scholarguide.reuse import plan_reuse, record_reuse, verify_delivery
+from scholarguide.state import StateStore, semantic_key
 
 MODEL = 'deepseek-flash'
 PROMPT = 'assess-v2'

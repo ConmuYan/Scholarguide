@@ -9,11 +9,11 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from common import Budget, Config, Paper, Request
-from research_policy import publication_matches
-from source import AcademicSource, merge_papers
-from state import StateStore
-from workflow import select_papers
+from scholarguide.common import Budget, Config, Paper, Request
+from scholarguide.research_policy import publication_matches
+from scholarguide.source import AcademicSource, merge_papers
+from scholarguide.state import StateStore
+from scholarguide.workflow import select_papers
 
 
 WORK = {

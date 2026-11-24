@@ -8,9 +8,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from common import Budget, Config
-from source import AcademicSource
-from source_store import SourceStore
+from scholarguide.common import Budget, Config
+from scholarguide.source import AcademicSource
+from scholarguide.source_store import SourceStore
 
 
 def _older_success(path, started, proceed, output):

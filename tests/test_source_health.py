@@ -4,8 +4,8 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import Budget, Config, GuideError
-from source import AcademicSource
+from scholarguide.common import Budget, Config, GuideError
+from scholarguide.source import AcademicSource
 
 
 class SourceHealthTests(unittest.TestCase):
@@ -26,7 +26,7 @@ class SourceHealthTests(unittest.TestCase):
         import time
         from tempfile import TemporaryDirectory
         from unittest.mock import patch
-        from source_store import SourceStore
+        from scholarguide.source_store import SourceStore
         with TemporaryDirectory() as tmp:
             path = Path(tmp) / 'source.db'
             store = SourceStore(path)
@@ -36,7 +36,7 @@ class SourceHealthTests(unittest.TestCase):
             try:
                 budget = Budget(3)
                 source = AcademicSource(Config(source='dblp', cache=False, source_store=store), budget)
-                with patch.object(source, '_search_one') as dispatch, patch('source.urlopen') as network:
+                with patch.object(source, '_search_one') as dispatch, patch('scholarguide.source.urlopen') as network:
                     for call in (lambda: source.search_batch('fixture'), lambda: source.search('fixture')):
                         with self.assertRaises(GuideError) as caught:
                             call()
@@ -67,8 +67,8 @@ class SourceHealthTests(unittest.TestCase):
         import time
         from tempfile import TemporaryDirectory
         from unittest.mock import patch
-        from common import Paper
-        from source_store import SourceStore
+        from scholarguide.common import Paper
+        from scholarguide.source_store import SourceStore
         with TemporaryDirectory() as tmp:
             store = SourceStore(Path(tmp) / 'source.db')
             try:
@@ -76,7 +76,7 @@ class SourceHealthTests(unittest.TestCase):
                 source = AcademicSource(Config(source='dblp,openalex', cache=False, source_store=store), Budget(3))
                 paper = Paper('fixture', 'Fixture title', 'Abstract', 'https://fixture.invalid/paper')
                 with patch.object(source, '_search_one', return_value=[paper]) as dispatch, \
-                     patch('source.urlopen') as network:
+                     patch('scholarguide.source.urlopen') as network:
                     batch = source.search_batch('fixture')
                 self.assertEqual(batch.papers, [paper])
                 self.assertEqual([run.status for run in batch.runs], ['skipped', 'ok'])
@@ -91,9 +91,9 @@ class SourceHealthTests(unittest.TestCase):
         import sqlite3
         from tempfile import TemporaryDirectory
         from unittest.mock import patch
-        from execution_events import bind_events
-        from source import SourceTransportError
-        from source_store import SourceStore
+        from scholarguide.execution_events import bind_events
+        from scholarguide.source import SourceTransportError
+        from scholarguide.source_store import SourceStore
         events = []
         with TemporaryDirectory() as tmp:
             store = SourceStore(Path(tmp) / 'source.db')
@@ -119,23 +119,25 @@ class SourceHealthTests(unittest.TestCase):
 
     def test_pause_event_never_contains_unrecognized_provider_or_failure_text(self):
         from unittest.mock import Mock
-        from execution_events import bind_events
+        from scholarguide.execution_events import bind_events
         events = []
         source = AcademicSource(Config(source='dblp', cache=False), Budget(3))
         source.store = Mock()
         source.store.cooldown.side_effect = OSError('private-db-text')
         with bind_events(lambda action, payload: events.append((action, payload))):
             source._pause('private-provider', 2, 'private-remote-text')
-        self.assertEqual(events[0][0], 'source_cooldown_failed')
-        self.assertEqual(events[0][1]['source'], 'unknown')
+        # Unknown providers are kept out of the persistent source store; no
+        # write was attempted, so reporting a write failure would be misleading.
+        source.store.cooldown.assert_not_called()
+        self.assertEqual(events, [])
         for text in ('private-provider', 'private-db-text', 'private-remote-text'):
             self.assertNotIn(text, str(events))
 
     def test_cooldown_check_respects_cancel_and_expired_budget(self):
         from tempfile import TemporaryDirectory
         from unittest.mock import patch
-        from common import BudgetExceeded, RunCancelled
-        from source_store import SourceStore
+        from scholarguide.common import BudgetExceeded, RunCancelled
+        from scholarguide.source_store import SourceStore
         with TemporaryDirectory() as tmp:
             store = SourceStore(Path(tmp) / 'source.db')
             try:
@@ -164,9 +166,9 @@ class SourceHealthTests(unittest.TestCase):
         self.assertGreaterEqual(health['dblp']['failures'], 1)
 
     def test_local_quota_failure_retains_actionable_code(self):
-        from lune_quota import LuneQuotaStore
+        from scholarguide.lune_quota import LuneQuotaStore
         from tempfile import TemporaryDirectory
-        from source import classify_source_error
+        from scholarguide.source import classify_source_error
         with TemporaryDirectory() as tmp:
             with LuneQuotaStore(Path(tmp) / 'quota.sqlite3') as ledger:
                 with self.assertRaises(GuideError) as caught:
@@ -183,8 +185,8 @@ class SourceHealthTests(unittest.TestCase):
 
     def test_success_cooldown_and_audit_failures_do_not_erase_result(self):
         from unittest.mock import patch
-        from execution_events import bind_events
-        from source_store import SourceStore
+        from scholarguide.execution_events import bind_events
+        from scholarguide.source_store import SourceStore
         import sqlite3
         from tempfile import TemporaryDirectory
         events = []
@@ -212,9 +214,9 @@ class SourceHealthTests(unittest.TestCase):
         import time
         from tempfile import TemporaryDirectory
         from unittest.mock import patch
-        from execution_events import bind_events
-        from source import SourceRun
-        from source_store import SourceStore
+        from scholarguide.execution_events import bind_events
+        from scholarguide.source import SourceRun
+        from scholarguide.source_store import SourceStore
         events = []
         with TemporaryDirectory() as tmp:
             store = SourceStore(Path(tmp) / 'source.db')
@@ -240,7 +242,7 @@ class SourceHealthTests(unittest.TestCase):
                 store.close()
 
     def test_failed_search_event_omits_query_filters_and_remote_error(self):
-        from execution_events import bind_events
+        from scholarguide.execution_events import bind_events
         events = []
         source = AcademicSource(Config(source='dblp', cache=False), Budget(2))
         def fail(*args):
@@ -258,7 +260,7 @@ class SourceHealthTests(unittest.TestCase):
         import time
         from unittest.mock import patch
         from tempfile import TemporaryDirectory
-        from source_store import SourceStore
+        from scholarguide.source_store import SourceStore
         with TemporaryDirectory() as tmp:
             store = SourceStore(Path(tmp) / 'source.db')
             try:

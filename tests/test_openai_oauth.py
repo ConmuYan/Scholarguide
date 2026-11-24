@@ -17,8 +17,8 @@ except ImportError:
     jwt = None
     rsa = None
 
-import openai_oauth as oauth
-from common import GuideError, RunCancelled
+from scholarguide import openai_oauth as oauth
+from scholarguide.common import GuideError, RunCancelled
 
 
 class OAuthTests(unittest.TestCase):

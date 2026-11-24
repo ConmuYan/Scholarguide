@@ -8,8 +8,8 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import GuideError, Paper, Request
-import workflow
+from scholarguide.common import GuideError, Paper, Request
+from scholarguide import workflow
 
 PLAN = {'scope':'landscape', 'facets':[
     {'id':'geometry','label':'Geometric reconstruction','query':'3D geometric reconstruction'},
@@ -80,7 +80,7 @@ class LandscapeSelectionTests(unittest.TestCase):
         self.assertEqual(selected,plain)
 
     def test_equal_route_coverage_preserves_existing_publication_preference_order(self):
-        from research_landscape import diversify
+        from scholarguide.research_landscape import diversify
         preferred,preferred_row,preferred_route=candidate('preferred',fit=90)
         other,other_row,other_route=candidate('other',fit=99)
         # The caller has already ranked publication preference within comparable
@@ -92,7 +92,7 @@ class LandscapeSelectionTests(unittest.TestCase):
 
 class LandscapeValidationTests(unittest.TestCase):
     def module(self):
-        import research_landscape
+        from scholarguide import research_landscape
         return research_landscape
 
     def test_plan_rejects_duplicate_facets_and_focused_with_routes(self):
@@ -215,7 +215,7 @@ class LandscapeRuntimeTests(unittest.TestCase):
         return Model()
 
     def workflow(self, *, invalid=False, focused=False, cancelled=False, method='A'):
-        from common import Budget,Config
+        from scholarguide.common import Budget,Config
         from test_research_runtime import OfflineSource
         papers,_,_=inputs()
         source=OfflineSource([papers[:3],[papers[3]]])
@@ -263,10 +263,10 @@ class LandscapeRuntimeTests(unittest.TestCase):
         self.assertEqual(len(result['queries']),1)
 
     def test_chat_legacy_and_graph_recover_same_persisted_coverage_without_model_call(self):
-        from common import Config
-        from session import ChatSession
-        from state import StateStore
-        from research_runtime import current_landscape
+        from scholarguide.common import Config
+        from scholarguide.session import ChatSession
+        from scholarguide.state import StateStore
+        from scholarguide.research_runtime import current_landscape
         from test_research_runtime import OfflineSource
         for runtime in ('legacy','langgraph'):
             with self.subTest(runtime=runtime),tempfile.TemporaryDirectory() as directory:

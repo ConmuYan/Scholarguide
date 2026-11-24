@@ -9,9 +9,9 @@ import time
 import unittest
 from unittest.mock import patch
 
-from memory_store import MemoryStore
+from scholarguide.memory_store import MemoryStore
 from scripts.verify_delivery import isolated_environment
-from webapp import ChatService, create_server
+from scholarguide.webapp import ChatService, create_server
 
 
 class ProductViewTests(unittest.TestCase):
@@ -76,7 +76,7 @@ class ProductViewTests(unittest.TestCase):
         self.assertEqual(self.request({'selected': True})[2], {'status': 'not_applied', 'paper_ids': []})
 
     def test_database_change_during_presentation_fails_closed(self):
-        from memory_context import MemoryContext
+        from scholarguide.memory_context import MemoryContext
         with MemoryStore(self.db) as store:
             store.grant('prefer_recent', True, consent=True, expires_at=time.time() + 300,
                         expected_revision=0)

@@ -10,17 +10,17 @@ import unittest
 from unittest.mock import patch
 from urllib.error import HTTPError
 
-from agent_tools import ToolRegistry
-from common import Budget, CancellationToken, Config, RunCancelled
-from demo import ChatDemoLLM, DemoLLM, DemoSource
-from llm import JsonLLM
-from providers import ProviderStore
-from retrieval import RetrievalRouter
-from session import ChatSession
-from source import AcademicSource, SearchBatch, SourceRun
-from state import StateStore
-from workflow import run
-from webapp import ChatService, Jobs, create_server
+from scholarguide.agent_tools import ToolRegistry
+from scholarguide.common import Budget, CancellationToken, Config, RunCancelled
+from scholarguide.demo import ChatDemoLLM, DemoLLM, DemoSource
+from scholarguide.llm import JsonLLM
+from scholarguide.providers import ProviderStore
+from scholarguide.retrieval import RetrievalRouter
+from scholarguide.session import ChatSession
+from scholarguide.source import AcademicSource, SearchBatch, SourceRun
+from scholarguide.state import StateStore
+from scholarguide.workflow import run
+from scholarguide.webapp import ChatService, Jobs, create_server
 
 
 class CancellationTests(unittest.TestCase):
@@ -173,7 +173,7 @@ class CancellationTests(unittest.TestCase):
                 return json.dumps({'choices': [{'message': {'content': 'not JSON'}}],
                                    'usage': {'prompt_tokens': 7, 'completion_tokens': 3}}).encode()
         llm = JsonLLM(Config(provider='openai', base_url='http://localhost:1/v1'), budget)
-        with patch('llm.urlopen', return_value=Response()) as opener:
+        with patch('scholarguide.llm.urlopen', return_value=Response()) as opener:
             with self.assertRaises(RunCancelled):
                 llm.generate('fixture', 'Return JSON', {}, {}, lambda value: None)
         self.assertEqual(opener.call_count, 1)
@@ -196,7 +196,7 @@ class CancellationTests(unittest.TestCase):
                 return json.dumps({'choices': [{'message': {'content': '{"ok":true}'}}],
                                    'usage': {'prompt_tokens': 5, 'completion_tokens': 2}}).encode()
         llm = JsonLLM(Config(provider='openai', base_url='http://localhost:1/v1'), budget)
-        with patch('llm.urlopen', return_value=Response()) as opener:
+        with patch('scholarguide.llm.urlopen', return_value=Response()) as opener:
             value = llm.generate('fixture', 'Return JSON', {}, {}, lambda value: None)
         self.assertEqual(value, {'ok': True})
         self.assertEqual(opener.call_count, 1)
@@ -257,7 +257,7 @@ class CancellationTests(unittest.TestCase):
         def cancelled_request(*args, **kwargs):
             token.request()
             raise HTTPError('http://localhost/fixture', 429, 'fixture', {}, None)
-        with patch.object(source, '_wait_for'), patch('source.urlopen', side_effect=cancelled_request) as opener:
+        with patch.object(source, '_wait_for'), patch('scholarguide.source.urlopen', side_effect=cancelled_request) as opener:
             with self.assertRaises(RunCancelled):
                 source._fetch('http://localhost/fixture', provider='semantic_scholar')
         self.assertEqual(opener.call_count, 1)

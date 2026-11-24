@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import update_cli
+from scholarguide import update_cli
 
 
 def release_payload(tag='v0.2.0'):

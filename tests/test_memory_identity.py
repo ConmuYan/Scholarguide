@@ -6,8 +6,8 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import patch
 
-from memory_context import MemoryContext, MemoryContextError
-from memory_store import MemoryStore, MemoryError as StoreError
+from scholarguide.memory_context import MemoryContext, MemoryContextError
+from scholarguide.memory_store import MemoryStore, MemoryError as StoreError
 from tests.test_memory_api import BASE, MemoryApiTests
 
 
@@ -108,7 +108,7 @@ class MemoryIdentityTests(MemoryApiTests):
             with MemoryStore(path) as store:
                 store.grant('reading_goal', 'general', consent=True,
                             expires_at=expiry, expected_revision=0)
-        with patch('memory_context._identity', return_value=(1, 1)):
+        with patch('scholarguide.memory_context._identity', return_value=(1, 1)):
             context = MemoryContext.capture(self.db, enabled=True)
             self.assertEqual(context.hints(explicit_fields=set()), {'reading_goal': 'general'})
             os.replace(other, self.db)

@@ -10,10 +10,10 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, BudgetExceeded, Config, GuideError, Paper
-from retrieval import RetrievalRouter
-from source import DEFAULT_MULTI, SearchBatch, SourceRun
-from tools import CostMeter
+from scholarguide.common import Budget, BudgetExceeded, Config, GuideError, Paper
+from scholarguide.retrieval import RetrievalRouter
+from scholarguide.source import DEFAULT_MULTI, SearchBatch, SourceRun
+from scholarguide.tools import CostMeter
 
 
 def candidate(name, *, abstract='Multi-view scene reconstruction with geometric reasoning.',

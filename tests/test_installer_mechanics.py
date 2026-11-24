@@ -143,6 +143,19 @@ class InstallerMechanicsTests(unittest.TestCase):
         self.assertFalse((self.home / 'escape.txt').exists())
         self.assertFalse((self.home / '.local' / 'share' / 'scholarguide' / 'releases' / 'v0.9.9').exists())
 
+    def test_interrupted_install_fails_closed_and_preserves_files(self):
+        make_release(self.release)
+        target = self.home / '.local' / 'share' / 'scholarguide' / 'releases' / 'v0.9.9'
+        target.mkdir(parents=True)
+        marker = target / '.install-incomplete'
+        marker.write_text('other-install', encoding='ascii')
+        (target / 'app.py').write_text('preserve', encoding='utf-8')
+        result = self.run_installer()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('interrupted installation', result.stderr)
+        self.assertTrue(marker.is_file())
+        self.assertEqual((target / 'app.py').read_text(encoding='utf-8'), 'preserve')
+
     def test_missing_python_3_11_fails_closed(self):
         make_release(self.release)
         text = self.installer().read_text(encoding='utf-8')

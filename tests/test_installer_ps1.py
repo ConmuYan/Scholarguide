@@ -20,12 +20,12 @@ ROOT = Path(__file__).resolve().parents[1]
 POWERSHELL = shutil.which('powershell') or shutil.which('pwsh')
 
 
-def make_release(folder: Path, version: str) -> None:
+def make_release(folder: Path, version: str, requirements: bytes = b'') -> None:
     top = f'scholarguide-{version}'
     archive = folder / f'{top}.tar.gz'
     with tarfile.open(archive, 'w:gz') as tar:
         for name, body in ((f'{top}/app.py', b'print("stub")\n'),
-                           (f'{top}/requirements.txt', b''),
+                           (f'{top}/requirements.txt', requirements),
                            (f'{top}/.env.example', b'SG_PROVIDER=openai\n')):
             info = tarfile.TarInfo(name)
             info.size = len(body)
@@ -92,6 +92,9 @@ class WindowsInstallerTests(unittest.TestCase):
         target = self.local / 'ScholarGuide' / 'releases' / 'v0.9.9'
         self.assertTrue((target / 'app.py').is_file())
         self.assertTrue((target / '.venv' / 'Scripts' / 'python.exe').is_file())
+        pip = subprocess.run([str(target / '.venv' / 'Scripts' / 'pip.exe'), '--version'],
+                             capture_output=True, text=True, timeout=20)
+        self.assertEqual(pip.returncode, 0, pip.stderr)
         self.assertTrue((self.local / 'ScholarGuide' / 'current-version').is_file())
         self.assertTrue((self.local / 'ScholarGuide' / 'bin' / 'scholarguide.cmd').is_file())
         self.assertTrue((self.home / '.scholarguide' / '.env').is_file())
@@ -104,6 +107,73 @@ class WindowsInstallerTests(unittest.TestCase):
         result = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(env_file.read_text(encoding='utf-8'), 'LUNE_API_KEY=keep-me' + chr(10))
+
+    def test_brackets_in_localappdata_and_home_are_literal(self):
+        self.local = self.root / 'user[ab]' / 'localappdata'
+        self.home = self.root / 'home[ab]'
+        self.local.mkdir(parents=True)
+        self.home.mkdir()
+        result = self.run_installer()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        base = self.local / 'ScholarGuide'
+        self.assertTrue((base / 'releases' / 'v0.9.9' / 'app.py').is_file())
+        self.assertTrue((self.home / '.scholarguide' / '.env').is_file())
+        self.assertFalse(list(base.glob('stage-*')))
+        self.assertFalse(list(base.glob('.install-*')))
+
+    def test_failed_dependency_install_preserves_existing_version_and_cleans_target(self):
+        self.local = self.root / 'user[ab]' / 'localappdata'
+        self.local.mkdir(parents=True)
+        base = self.local / 'ScholarGuide'
+        old = base / 'releases' / 'v0.9.8'
+        old.mkdir(parents=True)
+        (old / 'app.py').write_text('old-version', encoding='utf-8')
+        (base / 'current-version').write_text('v0.9.8', encoding='ascii')
+        data = self.home / '.scholarguide'
+        data.mkdir()
+        (data / '.env').write_text('fixture-value', encoding='utf-8')
+        # Invalid syntax makes pip fail locally without downloading packages.
+        make_release(self.release, 'v0.9.9', requirements=b'???\n')
+        result = self.run_installer()
+        self.assertNotEqual(result.returncode, 0)
+        base = self.local / 'ScholarGuide'
+        self.assertFalse(list(base.glob('stage-*')))
+        self.assertFalse(list(base.glob('.install-*')))
+        self.assertFalse((base / 'releases' / 'v0.9.9').exists())
+        self.assertEqual((base / 'current-version').read_text(encoding='ascii'), 'v0.9.8')
+        self.assertEqual((old / 'app.py').read_text(encoding='utf-8'), 'old-version')
+        self.assertEqual((data / '.env').read_text(encoding='utf-8'), 'fixture-value')
+
+    def test_interrupted_install_fails_closed_without_deleting_existing_files(self):
+        target = self.local / 'ScholarGuide' / 'releases' / 'v0.9.9'
+        target.mkdir(parents=True)
+        marker = target / '.install-incomplete'
+        marker.write_text('another-install', encoding='ascii')
+        (target / 'app.py').write_text('preserve', encoding='utf-8')
+        result = self.run_installer()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertTrue(marker.exists())
+        self.assertEqual((target / 'app.py').read_text(encoding='utf-8'), 'preserve')
+        self.assertFalse((self.local / 'ScholarGuide' / 'current-version').exists())
+
+    def test_concurrent_installers_leave_one_complete_version(self):
+        self.local = self.root / 'user[ab]' / 'localappdata'
+        self.local.mkdir(parents=True)
+        script = self.script()
+        env = dict(os.environ, LOCALAPPDATA=str(self.local), USERPROFILE=str(self.home))
+        first = subprocess.Popen([POWERSHELL, '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(script)],
+                                 env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        second = subprocess.Popen([POWERSHELL, '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(script)],
+                                  env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        outputs = [process.communicate(timeout=300)[0] for process in (first, second)]
+        self.assertIn(0, [first.returncode, second.returncode], [value.decode('utf-8', 'replace') for value in outputs])
+        base = self.local / 'ScholarGuide'
+        target = base / 'releases' / 'v0.9.9'
+        self.assertTrue((target / 'app.py').is_file())
+        self.assertFalse((target / '.install-incomplete').exists())
+        self.assertEqual((base / 'current-version').read_text(encoding='ascii'), 'v0.9.9')
+        self.assertFalse(list(base.glob('stage-*')))
+        self.assertFalse(list(base.glob('.install-*')))
 
     def test_checksum_mismatch_installs_nothing(self):
         (self.release / 'SHA256SUMS').write_text(('0' * 64) + '  scholarguide-v0.9.9.tar.gz\n',

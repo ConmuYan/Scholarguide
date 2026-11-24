@@ -2,6 +2,9 @@
 * text=auto eol=lf
 *.ps1 text eol=crlf
 *.cmd text eol=crlf
+# These fixtures are pinned byte-for-byte by the engineering evaluation.
+/examples/papers.json text eol=crlf
+/evaluation/engineering_agent/fixtures/papers-baseline.json text eol=crlf
 *.png binary
 *.jpg binary
 *.gif binary

@@ -8,7 +8,7 @@ import time
 import unittest
 from unittest.mock import patch
 
-from memory_store import MemoryStore, MemoryError, RevisionConflict
+from scholarguide.memory_store import MemoryStore, MemoryError, RevisionConflict
 
 
 class MemoryStoreTests(unittest.TestCase):
@@ -58,7 +58,7 @@ class MemoryStoreTests(unittest.TestCase):
         self.assertEqual(self.store.active_snapshot(now=self.future - 1), {'reading_goal': 'orientation'})
         self.assertEqual(self.store.active_snapshot(now=self.future), {})
         self.assertEqual(self.store.active_snapshot(now=self.future - 1), {})
-        with patch('memory_store.time.time', return_value=self.future):
+        with patch('scholarguide.memory_store.time.time', return_value=self.future):
             self.assertEqual(self.store.active_snapshot(now=self.future - 2), {})
         for now in (True, math.nan, math.inf, 'bad'):
             with self.assertRaises(MemoryError):
@@ -66,9 +66,9 @@ class MemoryStoreTests(unittest.TestCase):
 
     def test_observed_expiry_survives_clock_rollback_and_reopen(self):
         self.grant()
-        with patch('memory_store.time.time', return_value=self.future):
+        with patch('scholarguide.memory_store.time.time', return_value=self.future):
             self.assertEqual(self.store.active_snapshot(), {})
-        with patch('memory_store.time.time', return_value=self.future - 100):
+        with patch('scholarguide.memory_store.time.time', return_value=self.future - 100):
             self.assertEqual(self.store.active_snapshot(), {})
             with MemoryStore(self.path) as reopened:
                 self.assertEqual(reopened.active_snapshot(), {})
@@ -198,7 +198,7 @@ class MemoryStoreTests(unittest.TestCase):
 
     def test_locked_database_and_expired_revoke(self):
         self.grant()
-        with patch('memory_store.time.time', return_value=self.future):
+        with patch('scholarguide.memory_store.time.time', return_value=self.future):
             self.assertEqual(self.store.active_snapshot(), {})
             self.assertEqual(self.store.revoke('reading_goal', expected_revision=2), 3)
         with closing(sqlite3.connect(self.path, isolation_level=None)) as con:
@@ -330,7 +330,7 @@ class MemoryStoreTests(unittest.TestCase):
 
     def test_publication_failure_does_not_leave_target(self):
         path = Path(self.tmp.name) / 'publish.sqlite3'
-        with patch('memory_store.os.link', side_effect=OSError('SECRET')):
+        with patch('scholarguide.memory_store.os.link', side_effect=OSError('SECRET')):
             with self.assertRaises(MemoryError) as error:
                 MemoryStore(path)
         self.assertNotIn('SECRET', str(error.exception))
@@ -338,7 +338,7 @@ class MemoryStoreTests(unittest.TestCase):
 
     def test_initialization_failure_does_not_leave_target(self):
         path = Path(self.tmp.name) / 'failed.sqlite3'
-        with patch('memory_store.sqlite3.connect', side_effect=sqlite3.OperationalError('SECRET')):
+        with patch('scholarguide.memory_store.sqlite3.connect', side_effect=sqlite3.OperationalError('SECRET')):
             with self.assertRaises(MemoryError):
                 MemoryStore(path)
         self.assertFalse(path.exists())
@@ -349,7 +349,7 @@ class MemoryStoreTests(unittest.TestCase):
         def publish_then_fail(source, target):
             link(source, target)
             raise OSError('SECRET')
-        with patch('memory_store.os.link', side_effect=publish_then_fail):
+        with patch('scholarguide.memory_store.os.link', side_effect=publish_then_fail):
             with self.assertRaises(MemoryError) as error:
                 MemoryStore(path)
         self.assertNotIn('SECRET', str(error.exception))
@@ -368,7 +368,7 @@ class MemoryStoreTests(unittest.TestCase):
                 return self.connection.execute(sql)
             def close(self):
                 self.connection.close()
-        with patch('memory_store.sqlite3.connect', side_effect=lambda *a, **kw: ConnectionProxy(connect(*a, **kw))):
+        with patch('scholarguide.memory_store.sqlite3.connect', side_effect=lambda *a, **kw: ConnectionProxy(connect(*a, **kw))):
             with self.assertRaises(MemoryError) as error:
                 MemoryStore(path)
         self.assertNotIn('SECRET', str(error.exception))

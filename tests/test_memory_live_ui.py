@@ -12,10 +12,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
-from activity import ActivityFeed
-from providers import ProviderStore
+from scholarguide.activity import ActivityFeed
+from scholarguide.providers import ProviderStore
 from scripts.verify_delivery import apply_browser_isolation, isolated_environment
-from webapp import ChatService, Jobs, create_server
+from scholarguide.webapp import ChatService, Jobs, create_server
 
 
 class MemoryLiveUiTests(unittest.TestCase):

@@ -8,9 +8,9 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.verify_delivery import isolated_environment
-from common import Budget, BudgetExceeded, Config, GuideError, RunCancelled
-from source import AcademicSource
-from source_store import SourceStore
+from scholarguide.common import Budget, BudgetExceeded, Config, GuideError, RunCancelled
+from scholarguide.source import AcademicSource
+from scholarguide.source_store import SourceStore
 
 
 class QueuedRevocationTests(unittest.TestCase):
@@ -30,7 +30,7 @@ class QueuedRevocationTests(unittest.TestCase):
                                 raise kind()
                             return original(target)
                         with patch.object(source, '_deepseek_target_key', side_effect=validate), \
-                             patch.object(source, '_wait_for'), patch('source.urlopen') as send:
+                             patch.object(source, '_wait_for'), patch('scholarguide.source.urlopen') as send:
                             with self.assertRaises(kind):
                                 if operation == 'search':
                                     source._deepseek_search('fixture', 1)
@@ -52,7 +52,7 @@ class QueuedRevocationTests(unittest.TestCase):
                         def send(request, timeout):
                             other.upsert({'name': 'deepseek', 'clear_key': True})
                             return io.BytesIO(b'{"results": [], "content": "fixture"}')
-                        with patch.object(source, '_wait_for'), patch('source.urlopen', side_effect=send) as mocked:
+                        with patch.object(source, '_wait_for'), patch('scholarguide.source.urlopen', side_effect=send) as mocked:
                             if operation == 'search':
                                 self.assertEqual(source._deepseek_search('fixture', 1), [])
                             else:
@@ -91,7 +91,7 @@ class QueuedRevocationTests(unittest.TestCase):
                                 except BaseException as exc:
                                     errors.append(exc)
                             with patch.object(source, '_wait_for', side_effect=wait), \
-                                 patch('source.urlopen', return_value=io.BytesIO(b'{"results": [], "content": "fixture"}')) as send:
+                                 patch('scholarguide.source.urlopen', return_value=io.BytesIO(b'{"results": [], "content": "fixture"}')) as send:
                                 thread = threading.Thread(target=run)
                                 thread.start()
                                 try:

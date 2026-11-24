@@ -10,10 +10,10 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from agent_tools import ToolRegistry
-from common import Budget, Config
-from source import AcademicSource
-from webapp import ChatService
+from scholarguide.agent_tools import ToolRegistry
+from scholarguide.common import Budget, Config
+from scholarguide.source import AcademicSource
+from scholarguide.webapp import ChatService
 
 
 class HardeningTests(unittest.TestCase):
@@ -51,21 +51,21 @@ class HardeningTests(unittest.TestCase):
                 service.close()
 
     def test_import_store_construction_failure_removes_directory(self):
-        from demo import demo_run
+        from scholarguide.demo import demo_run
         with tempfile.TemporaryDirectory() as directory:
             service = ChatService(output=Path(directory) / 'web')
-            with patch('webapp.StateStore', side_effect=RuntimeError('constructor')):
+            with patch('scholarguide.webapp.StateStore', side_effect=RuntimeError('constructor')):
                 with self.assertRaises(RuntimeError):
                     service.import_run(demo_run('followup'), 'b' * 32)
             self.assertEqual(list((Path(directory) / 'web').glob('*')), [])
             service.close()
 
     def test_import_failure_removes_orphan_directory(self):
-        from demo import demo_run
+        from scholarguide.demo import demo_run
         with tempfile.TemporaryDirectory() as directory:
             service = ChatService(output=Path(directory) / 'web')
             result = demo_run('followup')
-            with patch('webapp.StateStore.add_candidate', side_effect=RuntimeError('synthetic')):
+            with patch('scholarguide.webapp.StateStore.add_candidate', side_effect=RuntimeError('synthetic')):
                 with self.assertRaises(RuntimeError):
                     service.import_run(result, 'a' * 32)
             self.assertEqual(list((Path(directory) / 'web').glob('*/state.sqlite3')), [])
@@ -75,7 +75,7 @@ class HardeningTests(unittest.TestCase):
     def test_create_store_construction_failure_removes_orphan_directory(self):
         with tempfile.TemporaryDirectory() as directory:
             service = ChatService(output=Path(directory) / 'web')
-            with patch('webapp.StateStore', side_effect=RuntimeError('synthetic-store')):
+            with patch('scholarguide.webapp.StateStore', side_effect=RuntimeError('synthetic-store')):
                 with self.assertRaises(RuntimeError):
                     service.create({'mode': 'demo', 'scenario': 'followup',
                                     'message': 'Recommend five RAG papers.'})
@@ -91,7 +91,7 @@ class HardeningTests(unittest.TestCase):
                 chat.store.commit()
                 raise RuntimeError('synthetic post-admission failure')
             try:
-                with patch('webapp.ChatSession.start', fail_after_writing):
+                with patch('scholarguide.webapp.ChatSession.start', fail_after_writing):
                     with self.assertRaises(RuntimeError):
                         service.create({'mode': 'demo', 'message': 'Recommend papers.'},
                                        on_created=published.append)
@@ -109,7 +109,7 @@ class HardeningTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             service = ChatService(output=Path(directory) / 'web')
             before = set((Path(directory) / 'web').glob('*')) if (Path(directory) / 'web').exists() else set()
-            with patch('webapp.ChatSession', side_effect=RuntimeError('synthetic')):
+            with patch('scholarguide.webapp.ChatSession', side_effect=RuntimeError('synthetic')):
                 with self.assertRaises(RuntimeError):
                     service.create({'mode': 'demo', 'scenario': 'followup',
                                     'message': 'Recommend five RAG papers.'})

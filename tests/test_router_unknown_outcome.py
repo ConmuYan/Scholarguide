@@ -8,17 +8,17 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from agent_tools import ToolRegistry
-from common import Budget, Config, GuideError, Paper
-from lune_quota import LuneQuotaStore
-from mcp_client import McpClient, ServerConfig
-from retrieval import RetrievalPlan, RetrievalRouter
-from source import SearchBatch, SourceRun
+from scholarguide.agent_tools import ToolRegistry
+from scholarguide.common import Budget, Config, GuideError, Paper
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.mcp_client import McpClient, ServerConfig
+from scholarguide.retrieval import RetrievalPlan, RetrievalRouter
+from scholarguide.source import SearchBatch, SourceRun
 
 
 class UnknownRouterTests(unittest.TestCase):
     def test_partial_batch_distinguishes_completed_paid_source_from_later_failure(self):
-        from retrieval import _paid_failure_outcome
+        from scholarguide.retrieval import _paid_failure_outcome
         error = GuideError('later source hit the deadline')
         error.remote_outcome = 'unknown'
         error.partial_batch = SearchBatch('q', ['lune', 'openalex'], [], [

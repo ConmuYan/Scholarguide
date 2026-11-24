@@ -7,10 +7,10 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Paper, Request
-from source import merge_papers
-from state import StateStore
-from workflow import grounded_assessments, select_papers
+from scholarguide.common import Paper, Request
+from scholarguide.source import merge_papers
+from scholarguide.state import StateStore
+from scholarguide.workflow import grounded_assessments, select_papers
 
 QUOTE = 'We introduce a benchmark for retrieval augmented generation evaluation.'
 

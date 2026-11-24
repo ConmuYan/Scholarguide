@@ -23,9 +23,9 @@ try:
 except ImportError:
     webdriver = None
 
-from activity import ActivityFeed
-from webapp import ChatService, ChatSession, Jobs, create_server
-from providers import ProviderStore
+from scholarguide.activity import ActivityFeed
+from scholarguide.webapp import ChatService, ChatSession, Jobs, create_server
+from scholarguide.providers import ProviderStore
 from scripts.verify_delivery import apply_browser_isolation
 
 CLIPBOARD_STUB = """

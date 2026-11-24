@@ -11,9 +11,9 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from common import GuideError
-from providers import ProviderStore
-from webapp import ChatService, Jobs, create_server
+from scholarguide.common import GuideError
+from scholarguide.providers import ProviderStore
+from scholarguide.webapp import ChatService, Jobs, create_server
 
 
 class OAuthWebApiTests(unittest.TestCase):
@@ -61,7 +61,7 @@ class OAuthWebApiTests(unittest.TestCase):
 
     def test_login_rejects_invalid_input_before_authorization(self):
         for body in ({}, {'model': ''}, {'model': 'm', 'extra': 1}):
-            with self.subTest(body=body), patch('openai_oauth.login') as login:
+            with self.subTest(body=body), patch('scholarguide.openai_oauth.login') as login:
                 status, _ = self.request('POST', '/api/providers/oauth/openai/login', body)
                 self.assertEqual(status, 400)
                 login.assert_not_called()
@@ -72,7 +72,7 @@ class OAuthWebApiTests(unittest.TestCase):
         def fake_login():
             release.wait(5)
 
-        with patch('openai_oauth.login', side_effect=fake_login) as login:
+        with patch('scholarguide.openai_oauth.login', side_effect=fake_login) as login:
             status, body = self.request('POST', '/api/providers/oauth/openai/login',
                                         {'model': 'gpt-test'})
             self.assertEqual(status, 202, body)
@@ -91,14 +91,14 @@ class OAuthWebApiTests(unittest.TestCase):
         self.assertEqual(self.store.public_state()['active'], 'env')
 
     def test_failure_is_reported_without_leaking_details(self):
-        with patch('openai_oauth.login', side_effect=GuideError('OpenAI authorization was declined.')):
+        with patch('scholarguide.openai_oauth.login', side_effect=GuideError('OpenAI authorization was declined.')):
             status, _ = self.request('POST', '/api/providers/oauth/openai/login',
                                      {'model': 'gpt-test'})
             self.assertEqual(status, 202)
             status, value = self.wait_for('failed')
         self.assertEqual(value['message'], 'OpenAI authorization was declined.')
         self.assertIsNone(value['profile'])
-        with patch('openai_oauth.login', side_effect=RuntimeError('token=secret-value')):
+        with patch('scholarguide.openai_oauth.login', side_effect=RuntimeError('token=secret-value')):
             self.request('POST', '/api/providers/oauth/openai/login', {'model': 'gpt-test'})
             status, value = self.wait_for('failed')
         self.assertNotIn('secret-value', json.dumps(value))
@@ -106,7 +106,7 @@ class OAuthWebApiTests(unittest.TestCase):
     def test_conflicting_reserved_profile_is_refused(self):
         self.store.upsert({'id': 'openai-oauth', 'name': 'Other', 'protocol': 'responses',
                            'base_url': 'https://example.test/v1', 'model': 'm'})
-        with patch('openai_oauth.login') as login:
+        with patch('scholarguide.openai_oauth.login') as login:
             status, body = self.request('POST', '/api/providers/oauth/openai/login',
                                         {'model': 'gpt-test'})
         self.assertEqual(status, 400)

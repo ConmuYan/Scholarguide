@@ -1,21 +1,21 @@
 """Pure failure-diagnosis tests: explain misses and propose explicit recovery."""
 import unittest
 
-from diagnosis import diagnose
-from agent_tools import ToolObservation
-from common import Config
-from retrieval import RetrievalRouter
+from scholarguide.diagnosis import diagnose
+from scholarguide.agent_tools import ToolObservation
+from scholarguide.common import Config
+from scholarguide.retrieval import RetrievalRouter
 
 
 class VenueNormalizationTests(unittest.TestCase):
     def test_embedded_year_is_split_into_year_filter(self):
-        from common import Request
+        from scholarguide.common import Request
         request = Request.from_dict({'topic': '3D generation', 'venue': 'CVPR 2026'})
         self.assertEqual(request.venue, 'CVPR')
         self.assertEqual((request.year_from, request.year_to), (2026, 2026))
 
     def test_explicit_year_fields_remain_authoritative(self):
-        from common import Request
+        from scholarguide.common import Request
         request = Request.from_dict({'topic': '3D generation', 'venue': 'CVPR 2025',
                                      'year_from': 2024, 'year_to': 2026})
         self.assertEqual(request.venue, 'CVPR')
@@ -85,7 +85,7 @@ class DiagnosisTests(unittest.TestCase):
         self.assertTrue(any(x['code'] == 'retry_source' for x in result['actions']))
 
     def test_workflow_result_carries_diagnosis(self):
-        from demo import demo_run
+        from scholarguide.demo import demo_run
         result = demo_run('insufficient')
         self.assertEqual(result['status'], 'partial')
         self.assertEqual(result['diagnosis']['code'], 'quota_unmet')

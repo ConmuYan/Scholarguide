@@ -16,12 +16,12 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from common import Budget, BudgetExceeded, Config
-from model_identity import research_model_identity
-from specialist_pilot import _contains_key, run_pilot
-from tools import CostMeter
+from scholarguide.common import Budget, BudgetExceeded, Config
+from scholarguide.model_identity import research_model_identity
+from scholarguide.experimental.specialist_pilot import _contains_key, run_pilot
+from scholarguide.tools import CostMeter
 
-FIXTURE = Path(__file__).with_name('synthetic_specialist_cases.json')
+FIXTURE = Path(__file__).resolve().with_name('synthetic_specialist_cases.json')
 
 
 def digest(value):
@@ -29,12 +29,13 @@ def digest(value):
 
 
 def source_hashes():
-    files = [Path(__file__), FIXTURE, ROOT / 'specialist_pilot.py',
-             ROOT / 'model_identity.py', ROOT / 'scripts' / 'verify_delivery.py',
+    package = ROOT / 'scholarguide'
+    files = [Path(__file__).resolve(), FIXTURE, package / 'experimental' / 'specialist_pilot.py',
+             package / 'model_identity.py', ROOT / 'scripts' / 'verify_delivery.py',
              ROOT / 'scripts' / 'offline_test_site' / 'sitecustomize.py',
-             ROOT / 'research_specialist.py',
-             ROOT / 'common.py', ROOT / 'tools.py', ROOT / 'llm.py', ROOT / 'network.py',
-             ROOT / 'model_policy.py', ROOT / 'tests/test_specialist_pilot.py',
+             package / 'research_specialist.py',
+             package / 'common.py', package / 'tools.py', package / 'llm.py', package / 'network.py',
+             package / 'model_policy.py', ROOT / 'tests/test_specialist_pilot.py',
              ROOT / 'tests/test_specialist_paired.py']
     return {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
 
@@ -126,7 +127,7 @@ def run_arm(case, *, pilot=False, enabled=False, seconds=30, max_calls=1,
                 return state
             with patch.object(socket.socket, 'connect', deny), patch.object(socket.socket, 'connect_ex', deny), \
                  patch.object(socket, 'create_connection', deny), patch.object(socket, 'getaddrinfo', deny), \
-                 patch('llm.urlopen', side_effect=transport):
+                 patch('scholarguide.llm.urlopen', side_effect=transport):
                 result = run_pilot(snapshot=case['snapshot'], claims=case['claims'], config=config,
                                    budget=budget, meter=meter,
                                    current=lambda: {'snapshot': get_current(), 'claims': case['claims']},
@@ -176,8 +177,15 @@ def validate_output(path):
         raise ValueError('output already exists')
     path = path.resolve()
     root = ROOT.resolve()
-    allowed = [Path(tempfile.gettempdir()).resolve()]
+    temporary = Path(tempfile.gettempdir()).resolve()
     verification = (ROOT / 'runs' / 'verification').resolve()
+    # Never write inside the source tree, even when TEMP is configured as the
+    # project directory or one of its ancestors. The one exception is the
+    # explicit verification output directory.
+    if path.is_relative_to(root) and not (verification.is_relative_to(root)
+                                          and path.is_relative_to(verification)):
+        raise ValueError('output must not be inside the source tree')
+    allowed = [temporary]
     if verification.is_relative_to(root):
         allowed.append(verification)
     if not any(path != base and path.is_relative_to(base) for base in allowed):
@@ -200,6 +208,8 @@ def main(argv=None):
         before = source_hashes()
         cases = json.loads(FIXTURE.read_text(encoding='utf-8'))['cases']
         rows = [run_case(case, enabled=True) for case in cases]
+        # Digest only the declared source files; the hashing process itself
+        # cannot introduce a volatile cache path into this comparison.
         after = source_hashes()
         report = {'suite': 'synthetic_specialist_paired_v1', 'synthetic': True,
                   'research_quality': 'not_measured', 'benefit': 'not_established',

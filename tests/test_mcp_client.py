@@ -9,11 +9,11 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import Mock, patch
 
-from common import BudgetExceeded, RunCancelled
-from tool_governance import ToolGovernanceError
+from scholarguide.common import BudgetExceeded, RunCancelled
+from scholarguide.tool_governance import ToolGovernanceError
 
-import mcp_client
-from mcp_client import McpClient, McpError, ServerConfig, load_servers, structured
+from scholarguide import mcp_client
+from scholarguide.mcp_client import McpClient, McpError, ServerConfig, load_servers, structured
 
 
 class _Handler(BaseHTTPRequestHandler):
@@ -141,7 +141,7 @@ class RawProtocolGovernanceTests(unittest.TestCase):
         return client
 
     def test_auth_provider_uses_explicit_request_budget(self):
-        from common import Budget
+        from scholarguide.common import Budget
         with MockMcp({'ping': _result({})}) as mock:
             client = McpClient(ServerConfig('mock', mock.url, timeout=10))
             client.set_budget(Budget(3))
@@ -152,7 +152,7 @@ class RawProtocolGovernanceTests(unittest.TestCase):
             self.assertEqual(seen, [explicit])
 
     def test_refresh_receives_this_request_rejected_token(self):
-        from common import Budget
+        from scholarguide.common import Budget
         attempts = []
         def action(message):
             attempts.append(1)
@@ -188,7 +188,7 @@ class RawProtocolGovernanceTests(unittest.TestCase):
         client._post.assert_not_called()
 
     def test_protocol_operation_is_audited_without_input_values(self):
-        from execution_events import bind_events
+        from scholarguide.execution_events import bind_events
         client = self._client(); events = []
         with bind_events(lambda action, payload: events.append((action, payload))):
             client.request('ping', {})
@@ -288,7 +288,7 @@ class IsolatedSchemaRoutingTests(unittest.TestCase):
                 self.assertIs(call.kwargs['budget'], client.budget)
 
     def test_transport_uses_the_same_budget_selected_before_validation(self):
-        from common import Budget
+        from scholarguide.common import Budget
         client, post = self._client()
         client.list_tools(); post.reset_mock()
         original, replacement = Budget(5), Budget(5)

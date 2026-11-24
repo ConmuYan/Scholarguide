@@ -8,8 +8,8 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, Config, Paper
-from source import AcademicSource
+from scholarguide.common import Budget, Config, Paper
+from scholarguide.source import AcademicSource
 
 
 S2_CONFERENCE = {

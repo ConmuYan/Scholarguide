@@ -33,7 +33,7 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-from lune_quota import LuneQuotaStore, default_quota_path
+from scholarguide.lune_quota import LuneQuotaStore, default_quota_path
 ISSUER = 'https://api.luneresearch.com'
 RESOURCE = 'https://mcp.luneresearch.com'
 SCOPE = 'papers:read guidance:read account:read'

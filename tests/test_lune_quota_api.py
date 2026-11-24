@@ -8,9 +8,9 @@ import time
 import unittest
 from unittest.mock import patch
 
-from lune_quota import LuneQuotaStore
-from source_store import SourceStore
-from webapp import Jobs, create_server
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.source_store import SourceStore
+from scholarguide.webapp import Jobs, create_server
 
 
 class LuneQuotaApiTests(unittest.TestCase):
@@ -18,7 +18,7 @@ class LuneQuotaApiTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name)
         self.quota_path = self.root / 'quota.sqlite3'
-        self.patch = patch('lune_quota.default_quota_path', return_value=self.quota_path)
+        self.patch = patch('scholarguide.lune_quota.default_quota_path', return_value=self.quota_path)
         self.patch.start()
         self.sources = SourceStore(self.root / 'sources.sqlite3')
         self.server = create_server(0, jobs=Jobs(output=self.root / 'runs'), sources=self.sources)
@@ -45,7 +45,7 @@ class LuneQuotaApiTests(unittest.TestCase):
         return response.status, body
 
     def test_status_is_local_and_confirmation_requires_acknowledgement(self):
-        with patch('mcp_client.urlopen', side_effect=AssertionError('network must not run')):
+        with patch('scholarguide.mcp_client.urlopen', side_effect=AssertionError('network must not run')):
             status, value = self.request('GET', '/api/v1/sources/lune/quota')
             self.assertEqual(status, 200)
             self.assertFalse(value['snapshot_present'])
@@ -63,7 +63,7 @@ class LuneQuotaApiTests(unittest.TestCase):
         with self.sources._db() as db:
             db.execute('INSERT INTO source_inflight(token,name,expires_at) VALUES(?,?,?)',
                        ('legacy-fixture', 'lune', 0))
-        with patch('mcp_client.urlopen', side_effect=AssertionError('network must not run')):
+        with patch('scholarguide.mcp_client.urlopen', side_effect=AssertionError('network must not run')):
             status, value = self.request('GET', '/api/v1/sources/lune/inflight/legacy')
             self.assertEqual(status, 200)
             self.assertEqual(value['legacy'], 1)
@@ -76,7 +76,7 @@ class LuneQuotaApiTests(unittest.TestCase):
             self.assertTrue(value['remote_outcome_unknown'])
 
     def test_direct_custom_quota_mismatch_rejected_before_dispatch(self):
-        from common import Budget, GuideError
+        from scholarguide.common import Budget, GuideError
         other = SourceStore(self.root / 'other-sources.sqlite3',
                             quota_path=self.root / 'other-quota.sqlite3')
         try:
@@ -103,7 +103,7 @@ class LuneQuotaApiTests(unittest.TestCase):
         status, _ = self.request('POST', '/api/sources/lune/quota/reconcile',
                                  {'id': reservation, 'acknowledged': True})
         self.assertEqual(status, 400)  # This process still owns the reservation.
-        with patch('lune_quota._process_alive', return_value=False):
+        with patch('scholarguide.lune_quota._process_alive', return_value=False):
             status, value = self.request('POST', '/api/sources/lune/quota/reconcile',
                                          {'id': reservation, 'acknowledged': True})
         self.assertEqual(status, 200)

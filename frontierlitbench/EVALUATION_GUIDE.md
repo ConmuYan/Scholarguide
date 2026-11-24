@@ -1,6 +1,6 @@
 # FrontierLitBench：统一评测与基线使用
 
-本指南提供可以复用的任务文本、聊天产品导入和统一评分流程。新评测应使用已经复审的 `corpus_v1.1/` 和共同的 `review/final_adjudications_v1.1.json`。当前 ScholarGuide 矩阵 45/45 次运行已完成结算；具体指标见 `reports/scholarguide_matrix_20261111.md`。历史 `corpus/` 与旧 review 文件仅用于复现，不得混入 v1.1 比较。
+本指南提供可以复用的任务文本、聊天产品导入和统一评分流程。新评测应使用已经复审的 `corpus_v1.1/` 和共同的 `review/final_adjudications_v1.1.json`。当前 ScholarGuide 矩阵 45/45 次运行已完成结算；具体指标见 `reports/scholarguide_matrix_20261111.md`。历史 `corpus/` 与旧 review 文件仅用于复现，不得混入 v1.1 比较。FB-1.0 历史哈希的版本边界与复现方法见 [历史完整性说明](manifests/FB10_INTEGRITY.md)。
 
 ## 评测什么
 

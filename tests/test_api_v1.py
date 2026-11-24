@@ -8,10 +8,10 @@ import threading
 import time
 import unittest
 
-from api_v1 import ApiError, OperationStore, ProductApi, public_result
-from report import markdown
-from providers import ProviderStore
-from webapp import Jobs, create_server, validate_input, ChatService
+from scholarguide.api_v1 import ApiError, OperationStore, ProductApi, public_result
+from scholarguide.report import markdown
+from scholarguide.providers import ProviderStore
+from scholarguide.webapp import Jobs, create_server, validate_input, ChatService
 
 
 class PublicResultTests(unittest.TestCase):
@@ -61,7 +61,7 @@ class PublicApiHttpTests(unittest.TestCase):
         self.calls = 0
         def runner(data, progress):
             self.calls += 1
-            from demo import demo_run
+            from scholarguide.demo import demo_run
             return demo_run('satisfied', 'A', progress=progress)
         self.jobs = Jobs(self.root / 'runs', runner=runner, providers=self.providers)
         self.server = create_server(0, jobs=self.jobs, providers=self.providers)
@@ -134,12 +134,12 @@ class PublicApiHttpTests(unittest.TestCase):
 
     def test_synchronous_chat_failure_http_does_not_echo_remote_text(self):
         from unittest.mock import patch
-        from common import GuideError
+        from scholarguide.common import GuideError
         class Failure(GuideError):
             code = 'remote_outcome_unknown'
             remote_outcome = 'unknown'
             retry_safe = False
-        with patch('webapp.ChatSession.start', side_effect=Failure('SECRET remote response')):
+        with patch('scholarguide.webapp.ChatSession.start', side_effect=Failure('SECRET remote response')):
             status, value = self.request('POST', '/api/v1/chat',
                                          {'message': 'private query', 'mode': 'demo', 'stream': False,
                                           'client_request_id': 'sync-failure'})

@@ -5,12 +5,12 @@ from pathlib import Path
 import unittest
 from unittest.mock import patch
 
-from common import Config, GuideError
-from controller import (BudgetView, ControlState, Decision, PolicyError, allowed_actions,
+from scholarguide.common import Config, GuideError
+from scholarguide.controller import (BudgetView, ControlState, Decision, PolicyError, allowed_actions,
                         fallback_action, validate_decision, validate_issued_decision)
-from demo import ChatDemoLLM, DemoSource
-from session import ChatSession
-from state import StateStore
+from scholarguide.demo import ChatDemoLLM, DemoSource
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
 
 
 GAP = {'requirement': 'paper_count', 'missing': 1}
@@ -379,7 +379,7 @@ class FallbackIntegrationTests(unittest.TestCase):
                 chat._refine_query = lambda: ''
                 rejection = Decision('FINISH', {}, False, attempted='SEARCH',
                                      error='empty_query', fallback='SEARCH')
-                with patch('session.decide', return_value=rejection):
+                with patch('scholarguide.session.decide', return_value=rejection):
                     decision, reason = chat.next_decision()
                 self.assertIsNone(decision)
                 self.assertEqual(reason, 'no_legal_action')
@@ -416,7 +416,7 @@ class FallbackIntegrationTests(unittest.TestCase):
                 chat._refine_query = lambda: 'refined research query'
                 rejected = Decision('FINISH', {}, False, attempted='SEARCH',
                                     error='empty_query', fallback='SEARCH')
-                with patch('session.decide', return_value=rejected):
+                with patch('scholarguide.session.decide', return_value=rejected):
                     decision, _ = chat.next_decision()
                 self.assertEqual(decision.action, 'SEARCH')
                 events = store.events(chat.session_id)

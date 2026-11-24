@@ -9,10 +9,10 @@ import unittest
 from urllib.request import urlopen
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from activity import ActivityFeed
-from common import Paper
-from providers import ProviderStore
-from webapp import ChatService, Jobs, create_server
+from scholarguide.activity import ActivityFeed
+from scholarguide.common import Paper
+from scholarguide.providers import ProviderStore
+from scholarguide.webapp import ChatService, Jobs, create_server
 
 
 class ChatReadingContractTests(unittest.TestCase):

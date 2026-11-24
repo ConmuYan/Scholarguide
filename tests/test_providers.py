@@ -11,10 +11,10 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from common import Budget, BudgetExceeded, Config, GuideError
-from costing import cost_breakdown
-from llm import JsonLLM
-from providers import ProviderStore
+from scholarguide.common import Budget, BudgetExceeded, Config, GuideError
+from scholarguide.costing import cost_breakdown
+from scholarguide.llm import JsonLLM
+from scholarguide.providers import ProviderStore
 
 SCHEMA = {'type': 'object', 'properties': {'ok': {'type': 'boolean'}},
           'required': ['ok'], 'additionalProperties': False}
@@ -330,7 +330,7 @@ class StoreTests(unittest.TestCase):
         self.assertEqual(self.store.active().id, 'env')
 
     def test_key_never_written_into_chat_result_or_meta(self):
-        from webapp import ChatService
+        from scholarguide.webapp import ChatService
         secret = 'sk-result-secret-4321'
         self.store.upsert({'name': 'Secret', 'protocol': 'chat_completions',
                            'base_url': 'https://example.com/v1', 'model': 'm',
@@ -359,10 +359,10 @@ class StoreTests(unittest.TestCase):
                 self.store.upsert(data)
 
     def test_active_switch_is_applied_to_live_chat_turn(self):
-        from demo import ChatDemoLLM, DemoSource
-        from session import ChatSession
-        from state import StateStore
-        from webapp import ChatService
+        from scholarguide.demo import ChatDemoLLM, DemoSource
+        from scholarguide.session import ChatSession
+        from scholarguide.state import StateStore
+        from scholarguide.webapp import ChatService
         first = self.store.upsert({'name': 'A', 'protocol': 'chat_completions',
                                    'base_url': 'https://a.example/v1', 'model': 'model-a',
                                    'api_key': 'ka'}, activate=True)
@@ -389,7 +389,7 @@ class StoreTests(unittest.TestCase):
 
     def test_active_switch_applies_to_send_path(self):
         from threading import Lock
-        from webapp import ChatService
+        from scholarguide.webapp import ChatService
         first = self.store.upsert({'name': 'A', 'protocol': 'chat_completions',
                                    'base_url': 'https://a.example/v1', 'model': 'model-a',
                                    'api_key': 'ka'}, activate=True)
@@ -443,7 +443,7 @@ class StoreTests(unittest.TestCase):
 
     def test_active_profile_drives_new_chat_and_search_config(self):
         from unittest.mock import patch
-        from webapp import ChatService, Jobs
+        from scholarguide.webapp import ChatService, Jobs
         created = self.store.upsert({'name': 'Custom', 'protocol': 'responses',
                                      'base_url': 'https://custom.example/v1', 'model': 'custom-model',
                                      'api_key': 'custom-key', 'input_price': 1,
@@ -458,7 +458,7 @@ class StoreTests(unittest.TestCase):
         finally:
             chat.close()
         jobs = Jobs(output=Path(self.tmp.name) / 'runs', providers=self.store)
-        with patch('webapp.run', return_value={'status': 'complete'}) as runner:
+        with patch('scholarguide.webapp.run', return_value={'status': 'complete'}) as runner:
             jobs._execute({'mode': 'live', 'method': 'A', 'request': 'RAG', 'source': 'arxiv',
                            'cache': False, 'reading_goal': ''}, lambda _event: None)
             used = runner.call_args[0][1]

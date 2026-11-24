@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'tests'))
 import test_experience_upgrade as _harness
-from demo import demo_run
-from session import ChatSession
+from scholarguide.demo import demo_run
+from scholarguide.session import ChatSession
 try:
     from selenium.webdriver.common.by import By
     from selenium.webdriver.common.keys import Keys

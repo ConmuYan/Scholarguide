@@ -15,8 +15,8 @@ import tempfile
 import threading
 import unittest
 
-from common import GuideError
-from lune_quota import (
+from scholarguide.common import GuideError
+from scholarguide.lune_quota import (
     ACCOUNT_DAILY_LIMIT,
     ALLOWED_METHODS,
     CODE_CORRUPT,
@@ -37,8 +37,8 @@ T0 = 1_000_000.0
 def _spawn_reserve_worker(path, queue, now):
     """Top-level worker so that Windows ``spawn`` can pickle it."""
     try:
-        from common import GuideError as _GuideError
-        from lune_quota import LuneQuotaStore as _Store
+        from scholarguide.common import GuideError as _GuideError
+        from scholarguide.lune_quota import LuneQuotaStore as _Store
 
         store = _Store(path)
         try:
@@ -280,7 +280,7 @@ class LuneQuotaTestCase(unittest.TestCase):
         from unittest.mock import patch
         self.store.confirm(2, T0 + 100, now=T0)
         reservation = self.store.reserve('tools/call', now=T0 + 1)
-        with patch('lune_quota._process_alive', return_value=False):
+        with patch('scholarguide.lune_quota._process_alive', return_value=False):
             self.store.reconcile_unknown(reservation)
         self.assertEqual(self.store.pending(), [])
         self.assertEqual(self.store.status(now=T0 + 2)['remaining_from_snapshot'], 1)
@@ -304,7 +304,7 @@ class LuneQuotaTestCase(unittest.TestCase):
     def test_snapshot_expiry_is_rechecked_after_acquiring_write_lock(self):
         from unittest.mock import patch
         self.store.confirm(1, T0 + 1, now=T0)
-        with patch('lune_quota.time.time', side_effect=[T0, T0 + 2]):
+        with patch('scholarguide.lune_quota.time.time', side_effect=[T0, T0 + 2]):
             with self.assertRaises(GuideError) as caught:
                 self.store.reserve('tools/call')
         self.assertEqual(caught.exception.code, CODE_EXPIRED)

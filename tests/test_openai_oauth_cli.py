@@ -2,12 +2,12 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-import app
+from scholarguide import app
 
 
 class OpenAIOAuthCliTests(unittest.TestCase):
-    @patch('providers.ProviderStore')
-    @patch('openai_oauth.login')
+    @patch('scholarguide.providers.ProviderStore')
+    @patch('scholarguide.openai_oauth.login')
     def test_login_adds_profile_without_activating(self, login, store_class):
         store = store_class.return_value
         store.get.return_value = None
@@ -20,8 +20,8 @@ class OpenAIOAuthCliTests(unittest.TestCase):
         self.assertEqual(profile['model'], 'example-model')
         self.assertFalse(store.upsert.call_args.kwargs['activate'])
 
-    @patch('providers.ProviderStore')
-    @patch('openai_oauth.login')
+    @patch('scholarguide.providers.ProviderStore')
+    @patch('scholarguide.openai_oauth.login')
     def test_existing_conflicting_profile_fails_before_login(self, login, store_class):
         store = store_class.return_value
         store.get.return_value = MagicMock(base_url='https://example.com', protocol='responses', api_key='')

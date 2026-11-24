@@ -6,9 +6,9 @@ import shutil
 import subprocess
 import unittest
 
-from common import Budget, GuideError
-from research_brief import BRIEF_PROMPT_VERSION, brief_key, synthesize
-from tools import CostMeter
+from scholarguide.common import Budget, GuideError
+from scholarguide.research_brief import BRIEF_PROMPT_VERSION, brief_key, synthesize
+from scholarguide.tools import CostMeter
 from tests.brief_fixture import wire_output
 
 

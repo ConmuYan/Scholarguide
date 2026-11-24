@@ -5,12 +5,12 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from agent_tools import ToolRegistry
-from common import Budget, GuideError
-from execution_events import bind_events, operation
-from mcp_client import McpClient, McpError, ServerConfig, load_servers
-from mcp_skills import invoke, load_file
-from tool_governance import ToolGovernanceError, validate_arguments
+from scholarguide.agent_tools import ToolRegistry
+from scholarguide.common import Budget, GuideError
+from scholarguide.execution_events import bind_events, operation
+from scholarguide.mcp_client import McpClient, McpError, ServerConfig, load_servers
+from scholarguide.mcp_skills import invoke, load_file
+from scholarguide.tool_governance import ToolGovernanceError, validate_arguments
 from tests.lune_quota_fixture import confirmed_quota
 
 
@@ -29,7 +29,7 @@ class JsonTransport:
 
 class GovernanceBoundaryTests(unittest.TestCase):
     def test_cross_origin_lune_override_drops_all_inherited_headers(self):
-        from mcp_lune_policy import lune_override_headers
+        from scholarguide.mcp_lune_policy import lune_override_headers
         headers = {'X-Api-Key': 'old-secret', 'Cookie': 'session=secret', 'Accept': 'application/json'}
         self.assertEqual(lune_override_headers(headers, 'https://new.test/mcp',
                                                'https://old.test/mcp'), {})
@@ -37,14 +37,14 @@ class GovernanceBoundaryTests(unittest.TestCase):
                                                'https://old.test/mcp'), headers)
 
     def test_saved_key_authorization_is_bound_to_exact_sent_snapshot(self):
-        from mcp_lune_policy import saved_key_matches_snapshot
+        from scholarguide.mcp_lune_policy import saved_key_matches_snapshot
         current = {'api_key': 'new-synthetic-key', 'endpoint': 'https://new.test/mcp'}
         self.assertFalse(saved_key_matches_snapshot('old-env-key', 'https://new.test/mcp', current))
         self.assertFalse(saved_key_matches_snapshot('new-synthetic-key', 'https://old.test/mcp', current))
         self.assertTrue(saved_key_matches_snapshot('new-synthetic-key', 'https://new.test/mcp', current))
 
     def test_lune_credential_target_requires_https_and_implicit_origin(self):
-        from mcp_lune_policy import validate_lune_auth_target
+        from scholarguide.mcp_lune_policy import validate_lune_auth_target
         with self.assertRaises(GuideError):
             validate_lune_auth_target('http://host.test/mcp', 'https://host.test/mcp',
                                       require_same_origin=False)
@@ -223,15 +223,15 @@ class GovernanceBoundaryTests(unittest.TestCase):
             validate_arguments({}, schema)
 
     def test_remote_schema_worker_validates_and_fails_closed(self):
-        from tool_governance import validate_remote_schema
+        from scholarguide.tool_governance import validate_remote_schema
         validate_remote_schema({'n': 2}, {'type': 'object', 'properties': {'n': {'minimum': 1}}})
         with self.assertRaises(ToolGovernanceError):
             validate_remote_schema({'n': 0}, {'type': 'object', 'properties': {'n': {'minimum': 1}}})
 
     def test_remote_schema_worker_deadline_and_cancel_do_not_validate_inline(self):
         import time
-        from common import Budget, RunCancelled
-        from tool_governance import validate_remote_schema
+        from scholarguide.common import Budget, RunCancelled
+        from scholarguide.tool_governance import validate_remote_schema
         started = time.monotonic()
         with self.assertRaises(ToolGovernanceError):
             validate_remote_schema({'n': 1}, {'type': 'object'}, timeout_s=.001)
@@ -241,7 +241,7 @@ class GovernanceBoundaryTests(unittest.TestCase):
             validate_remote_schema({'n': 1}, {'type': 'object'}, budget=budget)
 
     def test_terminal_event_sink_failure_never_masks_result_or_original_error(self):
-        from execution_events import bind_events, operation
+        from scholarguide.execution_events import bind_events, operation
         def sink(action, payload):
             if action in ('tool_end', 'tool_error'):
                 raise OSError('synthetic-sensitive-payload')
@@ -256,14 +256,14 @@ class GovernanceBoundaryTests(unittest.TestCase):
 
     def test_unknown_worker_start_keeps_permit_and_hides_failure_text(self):
         from unittest.mock import MagicMock, patch
-        import tool_governance
+        from scholarguide import tool_governance
         receiver, sender, process = MagicMock(), MagicMock(), MagicMock()
         process.pid = None
         process.start.side_effect = OSError('synthetic-private-value')
         ctx = MagicMock(); ctx.Pipe.return_value = (receiver, sender); ctx.Process.return_value = process
         slots = tool_governance._REMOTE_SCHEMA_SLOTS
         try:
-            with patch('tool_governance.multiprocessing.get_context', return_value=ctx):
+            with patch('scholarguide.tool_governance.multiprocessing.get_context', return_value=ctx):
                 with self.assertRaises(ToolGovernanceError) as caught:
                     tool_governance.validate_remote_schema({'n': 1}, {'type': 'object'})
             self.assertNotIn('synthetic-private-value', str(caught.exception))
@@ -275,7 +275,7 @@ class GovernanceBoundaryTests(unittest.TestCase):
 
     def test_failed_worker_cleanup_keeps_a_concurrency_slot_closed(self):
         from unittest.mock import MagicMock, patch
-        import tool_governance
+        from scholarguide import tool_governance
         receiver, sender, process = MagicMock(), MagicMock(), MagicMock()
         receiver.poll.return_value = False
         process.exitcode = None
@@ -286,7 +286,7 @@ class GovernanceBoundaryTests(unittest.TestCase):
         ctx.Process.return_value = process
         slots = tool_governance._REMOTE_SCHEMA_SLOTS
         try:
-            with patch('tool_governance.multiprocessing.get_context', return_value=ctx):
+            with patch('scholarguide.tool_governance.multiprocessing.get_context', return_value=ctx):
                 with self.assertRaises(ToolGovernanceError):
                     tool_governance.validate_remote_schema({'n': 1}, {'type': 'object'}, timeout_s=.02)
             self.assertTrue(slots.acquire(blocking=False))
@@ -298,8 +298,8 @@ class GovernanceBoundaryTests(unittest.TestCase):
 
     def test_remote_schema_concurrency_wait_observes_cancellation(self):
         import threading
-        import tool_governance
-        from common import Budget, RunCancelled
+        from scholarguide import tool_governance
+        from scholarguide.common import Budget, RunCancelled
         budget, entered, errors = Budget(3), threading.Event(), []
         slots = tool_governance._REMOTE_SCHEMA_SLOTS
         slots.acquire(); slots.acquire()
@@ -421,7 +421,7 @@ class GovernanceBoundaryTests(unittest.TestCase):
         self.assertEqual(result.status, 'invalid_input')
 
     def test_search_rejects_sensitive_or_unknown_filter_before_source(self):
-        from source import SearchBatch, SourceRun
+        from scholarguide.source import SearchBatch, SourceRun
         class Source:
             providers = ['openalex']
             def __init__(self):
@@ -437,7 +437,7 @@ class GovernanceBoundaryTests(unittest.TestCase):
         self.assertEqual(source.calls, 0)
 
     def test_search_provenance_does_not_expose_filter_values(self):
-        from source import SearchBatch, SourceRun
+        from scholarguide.source import SearchBatch, SourceRun
         class Source:
             providers = ['openalex']
             def search_batch(self, query, limit, providers=None, filters=None):

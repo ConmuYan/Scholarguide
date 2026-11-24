@@ -7,8 +7,8 @@ import threading
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from providers import ProviderStore
-from webapp import ChatService, Jobs, create_server
+from scholarguide.providers import ProviderStore
+from scholarguide.webapp import ChatService, Jobs, create_server
 
 
 class LandingRouteTests(unittest.TestCase):

@@ -19,7 +19,7 @@ import common_lib as lib
 
 sys.path.insert(0, str(lib.ROOT))
 try:
-    from common import load_env
+    from scholarguide.common import load_env
     load_env()
 except Exception:
     pass
@@ -85,7 +85,7 @@ SUB_AREAS = {
 
 def _credential_kind() -> str:
     try:
-        import mcp_lune
+        from scholarguide import mcp_lune
         token = mcp_lune.access_token()
     except Exception:
         token = ''
@@ -98,8 +98,8 @@ def _credential_kind() -> str:
 
 def _search_one(client, query, venues, year_min, year_max):
     """单 query search_papers，返回 papers 列表。"""
-    import mcp_client
-    import mcp_lune
+    from scholarguide import mcp_client
+    from scholarguide import mcp_lune
     arguments = {
         'query': query,
         'venues': venues,
@@ -166,7 +166,7 @@ def main() -> int:
         print('错误：未检测到 Lune 凭据。请先设置 LUNE_API_KEY。')
         return 2
 
-    import mcp_lune
+    from scholarguide import mcp_lune
     provider = mcp_lune.LuneProvider(max_requests=200)
     client = provider.client()
 

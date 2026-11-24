@@ -8,9 +8,9 @@ from pathlib import Path
 from unittest.mock import patch
 from urllib.error import URLError, HTTPError
 
-from common import Budget, BudgetExceeded, Config, GuideError, RunCancelled
-from source import AcademicSource
-from source_store import SourceStore
+from scholarguide.common import Budget, BudgetExceeded, Config, GuideError, RunCancelled
+from scholarguide.source import AcademicSource
+from scholarguide.source_store import SourceStore
 
 
 class DispatchSafetyTests(unittest.TestCase):
@@ -28,7 +28,7 @@ class DispatchSafetyTests(unittest.TestCase):
 
     def test_post_transport_not_retried_and_batch_preserves_outcome(self):
         client = AcademicSource(Config(source='deepseek', deepseek_search_key='fixture', cache=False), Budget(5))
-        with patch.object(client, '_wait_for'), patch('source.urlopen', side_effect=URLError(TimeoutError('secret parameters'))) as transport:
+        with patch.object(client, '_wait_for'), patch('scholarguide.source.urlopen', side_effect=URLError(TimeoutError('secret parameters'))) as transport:
             with self.assertRaises(GuideError) as caught:
                 client.search_batch('fixture query')
         self.assertEqual(transport.call_count, 1)
@@ -43,7 +43,7 @@ class DispatchSafetyTests(unittest.TestCase):
             try:
                 store.upsert({'name': 'deepseek', 'api_key': 'fixture'})
                 store.cooldown('deepseek', time.time() + 30, errorcode='rate_limited')
-                with patch('source.urlopen', side_effect=TimeoutError('private')) as transport:
+                with patch('scholarguide.source.urlopen', side_effect=TimeoutError('private')) as transport:
                     result = store.probe('deepseek', Config(source='deepseek', cache=False))
                 self.assertEqual(transport.call_count, 1)
                 self.assertEqual(result['remote_outcome'], 'unknown')
@@ -56,7 +56,7 @@ class DispatchSafetyTests(unittest.TestCase):
     def test_post_http_failure_not_retried(self):
         client = AcademicSource(Config(source='openalex', cache=False), Budget(5))
         failure = HTTPError('https://fixture.invalid', 503, 'secret', {}, None)
-        with patch.object(client, '_wait_for'), patch('source.urlopen', side_effect=failure) as transport:
+        with patch.object(client, '_wait_for'), patch('scholarguide.source.urlopen', side_effect=failure) as transport:
             with self.assertRaises(GuideError):
                 client._fetch('https://fixture.invalid', provider='openalex', data=b'secret')
         self.assertEqual(transport.call_count, 1)
@@ -70,7 +70,7 @@ class DispatchSafetyTests(unittest.TestCase):
                 def __exit__(self, *args): return False
                 def read(self, size): return body[:size]
             with self.subTest(size=len(body)), patch.object(client, '_wait_for'), \
-                 patch('source.urlopen', return_value=Response()) as transport:
+                 patch('scholarguide.source.urlopen', return_value=Response()) as transport:
                 with self.assertRaises(GuideError) as caught:
                     client._json('https://fixture.invalid', provider='deepseek', data={'q': 'fixture'})
                 self.assertEqual(getattr(caught.exception, 'remote_outcome', None), 'unknown')
@@ -86,7 +86,7 @@ class DispatchSafetyTests(unittest.TestCase):
         for operation in ('search', 'fetch'):
             client = AcademicSource(Config(source='deepseek', deepseek_search_key='fixture', cache=False), Budget(3))
             with self.subTest(operation=operation), patch.object(client, '_wait_for'), \
-                 patch('source.urlopen', return_value=Response()) as transport:
+                 patch('scholarguide.source.urlopen', return_value=Response()) as transport:
                 with self.assertRaises(GuideError) as caught:
                     if operation == 'search':
                         client.search_batch('fixture')
@@ -104,7 +104,7 @@ class DispatchSafetyTests(unittest.TestCase):
         def cancel(*args, **kwargs):
             budget.cancel_token.request()
             raise TimeoutError('private')
-        with patch.object(client, '_wait_for'), patch('source.urlopen', side_effect=cancel):
+        with patch.object(client, '_wait_for'), patch('scholarguide.source.urlopen', side_effect=cancel):
             with self.assertRaises(RunCancelled) as caught:
                 client.fetch('https://fixture.invalid/private')
         self.assertEqual(caught.exception.remote_outcome, 'unknown')
@@ -120,7 +120,7 @@ class DispatchSafetyTests(unittest.TestCase):
                 def wait(name):
                     original(name)
                     other.cooldown(name, time.time() + 10, errorcode='rate_limited')
-                with patch.object(client, '_wait_for', side_effect=wait), patch('source.urlopen') as transport:
+                with patch.object(client, '_wait_for', side_effect=wait), patch('scholarguide.source.urlopen') as transport:
                     with self.assertRaises(BudgetExceeded):
                         client._fetch('https://fixture.invalid', provider='openalex')
                     transport.assert_not_called()
@@ -131,7 +131,7 @@ class DispatchSafetyTests(unittest.TestCase):
         client = AcademicSource(Config(source='deepseek', deepseek_search_key='fixture', cache=False), Budget(.25))
         def wait(name):
             client._pause(name, 10, 'rate_limited')
-        with patch.object(client, '_wait_for', side_effect=wait), patch('source.urlopen') as transport:
+        with patch.object(client, '_wait_for', side_effect=wait), patch('scholarguide.source.urlopen') as transport:
             with self.assertRaises(BudgetExceeded):
                 client.fetch('https://fixture.invalid/private')
             transport.assert_not_called()
@@ -158,7 +158,7 @@ class DispatchSafetyTests(unittest.TestCase):
                     errors.append(exc)
             try:
                 other.cooldown('arxiv', time.time() + .3, errorcode='rate_limited')
-                with patch.object(client, '_wait_for'), patch.object(budget, 'wait', side_effect=wait), patch('source.urlopen') as transport:
+                with patch.object(client, '_wait_for'), patch.object(budget, 'wait', side_effect=wait), patch('scholarguide.source.urlopen') as transport:
                     thread = threading.Thread(target=run)
                     thread.start()
                     try:
@@ -177,7 +177,7 @@ class DispatchSafetyTests(unittest.TestCase):
                 other.close(); store.close()
 
     def test_late_cooldown_reacquires_rate_before_concurrent_dispatch(self):
-        import source_store
+        from scholarguide import source_store
         with tempfile.TemporaryDirectory() as tmp:
             first = SourceStore(Path(tmp) / 's.sqlite')
             second = SourceStore(Path(tmp) / 's.sqlite')
@@ -213,7 +213,7 @@ class DispatchSafetyTests(unittest.TestCase):
                     errors.append(exc)
             threads = [threading.Thread(target=run, args=(client,)) for client in clients]
             try:
-                with patch.dict(source_store._RATE, {'openalex': .12}), patch('source.urlopen', side_effect=transport):
+                with patch.dict(source_store._RATE, {'openalex': .12}), patch('scholarguide.source.urlopen', side_effect=transport):
                     for thread in threads: thread.start()
                     self.assertTrue(both_ready.wait(2))
                     first.cooldown('openalex', time.time() + .3, errorcode='rate_limited')

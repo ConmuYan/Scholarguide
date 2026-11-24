@@ -10,13 +10,13 @@ from http.client import HTTPConnection
 from pathlib import Path
 from unittest.mock import patch
 
-from common import Config, GuideError, RunCancelled
-from lune_quota import LuneQuotaStore
-from mcp_client import McpClient, ServerConfig
-from mcp_lune import LuneProvider
-from providers import ProviderStore
-from source_store import SourceStore
-from webapp import ChatService, Jobs, create_server
+from scholarguide.common import Config, GuideError, RunCancelled
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.mcp_client import McpClient, ServerConfig
+from scholarguide.mcp_lune import LuneProvider
+from scholarguide.providers import ProviderStore
+from scholarguide.source_store import SourceStore
+from scholarguide.webapp import ChatService, Jobs, create_server
 
 
 class SourcePartialApiTests(unittest.TestCase):
@@ -45,7 +45,7 @@ class SourcePartialApiTests(unittest.TestCase):
                 with patch.dict(os.environ, {'SG_LUNE_QUOTA_DB': str(quota_path),
                                              'SG_MCP_TOKEN_FILE': str(root / 'missing-token'),
                                              'SG_SKIP_PROJECT_ENV': '1'}), \
-                     patch('mcp_lune.install', return_value=provider), \
+                     patch('scholarguide.mcp_lune.install', return_value=provider), \
                      patch.object(sources, '_ensure_ready', return_value=Config(source='lune', source_store=sources)), \
                      patch.object(LuneQuotaStore, 'finish', side_effect=RunCancelled()):
                     server = create_server(0, jobs=Jobs(root / 'runs', providers=providers),

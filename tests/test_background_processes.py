@@ -13,7 +13,7 @@ import unittest
 from unittest.mock import patch
 from urllib.request import ProxyHandler, build_opener
 
-import network
+from scholarguide import network
 
 ROOT = Path(__file__).resolve().parents[1]
 

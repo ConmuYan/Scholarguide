@@ -24,26 +24,50 @@ $Base = Join-Path $env:LOCALAPPDATA 'ScholarGuide'
 $Data = Join-Path $HOME '.scholarguide'
 $Target = Join-Path (Join-Path $Base 'releases') $Version
 $Bin = Join-Path $Base 'bin'
-New-Item -ItemType Directory -Force -Path (Join-Path $Base 'releases'), $Data, (Join-Path $Data 'runs'), (Join-Path $Data 'cache'), $Bin | Out-Null
+foreach ($Directory in @((Join-Path $Base 'releases'), $Data, (Join-Path $Data 'runs'), (Join-Path $Data 'cache'), $Bin)) {
+    [System.IO.Directory]::CreateDirectory($Directory) | Out-Null
+}
+# One installer may update the pointer and launcher at a time. A file lock is
+# released automatically by Windows if the process exits or is killed.
+$LockPath = Join-Path $Base 'install.lock'
+$Lock = $null
+$Deadline = [DateTime]::UtcNow.AddMinutes(5)
+while ($null -eq $Lock) {
+    try {
+        $Lock = [System.IO.File]::Open($LockPath, 'OpenOrCreate', 'ReadWrite', 'None')
+    } catch [System.IO.IOException] {
+        if ([DateTime]::UtcNow -ge $Deadline) { throw 'Another ScholarGuide installation is still running. Wait for it to finish and rerun.' }
+        Start-Sleep -Milliseconds 500
+    }
+}
 $Work = Join-Path $Base ('.install-' + [System.Guid]::NewGuid().ToString('N'))
-New-Item -ItemType Directory -Force -Path $Work | Out-Null
+[System.IO.Directory]::CreateDirectory($Work) | Out-Null
 try {
-    if (-not (Test-Path $Target)) {
+    $FreshInstall = -not (Test-Path -LiteralPath $Target)
+    if ($FreshInstall) {
         $Archive = Join-Path $Work $ArchiveName
         $Checksums = Join-Path $Work 'SHA256SUMS'
-        Invoke-WebRequest -UseBasicParsing "$ReleaseUrl/$ArchiveName" -OutFile $Archive
-        Invoke-WebRequest -UseBasicParsing "$ReleaseUrl/SHA256SUMS" -OutFile $Checksums
-        $Line = Get-Content $Checksums | Where-Object { $_ -match "\s\*?$([regex]::Escape($ArchiveName))$" } | Select-Object -First 1
+        # DownloadFile accepts literal filesystem paths, including brackets;
+        # Invoke-WebRequest -OutFile resolves them as wildcard paths in PS 5.1.
+        $Client = New-Object System.Net.WebClient
+        $Client.Headers['User-Agent'] = 'ScholarGuide-Installer'
+        try {
+            $Client.DownloadFile("$ReleaseUrl/$ArchiveName", $Archive)
+            $Client.DownloadFile("$ReleaseUrl/SHA256SUMS", $Checksums)
+        } finally {
+            $Client.Dispose()
+        }
+        $Line = Get-Content -LiteralPath $Checksums | Where-Object { $_ -match "\s\*?$([regex]::Escape($ArchiveName))$" } | Select-Object -First 1
         if (-not $Line) { throw 'Release checksum is missing; nothing was installed.' }
         $Expected = ($Line -split '\s+')[0].ToLowerInvariant()
-        $Actual = (Get-FileHash -Algorithm SHA256 $Archive).Hash.ToLowerInvariant()
+        $Actual = (Get-FileHash -Algorithm SHA256 -LiteralPath $Archive).Hash.ToLowerInvariant()
         if ($Expected -ne $Actual) { throw 'Release checksum mismatch; nothing was installed.' }
         $Tar = Get-Command tar.exe -ErrorAction SilentlyContinue
         if (-not $Tar) { throw 'Windows tar.exe is required to unpack the release archive.' }
         $Unpack = Join-Path $Work 'unpacked'
-        New-Item -ItemType Directory -Force $Unpack | Out-Null
+        [System.IO.Directory]::CreateDirectory($Unpack) | Out-Null
         # Relative names only: GNU tar reads "C:\..." as a remote host and fails.
-        Push-Location $Work
+        Push-Location -LiteralPath $Work
         try {
             $Entries = & $Tar.Source -tzf $ArchiveName
             if ($LASTEXITCODE -ne 0) { throw 'Unable to list the release archive.' }
@@ -56,26 +80,51 @@ try {
             Pop-Location
         }
         $Source = Join-Path $Unpack "scholarguide-$Version"
-        if (-not (Test-Path (Join-Path $Source 'app.py')) -or -not (Test-Path (Join-Path $Source 'requirements.txt'))) {
+        if (-not (Test-Path -LiteralPath (Join-Path $Source 'app.py')) -or -not (Test-Path -LiteralPath (Join-Path $Source 'requirements.txt'))) {
             throw 'Release archive is missing required files.'
         }
-        & $PythonExe @PythonPrefix -m venv (Join-Path $Source '.venv')
-        if ($LASTEXITCODE -ne 0) { throw 'Unable to create Python virtual environment.' }
-        $VenvPython = Join-Path $Source '.venv\Scripts\python.exe'
-        & $VenvPython -m pip install --disable-pip-version-check -r (Join-Path $Source 'requirements.txt')
-        if ($LASTEXITCODE -ne 0) { throw 'Unable to install ScholarGuide dependencies.' }
-        $Stage = Join-Path $Base ('stage-' + [System.Guid]::NewGuid().ToString('N'))
-        Move-Item -Path $Source -Destination $Stage
-        try { Move-Item -Path $Stage -Destination $Target }
-        catch { Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $Stage; throw }
+        # Build at the final path: Windows virtualenv command launchers embed
+        # their absolute path and stop working if the environment is moved.
+        # The marker makes a hard-interrupted installation fail closed on retry.
+        $InstallId = [System.Guid]::NewGuid().ToString('N')
+        [System.IO.File]::WriteAllText((Join-Path $Source '.install-incomplete'), $InstallId)
+        $Marker = Join-Path $Target '.install-incomplete'
+        try {
+            [System.IO.Directory]::Move($Source, $Target)
+        } catch [System.IO.IOException] {
+            if (Test-Path -LiteralPath $Marker) {
+                throw 'This version has an interrupted installation. Stop any installer and inspect its version directory before retrying.'
+            }
+            throw
+        }
+        try {
+            & $PythonExe @PythonPrefix -m venv (Join-Path $Target '.venv')
+            if ($LASTEXITCODE -ne 0) { throw 'Unable to create Python virtual environment.' }
+            $VenvPython = Join-Path $Target '.venv\Scripts\python.exe'
+            & $VenvPython -m pip install --disable-pip-version-check -r (Join-Path $Target 'requirements.txt')
+            if ($LASTEXITCODE -ne 0) { throw 'Unable to install ScholarGuide dependencies.' }
+            Remove-Item -LiteralPath $Marker -Force
+        } catch {
+            # Only remove a directory created by this invocation and still
+            # bearing its marker; do not touch a pre-existing version.
+            try {
+                if ((Test-Path -LiteralPath $Marker) -and
+                    ([System.IO.File]::ReadAllText($Marker) -eq $InstallId)) {
+                    Remove-Item -LiteralPath $Target -Recurse -Force -ErrorAction SilentlyContinue
+                }
+            } catch { }
+            throw
+        }
     } else {
+        if (Test-Path -LiteralPath (Join-Path $Target '.install-incomplete')) {
+            throw 'This version has an interrupted installation. Stop any installer and inspect its version directory before retrying.'
+        }
         Write-Host "ScholarGuide $Version is already installed."
     }
     $EnvExample = Join-Path $Target '.env.example'
-    if (-not (Test-Path (Join-Path $Data '.env')) -and (Test-Path $EnvExample)) {
-        Copy-Item $EnvExample (Join-Path $Data '.env')
+    if (-not (Test-Path -LiteralPath (Join-Path $Data '.env')) -and (Test-Path -LiteralPath $EnvExample)) {
+        Copy-Item -LiteralPath $EnvExample -Destination (Join-Path $Data '.env')
     }
-    Set-Content -Path (Join-Path $Base 'current-version') -Value $Version -NoNewline -Encoding ascii
     $Launcher = @'
 @echo off
 setlocal
@@ -91,7 +140,21 @@ set "SG_ENV_FILE=%SG_DATA_DIR%\.env"
 if "%*"=="" set "ARGS=web --open" else set "ARGS=%*"
 "%APP%\.venv\Scripts\python.exe" "%APP%\app.py" %ARGS%
 '@
-    Set-Content -Path (Join-Path $Bin 'scholarguide.cmd') -Value $Launcher -Encoding ascii
+    Set-Content -LiteralPath (Join-Path $Bin 'scholarguide.cmd') -Value $Launcher -Encoding ascii
+    # Publish the pointer only after the launcher exists. The same-directory
+    # temporary file avoids partial versions; an interruption before this
+    # point leaves the previous current-version usable.
+    if ($FreshInstall) {
+        $VersionFile = Join-Path $Base 'current-version'
+        $VersionTemp = Join-Path $Base ('.current-version.' + [System.Guid]::NewGuid().ToString('N') + '.tmp')
+        try {
+            [System.IO.File]::WriteAllText($VersionTemp, $Version, [System.Text.Encoding]::ASCII)
+            if ([System.IO.File]::Exists($VersionFile)) { [System.IO.File]::Delete($VersionFile) }
+            [System.IO.File]::Move($VersionTemp, $VersionFile)
+        } finally {
+            Remove-Item -LiteralPath $VersionTemp -Force -ErrorAction SilentlyContinue
+        }
+    }
     $UserPath = [Environment]::GetEnvironmentVariable('Path', 'User')
     $Parts = @($UserPath -split ';' | Where-Object { $_ })
     if ($Parts -notcontains $Bin) {
@@ -103,5 +166,6 @@ if "%*"=="" set "ARGS=web --open" else set "ARGS=%*"
     Write-Host "Your settings and local history are kept in $Data"
     Write-Host 'Configure your own model key in the local Models page.'
   } finally {
-    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $Work
+    Remove-Item -LiteralPath $Work -Recurse -Force -ErrorAction SilentlyContinue
+    $Lock.Dispose()
   }

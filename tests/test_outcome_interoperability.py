@@ -4,12 +4,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_tools import ToolObservation
-from api_v1 import error_payload, execution_error
-from common import GuideError
-from mcp_client import McpError
-from mcp_lune import LuneProvider
-from source import SourceRun
+from scholarguide.agent_tools import ToolObservation
+from scholarguide.api_v1 import error_payload, execution_error
+from scholarguide.common import GuideError
+from scholarguide.mcp_client import McpError
+from scholarguide.mcp_lune import LuneProvider
+from scholarguide.source import SourceRun
 
 
 class OutcomeInteroperabilityTests(unittest.TestCase):

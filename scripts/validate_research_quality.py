@@ -18,14 +18,14 @@ import time
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from common import Budget, Config, GuideError
-from costing import cost_breakdown
-from llm import JsonLLM
-from model_identity import research_model_identity, backend_identity
-from providers import ProviderStore
-from report import markdown
-from source import AcademicSource
-from workflow import run
+from scholarguide.common import Budget, Config, GuideError
+from scholarguide.costing import cost_breakdown
+from scholarguide.llm import JsonLLM
+from scholarguide.model_identity import research_model_identity, backend_identity
+from scholarguide.providers import ProviderStore
+from scholarguide.report import markdown
+from scholarguide.source import AcademicSource
+from scholarguide.workflow import run
 from urllib.parse import urlsplit
 
 CASES=[
@@ -52,7 +52,7 @@ def atomic(path,value):
     temporary.replace(path)
 
 def fingerprint():
-    names=list(ROOT.glob('*.py'))+[Path(__file__).resolve()]
+    names=list(ROOT.glob('*.py'))+list((ROOT/'scholarguide').rglob('*.py'))+[Path(__file__).resolve()]
     return {p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(names)}
 
 class MonetaryGuard:
@@ -207,7 +207,7 @@ class GuardedLLM(JsonLLM):
             self.guard.settle(item,self.last_usage,success)
 
 def checks(result):
-    from research_policy import publication_matches
+    from scholarguide.research_policy import publication_matches
     papers=result.get('papers') or []
     brief=result.get('research_brief') or {}
     normal=lambda value:' '.join(str(value or '').split())
@@ -252,7 +252,7 @@ def main():
     elif args.budget_cny is not None and abs(args.budget_cny-expected)>1e-9:
         parser.error('--budget-cny does not match the recorded authorizations.')
     args.out.mkdir(parents=True,exist_ok=True)
-    from recovery import JobLease
+    from scholarguide.recovery import JobLease
     import atexit
     lease=JobLease(args.ledger.parent/(args.ledger.name+'.lease'))
     atexit.register(lease.close)

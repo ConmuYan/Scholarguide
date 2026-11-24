@@ -1,7 +1,7 @@
 """A planner may restate scope the request already applies; only narrowing blocks."""
 import unittest
 
-from quantities import redundant_scope_requirements
+from scholarguide.quantities import redundant_scope_requirements
 
 PLAN = {'venue': 'AAAI, CVPR, ICCV, ICLR, ICML, NeurIPS', 'year_from': 2024, 'year_to': 2026}
 

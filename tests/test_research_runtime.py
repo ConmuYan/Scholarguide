@@ -13,12 +13,12 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, Config, GuideError, Paper, Request
-from research_runtime import attach_brief
-from session import ChatSession
-from source import SearchBatch, SourceRun
-from state import StateStore
-from workflow import run as run_workflow
+from scholarguide.common import Budget, Config, GuideError, Paper, Request
+from scholarguide.research_runtime import attach_brief
+from scholarguide.session import ChatSession
+from scholarguide.source import SearchBatch, SourceRun
+from scholarguide.state import StateStore
+from scholarguide.workflow import run as run_workflow
 
 
 TASK = {'topic': 'visual retrieval', 'purpose': 'design a controlled experiment',

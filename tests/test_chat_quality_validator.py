@@ -8,11 +8,11 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from common import Budget, Config, GuideError, source_names
+from scholarguide.common import Budget, Config, GuideError, source_names
 from scripts.validate_chat_quality import (INITIAL_MESSAGE, EXPECTED, bind_chat, chat_checks,
                                           followup_message, main, run_validation)
 from scripts.validate_research_quality import GuardedLLM, MonetaryGuard
-from state import StateStore
+from scholarguide.state import StateStore
 from tests.test_research_runtime import OfflineLLM, OfflineSource, paper
 
 
@@ -74,7 +74,7 @@ class ChatQualityValidatorTests(unittest.TestCase):
 
     def test_natural_two_turns_exclusion_sqlite_rehydration_and_artifacts(self):
         output = self.root / 'qa'
-        with patch('llm.urlopen', side_effect=AssertionError('offline validator test made an HTTP call')):
+        with patch('scholarguide.llm.urlopen', side_effect=AssertionError('offline validator test made an HTTP call')):
             manifest = run_validation(self.config, output, self.guard,
                                       source_factory=source, llm_factory=NaturalLLM)
         self.assertEqual(len(manifest['turns']), 2)

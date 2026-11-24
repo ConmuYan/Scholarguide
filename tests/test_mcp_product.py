@@ -7,10 +7,10 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from unittest.mock import patch
 
-import mcp_client
-import mcp_lune
-import mcp_plugin
-from common import Budget, Config
+from scholarguide import mcp_client
+from scholarguide import mcp_lune
+from scholarguide import mcp_plugin
+from scholarguide.common import Budget, Config
 from tests.test_mcp_client import MockMcp, _result
 from tests.lune_quota_fixture import confirmed_quota
 
@@ -147,7 +147,7 @@ class ProductTests(unittest.TestCase):
                 'headers': {'Authorization': 'Bearer local'}}}}), encoding='utf-8')
             provider = mcp_lune.LuneProvider(config_path=config,
                 ledger_path=Path(directory) / 'ledger.json', max_requests=0)
-            with patch('mcp_lune.urlopen', side_effect=AssertionError('network')):
+            with patch('scholarguide.mcp_lune.urlopen', side_effect=AssertionError('network')):
                 self.assertTrue(provider.ready())
 
 

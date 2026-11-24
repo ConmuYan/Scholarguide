@@ -15,9 +15,9 @@ from dataclasses import replace
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from common import Budget, BudgetExceeded, Config, GuideError
-from llm import JsonLLM, strict_schema_compatible
-from prompts import ACTION_SCHEMA, PLAN_SCHEMA, QUERY_SCHEMA
+from scholarguide.common import Budget, BudgetExceeded, Config, GuideError
+from scholarguide.llm import JsonLLM, strict_schema_compatible
+from scholarguide.prompts import ACTION_SCHEMA, PLAN_SCHEMA, QUERY_SCHEMA
 
 PARTIAL = {'type': 'object', 'properties': {'a': {'type': 'string'}, 'b': {'type': 'string'}},
            'required': ['a'], 'additionalProperties': False}

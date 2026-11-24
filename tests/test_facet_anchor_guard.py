@@ -9,8 +9,8 @@ import sys
 import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from common import Paper
-import research_landscape as landscape
+from scholarguide.common import Paper
+from scholarguide import research_landscape as landscape
 
 
 PLAN={'scope':'landscape','facets':[

@@ -8,9 +8,9 @@ from dataclasses import replace
 from unittest.mock import Mock, patch
 from urllib.error import HTTPError
 
-from common import Budget, BudgetExceeded, Config, GuideError, RunCancelled
-from llm import JsonLLM, NativeUnsupported, _Rejected
-from network import BufferedResponse
+from scholarguide.common import Budget, BudgetExceeded, Config, GuideError, RunCancelled
+from scholarguide.llm import JsonLLM, NativeUnsupported, _Rejected
+from scholarguide.network import BufferedResponse
 
 
 SCHEMA = {'type': 'object', 'properties': {}, 'required': [], 'additionalProperties': False}
@@ -35,7 +35,7 @@ class OAuthTransportTests(unittest.TestCase):
         self.budget = Budget(30)
         self.llm = JsonLLM(self.config, self.budget)
         self.access = Mock(return_value=SECRET)
-        self.module = patch.dict(sys.modules, {'openai_oauth': types.SimpleNamespace(
+        self.module = patch.dict(sys.modules, {'scholarguide.openai_oauth': types.SimpleNamespace(
             access_token=self.access, proxy_url=lambda *args, **kwargs: '')})
         self.module.start()
         self.addCleanup(self.module.stop)
@@ -50,7 +50,7 @@ class OAuthTransportTests(unittest.TestCase):
         def open_fake(req, **kwargs):
             captured.append((req, kwargs))
             return BufferedResponse(event('response.created', response={}) + completed() + b'data: [DONE]\n\n')
-        with patch('llm.urlopen', side_effect=open_fake):
+        with patch('scholarguide.llm.urlopen', side_effect=open_fake):
             self.assertEqual(self.call(), '{"ok":true}')
             self.assertEqual(self.call(), '{"ok":true}')
         self.assertEqual(self.access.call_count, 2)
@@ -70,22 +70,22 @@ class OAuthTransportTests(unittest.TestCase):
 
     def test_configured_output_cap_is_sent_verbatim(self):
         self.llm.config = replace(self.config, max_output_tokens=777)
-        with patch('llm.urlopen', return_value=BufferedResponse(completed())) as opened:
+        with patch('scholarguide.llm.urlopen', return_value=BufferedResponse(completed())) as opened:
             self.call()
         payload = json.loads(opened.call_args.args[0].data)
         self.assertEqual(payload['max_output_tokens'], 777)
 
     def test_reasoning_policy_omits_output_cap_explicitly(self):
         policy = {'policy_version': 'fixture', 'reasoning_effort': 'low'}
-        with patch('model_policy.inference_policy', return_value=policy), \
-             patch('llm.urlopen', return_value=BufferedResponse(completed())) as opened:
+        with patch('scholarguide.model_policy.inference_policy', return_value=policy), \
+             patch('scholarguide.llm.urlopen', return_value=BufferedResponse(completed())) as opened:
             self.call()
         payload = json.loads(opened.call_args.args[0].data)
         self.assertEqual(payload['reasoning'], {'effort': 'low'})
         self.assertNotIn('max_output_tokens', payload)
 
     def test_token_lookup_receives_absolute_deadline_and_cancel_probe(self):
-        with patch('llm.urlopen', return_value=BufferedResponse(completed())):
+        with patch('scholarguide.llm.urlopen', return_value=BufferedResponse(completed())):
             self.call()
         kwargs = self.access.call_args.kwargs
         self.assertIn('deadline', kwargs)
@@ -99,7 +99,7 @@ class OAuthTransportTests(unittest.TestCase):
             time.sleep(0.15)
             return SECRET
         self.access.side_effect = slow_token
-        with patch('llm.urlopen') as opened, self.assertRaises(GuideError):
+        with patch('scholarguide.llm.urlopen') as opened, self.assertRaises(GuideError):
             self.call()
         opened.assert_not_called()
         self.assertEqual(self.budget.llm_calls, 0)
@@ -111,7 +111,7 @@ class OAuthTransportTests(unittest.TestCase):
                 self.llm.budget = self.budget
                 body = event(kind, response={'status': kind.split('.')[1],
                                              'usage': {'input_tokens': 5, 'output_tokens': 2}})
-                with patch('llm.urlopen', return_value=BufferedResponse(body)), \
+                with patch('scholarguide.llm.urlopen', return_value=BufferedResponse(body)), \
                      self.assertRaises(GuideError):
                     self.call()
                 self.assertTrue(self.budget.usage_observed)
@@ -121,14 +121,14 @@ class OAuthTransportTests(unittest.TestCase):
     def test_unused_failed_stream_usage_stays_unaccounted(self):
         body = event('response.failed', response={'status': 'failed',
                                                   'usage': {'input_tokens': '5', 'output_tokens': 2}})
-        with patch('llm.urlopen', return_value=BufferedResponse(body)), \
+        with patch('scholarguide.llm.urlopen', return_value=BufferedResponse(body)), \
              self.assertRaises(GuideError):
             self.call()
         self.assertFalse(self.budget.usage_observed)
         self.assertEqual(self.budget.usage_calls, 0)
 
     def test_oauth_native_is_locally_unsupported_before_any_token(self):
-        with patch('llm.urlopen') as opened, self.assertRaises(NativeUnsupported) as caught:
+        with patch('scholarguide.llm.urlopen') as opened, self.assertRaises(NativeUnsupported) as caught:
             self.llm._native_request({}, initial=True)
         self.assertIn('SG_NATIVE_FALLBACK=json_on_unsupported', str(caught.exception))
         self.assertIn('SG_ACTION_PROTOCOL=json', str(caught.exception))
@@ -137,8 +137,8 @@ class OAuthTransportTests(unittest.TestCase):
         self.access.assert_not_called()
 
     def test_incompatible_schema_uses_json_object_without_retry(self):
-        from prompts import PLAN_SCHEMA
-        with patch('llm.urlopen', return_value=BufferedResponse(completed())) as opened:
+        from scholarguide.prompts import PLAN_SCHEMA
+        with patch('scholarguide.llm.urlopen', return_value=BufferedResponse(completed())) as opened:
             self.llm._call([{'role': 'user', 'content': 'hello'}], PLAN_SCHEMA)
         payload = json.loads(opened.call_args.args[0].data)
         self.assertEqual(payload['text']['format'], {'type': 'json_object'})
@@ -146,8 +146,8 @@ class OAuthTransportTests(unittest.TestCase):
 
     def test_only_explicit_oauth_proxy_is_passed_to_transport(self):
         module = types.SimpleNamespace(access_token=self.access, proxy_url=lambda *args, **kwargs: 'http://127.0.0.1:7890')
-        with patch.dict(sys.modules, {'openai_oauth': module}), \
-             patch('llm.urlopen', return_value=BufferedResponse(completed())) as opened:
+        with patch.dict(sys.modules, {'scholarguide.openai_oauth': module}), \
+             patch('scholarguide.llm.urlopen', return_value=BufferedResponse(completed())) as opened:
             self.call()
         self.assertEqual(opened.call_args.kwargs['model_proxy'], 'http://127.0.0.1:7890')
 
@@ -157,7 +157,7 @@ class OAuthTransportTests(unittest.TestCase):
                         {'base_url': 'https://api.openai.com/v1/'},
                         {'base_url': 'http://api.openai.com/v1'},
                         {'base_url': 'https://api.openai.com/v1/responses'}):
-            with self.subTest(changes=changes), patch('llm.urlopen') as opened:
+            with self.subTest(changes=changes), patch('scholarguide.llm.urlopen') as opened:
                 self.llm.config = replace(self.config, **changes)
                 with self.assertRaises(GuideError):
                     self.call()
@@ -168,7 +168,7 @@ class OAuthTransportTests(unittest.TestCase):
         def fail(req, **kwargs):
             raise HTTPError(req.full_url, 400, SECRET, {}, io.BytesIO(
                 json.dumps({'error': {'message': 'temperature Bearer ' + SECRET}}).encode()))
-        with patch('llm.urlopen', side_effect=fail) as opened:
+        with patch('scholarguide.llm.urlopen', side_effect=fail) as opened:
             with self.assertRaises(GuideError) as caught:
                 self.call()
         self.assertNotIn(SECRET, str(caught.exception))
@@ -182,12 +182,12 @@ class OAuthTransportTests(unittest.TestCase):
         def fail(req, **kwargs):
             body = {'error': {'code': code, 'message': SECRET}}
             raise HTTPError(req.full_url, 429, SECRET, {}, io.BytesIO(json.dumps(body).encode()))
-        with patch('llm.urlopen', side_effect=fail), self.assertRaises(GuideError) as caught:
+        with patch('scholarguide.llm.urlopen', side_effect=fail), self.assertRaises(GuideError) as caught:
             self.call()
         self.assertIn(code, str(caught.exception))
         self.assertNotIn(SECRET, str(caught.exception))
         body = event('response.failed', response={'error': {'code': code, 'message': SECRET}})
-        with patch('llm.urlopen', return_value=BufferedResponse(body)), self.assertRaises(GuideError) as caught:
+        with patch('scholarguide.llm.urlopen', return_value=BufferedResponse(body)), self.assertRaises(GuideError) as caught:
             self.call()
         self.assertIn(code, str(caught.exception))
         self.assertNotIn(SECRET, str(caught.exception))
@@ -203,7 +203,7 @@ class OAuthTransportTests(unittest.TestCase):
             with self.subTest(result=type(result)):
                 self.access.side_effect = result if isinstance(result, Exception) else None
                 self.access.return_value = result
-                with patch('llm.urlopen') as opened, self.assertRaises(GuideError) as caught:
+                with patch('scholarguide.llm.urlopen') as opened, self.assertRaises(GuideError) as caught:
                     self.call()
                 self.assertNotIn(SECRET, str(caught.exception))
                 opened.assert_not_called()
@@ -218,24 +218,24 @@ class OAuthTransportTests(unittest.TestCase):
                     b'event: response.completed\ndata: {"type":"response.failed"}\n\n',
                     b'\xff\n\n', b'x' * 2_000_001]
         for body in examples:
-            with self.subTest(body=body[:35]), patch('llm.urlopen', return_value=BufferedResponse(body)):
+            with self.subTest(body=body[:35]), patch('scholarguide.llm.urlopen', return_value=BufferedResponse(body)):
                 with self.assertRaises(GuideError) as caught:
                     self.call()
                 self.assertNotIn(SECRET, str(caught.exception))
 
     def test_cancel_budget_and_native_fail_closed(self):
-        with patch('llm.urlopen') as opened:
+        with patch('scholarguide.llm.urlopen') as opened:
             self.budget.cancel_token.request()
             with self.assertRaises(RunCancelled):
                 self.call()
             opened.assert_not_called()
             self.access.assert_not_called()
         self.llm.budget = Budget(0)
-        with patch('llm.urlopen') as opened, self.assertRaises(BudgetExceeded):
+        with patch('scholarguide.llm.urlopen') as opened, self.assertRaises(BudgetExceeded):
             self.call()
         opened.assert_not_called()
         self.llm.budget = Budget(30)
-        with patch('llm.urlopen') as opened, self.assertRaises(GuideError):
+        with patch('scholarguide.llm.urlopen') as opened, self.assertRaises(GuideError):
             self.llm._native_request({}, initial=True)
         opened.assert_not_called()
         self.assertFalse(self.llm.last_native_request_sent)
@@ -246,14 +246,14 @@ class OAuthTransportTests(unittest.TestCase):
             self.budget.cancel_token.request()
             return SECRET
         self.access.side_effect = token
-        with patch('llm.urlopen') as opened, self.assertRaises(RunCancelled):
+        with patch('scholarguide.llm.urlopen') as opened, self.assertRaises(RunCancelled):
             self.call()
         opened.assert_not_called()
         self.assertEqual(self.budget.llm_calls, 0)
 
     def test_token_lookup_cancellation_error_is_not_wrapped(self):
         self.access.side_effect = RunCancelled()
-        with patch('llm.urlopen') as opened, self.assertRaises(RunCancelled):
+        with patch('scholarguide.llm.urlopen') as opened, self.assertRaises(RunCancelled):
             self.call()
         opened.assert_not_called()
         self.assertEqual(self.budget.llm_calls, 0)
@@ -261,13 +261,13 @@ class OAuthTransportTests(unittest.TestCase):
     def test_stream_multiline_data_and_comments(self):
         body = (b': keepalive\r\nevent: response.created\r\ndata: {"type":\r\n'
                 b'data: "response.created"}\r\n\r\n' + completed())
-        with patch('llm.urlopen', return_value=BufferedResponse(body)):
+        with patch('scholarguide.llm.urlopen', return_value=BufferedResponse(body)):
             self.assertEqual(self.call(), '{"ok":true}')
 
     def test_non_oauth_json_transport_unchanged(self):
         self.llm.config = replace(self.config, profile_id='regular', base_url='https://example.invalid/v1')
         data = {'status': 'completed', 'output_text': '{"ok":true}'}
-        with patch('llm.urlopen', return_value=BufferedResponse(json.dumps(data).encode())) as opened:
+        with patch('scholarguide.llm.urlopen', return_value=BufferedResponse(json.dumps(data).encode())) as opened:
             self.assertEqual(self.call(), '{"ok":true}')
         req = opened.call_args.args[0]
         self.assertEqual(req.get_header('Authorization'), 'Bearer unused-api-key')

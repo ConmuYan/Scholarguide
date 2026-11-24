@@ -1,9 +1,9 @@
 """Independent extension registration; native Lune is part of the product registry."""
 import unittest
 
-import mcp_plugin
-import source as source_mod
-from common import Budget, Config, GuideError, Paper
+from scholarguide import mcp_plugin
+from scholarguide import source as source_mod
+from scholarguide.common import Budget, Config, GuideError, Paper
 
 NAME = 'mock_catalog'
 

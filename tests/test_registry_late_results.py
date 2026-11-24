@@ -3,10 +3,10 @@ import time
 import unittest
 from unittest.mock import patch
 
-from agent_tools import ToolRegistry, ToolSpec
-from common import Budget, Config, Paper, RunCancelled
-from retrieval import RetrievalPlan, RetrievalRouter
-from source import SearchBatch, SourceRun, retained_partial_batch
+from scholarguide.agent_tools import ToolRegistry, ToolSpec
+from scholarguide.common import Budget, Config, Paper, RunCancelled
+from scholarguide.retrieval import RetrievalPlan, RetrievalRouter
+from scholarguide.source import SearchBatch, SourceRun, retained_partial_batch
 
 
 class LateSource:
@@ -60,7 +60,7 @@ class RegistryLateResultTests(unittest.TestCase):
         self.assertEqual(source.calls, 1)
 
     def test_cancel_race_preserves_prior_partial_and_remote_outcome(self):
-        from common import GuideError
+        from scholarguide.common import GuideError
         class Source:
             providers = ['openalex', 'lune']
             def __init__(self): self.budget = Budget(3)
@@ -111,7 +111,9 @@ class RegistryLateResultTests(unittest.TestCase):
         router = RetrievalRouter(Config(source='lune'), source, tools=registry)
         plan = RetrievalPlan(['lune'], ['fixture', 'next'], ['fixture'], single_source=True)
         with patch.object(router, 'plan', return_value=plan):
-            result = router.retrieve({'topic': 'fixture', 'target_count': 1}, 'fixture', limit=1)
+            # One returned paper cannot satisfy this request, so a second
+            # query would normally run unless the paid follow-up is blocked.
+            result = router.retrieve({'topic': 'fixture', 'target_count': 2}, 'fixture', limit=1)
         self.assertEqual(source.calls, 1)
         self.assertEqual([paper.id for paper in result.papers], ['lune:late'])
         self.assertTrue(result.paid_followups_blocked)

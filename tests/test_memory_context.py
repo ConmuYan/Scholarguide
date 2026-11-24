@@ -9,8 +9,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from memory_context import MemoryContext, MemoryContextError
-from memory_store import MemoryStore
+from scholarguide.memory_context import MemoryContext, MemoryContextError
+from scholarguide.memory_store import MemoryStore
 
 
 class MemoryContextTests(unittest.TestCase):
@@ -94,7 +94,7 @@ class MemoryContextTests(unittest.TestCase):
                     path.unlink()
                 elif operation == 'corrupt':
                     path.write_bytes(b'not sqlite')
-                with patch('memory_store.time.time', return_value=self.expiry if operation == 'expired' else time.time()):
+                with patch('scholarguide.memory_store.time.time', return_value=self.expiry if operation == 'expired' else time.time()):
                     with self.assertRaises(MemoryContextError) as error:
                         ctx.revalidate()
                 self.assertEqual(str(error.exception), 'Memory context is no longer valid.')
@@ -109,10 +109,10 @@ class MemoryContextTests(unittest.TestCase):
     def test_observed_expiration_does_not_reverse(self):
         self.grant()
         ctx = MemoryContext.capture(self.path, enabled=True)
-        with patch('memory_store.time.time', return_value=self.expiry):
+        with patch('scholarguide.memory_store.time.time', return_value=self.expiry):
             with self.assertRaises(MemoryContextError):
                 ctx.revalidate()
-        with patch('memory_store.time.time', return_value=self.expiry - 100):
+        with patch('scholarguide.memory_store.time.time', return_value=self.expiry - 100):
             with self.assertRaises(MemoryContextError):
                 ctx.revalidate()
             self.assertEqual(MemoryContext.capture(self.path, enabled=True).hints(explicit_fields=set()), {})
@@ -141,7 +141,7 @@ class MemoryContextTests(unittest.TestCase):
     def test_process_update_invalidates(self):
         self.grant()
         ctx = MemoryContext.capture(self.path, enabled=True)
-        code = ("import sys; from memory_store import MemoryStore; "
+        code = ("import sys; from scholarguide.memory_store import MemoryStore; "
                 "s=MemoryStore(sys.argv[1]); "
                 "s.revoke('reading_goal', expected_revision=1); s.close()")
         result = subprocess.run([sys.executable, '-B', '-c', code, str(self.path)],
@@ -153,14 +153,14 @@ class MemoryContextTests(unittest.TestCase):
     def test_unavailable_store_and_no_retry(self):
         self.grant()
         ctx = MemoryContext.capture(self.path, enabled=True)
-        with patch('memory_context._snapshot', side_effect=OSError('private path')) as read:
+        with patch('scholarguide.memory_context._snapshot', side_effect=OSError('private path')) as read:
             with self.assertRaises(MemoryContextError) as error:
                 ctx.revalidate()
             self.assertEqual(str(error.exception), 'Memory context is no longer valid.')
             with self.assertRaises(MemoryContextError):
                 ctx.revalidate()
             self.assertEqual(read.call_count, 1)
-        with patch('memory_context._snapshot', side_effect=OSError('private path')):
+        with patch('scholarguide.memory_context._snapshot', side_effect=OSError('private path')):
             self.assertEqual(MemoryContext.capture(self.path, enabled=True).hints(explicit_fields=set()), {})
 
     def test_close(self):

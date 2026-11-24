@@ -11,9 +11,9 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import MagicMock, patch
 
-from common import Budget, Config, GuideError
-from source import SearchBatch, SourceRun
-from source_store import CANONICAL_SOURCES, SourceStore
+from scholarguide.common import Budget, Config, GuideError
+from scholarguide.source import SearchBatch, SourceRun
+from scholarguide.source_store import CANONICAL_SOURCES, SourceStore
 
 
 class SourceStoreProductTests(unittest.TestCase):
@@ -42,7 +42,7 @@ class SourceStoreProductTests(unittest.TestCase):
     def test_invoke_setup_cancelled_while_store_lock_held(self):
         import threading
         from concurrent.futures import ThreadPoolExecutor
-        from common import RunCancelled
+        from scholarguide.common import RunCancelled
         budget = Budget(3)
         held, release = threading.Event(), threading.Event()
         def hold():
@@ -53,7 +53,7 @@ class SourceStoreProductTests(unittest.TestCase):
         thread.start()
         try:
             self.assertTrue(held.wait(1))
-            with patch('mcp_lune.install') as install, ThreadPoolExecutor(max_workers=1) as pool:
+            with patch('scholarguide.mcp_lune.install') as install, ThreadPoolExecutor(max_workers=1) as pool:
                 future = pool.submit(self.store.invoke, 'lune', 'search', {'query': 'fixture'}, self.config, budget=budget)
                 time.sleep(.1)
                 budget.cancel_token.request()
@@ -66,7 +66,7 @@ class SourceStoreProductTests(unittest.TestCase):
     def test_catalog_cancel_during_readiness_after_slot_before_transport(self):
         import threading
         from concurrent.futures import ThreadPoolExecutor
-        from common import RunCancelled
+        from scholarguide.common import RunCancelled
         budget = Budget(3)
         entered, proceed = threading.Event(), threading.Event()
         original = self.store._ensure_ready
@@ -77,7 +77,7 @@ class SourceStoreProductTests(unittest.TestCase):
         blocker = sqlite3.connect(str(self.store.path), isolation_level=None)
         try:
             with patch.object(self.store, '_ensure_ready', side_effect=ready), \
-                 patch('mcp_lune.install') as install, ThreadPoolExecutor(max_workers=1) as pool:
+                 patch('scholarguide.mcp_lune.install') as install, ThreadPoolExecutor(max_workers=1) as pool:
                 future = pool.submit(self.store.catalog, 'lune', self.config, budget=budget)
                 self.assertTrue(entered.wait(1))
                 blocker.execute('BEGIN EXCLUSIVE')
@@ -106,7 +106,7 @@ class SourceStoreProductTests(unittest.TestCase):
                 self.assertEqual(store.path, self.root / 'env.sqlite3')
             finally:
                 store.close()
-        with patch.dict(os.environ, {}, clear=True), patch('source_store.Path.home', return_value=self.root):
+        with patch.dict(os.environ, {}, clear=True), patch('scholarguide.source_store.Path.home', return_value=self.root):
             store = SourceStore()
             try:
                 self.assertEqual(store.path, self.root / '.scholarguide' / 'sources.sqlite3')
@@ -114,8 +114,8 @@ class SourceStoreProductTests(unittest.TestCase):
                 store.close()
 
     def test_listing_is_offline_and_reports_unknown_observations(self):
-        with patch('source.AcademicSource', side_effect=AssertionError('network probe')), \
-             patch('mcp_lune.install', side_effect=AssertionError('MCP install')), \
+        with patch('scholarguide.source.AcademicSource', side_effect=AssertionError('network probe')), \
+             patch('scholarguide.mcp_lune.install', side_effect=AssertionError('MCP install')), \
              patch('pathlib.Path.read_text', side_effect=AssertionError('credential read')):
             state = self.store.public_state()
         self.assertEqual(state['default_source'], 'multi')
@@ -280,7 +280,7 @@ class SourceStoreProductTests(unittest.TestCase):
 
     def test_probe_executes_single_provider_bounded_uncached_search(self):
         batch = SearchBatch('rag', ['arxiv'], [], [SourceRun('arxiv', 'empty', elapsed_ms=5)])
-        with patch('source.AcademicSource') as academic, patch.object(self.store, 'reserve', return_value=0):
+        with patch('scholarguide.source.AcademicSource') as academic, patch.object(self.store, 'reserve', return_value=0):
             academic.return_value.search_batch.return_value = batch
             result = self.store.probe('arxiv', self.config, query='rag')
             args = academic.call_args.args
@@ -295,7 +295,7 @@ class SourceStoreProductTests(unittest.TestCase):
 
     def test_probe_contains_real_failure_without_generic_500_or_key_leak(self):
         config = replace(self.config, s2_key='transient-source-secret')
-        with patch('source.AcademicSource', side_effect=TimeoutError('timed out transient-source-secret model-secret')), \
+        with patch('scholarguide.source.AcademicSource', side_effect=TimeoutError('timed out transient-source-secret model-secret')), \
              patch.object(self.store, 'reserve', return_value=0):
             result = self.store.probe('semantic_scholar', config)
         self.assertFalse(result['ok'])
@@ -325,12 +325,12 @@ class SourceStoreProductTests(unittest.TestCase):
         state = self.store.public_state()
         self.assertIn('dblp', state['cooling_down'])
         self.assertNotIn('dblp', state['routing'])
-        from source import AcademicSource
+        from scholarguide.source import AcademicSource
         source = AcademicSource(Config(source='dblp'), Budget(3))
         source.store = self.store
         self.assertFalse(source.available('dblp'))
         # Explicit Sources test is the recovery path after fixing egress.
-        with patch('source.AcademicSource._search_one', return_value=[]):
+        with patch('scholarguide.source.AcademicSource._search_one', return_value=[]):
             self.store.probe('dblp', self.config)
         self.assertEqual(self.item('dblp')['cooldown_until'], 0)
 
@@ -358,7 +358,7 @@ class SourceStoreProductTests(unittest.TestCase):
         self.assertIn('concurrency', self.item('lune'))
 
     def test_probe_unconfigured_source_does_not_make_request(self):
-        with patch('source.AcademicSource') as academic:
+        with patch('scholarguide.source.AcademicSource') as academic:
             result = self.store.probe('deepseek', self.config)
         academic.assert_not_called()
         self.assertFalse(result['ok'])
@@ -368,7 +368,7 @@ class SourceStoreProductTests(unittest.TestCase):
         self.assertEqual(caught.exception.code, 'unknown_source')
 
     def test_skill_declarations_are_available_offline_without_auth(self):
-        with patch('mcp_lune.install', side_effect=AssertionError('online discovery')):
+        with patch('scholarguide.mcp_lune.install', side_effect=AssertionError('online discovery')):
             skills = self.store.skills('lune', self.config)
             self.assertIn('search_papers', [row['name'] for row in skills['skills']])
             self.assertIn('search_related_papers', [row['name'] for row in skills['skills']])
@@ -381,7 +381,7 @@ class SourceStoreProductTests(unittest.TestCase):
                      ('search', {'query': 'rag', 'api_key': 'injected'}),
                      ('search', {'query': 'rag', 'year_from': 2025, 'year_to': 2024}),
                      ('fulltext', {'paper_id': ''}), ('search', [])]
-        with patch('mcp_lune.install') as install:
+        with patch('scholarguide.mcp_lune.install') as install:
             for tool, args in bad_calls:
                 with self.subTest(tool=tool, args=args), self.assertRaises(GuideError):
                     self.store.invoke('lune', tool, args, self.config)
@@ -397,7 +397,7 @@ class SourceStoreProductTests(unittest.TestCase):
                                   'note': 'Bearer hidden-token'}}
         provider.usage.return_value = {'requests': 1, 'remaining': 299, 'daily_allowance': 300}
         with patch.dict(os.environ, {'LUNE_API_KEY': 'lune-env-secret'}), \
-             patch('mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_lune.install', return_value=provider), \
              patch.object(self.store, 'reserve', return_value=0):
             result = self.store.invoke('lune', 'search', {'query': 'rag', 'limit': 2}, self.config)
             provider.client.return_value.call_tool.assert_called_once_with('search_papers', {'query': 'rag', 'limit': 2})
@@ -420,8 +420,8 @@ class SourceStoreProductTests(unittest.TestCase):
         provider.config_path.write_text(json.dumps({'servers': {'lune': {
             'url': 'https://original.example.test', 'headers': {'Authorization': 'Bearer ${LUNE_API_KEY}'},
             'allow': ['search_papers'], 'timeout': 60}}}), encoding='utf-8')
-        with patch('mcp_lune.install', return_value=provider), \
-             patch('mcp_client.McpClient.call_tool', return_value={'structuredContent': {'papers': []}}) as call, \
+        with patch('scholarguide.mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_client.McpClient.call_tool', return_value={'structuredContent': {'papers': []}}) as call, \
              patch.object(self.store, 'reserve', return_value=0):
             result = self.store.invoke('lune', 'search', {'query': 'rag'}, self.config)
         call.assert_called_once()
@@ -431,13 +431,13 @@ class SourceStoreProductTests(unittest.TestCase):
         self.assertEqual(os.environ['LUNE_API_KEY'], '')
 
     def test_lune_terminal_outcomes_and_success_audit_failure(self):
-        from common import RunCancelled
-        from execution_events import bind_events
-        from mcp_client import McpToolError
+        from scholarguide.common import RunCancelled
+        from scholarguide.execution_events import bind_events
+        from scholarguide.mcp_client import McpToolError
         provider = MagicMock()
         events = []
         with patch.dict(os.environ, {'LUNE_API_KEY': 'synthetic-key'}), \
-             patch('mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_lune.install', return_value=provider), \
              patch.object(self.store, 'reserve', return_value=0), \
              bind_events(lambda action, payload: events.append((action, payload))):
             for outcome, expected in [({'isError': True, 'content': 'remote-private'}, 'error'),
@@ -465,14 +465,14 @@ class SourceStoreProductTests(unittest.TestCase):
             self.assertNotIn('private-db-text', json.dumps(events))
 
     def test_lune_finish_write_failure_does_not_mask_cancel_or_success(self):
-        from common import RunCancelled
-        from execution_events import bind_events
+        from scholarguide.common import RunCancelled
+        from scholarguide.execution_events import bind_events
         provider = MagicMock()
         provider._charge.return_value = 1
         provider._finish.side_effect = OSError('private-local-text')
         events = []
         with patch.dict(os.environ, {'LUNE_API_KEY': 'synthetic-key'}), \
-             patch('mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_lune.install', return_value=provider), \
              patch.object(self.store, 'reserve', return_value=0), \
              bind_events(lambda action, payload: events.append((action, payload))):
             provider.client.return_value.call_tool.side_effect = RunCancelled()
@@ -488,17 +488,17 @@ class SourceStoreProductTests(unittest.TestCase):
         self.assertNotIn('private-query', json.dumps(events))
 
     def test_cancel_during_local_processing_reports_completed_without_content(self):
-        from common import RunCancelled
-        from execution_events import bind_events
+        from scholarguide.common import RunCancelled
+        from scholarguide.execution_events import bind_events
         provider = MagicMock()
         provider._charge.return_value = 1
         provider.client.return_value.call_tool.return_value = {'structuredContent': {'papers': ['private-remote']}}
         events = []
         cancel = RunCancelled()
         with patch.dict(os.environ, {'LUNE_API_KEY': 'synthetic-key'}), \
-             patch('mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_lune.install', return_value=provider), \
              patch.object(self.store, 'reserve', return_value=0), \
-             patch('mcp_client.structured', side_effect=cancel), \
+             patch('scholarguide.mcp_client.structured', side_effect=cancel), \
              bind_events(lambda action, payload: events.append((action, payload))):
             with self.assertRaises(RunCancelled) as caught:
                 self.store.invoke('lune', 'search', {'query': 'private-query'}, self.config)
@@ -512,8 +512,8 @@ class SourceStoreProductTests(unittest.TestCase):
         self.assertEqual(provider.client.return_value.call_tool.call_count, 1)
 
     def test_cancel_in_post_success_audit_and_usage_is_not_swallowed(self):
-        from common import RunCancelled
-        from execution_events import bind_events
+        from scholarguide.common import RunCancelled
+        from scholarguide.execution_events import bind_events
         for stage in ('finish', 'usage', 'record'):
             with self.subTest(stage=stage):
                 provider = MagicMock()
@@ -527,7 +527,7 @@ class SourceStoreProductTests(unittest.TestCase):
                 events = []
                 record = patch.object(self.store, 'record_run', side_effect=error) if stage == 'record' else patch.object(self.store, 'record_run', wraps=self.store.record_run)
                 with patch.dict(os.environ, {'LUNE_API_KEY': 'synthetic-key'}), \
-                     patch('mcp_lune.install', return_value=provider), \
+                     patch('scholarguide.mcp_lune.install', return_value=provider), \
                      patch.object(self.store, 'reserve', return_value=0), record, \
                      bind_events(lambda action, payload: events.append((action, payload))):
                     with self.assertRaises(RunCancelled) as caught:
@@ -540,7 +540,7 @@ class SourceStoreProductTests(unittest.TestCase):
                 self.assertEqual(provider.client.return_value.call_tool.call_count, 1)
 
     def test_lune_success_then_locked_database_reports_remote_success(self):
-        from execution_events import bind_events
+        from scholarguide.execution_events import bind_events
         provider = MagicMock()
         events = []
         blocker = sqlite3.connect(str(self.store.path), isolation_level=None)
@@ -552,7 +552,7 @@ class SourceStoreProductTests(unittest.TestCase):
         started = time.monotonic()
         try:
             with patch.dict(os.environ, {'LUNE_API_KEY': 'synthetic-key'}), \
-                 patch('mcp_lune.install', return_value=provider), \
+                 patch('scholarguide.mcp_lune.install', return_value=provider), \
                  patch.object(self.store, 'reserve', return_value=0), \
                  bind_events(lambda action, payload: events.append((action, payload))):
                 with self.assertRaises(GuideError) as caught:
@@ -569,7 +569,7 @@ class SourceStoreProductTests(unittest.TestCase):
             blocker.close()
 
     def test_lune_error_audit_database_lock_is_bounded_and_preserves_error(self):
-        from mcp_client import McpError
+        from scholarguide.mcp_client import McpError
         import sqlite3
         import time
         blocker = sqlite3.connect(str(self.store.path), isolation_level=None)
@@ -581,7 +581,7 @@ class SourceStoreProductTests(unittest.TestCase):
         started = time.monotonic()
         try:
             with patch.dict(os.environ, {'LUNE_API_KEY': 'synthetic-key'}), \
-                 patch('mcp_lune.install', return_value=provider), \
+                 patch('scholarguide.mcp_lune.install', return_value=provider), \
                  patch.object(self.store, 'reserve', return_value=0):
                 with self.assertRaises(GuideError) as caught:
                     self.store.invoke('lune', 'search', {'query': 'fixture'}, self.config)
@@ -591,12 +591,12 @@ class SourceStoreProductTests(unittest.TestCase):
             blocker.execute('ROLLBACK'); blocker.close()
 
     def test_lune_error_is_not_replaced_by_failed_audit_write(self):
-        from mcp_client import McpError
+        from scholarguide.mcp_client import McpError
         import sqlite3
         provider = MagicMock()
         provider.client.return_value.call_tool.side_effect = McpError('rate_limited', 'fixture', status=429)
         with patch.dict(os.environ, {'LUNE_API_KEY': 'synthetic-key'}), \
-             patch('mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_lune.install', return_value=provider), \
              patch.object(self.store, 'reserve', return_value=0), \
              patch.object(self.store, 'record_run', side_effect=sqlite3.OperationalError('database is locked')):
             with self.assertRaises(GuideError) as caught:
@@ -604,11 +604,11 @@ class SourceStoreProductTests(unittest.TestCase):
         self.assertEqual(caught.exception.code, 'rate_limited')
 
     def test_lune_errors_are_structured_recorded_and_secret_safe(self):
-        from mcp_client import McpError
+        from scholarguide.mcp_client import McpError
         provider = MagicMock()
         provider.client.return_value.call_tool.side_effect = McpError('rate_limited', '429 lune-env-secret', status=429)
         with patch.dict(os.environ, {'LUNE_API_KEY': 'lune-env-secret'}), \
-             patch('mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_lune.install', return_value=provider), \
              patch.object(self.store, 'reserve', return_value=0):
             with self.assertRaises(GuideError) as caught:
                 self.store.invoke('lune', 'search', {'query': 'rag'}, self.config)
@@ -630,8 +630,8 @@ class SourceStoreProductTests(unittest.TestCase):
             self.assertTrue(callable(_before_send))
             observed.append(dict(client.config.headers))
             return {'structuredContent': {'papers': []}}
-        with patch('mcp_lune.install', return_value=SimpleNamespace(config_path=path)), \
-             patch('mcp_client.McpClient.call_tool', autospec=True, side_effect=call), \
+        with patch('scholarguide.mcp_lune.install', return_value=SimpleNamespace(config_path=path)), \
+             patch('scholarguide.mcp_client.McpClient.call_tool', autospec=True, side_effect=call), \
              patch.object(self.store, 'reserve', return_value=0):
             self.store.invoke('lune', 'search', {'query': 'fixture'}, self.config)
         self.assertEqual(observed, [{'Authorization': 'Bearer new-synthetic-key'}])
@@ -652,8 +652,8 @@ class SourceStoreProductTests(unittest.TestCase):
             'url': 'https://official.example.test/mcp', 'allow': ['search_papers']}}}), encoding='utf-8')
         provider = SimpleNamespace(config_path=path)
         with patch.dict(os.environ, {'LUNE_API_KEY': 'synthetic-env-key'}), \
-             patch('mcp_lune.install', return_value=provider), \
-             patch('mcp_client.McpClient.call_tool') as call, \
+             patch('scholarguide.mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_client.McpClient.call_tool') as call, \
              patch.object(self.store, 'reserve', return_value=0):
             with self.assertRaises(GuideError):
                 self.store.invoke('lune', 'search', {'query': 'fixture'}, self.config)
@@ -668,9 +668,9 @@ class SourceStoreProductTests(unittest.TestCase):
             'url': 'https://official.example.test/mcp', 'allow': ['search_papers']}}}), encoding='utf-8')
         provider = SimpleNamespace(config_path=path)
         with patch.dict(os.environ, {'SG_MCP_TOKEN_FILE': str(token_path)}), \
-             patch('mcp_lune.install', return_value=provider), \
-             patch('mcp_lune.access_token', return_value='synthetic-token') as token, \
-             patch('mcp_client.McpClient.call_tool') as call, \
+             patch('scholarguide.mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_lune.access_token', return_value='synthetic-token') as token, \
+             patch('scholarguide.mcp_client.McpClient.call_tool') as call, \
              patch.object(self.store, 'reserve', return_value=0):
             with self.assertRaises(GuideError):
                 self.store.invoke('lune', 'search', {'query': 'fixture'}, self.config)
@@ -678,7 +678,7 @@ class SourceStoreProductTests(unittest.TestCase):
         call.assert_not_called()
 
     def test_oauth_is_programmatic_and_shared_client_budget_is_restored(self):
-        from mcp_lune import LuneProvider
+        from scholarguide.mcp_lune import LuneProvider
         token_path = self.root / 'oauth.json'
         token_path.write_text('{"access_token":"oauth-test-secret"}', encoding='utf-8')
         config_path = self.root / 'mcp.json'
@@ -693,9 +693,9 @@ class SourceStoreProductTests(unittest.TestCase):
             observed.append((client.config.headers['Authorization'], client.config.timeout, client.budget.seconds))
             return {'structuredContent': {'papers': []}}
         with patch.dict(os.environ, {'SG_MCP_TOKEN_FILE': str(token_path)}), \
-             patch('mcp_lune.access_token', return_value='oauth-test-secret') as token, \
-             patch('mcp_lune.install', return_value=provider), \
-             patch('mcp_client.McpClient.call_tool', autospec=True, side_effect=answer), \
+             patch('scholarguide.mcp_lune.access_token', return_value='oauth-test-secret') as token, \
+             patch('scholarguide.mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_client.McpClient.call_tool', autospec=True, side_effect=answer), \
              patch.object(self.store, 'reserve', return_value=0):
             result = self.store.invoke('lune', 'search', {'query': 'rag'}, self.config)
         self.assertTrue(token.called)
@@ -708,7 +708,7 @@ class SourceStoreProductTests(unittest.TestCase):
         self.assertNotIn('oauth-test-secret', json.dumps(result))
 
     def test_cloned_lune_client_tracks_rejected_token_with_request_budget(self):
-        from mcp_client import McpClient, ServerConfig
+        from scholarguide.mcp_client import McpClient, ServerConfig
         shared = McpClient(ServerConfig('lune', 'https://fixture.invalid', allow=('search_papers',)))
         shared.set_auth_provider(lambda force: 'unused')
         provider = MagicMock()
@@ -721,9 +721,9 @@ class SourceStoreProductTests(unittest.TestCase):
             self.assertEqual(client._auth_provider(True, budget=client.budget, rejected_token='synthetic-old'), 'synthetic-new')
             return {'structuredContent': {'papers': []}}
         with patch.dict(os.environ, {'LUNE_API_KEY': 'synthetic-key'}), \
-             patch('mcp_lune.install', return_value=provider), \
-             patch('mcp_lune.access_token', side_effect=['synthetic-old', 'synthetic-new']) as token, \
-             patch('mcp_client.McpClient.call_tool', autospec=True, side_effect=call), \
+             patch('scholarguide.mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_lune.access_token', side_effect=['synthetic-old', 'synthetic-new']) as token, \
+             patch('scholarguide.mcp_client.McpClient.call_tool', autospec=True, side_effect=call), \
              patch.object(self.store, 'reserve', return_value=0):
             self.store.invoke('lune', 'search', {'query': 'fixture'}, self.config, budget=budget)
         self.assertEqual(token.call_args_list[0].kwargs,
@@ -733,13 +733,13 @@ class SourceStoreProductTests(unittest.TestCase):
         self.assertIsNone(shared.budget)
 
     def test_unlisted_fulltext_tool_fails_before_charge_or_request(self):
-        from mcp_client import McpClient, ServerConfig
+        from scholarguide.mcp_client import McpClient, ServerConfig
         client = McpClient(ServerConfig('lune', 'https://mcp.example.test', allow=('search_papers',)))
         provider = MagicMock()
         provider.client.return_value = client
         with patch.dict(os.environ, {'LUNE_API_KEY': 'lune-env-secret'}), \
-             patch('mcp_lune.install', return_value=provider), \
-             patch('mcp_client.McpClient.call_tool') as call, \
+             patch('scholarguide.mcp_lune.install', return_value=provider), \
+             patch('scholarguide.mcp_client.McpClient.call_tool') as call, \
              patch.object(self.store, 'reserve', return_value=0):
             with self.assertRaises(GuideError) as caught:
                 self.store.invoke('lune', 'fulltext', {'paper_id': 'p1'}, self.config)
@@ -753,7 +753,7 @@ class SourceStoreProductTests(unittest.TestCase):
         def search(query, limit):
             self.store.record_run(run)
             return SearchBatch(query, ['arxiv'], [], [run])
-        with patch('source.AcademicSource') as academic, patch.object(self.store, 'reserve', return_value=0):
+        with patch('scholarguide.source.AcademicSource') as academic, patch.object(self.store, 'reserve', return_value=0):
             academic.return_value.search_batch.side_effect = search
             self.store.probe('arxiv', self.config)
         with closing(sqlite3.connect(self.store.path)) as db:

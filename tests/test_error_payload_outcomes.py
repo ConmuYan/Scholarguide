@@ -1,8 +1,8 @@
 """Expose only fixed safe outcome classifications in API errors."""
 import unittest
 
-from api_v1 import error_payload
-from common import GuideError, RunCancelled
+from scholarguide.api_v1 import error_payload
+from scholarguide.common import GuideError, RunCancelled
 
 
 class ErrorPayloadOutcomeTests(unittest.TestCase):

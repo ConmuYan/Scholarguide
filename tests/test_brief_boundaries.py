@@ -6,8 +6,8 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from research_brief import synthesize
-from report import markdown
+from scholarguide.research_brief import synthesize
+from scholarguide.report import markdown
 from test_research_runtime import TASK, OfflineLLM, brief_output, paper
 from tests.brief_fixture import packet_papers, wire_output
 

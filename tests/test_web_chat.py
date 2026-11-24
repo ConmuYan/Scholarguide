@@ -10,8 +10,8 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import GuideError
-from webapp import ChatService, ChatSession, create_server, TurnRunning
+from scholarguide.common import GuideError
+from scholarguide.webapp import ChatService, ChatSession, create_server, TurnRunning
 
 
 class WebChatTests(unittest.TestCase):
@@ -83,7 +83,7 @@ class WebChatTests(unittest.TestCase):
         sid = created['session_id']
         record = self.service.sessions[sid]
         with patch.object(self.service, '_load_record', side_effect=AssertionError('loaded')), \
-                patch('webapp.shutil.rmtree', side_effect=AssertionError('deleted')):
+                patch('scholarguide.webapp.shutil.rmtree', side_effect=AssertionError('deleted')):
             with self.assertRaisesRegex(GuideError, '暂不可用'):
                 self.service.delete(sid)
         self.assertIs(self.service.sessions[sid], record)
@@ -480,7 +480,7 @@ class WebChatTests(unittest.TestCase):
         self.assertTrue(all(event['revision'] == 2 for event in later))
 
     def test_saved_session_survives_restart_and_resumes(self):
-        from webapp import ChatService
+        from scholarguide.webapp import ChatService
         svc = ChatService(output=Path(self.tmp.name) / 'saved')
         created = svc.create({'message': 'Recommend five RAG papers including one evaluation paper.',
                               'mode': 'demo', 'scenario': 'followup', 'reuse': True})

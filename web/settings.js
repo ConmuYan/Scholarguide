@@ -260,12 +260,14 @@ async function testOAuthAccount() {
     const result = await api("/api/providers/oauth/openai/test", {method: "POST", body: JSON.stringify(model ? {model} : {})}, 55000);
     oauthDiagnostics.result = result;
     const options = el("oauth-model-options");
-    options.replaceChildren();
-    for (const model of result.models || []) {
-      const option = document.createElement("option");
-      option.value = model.slug;
-      option.label = model.display_name || model.slug;
-      options.append(option);
+    if (options) {
+      options.replaceChildren();
+      for (const model of result.models || []) {
+        const option = document.createElement("option");
+        option.value = model.slug;
+        option.label = model.display_name || model.slug;
+        options.append(option);
+      }
     }
     // A failed reauthorization does not revoke a working saved credential.
     // Only an actual successful probe clears that stale sign-in error.

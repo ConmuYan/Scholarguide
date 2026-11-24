@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from common import load_env
+from scholarguide.common import load_env
 from scripts.verify_delivery import isolated_environment, apply_browser_isolation, source_manifest, manifest_drift
 
 
@@ -66,6 +66,10 @@ class DeliveryEnvironmentTests(unittest.TestCase):
                       'try:\n socket.getaddrinfo("synthetic.invalid", 80)\n'
                       'except socket.gaierror: pass\n'
                       'else: raise AssertionError("external DNS permitted")\n'
+                      'for lookup in (socket.gethostbyname, socket.gethostbyname_ex, socket.gethostbyaddr):\n'
+                      ' try: lookup("synthetic.invalid")\n'
+                      ' except socket.gaierror: pass\n'
+                      ' else: raise AssertionError("external DNS permitted")\n'
                       's = socket.socket()\n'
                       'try:\n s.connect(("203.0.113.1", 9))\n'
                       'except OSError: pass\n'

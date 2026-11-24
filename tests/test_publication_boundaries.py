@@ -11,10 +11,10 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, Config, Paper, merge_publication_records
-from research_policy import publication_matches
-from source import AcademicSource, _publication, merge_papers
-from state import StateStore, content_hash, semantic_key
+from scholarguide.common import Budget, Config, Paper, merge_publication_records
+from scholarguide.research_policy import publication_matches
+from scholarguide.source import AcademicSource, _publication, merge_papers
+from scholarguide.state import StateStore, content_hash, semantic_key
 
 
 def evidence(source='openreview', url=None):

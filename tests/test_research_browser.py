@@ -28,14 +28,14 @@ try:
 except ImportError:
     webdriver = None
 
-from activity import ActivityFeed
-from agent_tools import ToolRegistry
-from common import Budget, Config, source_names
-from providers import ProviderStore
-from retrieval import RetrievalRouter
-from webapp import ChatService, Jobs, create_server
+from scholarguide.activity import ActivityFeed
+from scholarguide.agent_tools import ToolRegistry
+from scholarguide.common import Budget, Config, source_names
+from scholarguide.providers import ProviderStore
+from scholarguide.retrieval import RetrievalRouter
+from scholarguide.webapp import ChatService, Jobs, create_server
 from scripts.verify_delivery import apply_browser_isolation
-from workflow import run as run_workflow
+from scholarguide.workflow import run as run_workflow
 from tests.test_research_runtime import OfflineLLM, OfflineSource, TASK, paper
 
 

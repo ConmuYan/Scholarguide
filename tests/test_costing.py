@@ -5,8 +5,8 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from common import Config
-from costing import cost_breakdown
+from scholarguide.common import Config
+from scholarguide.costing import cost_breakdown
 
 
 class CostTests(unittest.TestCase):
@@ -45,10 +45,10 @@ class CostTests(unittest.TestCase):
     def test_chat_and_search_results_carry_estimated_cost(self):
         import tempfile
         from pathlib import Path
-        from demo import ChatDemoLLM, DemoLLM, DemoSource
-        from session import ChatSession
-        from state import StateStore
-        from workflow import run
+        from scholarguide.demo import ChatDemoLLM, DemoLLM, DemoSource
+        from scholarguide.session import ChatSession
+        from scholarguide.state import StateStore
+        from scholarguide.workflow import run
 
         class TokenChatLLM(ChatDemoLLM):
             def __init__(self):
@@ -97,7 +97,7 @@ class CostTests(unittest.TestCase):
             finally:
                 store.close()
 
-        from common import Budget
+        from scholarguide.common import Budget
         budget = Budget(30)
         llm = TokenSearchLLM()
         llm.budget = budget
@@ -109,8 +109,8 @@ class CostTests(unittest.TestCase):
         self.assertTrue(result['cost']['known'])
 
     def test_single_source_paid_search_cost_is_not_dropped(self):
-        from source import SearchBatch, SourceRun
-        from tools import search
+        from scholarguide.source import SearchBatch, SourceRun
+        from scholarguide.tools import search
         class Paid:
             def __init__(self):
                 self.last_batch = None
@@ -128,9 +128,9 @@ class CostTests(unittest.TestCase):
     def test_later_turn_without_usage_is_unknown_not_zero(self):
         import tempfile
         from pathlib import Path
-        from demo import ChatDemoLLM, DemoSource
-        from session import ChatSession
-        from state import StateStore
+        from scholarguide.demo import ChatDemoLLM, DemoSource
+        from scholarguide.session import ChatSession
+        from scholarguide.state import StateStore
 
         class ToggleLLM(ChatDemoLLM):
             def __init__(self):
@@ -166,7 +166,7 @@ class CostTests(unittest.TestCase):
                 store.close()
 
     def test_partial_usage_is_unknown_not_a_partial_cost(self):
-        from common import Budget
+        from scholarguide.common import Budget
         budget = Budget(10)
         budget.llm_calls = 5
         budget.usage_calls = 1
@@ -181,9 +181,9 @@ class CostTests(unittest.TestCase):
         self.assertIsNone(cost['total'])
 
     def test_workflow_multi_source_keeps_paid_run_cost(self):
-        from demo import DemoLLM, DemoSource
-        from source import SearchBatch, SourceRun
-        from workflow import run
+        from scholarguide.demo import DemoLLM, DemoSource
+        from scholarguide.source import SearchBatch, SourceRun
+        from scholarguide.workflow import run
 
         class PaidMultiSource:
             providers = ['arxiv', 'deepseek']
@@ -202,9 +202,9 @@ class CostTests(unittest.TestCase):
         self.assertTrue(search_result['router']['batches'])
 
     def test_workflow_single_source_paid_search_cost_is_in_result(self):
-        from demo import DemoLLM, DemoSource
-        from source import SearchBatch, SourceRun
-        from workflow import run
+        from scholarguide.demo import DemoLLM, DemoSource
+        from scholarguide.source import SearchBatch, SourceRun
+        from scholarguide.workflow import run
 
         class PaidSource(DemoSource):
             def search(self, query, limit=10):
@@ -222,9 +222,9 @@ class CostTests(unittest.TestCase):
     def test_partial_turn_then_full_turn_uses_only_second_turn_delta(self):
         import tempfile
         from pathlib import Path
-        from demo import ChatDemoLLM, DemoSource
-        from session import ChatSession
-        from state import StateStore
+        from scholarguide.demo import ChatDemoLLM, DemoSource
+        from scholarguide.session import ChatSession
+        from scholarguide.state import StateStore
 
         class PartialThenFull(ChatDemoLLM):
             def __init__(self):

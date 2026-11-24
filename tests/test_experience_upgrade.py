@@ -24,9 +24,9 @@ try:
 except ImportError:
     webdriver = None
 
-from activity import ActivityFeed
-from providers import ProviderStore
-from webapp import ChatService, Jobs, create_server
+from scholarguide.activity import ActivityFeed
+from scholarguide.providers import ProviderStore
+from scholarguide.webapp import ChatService, Jobs, create_server
 from scripts.verify_delivery import apply_browser_isolation
 
 CONFIG_FIXTURE = """

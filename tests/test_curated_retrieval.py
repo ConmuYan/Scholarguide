@@ -16,10 +16,10 @@ from urllib.parse import parse_qs, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, Config, GuideError
-from research_policy import publication_matches, publication_preference
-from retrieval import RetrievalRouter
-from source import AcademicSource
+from scholarguide.common import Budget, Config, GuideError
+from scholarguide.research_policy import publication_matches, publication_preference
+from scholarguide.retrieval import RetrievalRouter
+from scholarguide.source import AcademicSource
 from tests.test_retrieval_upgrade import RecordingSource, candidate
 
 
@@ -118,7 +118,7 @@ class CuratedRouterTests(unittest.TestCase):
 
 class CuratedSourceTests(unittest.TestCase):
     def test_venue_whitelist_separators_and_full_names(self):
-        from common import requested_venues, venue_matches
+        from scholarguide.common import requested_venues, venue_matches
         for value in ('ACL or EMNLP', 'ACL and EMNLP', 'ACL & EMNLP', 'ACL, or EMNLP'):
             self.assertEqual(requested_venues(value), ['ACL', 'EMNLP'])
             self.assertTrue(venue_matches('ACL', value))
@@ -127,7 +127,7 @@ class CuratedSourceTests(unittest.TestCase):
         self.assertEqual(requested_venues(full), [full])
 
     def test_single_venue_identity_rejects_similar_venues(self):
-        from common import venue_matches
+        from scholarguide.common import venue_matches
         for actual in ('NAACL', 'ACL Findings', 'ACL workshop'):
             self.assertFalse(venue_matches(actual, 'ACL'))
         self.assertTrue(venue_matches('Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)', 'ACL'))
@@ -137,7 +137,7 @@ class CuratedSourceTests(unittest.TestCase):
                                        'International Rare Topics Symposium'))
 
     def test_official_acl_verification_requires_matching_page_identity(self):
-        from common import Paper
+        from scholarguide.common import Paper
         src = source()
         paper = Paper(id='lune:1', title='Agentic Reasoning', abstract='A method.',
                       doi='10.18653/v1/2025.acl-long.1383', year=2025, venue='ACL',
@@ -157,7 +157,7 @@ class CuratedSourceTests(unittest.TestCase):
             fetch.assert_not_called()
 
     def test_official_acl_verification_accepts_new_doi_format_but_not_findings(self):
-        from common import Paper
+        from scholarguide.common import Paper
         src = source()
         doi = '10.18653/2026.emnlp-main.2090'
         paper = Paper(id='lune:1', title='Beyond Max Tokens', abstract='', url='', doi=doi)

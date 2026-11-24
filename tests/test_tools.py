@@ -8,8 +8,8 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import GuideError, Paper
-from tools import CostError, CostMeter, assess, assess_batch, decision, search
+from scholarguide.common import GuideError, Paper
+from scholarguide.tools import CostError, CostMeter, assess, assess_batch, decision, search
 
 
 @dataclass

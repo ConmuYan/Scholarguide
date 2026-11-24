@@ -10,8 +10,8 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import Config, GuideError, Paper, Request
-from controller import (
+from scholarguide.common import Config, GuideError, Paper, Request
+from scholarguide.controller import (
     BudgetView,
     ControlState,
     FactCounts,
@@ -21,10 +21,10 @@ from controller import (
     assert_threshold_source,
     partial_reason,
 )
-from reuse import assert_delivery_consistent, verify_delivery
-from session import ChatSession, FeedbackBudgetExhausted
-from state import InvariantError, StateStore, semantic_key
-from workflow import coverage, select_papers
+from scholarguide.reuse import assert_delivery_consistent, verify_delivery
+from scholarguide.session import ChatSession, FeedbackBudgetExhausted
+from scholarguide.state import InvariantError, StateStore, semantic_key
+from scholarguide.workflow import coverage, select_papers
 
 QUOTE = 'This paper introduces a benchmark for retrieval augmented generation evaluation.'
 

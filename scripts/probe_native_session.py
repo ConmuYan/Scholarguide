@@ -19,14 +19,16 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from common import BudgetExceeded, Config, Paper, RunCancelled
-from llm import JsonLLM, _native_arguments
-from network import urlopen
-from providers import ProviderStore
-from session import ChatSession
-from state import StateStore
+from scholarguide.common import BudgetExceeded, Config, Paper, RunCancelled
+from scholarguide.llm import JsonLLM, _native_arguments
+from scholarguide.network import urlopen
+from scholarguide.providers import ProviderStore
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
 
-FILES = ('session.py', 'llm.py', 'providers.py', 'controller.py', 'native_tool_protocol.py', 'network.py', 'scripts/probe_native_session.py')
+FILES = ('scholarguide/session.py', 'scholarguide/llm.py', 'scholarguide/providers.py',
+         'scholarguide/controller.py', 'scholarguide/native_tool_protocol.py',
+         'scholarguide/network.py', 'scripts/probe_native_session.py')
 MAX_REQUESTS = 2
 
 
@@ -273,7 +275,7 @@ def run(config, *, transport=None, max_requests=MAX_REQUESTS, before_apply=None)
     except BudgetExceeded:
         report.update(status='failed', error='probe_failed', failed_phase=phase, failure_type='budget')
     except Exception as exc:
-        from common import GuideError
+        from scholarguide.common import GuideError
         report.update(status='failed', error='probe_failed', failed_phase=phase,
                       failure_type='guide' if isinstance(exc, GuideError) else 'other')
     except BaseException:

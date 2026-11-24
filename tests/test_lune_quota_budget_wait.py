@@ -5,7 +5,7 @@ import threading
 import time
 import unittest
 
-from common import Budget, BudgetExceeded, GuideError, RunCancelled
+from scholarguide.common import Budget, BudgetExceeded, GuideError, RunCancelled
 from tests.lune_quota_fixture import confirmed_quota
 
 
@@ -30,7 +30,7 @@ class BudgetWaitTests(unittest.TestCase):
         return release
 
     def test_stateful_dispatch_waiting_on_quota_observes_deadline(self):
-        from mcp_client import McpClient, ServerConfig
+        from scholarguide.mcp_client import McpClient, ServerConfig
         release = self.held_lock()
         calls = []
         config = ServerConfig('offline', 'https://mcp.luneresearch.com', protocol='2025-03-26',
@@ -45,7 +45,7 @@ class BudgetWaitTests(unittest.TestCase):
         self.assertEqual([], self.store.pending())
 
     def test_cancelled_finalization_retains_received_tool_result_and_quota(self):
-        from mcp_client import McpClient, McpResult, ServerConfig
+        from scholarguide.mcp_client import McpClient, McpResult, ServerConfig
         budget = Budget(2)
         def transport(request, timeout):
             message = json.loads(request.data)

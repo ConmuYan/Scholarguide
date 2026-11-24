@@ -10,12 +10,12 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from common import Budget, BudgetExceeded, Config, RunCancelled
-from execution_events import bind_events
-from lune_quota import LuneQuotaStore
-from mcp_client import McpClient, ServerConfig
-from mcp_lune import LuneProvider
-from source_store import RetainedSourceResult, SourceStore
+from scholarguide.common import Budget, BudgetExceeded, Config, RunCancelled
+from scholarguide.execution_events import bind_events
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.mcp_client import McpClient, ServerConfig
+from scholarguide.mcp_lune import LuneProvider
+from scholarguide.source_store import RetainedSourceResult, SourceStore
 
 
 class LedgerCancellationTests(unittest.TestCase):
@@ -43,7 +43,7 @@ class LedgerCancellationTests(unittest.TestCase):
                 try:
                     with patch.dict(os.environ, {'SG_LUNE_QUOTA_DB': str(quota_path),
                                                 'SG_MCP_TOKEN_FILE': str(root / 'missing-token')}), \
-                         patch('mcp_lune.install', return_value=provider), \
+                         patch('scholarguide.mcp_lune.install', return_value=provider), \
                          patch.object(store, '_ensure_ready', return_value=config), \
                          patch.object(provider, '_finish', side_effect=error), \
                          bind_events(lambda action, payload: events.append((action, payload))):
@@ -73,7 +73,7 @@ class LedgerCancellationTests(unittest.TestCase):
                 store = SourceStore(root / 'sources.sqlite')
                 config = Config(source='lune', source_store=store, cache=False)
                 try:
-                    with patch('mcp_lune.install', return_value=provider), \
+                    with patch('scholarguide.mcp_lune.install', return_value=provider), \
                          patch.object(store, '_ensure_ready', return_value=config), \
                          patch.object(provider, 'client') as client, \
                          patch.object(provider, '_finish', side_effect=BudgetExceeded('secondary')):
@@ -102,7 +102,7 @@ class LedgerCancellationTests(unittest.TestCase):
                 config = Config(source='lune', source_store=store, cache=False)
                 try:
                     with patch.dict(os.environ, {'SG_LUNE_QUOTA_DB': str(quota_path)}), \
-                         patch('mcp_lune.install', return_value=provider), \
+                         patch('scholarguide.mcp_lune.install', return_value=provider), \
                          patch.object(store, '_ensure_ready', return_value=config), \
                          patch.object(store, '_redact', side_effect=BudgetExceeded('secondary')), \
                          patch.object(provider, '_finish', side_effect=error):
@@ -130,7 +130,7 @@ class LedgerCancellationTests(unittest.TestCase):
             config = Config(source='lune', source_store=store, cache=False)
             try:
                 with patch.dict(os.environ, {'SG_LUNE_QUOTA_DB': str(quota_path)}), \
-                     patch('mcp_lune.install', return_value=provider), \
+                     patch('scholarguide.mcp_lune.install', return_value=provider), \
                      patch.object(store, '_ensure_ready', return_value=config), \
                      patch.object(provider, '_finish', side_effect=error):
                     with self.assertRaises(BudgetExceeded) as caught:
@@ -170,7 +170,7 @@ class LedgerCancellationTests(unittest.TestCase):
             started = time.monotonic()
             try:
                 with patch.dict(os.environ, {'SG_LUNE_QUOTA_DB': str(quota_path)}), \
-                     patch('mcp_lune.install', return_value=provider), \
+                     patch('scholarguide.mcp_lune.install', return_value=provider), \
                      patch.object(store, '_ensure_ready', return_value=config), \
                      patch.object(provider, '_finish', side_effect=finish):
                     with self.assertRaises(BudgetExceeded) as caught:
@@ -186,8 +186,8 @@ class LedgerCancellationTests(unittest.TestCase):
                 store.close()
 
     def test_api_exposes_retained_result_for_both_interruptions(self):
-        from providers import ProviderStore
-        from webapp import ChatService, Jobs, create_server
+        from scholarguide.providers import ProviderStore
+        from scholarguide.webapp import ChatService, Jobs, create_server
         for error in (RunCancelled(), BudgetExceeded('fixture budget')):
             with self.subTest(error=type(error).__name__), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
@@ -210,7 +210,7 @@ class LedgerCancellationTests(unittest.TestCase):
                 server = thread = None
                 try:
                     with patch.dict(os.environ, {'SG_LUNE_QUOTA_DB': str(quota_path)}), \
-                         patch('mcp_lune.install', return_value=provider), \
+                         patch('scholarguide.mcp_lune.install', return_value=provider), \
                          patch.object(store, '_ensure_ready', return_value=config), \
                          patch.object(provider, '_finish', side_effect=error):
                         server = create_server(0, jobs=Jobs(root / 'runs', providers=providers),

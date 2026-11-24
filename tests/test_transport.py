@@ -7,15 +7,15 @@ import threading
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import Budget, Config
-from llm import JsonLLM
+from scholarguide.common import Budget, Config
+from scholarguide.llm import JsonLLM
 
 
 class TransportTests(unittest.TestCase):
     def test_cross_origin_redirect_does_not_forward_authorization(self):
         from urllib.error import HTTPError
         from urllib.request import Request
-        from network import urlopen
+        from scholarguide.network import urlopen
         received = []
         class Sink(BaseHTTPRequestHandler):
             def log_message(self, *args): pass

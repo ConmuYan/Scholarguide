@@ -11,8 +11,8 @@ from pathlib import Path
 from unittest.mock import patch
 from urllib.error import HTTPError
 
-from common import Budget, BudgetExceeded, CancellationToken, RunCancelled
-from mcp_client import McpClient, McpError, McpToolError, ServerConfig
+from scholarguide.common import Budget, BudgetExceeded, CancellationToken, RunCancelled
+from scholarguide.mcp_client import McpClient, McpError, McpToolError, ServerConfig
 from scripts.verify_delivery import isolated_environment
 
 VERSION = '2025-03-26'

@@ -6,8 +6,8 @@ import unittest
 from concurrent.futures import ThreadPoolExecutor
 from urllib.error import HTTPError
 
-from mcp_client import McpClient, McpError, ServerConfig
-from common import Budget, CancellationToken, RunCancelled
+from scholarguide.mcp_client import McpClient, McpError, ServerConfig
+from scholarguide.common import Budget, CancellationToken, RunCancelled
 
 
 class Response(io.BytesIO):

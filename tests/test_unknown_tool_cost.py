@@ -5,12 +5,12 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from agent_tools import ToolRegistry
-from common import Budget, Config, GuideError, Paper, RunCancelled
-from costing import cost_breakdown, tool_cost
-from source import AcademicSource, SearchBatch, SourceRun
-from source_store import SourceStore
-from tools import search
+from scholarguide.agent_tools import ToolRegistry
+from scholarguide.common import Budget, Config, GuideError, Paper, RunCancelled
+from scholarguide.costing import cost_breakdown, tool_cost
+from scholarguide.source import AcademicSource, SearchBatch, SourceRun
+from scholarguide.source_store import SourceStore
+from scholarguide.tools import search
 
 
 class UnknownCostTests(unittest.TestCase):
@@ -80,7 +80,7 @@ class UnknownCostTests(unittest.TestCase):
         self.assertIsNone(search(source, 'fixture', 1).cost_cny)
 
     def test_failed_paid_router_call_stays_unknown(self):
-        from retrieval import RetrievalRouter
+        from scholarguide.retrieval import RetrievalRouter
         class Source:
             providers = ['lune']
             budget = Budget(3)
@@ -95,11 +95,11 @@ class UnknownCostTests(unittest.TestCase):
         self.assertIsNone(tool_cost([{'router': result.observation()}]))
 
     def test_workflow_and_chat_preserve_unknown_success_cost(self):
-        from api_v1 import public_result
-        from demo import ChatDemoLLM, DemoLLM, DemoSource
-        from session import ChatSession
-        from state import StateStore
-        from workflow import run
+        from scholarguide.api_v1 import public_result
+        from scholarguide.demo import ChatDemoLLM, DemoLLM, DemoSource
+        from scholarguide.session import ChatSession
+        from scholarguide.state import StateStore
+        from scholarguide.workflow import run
         class UnknownSource(DemoSource):
             providers = ['lune']
             def search(self, query, limit=10):
@@ -123,8 +123,8 @@ class UnknownCostTests(unittest.TestCase):
                 store.close()
 
     def test_cancelled_paid_search_does_not_report_zero(self):
-        from demo import DemoLLM, DemoSource
-        from workflow import run
+        from scholarguide.demo import DemoLLM, DemoSource
+        from scholarguide.workflow import run
         budget = Budget(5)
         class CancelledSource(DemoSource):
             providers = ['lune']
@@ -138,9 +138,9 @@ class UnknownCostTests(unittest.TestCase):
         self.assertEqual(result['stop_reason'], 'user_cancelled')
         self.assertIsNone(result['cost']['tools'])
         self.assertIsNone(result['cost']['total'])
-        from demo import ChatDemoLLM
-        from session import ChatSession
-        from state import StateStore
+        from scholarguide.demo import ChatDemoLLM
+        from scholarguide.session import ChatSession
+        from scholarguide.state import StateStore
         with tempfile.TemporaryDirectory() as tmp:
             store = StateStore(Path(tmp) / 'chat.sqlite')
             try:

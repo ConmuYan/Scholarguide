@@ -6,9 +6,9 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from agent_tools import ToolObservation, ToolRegistry
-from common import Budget, Config, GuideError, Paper
-from source import AcademicSource, SearchBatch, SourceRun, classify_source_error
+from scholarguide.agent_tools import ToolObservation, ToolRegistry
+from scholarguide.common import Budget, Config, GuideError, Paper
+from scholarguide.source import AcademicSource, SearchBatch, SourceRun, classify_source_error
 
 
 class FakeBatchSource:
@@ -107,7 +107,7 @@ class RegistryTests(unittest.TestCase):
     def test_waiting_handler_observes_cancel_and_budget_without_failure(self):
         import threading
         from dataclasses import replace
-        from common import BudgetExceeded, RunCancelled
+        from scholarguide.common import BudgetExceeded, RunCancelled
         spec = replace(ToolRegistry.from_source(FakeBatchSource()).specs['arxiv'],
                        min_interval_s=3, failure_threshold=1)
         entered = threading.Event()
@@ -196,7 +196,7 @@ class RegistryTests(unittest.TestCase):
 
     def test_reentrant_event_callback_does_not_hold_admission_lock(self):
         from dataclasses import replace
-        from execution_events import bind_events
+        from scholarguide.execution_events import bind_events
         spec = replace(ToolRegistry.from_source(FakeBatchSource()).specs['arxiv'],
                        min_interval_s=.02)
         calls = []

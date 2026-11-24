@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from common import Config, GuideError
+from scholarguide.common import Config, GuideError
 from scripts.validate_research_quality import MonetaryGuard
 
 class ValidationGuardTests(unittest.TestCase):
@@ -45,7 +45,7 @@ class ValidationGuardTests(unittest.TestCase):
 
     def test_verified_price_reconciliation_preserves_original_unknown_call_bound(self):
         from dataclasses import replace
-        from model_identity import backend_identity
+        from scholarguide.model_identity import backend_identity
         config=replace(self.config,model='MiniMax-M3.1-Flash',base_url='https://api.minimaxi.com/v1')
         old={'limit_cny':10,'profile_model_identity':backend_identity(config),
              'pricing_basis':'unverified profile x10','entries':[
@@ -80,7 +80,7 @@ class ValidationGuardTests(unittest.TestCase):
 
     def test_legacy_ledger_without_history_backfills_one_authorization(self):
         self.path.write_text(json.dumps({'limit_cny':10,
-            'profile_model_identity':__import__('model_identity').backend_identity(self.config),
+            'profile_model_identity':__import__('scholarguide.model_identity', fromlist=['']).backend_identity(self.config),
             'entries':[{'status':'returned','reserved_cny':1.0,'protected_cny':0.5}]}),encoding='utf-8')
         guard=MonetaryGuard(self.path,10,self.config)
         self.assertEqual(len(guard.data['authorizations']),1)

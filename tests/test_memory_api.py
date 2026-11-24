@@ -15,9 +15,9 @@ from http.client import HTTPConnection
 from unittest.mock import patch
 
 from scripts.verify_delivery import isolated_environment
-from providers import ProviderStore
-from webapp import ChatService, Jobs, create_server
-from memory_store import MemoryStore
+from scholarguide.providers import ProviderStore
+from scholarguide.webapp import ChatService, Jobs, create_server
+from scholarguide.memory_store import MemoryStore
 
 BASE = '/api/v1/memory/preferences'
 
@@ -118,7 +118,7 @@ class MemoryApiTests(unittest.TestCase):
         with ThreadPoolExecutor(max_workers=2) as pool:
             results = list(pool.map(lambda v: self.grant(value=v, revision=1)[0], ('general', 'comparison')))
         self.assertEqual(sorted(results), [200, 409])
-        code = ("import sys; from memory_store import MemoryStore, RevisionConflict; "
+        code = ("import sys; from scholarguide.memory_store import MemoryStore, RevisionConflict; "
                 "s=MemoryStore(sys.argv[1]); "
                 "\ntry: s.grant('reading_goal','orientation',consent=True,expires_at=9999999999,expected_revision=1)"
                 "\nexcept RevisionConflict: print('conflict')"
@@ -129,7 +129,7 @@ class MemoryApiTests(unittest.TestCase):
 
     def test_concurrent_processes_and_server_restart(self):
         self.assertEqual(self.grant()[0], 200)
-        code = ("import sys; from memory_store import MemoryStore, RevisionConflict; "
+        code = ("import sys; from scholarguide.memory_store import MemoryStore, RevisionConflict; "
                 "s=MemoryStore(sys.argv[1]); print('ready',flush=True); input(); "
                 "\ntry: s.grant('reading_goal',sys.argv[2],consent=True,expires_at=9999999999,expected_revision=1); print('committed')"
                 "\nexcept RevisionConflict: print('conflict')"
@@ -163,13 +163,13 @@ class MemoryApiTests(unittest.TestCase):
         self.assertEqual(self.request('GET')[1], before)
 
     def test_default_path_and_fault_redaction(self):
-        with patch.dict(os.environ, {'SG_MEMORY_STORE': ''}), patch('webapp.Path.home', return_value=self.root):
+        with patch.dict(os.environ, {'SG_MEMORY_STORE': ''}), patch('scholarguide.webapp.Path.home', return_value=self.root):
             self.assertEqual(self.request('GET')[1]['preferences'], {})
             self.assertTrue((self.root / '.scholarguide').exists())
             self.assertEqual(self.grant()[0], 200)
             self.assertTrue((self.root / '.scholarguide' / 'memory.sqlite3').exists())
         self.request('GET')
-        with patch('webapp.MemoryStore', side_effect=OSError('SECRET private credential path')):
+        with patch('scholarguide.webapp.MemoryStore', side_effect=OSError('SECRET private credential path')):
             status, result = self.grant()
         self.assertEqual(status, 500)
         self.assertFalse(result['error']['retryable'])
@@ -224,7 +224,7 @@ class MemoryApiTests(unittest.TestCase):
                 def move_then_open(path, *args, **kwargs):
                     self.db.rename(moved)
                     return MemoryStore(path, *args, **kwargs)
-                with patch('webapp.MemoryStore', side_effect=move_then_open):
+                with patch('scholarguide.webapp.MemoryStore', side_effect=move_then_open):
                     status, result = self.request('GET') if method == 'GET' else self.grant(revision=1)
                 self.assertEqual(status, 500, result)
                 self.assertFalse(result['error']['retryable'])

@@ -9,9 +9,9 @@ import unittest
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 
-from common import RunCancelled
-from lune_quota import LuneQuotaStore
-from mcp_client import McpClient, McpError, ServerConfig
+from scholarguide.common import RunCancelled
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.mcp_client import McpClient, McpError, ServerConfig
 
 
 class NoReplayTests(unittest.TestCase):

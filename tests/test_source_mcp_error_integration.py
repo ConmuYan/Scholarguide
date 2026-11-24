@@ -7,10 +7,10 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from common import Config, GuideError
-from lune_quota import LuneQuotaStore
-from mcp_client import McpClient, ServerConfig
-from source_store import SourceStore
+from scholarguide.common import Config, GuideError
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.mcp_client import McpClient, ServerConfig
+from scholarguide.source_store import SourceStore
 
 
 class SourceMcpErrorIntegrationTests(unittest.TestCase):
@@ -39,7 +39,7 @@ class SourceMcpErrorIntegrationTests(unittest.TestCase):
             provider._charge.return_value = 42
             env = {'SG_LUNE_QUOTA_DB': str(quota), 'SG_MCP_TOKEN_FILE': str(root / 'missing.json'),
                    'LUNE_API_KEY': 'synthetic-key'}
-            with patch.dict(os.environ, env), patch('mcp_lune.install', return_value=provider):
+            with patch.dict(os.environ, env), patch('scholarguide.mcp_lune.install', return_value=provider):
                 store = SourceStore(root / 'source.sqlite')
                 try:
                     with patch.object(store, 'reserve', return_value=0), self.assertRaises(GuideError) as caught:
@@ -76,7 +76,7 @@ class SourceMcpErrorIntegrationTests(unittest.TestCase):
             provider._charge.return_value = 43
             env = {'SG_LUNE_QUOTA_DB': str(quota), 'SG_MCP_TOKEN_FILE': str(root / 'missing.json'),
                    'LUNE_API_KEY': 'synthetic-key', 'SG_SKIP_PROJECT_ENV': '1'}
-            with patch.dict(os.environ, env), patch('mcp_lune.install', return_value=provider):
+            with patch.dict(os.environ, env), patch('scholarguide.mcp_lune.install', return_value=provider):
                 store = SourceStore(root / 'source.sqlite')
                 try:
                     with patch.object(store, 'reserve', return_value=0), self.assertRaises(GuideError) as caught:

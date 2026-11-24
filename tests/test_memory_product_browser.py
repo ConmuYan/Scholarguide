@@ -10,14 +10,14 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
-from memory_store import MemoryStore
+from scholarguide.memory_store import MemoryStore
 from scripts.verify_delivery import apply_browser_isolation
 from test_memory_product_view import ProductViewTests
 
 
 class ProductBrowserTests(ProductViewTests):
     def test_late_response_cannot_change_switched_session(self):
-        from memory_view import MemoryView
+        from scholarguide.memory_view import MemoryView
         with MemoryStore(self.db) as store:
             store.grant('prefer_recent', True, consent=True, expires_at=time.time() + 300,
                         expected_revision=0)

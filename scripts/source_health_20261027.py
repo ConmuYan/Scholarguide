@@ -19,8 +19,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, Config, source_names
-from source import AcademicSource, PROVIDERS
+from scholarguide.common import Budget, Config, source_names
+from scholarguide.source import AcademicSource, PROVIDERS
 
 OUT = ROOT / 'runs' / 'source-check-20261027'
 QUERY = 'retrieval augmented generation evaluation'
@@ -57,7 +57,7 @@ def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     env = Config.from_env()
     try:
-        from providers import ProviderStore
+        from scholarguide.providers import ProviderStore
         store = ProviderStore()
         active = store.active()
         config = store.config(env)
@@ -84,7 +84,7 @@ def main() -> int:
     # Lune (MCP): only present after install(); request budget is its own ledger.
     lune = None
     try:
-        import mcp_lune
+        from scholarguide import mcp_lune
         provider = mcp_lune.install()
         before = provider.usage()
         src = AcademicSource(config, Budget(120))
@@ -112,7 +112,7 @@ def main() -> int:
     routing = []
     try:
         from dataclasses import replace
-        from retrieval import RetrievalRouter
+        from scholarguide.retrieval import RetrievalRouter
         preview_config = replace(config, source='multi', research_mode=True)
         router = RetrievalRouter(preview_config, AcademicSource(preview_config, Budget(30)))
         for task, query in (

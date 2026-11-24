@@ -27,7 +27,8 @@ sys.path.insert(0, str(ROOT))
 
 
 def source_manifest():
-    files = list(ROOT.glob('*.py')) + list(ROOT.glob('requirements*.txt'))
+    files = (list(ROOT.glob('*.py')) + list((ROOT / 'scholarguide').rglob('*.py'))
+             + list(ROOT.glob('requirements*.txt')))
     files.extend([ROOT / 'state_schema.sql', ROOT / 'README.md', ROOT / '.env.example',
                   ROOT / 'scripts' / 'offline_test_site' / 'sitecustomize.py',
                   ROOT / 'tests' / 'fixtures' / 'offline_mcp_servers.json'])
@@ -129,9 +130,9 @@ def capture_ui(out):
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support.ui import WebDriverWait
     from unittest.mock import patch
-    from activity import ActivityFeed
-    from providers import ProviderStore
-    from webapp import ChatService, Jobs, create_server
+    from scholarguide.activity import ActivityFeed
+    from scholarguide.providers import ProviderStore
+    from scholarguide.webapp import ChatService, Jobs, create_server
 
     fixture = out / 'ui-fixture'
     providers = ProviderStore(fixture / 'providers.json')

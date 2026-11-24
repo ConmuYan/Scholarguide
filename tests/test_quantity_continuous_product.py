@@ -5,15 +5,15 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from common import Config, GuideError, Paper, Request
-from intent import allocate
-from quantities import quantity_constraints
-from recovery import recovery_patch
-from session import ChatSession
-from state import StateStore
+from scholarguide.common import Config, GuideError, Paper, Request
+from scholarguide.intent import allocate
+from scholarguide.quantities import quantity_constraints
+from scholarguide.recovery import recovery_patch
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
 from tests.test_session import FakeLLM, FakeSource, PAPERS
-from workflow import coverage
-from execution_events import operation
+from scholarguide.workflow import coverage
+from scholarguide.execution_events import operation
 
 
 class QuantityProductTests(unittest.TestCase):
@@ -42,7 +42,7 @@ class QuantityProductTests(unittest.TestCase):
                 quantity_constraints(over_limit)
 
     def test_inferred_acceptance_cannot_become_an_unrequested_hard_filter(self):
-        from quantities import calibrate_user_requirements
+        from scholarguide.quantities import calibrate_user_requirements
         proposal = {'venue':'ACL','accepted_only':True,'presentation_types':['poster']}
         plain = calibrate_user_requirements(proposal, '推荐3篇ACL 2025关于RAG的论文')
         self.assertFalse(plain['accepted_only'])

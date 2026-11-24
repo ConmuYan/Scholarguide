@@ -9,12 +9,12 @@ import threading
 import unittest
 from unittest.mock import patch
 
-from common import Config, GuideError, Paper
-from demo import demo_run
-from providers import ProviderStore
-import prompts
-from webapp import ChatService, Jobs, create_server, validate_input
-from workflow import run, validate_request_constraints
+from scholarguide.common import Config, GuideError, Paper
+from scholarguide.demo import demo_run
+from scholarguide.providers import ProviderStore
+from scholarguide import prompts
+from scholarguide.webapp import ChatService, Jobs, create_server, validate_input
+from scholarguide.workflow import run, validate_request_constraints
 
 
 CONSTRAINTS = {'target_count': 3, 'category': 'evaluation', 'minimum_category_count': 2,
@@ -125,7 +125,7 @@ class GuidedConstraintTests(unittest.TestCase):
         for current in (date(2026, 10, 20), date(2029, 1, 1)):
             with self.subTest(current=current):
                 llm = RelativePlanner()
-                with patch('workflow.date') as runtime_date:
+                with patch('scholarguide.workflow.date') as runtime_date:
                     runtime_date.today.return_value = current
                     result = run('Find visual adaptation papers from the last two years.',
                                  Config(), 'S', source=Source(), llm=llm)
@@ -139,7 +139,7 @@ class GuidedConstraintTests(unittest.TestCase):
 
     def test_runtime_date_does_not_replace_explicit_years(self):
         llm = Planner()
-        with patch('workflow.date') as runtime_date:
+        with patch('scholarguide.workflow.date') as runtime_date:
             runtime_date.today.return_value = date(2029, 1, 1)
             result = run('Find visual adaptation papers published in 2018–2020.', Config(), 'S',
                          source=Source(), llm=llm)
@@ -225,7 +225,7 @@ class GuidedConstraintTests(unittest.TestCase):
                                'source': 'arxiv', 'cache': False, 'reading_goal': 'auto',
                                'request_constraints': {**CONSTRAINTS, 'venue': '  CVPR  '}})
         self.assertEqual(data['request_constraints'], CONSTRAINTS)
-        with patch('webapp.Config.from_env', return_value=Config()), patch('webapp.run', return_value={}) as runner:
+        with patch('scholarguide.webapp.Config.from_env', return_value=Config()), patch('scholarguide.webapp.run', return_value={}) as runner:
             Jobs()._execute(data, lambda event: None)
         self.assertEqual(runner.call_args.kwargs['request_constraints'], CONSTRAINTS)
         self.assertEqual(runner.call_args.kwargs['goal_hint'], 'auto')
@@ -321,7 +321,7 @@ class SingleSourceFiltersTests(unittest.TestCase):
         self.assertEqual(result['metrics']['cost_units']['by_action']['search']['settled'], 1)
 
     def test_acl_verification_is_bounded_and_cancellation_propagates(self):
-        from common import RunCancelled
+        from scholarguide.common import RunCancelled
         class ACLSource(Source):
             def __init__(self, cancel=False): self.calls = []; self.cancel = cancel
             def search(self, query, limit=10):
@@ -342,7 +342,7 @@ class SingleSourceFiltersTests(unittest.TestCase):
 class ACLVerificationSelectionTest(unittest.TestCase):
     def test_officially_verified_candidate_can_be_selected(self):
         from dataclasses import replace
-        from common import merge_publication_records
+        from scholarguide.common import merge_publication_records
         class VerifiedSource(Source):
             def search(self, query, limit=10):
                 return [Paper('p1', 'Paper One', QUOTE, 'https://example.test', doi='10.18653/v1/2025.acl-long.1', year=2025, venue='ACL')]

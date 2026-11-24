@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch
 
-from common import Budget, BudgetExceeded, Config, Paper
-from source import AcademicSource, retained_partial_batch
+from scholarguide.common import Budget, BudgetExceeded, Config, Paper
+from scholarguide.source import AcademicSource, retained_partial_batch
 
 
 class ReceivedBudgetTests(unittest.TestCase):

@@ -28,6 +28,22 @@ API 文档与产品契约优先解释当前公开行为；审计保留未决问�
 
 ## 模块边界
 
+产品实现位于 `scholarguide/`；独立实验代码位于 `scholarguide/experimental/`。根目录保留 `app.py`、`app_mcp.py`、`lune_quota_schedule.py`、`mcp_skills.py`、`update_cli.py` 和文档中使用的 `source.py` 兼容入口，现有命令无需改变。新代码建议使用包路径，例如 `from scholarguide.common import Config`、`from scholarguide.session import ChatSession`。
+
+旧脚本可启用 `compat/legacy/` 中的 53 个兼容别名，旧名称与包内名称指向同一模块。先在仓库根目录设置本次 shell 的搜索路径，再运行旧脚本：
+
+```bash
+export PYTHONPATH="$PWD/compat/legacy:$PWD${PYTHONPATH:+:$PYTHONPATH}"
+```
+
+PowerShell：
+
+```powershell
+$env:PYTHONPATH = "$PWD\compat\legacy;$PWD;$env:PYTHONPATH"
+```
+
+也可以把这两个目录加入虚拟环境的 `.pth` 文件。设置只作用于相应环境；使用 `python -I` 等忽略环境变量的隔离模式时，需要在虚拟环境安装 `.pth` 或显式调整搜索路径。
+
 | 模块 | 职责 |
 | --- | --- |
 | `app.py`、`webapp.py`、`api_v1.py` | CLI、Web 服务、公开 API 与异步操作 |

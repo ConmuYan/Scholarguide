@@ -1,9 +1,9 @@
 """Delivered papers carry an explicit rank and null for unknown metadata."""
 import unittest
 
-from common import Paper
-from demo import demo_run
-from report import UNKNOWN_AS_NULL, delivered_papers, markdown
+from scholarguide.common import Paper
+from scholarguide.demo import demo_run
+from scholarguide.report import UNKNOWN_AS_NULL, delivered_papers, markdown
 
 
 class DeliveryContractTests(unittest.TestCase):
@@ -26,8 +26,8 @@ class DeliveryContractTests(unittest.TestCase):
         self.assertEqual([row['rank'] for row in delivered_papers(once)], [1, 2])
 
     def test_api_and_chat_public_shapes_keep_the_delivered_contract(self):
-        from api_v1 import public_result
-        from webapp import ChatService
+        from scholarguide.api_v1 import public_result
+        from scholarguide.webapp import ChatService
         raw = {'status': 'complete', 'papers': [
             {'id': 'a', 'title': 'A', 'rank': 2, 'doi': None, 'venue': None},
             {'id': 'b', 'title': 'B', 'rank': 7, 'doi': '10.1/x', 'venue': 'ICML'}]}

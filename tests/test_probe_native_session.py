@@ -6,8 +6,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from common import Config
-from network import BufferedResponse
+from scholarguide.common import Config
+from scholarguide.network import BufferedResponse
 from scripts.verify_delivery import isolated_environment
 
 

@@ -9,12 +9,12 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from common import Budget, BudgetExceeded, Config, RunCancelled
-from lune_quota import LuneQuotaStore, default_quota_path
-from mcp_client import McpClient, ServerConfig
-from mcp_lune import LuneProvider
-from source import AcademicSource
-from source_store import SourceStore
+from scholarguide.common import Budget, BudgetExceeded, Config, RunCancelled
+from scholarguide.lune_quota import LuneQuotaStore, default_quota_path
+from scholarguide.mcp_client import McpClient, ServerConfig
+from scholarguide.mcp_lune import LuneProvider
+from scholarguide.source import AcademicSource
+from scholarguide.source_store import SourceStore
 
 
 class LuneClientIdentityTests(unittest.TestCase):
@@ -96,7 +96,7 @@ class LuneClientIdentityTests(unittest.TestCase):
             except BaseException as exc:
                 errors.append(exc)
 
-        with patch('mcp_lune.install', return_value=self.provider), \
+        with patch('scholarguide.mcp_lune.install', return_value=self.provider), \
              patch.object(McpClient, '__init__', init), \
              patch.object(self.provider, 'client', side_effect=client), \
              patch.object(self.second, '_ensure_ready', return_value=Config(source='lune')):
@@ -132,7 +132,7 @@ class LuneClientIdentityTests(unittest.TestCase):
         def init(client, config, **kwargs):
             kwargs.setdefault('transport', transport)
             original_init(client, config, **kwargs)
-        with patch('mcp_lune.install', return_value=self.provider), \
+        with patch('scholarguide.mcp_lune.install', return_value=self.provider), \
              patch.object(McpClient, '__init__', init), \
              patch.object(self.second, '_ensure_ready', return_value=Config(source='lune')):
             cfg = self.first.configure(Config(source='lune', source_store=self.first))
@@ -142,7 +142,7 @@ class LuneClientIdentityTests(unittest.TestCase):
             ('skill', 'https://localhost:2222/mcp', 'Bearer default-synthetic-key')])
 
     def test_provider_lock_is_reentrant(self):
-        with patch('mcp_lune.install', return_value=self.provider), \
+        with patch('scholarguide.mcp_lune.install', return_value=self.provider), \
              patch.object(self.second, '_ensure_ready', return_value=Config(source='lune')), \
              self.provider._lock:
             result = self.second._call_lune('search_papers', {'query': 'skill'},
@@ -158,7 +158,7 @@ class LuneClientIdentityTests(unittest.TestCase):
                                        Config(source='lune'), budget=Budget(.3))
             except BaseException as exc:
                 errors.append(exc)
-        with patch('mcp_lune.install', return_value=self.provider), \
+        with patch('scholarguide.mcp_lune.install', return_value=self.provider), \
              patch.object(self.second, '_ensure_ready', return_value=Config(source='lune')), \
              self.provider._lock:
             thread = threading.Thread(target=run)
@@ -183,7 +183,7 @@ class LuneClientIdentityTests(unittest.TestCase):
                                        Config(source='lune'), budget=budget)
             except BaseException as exc:
                 errors.append(exc)
-        with patch('mcp_lune.install', return_value=self.provider), \
+        with patch('scholarguide.mcp_lune.install', return_value=self.provider), \
              patch.object(self.second, '_ensure_ready', return_value=Config(source='lune')), \
              self.provider._lock:
             thread = threading.Thread(target=run)

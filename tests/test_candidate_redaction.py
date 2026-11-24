@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from api_v1 import public_candidates, public_result
+from scholarguide.api_v1 import public_candidates, public_result
 
 
 class CandidateRedactionTests(unittest.TestCase):
@@ -84,7 +84,7 @@ class CandidateRedactionTests(unittest.TestCase):
         self.assertTrue(all(not row['verified'] for row in result['records']))
 
     def test_legacy_evidence_gate_remains_compatible(self):
-        from research_policy import publication_records
+        from scholarguide.research_policy import publication_records
         record = {'type': 'conference', 'status': 'accepted', 'verified': True,
                   'venue_id': 'ICLR.cc/2025/Conference', 'venue_name': 'ICLR',
                   'date': '2025', 'presentation': 'poster', 'evidence': [

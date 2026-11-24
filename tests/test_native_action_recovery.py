@@ -10,16 +10,16 @@ import time
 import unittest
 from unittest.mock import patch
 
-from common import Config
-from demo import ChatDemoLLM, DemoSource
+from scholarguide.common import Config
+from scholarguide.demo import ChatDemoLLM, DemoSource
 from scripts.verify_delivery import isolated_environment
-from session import ChatSession
-from state import StateStore
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
 
 
 def _native_worker(directory, boundary):
-    from common import Budget
-    from llm import JsonLLM
+    from scholarguide.common import Budget
+    from scholarguide.llm import JsonLLM
     from test_session import FakeLLM, FakeSource
     root = Path(directory)
     class Source(FakeSource):
@@ -68,7 +68,7 @@ def _native_worker(directory, boundary):
 
 class NativeRecoveryTests(unittest.TestCase):
     def test_real_restart_never_replays_native_proposal_or_completed_action(self):
-        from llm import JsonLLM
+        from scholarguide.llm import JsonLLM
         from test_session import FakeLLM, FakeSource
         for boundary in ('before_action', 'before_continuation'):
             with self.subTest(boundary=boundary), tempfile.TemporaryDirectory() as directory:

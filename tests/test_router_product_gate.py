@@ -4,12 +4,12 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from common import Config, Paper
-from demo import ChatDemoLLM, DemoLLM, DemoSource
-from retrieval import RetrievalPlan, RetrievalResult
-from session import ChatSession
-from state import StateStore
-from workflow import run
+from scholarguide.common import Config, Paper
+from scholarguide.demo import ChatDemoLLM, DemoLLM, DemoSource
+from scholarguide.retrieval import RetrievalPlan, RetrievalResult
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
+from scholarguide.workflow import run
 
 
 class MultiSource(DemoSource):
@@ -36,7 +36,7 @@ class BlockedRouter:
 class RouterGateTests(unittest.TestCase):
     def test_workflow_stops_after_unresolved_paid_outcome(self):
         router = BlockedRouter()
-        with patch('workflow.RetrievalRouter', return_value=router):
+        with patch('scholarguide.workflow.RetrievalRouter', return_value=router):
             result = run('Recommend five RAG papers.', Config(source='multi'), 'A',
                          source=MultiSource(), llm=DemoLLM())
         self.assertEqual(router.calls, 1)

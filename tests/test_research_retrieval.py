@@ -12,14 +12,14 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, BudgetExceeded, Config, GuideError, Paper, RunCancelled
-from research_policy import (CATALOG_VERSION, curated_venue_catalog, journal_issns_for_venue, matched_publication,
+from scholarguide.common import Budget, BudgetExceeded, Config, GuideError, Paper, RunCancelled
+from scholarguide.research_policy import (CATALOG_VERSION, curated_venue_catalog, journal_issns_for_venue, matched_publication,
                              matches_requested_venue, normalize_issn, publication_matches,
                              publication_records, publication_violations,
                              research_selection_key, venue_identity)
-from retrieval import RetrievalRouter
-from source import DEFAULT_MULTI, SearchBatch, SourceRun
-from tools import CostMeter
+from scholarguide.retrieval import RetrievalRouter
+from scholarguide.source import DEFAULT_MULTI, SearchBatch, SourceRun
+from scholarguide.tools import CostMeter
 
 
 def record(venue='ICLR', *, kind='conference', status='accepted', year=2025,

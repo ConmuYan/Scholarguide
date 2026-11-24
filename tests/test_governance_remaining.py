@@ -8,13 +8,13 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from common import Budget, Config, GuideError, Paper
-from demo import ChatDemoLLM, DemoLLM, DemoSource
-from session import ChatSession
-from source import AcademicSource
-from source_store import SourceStore
-from state import StateStore
-from workflow import run
+from scholarguide.common import Budget, Config, GuideError, Paper
+from scholarguide.demo import ChatDemoLLM, DemoLLM, DemoSource
+from scholarguide.session import ChatSession
+from scholarguide.source import AcademicSource
+from scholarguide.source_store import SourceStore
+from scholarguide.state import StateStore
+from scholarguide.workflow import run
 
 
 class FailedPaidSource(DemoSource):
@@ -63,9 +63,9 @@ class RemainingGovernanceTests(unittest.TestCase):
                     store.close()
 
     def test_real_mcp_failure_does_not_repeat_single_source_workflow(self):
-        from lune_quota import LuneQuotaStore
-        from mcp_client import McpClient, ServerConfig
-        from mcp_lune import LuneProvider
+        from scholarguide.lune_quota import LuneQuotaStore
+        from scholarguide.mcp_client import McpClient, ServerConfig
+        from scholarguide.mcp_lune import LuneProvider
         for remote in ('unknown', 'error'):
             with self.subTest(remote=remote), tempfile.TemporaryDirectory() as tmp:
                 root = Path(tmp)
@@ -86,7 +86,7 @@ class RemainingGovernanceTests(unittest.TestCase):
                     budget = Budget(5)
                     config = Config(source='lune', cache=False)
                     source = AcademicSource(config, budget)
-                    with patch('mcp_lune.install', return_value=provider), \
+                    with patch('scholarguide.mcp_lune.install', return_value=provider), \
                          patch.object(source, 'available', return_value=True), \
                          patch.object(source, '_wait_for'):
                         result = run('Recommend five RAG papers.', config, 'A',

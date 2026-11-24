@@ -23,7 +23,7 @@ sys.path.insert(0, str(lib.ROOT))  # 便于 import 项目根的 mcp_lune / mcp_c
 
 # 加载项目根 .env（支持 LUNE_API_KEY=... 形式，不覆盖已设置的环境变量）
 try:
-    from common import load_env
+    from scholarguide.common import load_env
     load_env()
 except Exception:
     pass
@@ -32,7 +32,7 @@ except Exception:
 def _credential_kind() -> str:
     """检查 Lune 凭据，返回 'oauth' / 'env-key' / ''。"""
     try:
-        import mcp_lune
+        from scholarguide import mcp_lune
         token = mcp_lune.access_token()
     except Exception:
         token = ''
@@ -134,8 +134,8 @@ def main() -> int:
         print('示例：export LUNE_API_KEY="..."')
         return 2
 
-    import mcp_client
-    import mcp_lune
+    from scholarguide import mcp_client
+    from scholarguide import mcp_lune
 
     try:
         provider = mcp_lune.LuneProvider(max_requests=1)

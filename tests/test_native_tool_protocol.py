@@ -6,7 +6,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from native_tool_protocol import (
+from scholarguide.native_tool_protocol import (
     PROBE_TOOL,
     chat_followup_messages,
     chat_tool_payload,

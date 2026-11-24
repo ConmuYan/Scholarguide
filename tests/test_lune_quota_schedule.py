@@ -9,8 +9,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import lune_quota
-import lune_quota_schedule as schedule
+from scholarguide import lune_quota
+from scholarguide import lune_quota_schedule as schedule
 
 
 class ScheduleTests(unittest.TestCase):
@@ -92,7 +92,7 @@ class ScheduleTests(unittest.TestCase):
         self.assertEqual(record['skipped'], lune_quota.CODE_PENDING_RESERVED)
 
     def test_module_never_reads_the_network(self):
-        source = (ROOT / 'lune_quota_schedule.py').read_text(encoding='utf-8')
+        source = (ROOT / 'scholarguide' / 'lune_quota_schedule.py').read_text(encoding='utf-8')
         for banned in ('urlopen', 'requests', 'http.client', 'socket'):
             self.assertNotIn(banned, source)
         self.assertEqual(set(schedule.MODES), {schedule.MODE_ASSUME, schedule.MODE_MANUAL})

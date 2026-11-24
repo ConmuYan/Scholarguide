@@ -6,12 +6,12 @@ import tempfile
 import time
 import unittest
 
-from memory_store import MemoryStore
+from scholarguide.memory_store import MemoryStore
 
 
 WORKER = r'''
 import sys
-from memory_store import MemoryStore, RevisionConflict
+from scholarguide.memory_store import MemoryStore, RevisionConflict
 store = MemoryStore(sys.argv[1])
 print('ready', flush=True)
 sys.stdin.readline()

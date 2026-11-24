@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from webapp import ChatService
+from scholarguide.webapp import ChatService
 from test_chat_reading_contract import ChatReadingContractTests
 
 
@@ -23,10 +23,10 @@ class ChatCandidateCompatibilityTests(unittest.TestCase):
         self.assertNotIn('candidates', ChatService._public(result))
 
     def test_actual_partial_search_result_is_visible(self):
-        from common import Budget, Config
-        from demo import ChatDemoLLM
-        from session import ChatSession
-        from state import StateStore
+        from scholarguide.common import Budget, Config
+        from scholarguide.demo import ChatDemoLLM
+        from scholarguide.session import ChatSession
+        from scholarguide.state import StateStore
         from test_partial_product import PartialSource
         with tempfile.TemporaryDirectory() as tmp:
             store = StateStore(Path(tmp) / 'state.sqlite')

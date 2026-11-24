@@ -3,12 +3,12 @@ from copy import deepcopy
 import json
 import unittest
 
-from common import GuideError
-from research_brief import (ABSTRACT_LIMIT, BRIEF_PROMPT_VERSION, MAX_EVIDENCE_PER_PAPER,
+from scholarguide.common import GuideError
+from scholarguide.research_brief import (ABSTRACT_LIMIT, BRIEF_PROMPT_VERSION, MAX_EVIDENCE_PER_PAPER,
                             _papers, _validate, evidence_bank, synthesize, validated_cached_brief)
 from tests.brief_fixture import wire_output
 from tests.test_research_brief import LLM, PAPERS, TASK, valid_output
-from tools import CostMeter
+from scholarguide.tools import CostMeter
 
 
 class EvidenceBankTests(unittest.TestCase):

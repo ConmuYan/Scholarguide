@@ -15,8 +15,8 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, Config
-from source import AcademicSource, PROVIDERS
+from scholarguide.common import Budget, Config
+from scholarguide.source import AcademicSource, PROVIDERS
 
 
 def main() -> int:

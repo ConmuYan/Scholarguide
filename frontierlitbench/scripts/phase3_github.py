@@ -904,7 +904,7 @@ def main() -> int:
     # 加载项目根 .env（GITHUB_TOKEN / OPENALEX_MAILTO），不覆盖已设置的环境变量
     try:
         sys.path.insert(0, str(lib.ROOT))
-        from common import load_env
+        from scholarguide.common import load_env
         load_env()
     except Exception:
         pass

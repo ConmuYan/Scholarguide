@@ -6,12 +6,12 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from agent_tools import ToolRegistry
-from common import Budget, GuideError, Paper, RunCancelled
-from domain_skill_runtime import execute_domain_skill
-from execution_events import bind_events
+from scholarguide.agent_tools import ToolRegistry
+from scholarguide.common import Budget, GuideError, Paper, RunCancelled
+from scholarguide.domain_skill_runtime import execute_domain_skill
+from scholarguide.execution_events import bind_events
 from scripts.verify_delivery import isolated_environment
-from source import SearchBatch, SourceRun
+from scholarguide.source import SearchBatch, SourceRun
 
 
 class FakeSource:
@@ -39,7 +39,7 @@ class FakeSource:
         if self.mode == 'cancel':
             self.budget.cancel_token.request()
         if self.mode == 'budget_partial':
-            exc = __import__('common').BudgetExceeded('exhausted')
+            exc = __import__('scholarguide.common', fromlist=['']).BudgetExceeded('exhausted')
             exc.remote_outcome, exc.retry_safe = 'completed', False
             batch.stop_reason = 'budget_exceeded'
             exc.partial_batch = batch

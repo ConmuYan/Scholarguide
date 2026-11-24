@@ -19,7 +19,6 @@ def _module(name, path):
 
 
 SOURCE = _module('build_source_repo', ROOT / 'scripts' / 'build_source_repo.py')
-RELEASE = _module('build_release', ROOT / 'scripts' / 'build_release.py')
 
 
 class SourceExportTests(unittest.TestCase):
@@ -34,7 +33,7 @@ class SourceExportTests(unittest.TestCase):
         report = SOURCE.export(self.out)
         self.assertEqual(report['secret_findings'], [])
         names = {p.relative_to(self.out).as_posix() for p in self.out.rglob('*') if p.is_file()}
-        for required in ('app.py', 'common.py', 'LICENSE', 'NOTICE.md', 'README.md', 'README.zh-CN.md',
+        for required in ('app.py', 'scholarguide/common.py', 'scholarguide/oauth_models.py', 'LICENSE', 'NOTICE.md', 'README.md', 'README.zh-CN.md',
                          'requirements.txt', 'requirements-dev.txt', '.env.example',
                          'docs/assets/screenshots/landing.png',
                          'docs/assets/screenshots/search-desktop.png',
@@ -43,6 +42,7 @@ class SourceExportTests(unittest.TestCase):
                          'scripts/set_repository.py', 'docs/API.md', 'docs/INSTALL.md',
                          'docs/PUBLISHING.md',
                          'tests/test_release_package.py', 'web/index.html', 'vendor/gptr_arxiv.py',
+                         'frontierlitbench/corpus_v1.1/gold_world_models.jsonl',
                          'vendor/LICENSE-gpt-researcher', 'SOURCE_MANIFEST.json'):
             self.assertIn(required, names)
         for banned in ('.env', 'NUL', 'examples/live_result.json', 'examples/live_report.md',
@@ -63,9 +63,14 @@ class SourceExportTests(unittest.TestCase):
     def test_exported_tree_builds_release_and_runs_offline_demo(self):
         report = SOURCE.export(self.out, include_evaluation=False)
         self.assertEqual(report['secret_findings'], [])
-        assets = RELEASE.build('v0.2.0', 'owner/repo', Path(self.tmp.name) / 'assets')
-        archive = next(p for p in assets if p.name.endswith('.tar.gz'))
-        self.assertTrue(archive.is_file())
+        self.assertFalse((self.out / 'frontierlitbench').exists())
+        assets = Path(self.tmp.name) / 'assets'
+        build = subprocess.run([sys.executable, str(self.out / 'scripts' / 'build_release.py'),
+                                '--version', 'v0.2.0', '--repository', 'owner/repo',
+                                '--out', str(assets)], cwd=self.out, capture_output=True,
+                               text=True, timeout=60)
+        self.assertEqual(build.returncode, 0, build.stderr)
+        self.assertTrue((assets / 'scholarguide-v0.2.0.tar.gz').is_file())
         demo = subprocess.run([sys.executable, str(self.out / 'app.py'), 'demo', '--scenario', 'satisfied',
                                '--out', str(Path(self.tmp.name) / 'run')],
                               cwd=self.out, capture_output=True, text=True, timeout=90)

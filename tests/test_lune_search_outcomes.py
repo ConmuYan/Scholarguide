@@ -5,12 +5,12 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from agent_tools import ToolRegistry
-from common import GuideError, RunCancelled
-from execution_events import bind_events
-from mcp_client import McpError
-from mcp_lune import LuneProvider
-from source import SearchBatch, SourceRun
+from scholarguide.agent_tools import ToolRegistry
+from scholarguide.common import GuideError, RunCancelled
+from scholarguide.execution_events import bind_events
+from scholarguide.mcp_client import McpError
+from scholarguide.mcp_lune import LuneProvider
+from scholarguide.source import SearchBatch, SourceRun
 
 
 class Client:
@@ -57,7 +57,7 @@ class OutcomeTests(unittest.TestCase):
         self.assertIs(caught.exception.retry_safe, False)
 
     def test_real_mcp_client_synthetic_timeout_transport(self):
-        from mcp_client import McpClient, ServerConfig
+        from scholarguide.mcp_client import McpClient, ServerConfig
         calls = []
         def transport(request, *, timeout):
             calls.append(1)

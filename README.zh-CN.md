@@ -129,6 +129,8 @@ for paper in op["result"]["papers"]:
 
 ## 架构
 
+Python 实现位于 `scholarguide/`，独立实验组件位于 `scholarguide/experimental/`。`python app.py` 等已公开命令保持不变。旧脚本若直接导入内部模块（如 `import session`），可按[开发指南](docs/DEVELOPMENT.md)启用兼容目录；新代码建议使用包路径，例如 `from scholarguide.common import Config`。
+
 ```text
 ┌──────────────────────────────────────────────────────────────┐
 │  前端（原生 HTML/CSS/JS，无需构建）                            │

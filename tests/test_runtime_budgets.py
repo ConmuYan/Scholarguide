@@ -3,11 +3,11 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from common import BudgetExceeded, Config, GuideError
-from controller import Decision
-from demo import ChatDemoLLM, DemoSource
-from session import ChatSession, MAX_LLM_REQUESTS, TURN_SECONDS
-from state import StateStore
+from scholarguide.common import BudgetExceeded, Config, GuideError
+from scholarguide.controller import Decision
+from scholarguide.demo import ChatDemoLLM, DemoSource
+from scholarguide.session import ChatSession, MAX_LLM_REQUESTS, TURN_SECONDS
+from scholarguide.state import StateStore
 
 
 class Clock:

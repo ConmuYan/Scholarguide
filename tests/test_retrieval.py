@@ -10,12 +10,12 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Config, GuideError, Paper
-from retrieval import RetrievalRouter
-from source import DEFAULT_MULTI, SearchBatch, SourceRun
-from tools import CostMeter
-from demo import DemoLLM
-from workflow import run as run_workflow
+from scholarguide.common import Config, GuideError, Paper
+from scholarguide.retrieval import RetrievalRouter
+from scholarguide.source import DEFAULT_MULTI, SearchBatch, SourceRun
+from scholarguide.tools import CostMeter
+from scholarguide.demo import DemoLLM
+from scholarguide.workflow import run as run_workflow
 
 
 def paper(idx, title='RAG paper', abstract='retrieval augmented generation',

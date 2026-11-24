@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import patch
 
-from common import Budget, Config, Paper
-from research_policy import matched_publication
-from source import AcademicSource
+from scholarguide.common import Budget, Config, Paper
+from scholarguide.research_policy import matched_publication
+from scholarguide.source import AcademicSource
 
 
 class CandidateVerificationTests(unittest.TestCase):

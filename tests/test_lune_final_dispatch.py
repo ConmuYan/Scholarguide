@@ -9,12 +9,12 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from common import Budget, BudgetExceeded, Config, RunCancelled
-from lune_quota import LuneQuotaStore
-from mcp_client import McpClient, McpError, ServerConfig
-from mcp_lune import LuneProvider
-from source import AcademicSource
-from source_store import SourceStore
+from scholarguide.common import Budget, BudgetExceeded, Config, RunCancelled
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.mcp_client import McpClient, McpError, ServerConfig
+from scholarguide.mcp_lune import LuneProvider
+from scholarguide.source import AcademicSource
+from scholarguide.source_store import SourceStore
 
 
 class FinalDispatchTests(unittest.TestCase):
@@ -60,7 +60,7 @@ class FinalDispatchTests(unittest.TestCase):
 
     def test_search_checks_cooldown_after_quota_admission(self):
         source = AcademicSource(self.config, Budget(.8))
-        with patch('mcp_lune.install', return_value=self.provider), self.inject_cooldown_after_reservation():
+        with patch('scholarguide.mcp_lune.install', return_value=self.provider), self.inject_cooldown_after_reservation():
             with self.assertRaises(BudgetExceeded) as caught:
                 source._search_one('lune', 'fixture', 1)
         self.assertEqual(self.sent, [])
@@ -70,7 +70,7 @@ class FinalDispatchTests(unittest.TestCase):
 
     def test_sources_skill_checks_cooldown_after_quota_admission(self):
         with patch.object(self.store, '_ensure_ready', return_value=self.config), \
-             patch('mcp_lune.install', return_value=self.provider), self.inject_cooldown_after_reservation():
+             patch('scholarguide.mcp_lune.install', return_value=self.provider), self.inject_cooldown_after_reservation():
             with self.assertRaises(BudgetExceeded) as caught:
                 self.store.invoke('lune', 'search', {'query': 'fixture'}, self.config, budget=Budget(.8))
         self.assertEqual(self.sent, [])
@@ -79,7 +79,7 @@ class FinalDispatchTests(unittest.TestCase):
         self.assertIs(getattr(caught.exception, 'retry_safe', None), False)
 
     def test_late_cooldown_is_followed_by_new_rate_admission(self):
-        import source_store
+        from scholarguide import source_store
         source = AcademicSource(self.config, Budget(3))
         original = self.store.wait_for_rate
         reservations = []
@@ -88,7 +88,7 @@ class FinalDispatchTests(unittest.TestCase):
             return original(name, budget)
         with patch.dict(source_store._RATE, {'lune': .08}), \
              patch.object(self.store, 'wait_for_rate', side_effect=reserve_rate), \
-             patch('mcp_lune.install', return_value=self.provider), \
+             patch('scholarguide.mcp_lune.install', return_value=self.provider), \
              self.inject_cooldown_after_reservation(.2):
             started = time.monotonic()
             self.assertEqual(source._search_one('lune', 'fixture', 1), [])
@@ -112,7 +112,7 @@ class FinalDispatchTests(unittest.TestCase):
                 source._search_one('lune', 'fixture', 1)
             except BaseException as exc:
                 errors.append(exc)
-        with patch('mcp_lune.install', return_value=self.provider), \
+        with patch('scholarguide.mcp_lune.install', return_value=self.provider), \
              self.inject_cooldown_after_reservation(2), patch.object(budget, 'wait', side_effect=wait):
             thread = threading.Thread(target=run)
             thread.start()

@@ -9,8 +9,8 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from webapp import ChatService, DeletionUnavailable, Jobs, create_server, validate_input
-from recovery import JobLease
+from scholarguide.webapp import ChatService, DeletionUnavailable, Jobs, create_server, validate_input
+from scholarguide.recovery import JobLease
 
 
 def _hold_lease(directory, ready, release):
@@ -31,7 +31,7 @@ class DisabledDeletionTests(unittest.TestCase):
                 sid = chat.create({'mode': 'demo', 'message': 'Recommend five RAG papers.'})['session_id']
                 record = chat.sessions[sid]
                 with patch.object(chat, '_load_record', side_effect=AssertionError('loaded')), \
-                        patch('webapp.shutil.rmtree', side_effect=AssertionError('deleted')):
+                        patch('scholarguide.webapp.shutil.rmtree', side_effect=AssertionError('deleted')):
                     with self.assertRaises(DeletionUnavailable):
                         chat.delete(sid)
                 self.assertIs(chat.sessions[sid], record)
@@ -44,7 +44,7 @@ class DisabledDeletionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             with patch.object(Path, 'resolve', side_effect=AssertionError('resolved')), \
-                    patch('webapp.shutil.rmtree', side_effect=AssertionError('deleted')):
+                    patch('scholarguide.webapp.shutil.rmtree', side_effect=AssertionError('deleted')):
                 for service in (Jobs(output=root), ChatService(output=root)):
                     for sid in ('a' * 32, '../outside', ''):
                         with self.assertRaises(DeletionUnavailable):
@@ -65,7 +65,7 @@ class DisabledDeletionTests(unittest.TestCase):
             worker.start()
             try:
                 self.assertTrue(ready.wait(10))
-                with patch('webapp.shutil.rmtree', side_effect=AssertionError('unsafe delete')):
+                with patch('scholarguide.webapp.shutil.rmtree', side_effect=AssertionError('unsafe delete')):
                     for service in (Jobs(output=root), ChatService(output=root)):
                         with self.assertRaises(DeletionUnavailable):
                             service.delete(sid)
@@ -101,7 +101,7 @@ class DisabledDeletionTests(unittest.TestCase):
 
 class WebTests(unittest.TestCase):
     def setUp(self):
-        self.jobs = Jobs(output=Path(tempfile.mkdtemp()), runner=lambda data, progress: __import__('demo').demo_run(data['scenario'], data['method'], progress=progress))
+        self.jobs = Jobs(output=Path(tempfile.mkdtemp()), runner=lambda data, progress: __import__('scholarguide.demo', fromlist=['']).demo_run(data['scenario'], data['method'], progress=progress))
         self.server = create_server(0, self.jobs)
         self.thread = __import__('threading').Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
@@ -174,7 +174,7 @@ class WebTests(unittest.TestCase):
         release = __import__('threading').Event()
         def slow(data, progress):
             gate.set(); release.wait(3)
-            return __import__('demo').demo_run('satisfied', 'A', progress=progress)
+            return __import__('scholarguide.demo', fromlist=['']).demo_run('satisfied', 'A', progress=progress)
         self.jobs.runner = slow
         try:
             status, _, raw = self.request('POST', '/api/jobs', {'mode':'demo','method':'A','scenario':'satisfied'})
@@ -213,7 +213,7 @@ class WebTests(unittest.TestCase):
         release = __import__('threading').Event()
         def slow(data, progress):
             gate.set(); release.wait(2)
-            return __import__('demo').demo_run('satisfied', 'A', progress=progress)
+            return __import__('scholarguide.demo', fromlist=['']).demo_run('satisfied', 'A', progress=progress)
         self.jobs.runner = slow
         status, _, body = self.request('POST', '/api/jobs', {'mode':'demo','method':'A','scenario':'satisfied'})
         self.assertEqual(status, 202)

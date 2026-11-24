@@ -7,11 +7,11 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from agent_tools import ToolRegistry, ToolSpec
-from execution_events import bind_events, operation
-from mcp_client import McpClient, McpError, ServerConfig
-from mcp_skills import Param, Skill, SkillRegistry, invoke
-from common import Budget, GuideError, RunCancelled
+from scholarguide.agent_tools import ToolRegistry, ToolSpec
+from scholarguide.execution_events import bind_events, operation
+from scholarguide.mcp_client import McpClient, McpError, ServerConfig
+from scholarguide.mcp_skills import Param, Skill, SkillRegistry, invoke
+from scholarguide.common import Budget, GuideError, RunCancelled
 
 
 class GovernanceTests(unittest.TestCase):
@@ -51,7 +51,7 @@ class GovernanceTests(unittest.TestCase):
             error.retry_safe = True
             raise error
         registry = ToolRegistry([spec], handlers={'probe': handler})
-        with patch('agent_tools.time.sleep'):
+        with patch('scholarguide.agent_tools.time.sleep'):
             result = registry.call('probe', handler, _input={'nested': ['original']})
         self.assertFalse(result.ok)
         self.assertTrue(result.retryable)
@@ -70,7 +70,7 @@ class GovernanceTests(unittest.TestCase):
         self.assertEqual(calls, [1])
 
     def test_audit_summary_has_no_reversible_argument_fingerprint(self):
-        from tool_governance import audit_arguments
+        from scholarguide.tool_governance import audit_arguments
         summary = audit_arguments({'query': 'synthetic-rare-topic'})
         self.assertNotIn('sha256', summary)
         self.assertNotIn('synthetic-rare-topic', str(summary))

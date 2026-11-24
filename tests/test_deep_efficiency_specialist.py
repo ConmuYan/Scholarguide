@@ -15,14 +15,14 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, Config, GuideError, Request
-from llm import JsonLLM
-from research_specialist import (MAX_CLAIM_CRITIC_OUTPUT_TOKENS, MAX_CLAIM_CRITIC_SECONDS,
+from scholarguide.common import Budget, Config, GuideError, Request
+from scholarguide.llm import JsonLLM
+from scholarguide.research_specialist import (MAX_CLAIM_CRITIC_OUTPUT_TOKENS, MAX_CLAIM_CRITIC_SECONDS,
                                   SpecialistError, abstract_hashes, assert_result_matches,
                                   claim_critic, coverage_specialist, evidence_critic,
                                   make_ticket, session_ticket)
-from session import ChatSession
-from state import StateStore
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
 
 from tests.test_research_runtime import (OfflineLLM, OfflineSource, TASK, brief_output,
                                          paper)
@@ -107,7 +107,7 @@ class DeepEfficiencyTests(unittest.TestCase):
         self.assertNotEqual(decision.action, 'FINISH')
 
     def test_fast_finish_fails_closed_for_an_unmet_publication_constraint(self):
-        from reuse import verify_delivery
+        from scholarguide.reuse import verify_delivery
         chat = self.prepared()
         task = dict(TASK)
         task['accepted_only'] = True
@@ -124,8 +124,8 @@ class DeepEfficiencyTests(unittest.TestCase):
         self.assertNotEqual(decision.action, 'FINISH')
 
     def test_fast_finish_fails_closed_for_a_coverage_gap(self):
-        from model_identity import research_model_identity
-        from research_landscape import task_key
+        from scholarguide.model_identity import research_model_identity
+        from scholarguide.research_landscape import task_key
         chat = self.prepared()
         plan = {'status': 'ready', 'scope': 'landscape', 'preferred_venues': [],
                 'facets': [{'id': 'alpha', 'label': 'Alpha', 'query': 'alpha query'},
@@ -176,7 +176,7 @@ class DeepEfficiencyTests(unittest.TestCase):
         self.assertEqual(forced[-1]['payload']['paper_ids'], ['P1'])
 
     def test_the_model_cannot_ask_for_a_forced_reassessment(self):
-        from controller import ControlState, BudgetView, validate_decision
+        from scholarguide.controller import ControlState, BudgetView, validate_decision
         state = ControlState(candidates=2, candidate_ids=('P1', 'P2'), stale=1,
                              budget=BudgetView(seconds_left=60, llm_left=4, searches_left=2))
         decision = validate_decision({'action': 'ASSESS', 'paper_ids': ['P1'],
@@ -199,7 +199,7 @@ class DeepEfficiencyTests(unittest.TestCase):
 
     # -- bounded model-facing context --------------------------------------
     def test_model_facing_context_is_bounded_in_bytes_and_candidate_count(self):
-        from research_runtime import MAX_CONTEXT_BYTES, research_context
+        from scholarguide.research_runtime import MAX_CONTEXT_BYTES, research_context
         oversized = 'x' * 400000
         papers = [paper(f'P{i}', publication={'type': oversized, 'status': oversized,
                                               'presentation': oversized}) for i in range(1, 6)]
@@ -217,8 +217,8 @@ class DeepEfficiencyTests(unittest.TestCase):
                 self.assertLessEqual(len(str(value)), 120)
 
     def test_the_only_legal_search_action_uses_the_coverage_specialist(self):
-        from model_identity import research_model_identity
-        from research_landscape import task_key
+        from scholarguide.model_identity import research_model_identity
+        from scholarguide.research_landscape import task_key
         chat = self.prepared()
         plan = {'status': 'ready', 'scope': 'landscape', 'preferred_venues': [],
                 'facets': [{'id': 'alpha', 'label': 'Alpha', 'query': 'alpha query'},
@@ -239,7 +239,7 @@ class DeepEfficiencyTests(unittest.TestCase):
         self.assertEqual(chat.llm.count('action'), 0)
 
     def test_the_decision_payload_sends_the_task_and_the_gaps_once(self):
-        from controller import BudgetView, ControlState, decide
+        from scholarguide.controller import BudgetView, ControlState, decide
         from copy import deepcopy as copy
 
         class PayloadLLM:
@@ -351,7 +351,7 @@ class SpecialistContractTests(unittest.TestCase):
         self.assertEqual(result.failure_code, 'abstract_snapshot_changed')
 
     def test_the_evidence_critic_removes_only_the_rejected_claim(self):
-        from research_specialist import apply_evidence_findings
+        from scholarguide.research_specialist import apply_evidence_findings
         brief = {'evidence': [
             {'evidence_id': 'E1', 'paper_id': 'P1', 'quote': 'A quote that is not in any abstract.'}],
             'paper_notes': [{'paper_id': 'P1', 'contribution': {'text': 'A method.', 'kind': 'abstract_reported', 'evidence': [
@@ -465,7 +465,7 @@ class SpecialistContractTests(unittest.TestCase):
         self.assertEqual(result.usage['model_calls'], 0)
 
     def test_a_result_from_another_revision_selection_or_model_is_rejected(self):
-        from research_specialist import SpecialistResult
+        from scholarguide.research_specialist import SpecialistResult
         result = SpecialistResult(ticket_id=self.ticket.ticket_id, status='ok')
         with self.assertRaises(SpecialistError):
             assert_result_matches(self.ticket, result, revision=99)

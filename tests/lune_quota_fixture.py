@@ -3,7 +3,7 @@ import tempfile
 import time
 from pathlib import Path
 
-from lune_quota import LuneQuotaStore
+from scholarguide.lune_quota import LuneQuotaStore
 
 
 def confirmed_quota(testcase):

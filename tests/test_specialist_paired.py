@@ -9,9 +9,17 @@ from evaluation.engineering_agent import run_specialist_paired as paired
 
 
 class PairedTests(unittest.TestCase):
+    def test_temporary_directory_overlapping_source_tree_is_rejected(self):
+        from unittest.mock import patch
+        for temporary in (Path(paired.ROOT), paired.ROOT.parent, paired.ROOT / 'tests'):
+            with self.subTest(temporary=str(temporary)), \
+                 patch('tempfile.gettempdir', return_value=str(temporary)):
+                with self.assertRaises(ValueError):
+                    paired.validate_output(paired.ROOT / 'forbidden-output.json')
+
     def test_source_hashes_include_identity_and_verification_scripts(self):
         hashes = paired.source_hashes()
-        for name in ('model_identity.py', 'tests/test_specialist_pilot.py',
+        for name in ('scholarguide/model_identity.py', 'tests/test_specialist_pilot.py',
                      'scripts/verify_delivery.py', 'scripts/offline_test_site/sitecustomize.py'):
             with self.subTest(name=name):
                 self.assertIn(name, hashes)

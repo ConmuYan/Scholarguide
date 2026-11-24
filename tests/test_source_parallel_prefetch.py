@@ -7,11 +7,11 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, Config, Paper, RunCancelled
-from retrieval import RetrievalRouter
-from source import SearchBatch, SourceRun
-from source_parallel import DirectedPrefetch
-from tools import CostMeter
+from scholarguide.common import Budget, Config, Paper, RunCancelled
+from scholarguide.retrieval import RetrievalRouter
+from scholarguide.source import SearchBatch, SourceRun
+from scholarguide.source_parallel import DirectedPrefetch
+from scholarguide.tools import CostMeter
 
 
 STEP = {'provider': 'openalex', 'query': 'retrieval', 'filters': {}}

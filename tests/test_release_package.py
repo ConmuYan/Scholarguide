@@ -12,12 +12,12 @@ class ReleasePackageTests(unittest.TestCase):
             archive=next(path for path in assets if path.suffix=='.gz')
             with tarfile.open(archive,'r:gz') as tar:
                 names=tar.getnames();root='scholarguide-v0.1.0/'
-                for expected in ('app.py','openai_oauth.py','oauth_diagnostics.py','requirements.txt','web/index.html','web/settings.js','web/theme.js','docs/API.md','LICENSE','NOTICE.md','vendor/gptr_arxiv.py','vendor/LICENSE-gpt-researcher'):
+                for expected in ('app.py','scholarguide/openai_oauth.py','scholarguide/oauth_diagnostics.py','scholarguide/oauth_models.py','compat/README.md','compat/legacy/session.py','requirements.txt','web/index.html','web/settings.js','web/theme.js','docs/API.md','LICENSE','NOTICE.md','vendor/gptr_arxiv.py','vendor/LICENSE-gpt-researcher'):
                     self.assertIn(root+expected,names)
                 for forbidden in ('.env','runs','tests','evaluation','archive','.pi','.codex','cloudflare-worker','cloudflare-pages'):
                     self.assertFalse(any(name==root+forbidden or name.startswith(root+forbidden+'/') for name in names),forbidden)
                 self.assertFalse(any(name.lower().endswith('.pdf') for name in names))
-                app=tar.extractfile(root+'app.py').read()
+                app=tar.extractfile(root+'scholarguide/app.py').read()
                 self.assertIn(b'RUNS_DIR',app)
             sums=(out/'SHA256SUMS').read_text(encoding='ascii')
             for asset in assets[:3]:
@@ -34,6 +34,50 @@ class ReleasePackageTests(unittest.TestCase):
             demo=subprocess.run([sys.executable,str(app),'demo','--scenario','satisfied','--out',str(Path(temporary)/'demo-output')],cwd=app.parent,capture_output=True,text=True,timeout=40)
             self.assertEqual(demo.returncode,0,demo.stderr)
             self.assertIn('Saved:',demo.stderr)
+            # Exercise the lazy OAuth catalogue import from the extracted bundle.
+            check = '''import json, tempfile, threading, urllib.request
+from pathlib import Path
+from scholarguide.webapp import create_server, Jobs, ChatService
+from scholarguide.providers import ProviderStore
+from scholarguide.source_store import SourceStore
+with tempfile.TemporaryDirectory() as tmp:
+    root = Path(tmp)
+    providers = ProviderStore(root / 'providers.json')
+    sources = SourceStore(root / 'sources.sqlite')
+    server = create_server(0, jobs=Jobs(root / 'runs', providers=providers),
+                           chat=ChatService(root / 'runs', providers=providers),
+                           providers=providers, sources=sources)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        with urllib.request.urlopen('http://127.0.0.1:%d/api/providers/oauth/openai/catalog' % server.server_port, timeout=10) as response:
+            assert response.status == 200
+            assert json.load(response)
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join()
+        sources.close()
+'''
+            endpoint = subprocess.run([sys.executable, '-c', check], cwd=app.parent,
+                                      capture_output=True, text=True, timeout=30)
+            self.assertEqual(endpoint.returncode, 0, endpoint.stderr)
+            aliases = '''import importlib, sys
+from pathlib import Path
+compat = Path.cwd() / 'compat' / 'legacy'
+sys.path.insert(0, str(compat))
+modules = sorted(path.stem for path in compat.glob('*.py'))
+assert len(modules) == 53
+for name in modules:
+    package = 'scholarguide.experimental' if name in ('deletion_lifecycle', 'specialist_pilot') else 'scholarguide'
+    full = package + '.' + name
+    first, second = (full, name) if sys.argv[1] == 'canonical-first' else (name, full)
+    assert importlib.import_module(first) is importlib.import_module(second), name
+'''
+            for order in ('legacy-first', 'canonical-first'):
+                check_aliases = subprocess.run([sys.executable, '-c', aliases, order], cwd=app.parent,
+                                               capture_output=True, text=True, timeout=30)
+                self.assertEqual(check_aliases.returncode, 0, check_aliases.stderr)
 
     def test_build_requires_valid_repo_version_and_empty_output(self):
         with tempfile.TemporaryDirectory() as temporary:

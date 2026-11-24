@@ -7,11 +7,11 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from common import Budget, BudgetExceeded, GuideError, RunCancelled
-from execution_events import bind_events
-from lune_quota import LuneQuotaStore
-import mcp_client
-from mcp_client import McpClient, McpError, ServerConfig
+from scholarguide.common import Budget, BudgetExceeded, GuideError, RunCancelled
+from scholarguide.execution_events import bind_events
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide import mcp_client
+from scholarguide.mcp_client import McpClient, McpError, ServerConfig
 
 
 class Pages:

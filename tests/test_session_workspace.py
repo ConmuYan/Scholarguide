@@ -13,10 +13,10 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from common import GuideError
-from demo import demo_run
-from recovery import atomic_json
-from webapp import ChatService, Jobs, TurnRunning, create_server
+from scholarguide.common import GuideError
+from scholarguide.demo import demo_run
+from scholarguide.recovery import atomic_json
+from scholarguide.webapp import ChatService, Jobs, TurnRunning, create_server
 
 
 class SessionWorkspaceTests(unittest.TestCase):
@@ -124,7 +124,7 @@ class SessionWorkspaceTests(unittest.TestCase):
         path = self.root / 'web' / sid
         before = (path / 'turn-1' / 'result.json').read_bytes()
         atomic_json(path / 'runtime.json', {'state': 'running', 'expected_turn': 2})
-        with patch('webapp.ChatSession.send', side_effect=AssertionError('automatic replay')):
+        with patch('scholarguide.webapp.ChatSession.send', side_effect=AssertionError('automatic replay')):
             status, snapshot = self.request('GET', f'/api/chat/sessions/{sid}')
             self.assertEqual(status, 200)
             self.assertEqual(snapshot['status'], 'failed')
@@ -190,7 +190,7 @@ class SessionWorkspaceTests(unittest.TestCase):
         child = subprocess.Popen([sys.executable, '-c', '''
 import sys, time
 from pathlib import Path
-from webapp import ChatService
+from scholarguide.webapp import ChatService
 root=Path(sys.argv[1]); service=ChatService(root/'web')
 sid=service.create({'mode':'demo','message':'Recommend five RAG papers.'})['session_id']
 (root/'sid').write_text(sid)

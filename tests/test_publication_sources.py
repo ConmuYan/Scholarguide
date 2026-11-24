@@ -12,9 +12,9 @@ from urllib.parse import parse_qs, urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from common import Budget, Config, GuideError, Paper
-from source import AcademicSource, _publication, merge_papers
-from state import StateStore
+from scholarguide.common import Budget, Config, GuideError, Paper
+from scholarguide.source import AcademicSource, _publication, merge_papers
+from scholarguide.state import StateStore
 
 
 VENUE = 'ICLR.cc/2025/Conference'
@@ -108,7 +108,7 @@ class OpenReviewPublicationTests(unittest.TestCase):
     def test_temporary_group_failure_is_retried_after_short_cache_expiry(self):
         source = src()
         with patch.object(source, '_json', side_effect=[GuideError('HTTP 403'), {'groups': [GROUP]}]) as fetch, \
-             patch('source.time.monotonic', side_effect=[0, 61, 61]):
+             patch('scholarguide.source.time.monotonic', side_effect=[0, 61, 61]):
             self.assertEqual(source._openreview_group(VENUE), {})
             self.assertEqual(source._openreview_group(VENUE)['id'], VENUE)
         self.assertEqual(fetch.call_count, 2)

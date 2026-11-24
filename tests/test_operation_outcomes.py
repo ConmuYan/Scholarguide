@@ -5,8 +5,8 @@ import tempfile
 import time
 import unittest
 
-from api_v1 import ProductApi, execution_error
-from webapp import Jobs, ChatService
+from scholarguide.api_v1 import ProductApi, execution_error
+from scholarguide.webapp import Jobs, ChatService
 
 
 class OutcomeError(Exception):

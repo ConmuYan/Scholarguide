@@ -19,8 +19,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import mcp_client                                   # noqa: E402
-import mcp_lune                                     # noqa: E402
+from scholarguide import mcp_client                                   # noqa: E402
+from scholarguide import mcp_lune                                     # noqa: E402
 
 OUT_DIR = ROOT / 'runs' / 'verification' / 'lune-probes'
 SAFE_SHAPE_KEYS = frozenset({'papers', 'results', 'items', 'data', 'hits', 'documents',

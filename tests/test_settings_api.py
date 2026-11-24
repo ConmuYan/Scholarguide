@@ -10,8 +10,8 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from providers import ProviderStore
-from webapp import ChatService, Jobs, create_server
+from scholarguide.providers import ProviderStore
+from scholarguide.webapp import ChatService, Jobs, create_server
 
 
 class SettingsApiTests(unittest.TestCase):
@@ -88,7 +88,7 @@ class SettingsApiTests(unittest.TestCase):
             'base_url': 'http://10.0.0.20:8000/v1', 'model': 'local-research-model',
             'api_key': '', 'activate': True})
         self.assertEqual(status, 200)
-        with patch('llm.JsonLLM._call', side_effect=AssertionError('readiness must not call a model')) as call:
+        with patch('scholarguide.llm.JsonLLM._call', side_effect=AssertionError('readiness must not call a model')) as call:
             status, body = self.request('GET', '/api/config')
         self.assertEqual(status, 200)
         self.assertTrue(json.loads(body)['ready'])

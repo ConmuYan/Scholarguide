@@ -8,11 +8,11 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from common import BudgetExceeded, RunCancelled
-from execution_events import bind_events
-from lune_quota import LuneQuotaStore
-from mcp_client import McpClient, McpError, ServerConfig
-from mcp_lune import LuneProvider
+from scholarguide.common import BudgetExceeded, RunCancelled
+from scholarguide.execution_events import bind_events
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.mcp_client import McpClient, McpError, ServerConfig
+from scholarguide.mcp_lune import LuneProvider
 
 
 class FinalizationCancellationTests(unittest.TestCase):
@@ -78,8 +78,8 @@ class FinalizationCancellationTests(unittest.TestCase):
             self.assertEqual(client.http_attempts, 1)
 
     def test_academic_source_retains_completed_page_after_finalization_cancel(self):
-        from common import Budget, Config
-        from source import AcademicSource, retained_partial_batch
+        from scholarguide.common import Budget, Config
+        from scholarguide.source import AcademicSource, retained_partial_batch
         for error_type in (RunCancelled, BudgetExceeded):
             with self.subTest(error=error_type), tempfile.TemporaryDirectory() as d:
                 root = Path(d)
@@ -94,7 +94,7 @@ class FinalizationCancellationTests(unittest.TestCase):
                                        transport=transport, quota_store=quota)
                     provider = LuneProvider(client=client, ledger_path=root / 'ledger.json')
                     source = AcademicSource(Config(source='lune', cache=False), Budget(5))
-                    with patch('mcp_lune.install', return_value=provider), \
+                    with patch('scholarguide.mcp_lune.install', return_value=provider), \
                          patch.object(source, 'available', return_value=True), \
                          patch.object(source, '_wait_for'), \
                          patch.object(quota, 'finish', side_effect=error_type()):

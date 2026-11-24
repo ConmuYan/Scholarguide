@@ -1,8 +1,8 @@
 """Registry metadata is detached; rejected tool aliases are not reflected."""
 import unittest
 
-from agent_tools import ToolRegistry, ToolSpec
-from tool_governance import ToolGovernanceError
+from scholarguide.agent_tools import ToolRegistry, ToolSpec
+from scholarguide.tool_governance import ToolGovernanceError
 
 
 class RegistrySanitizationTests(unittest.TestCase):

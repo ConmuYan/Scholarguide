@@ -9,11 +9,11 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.verify_delivery import isolated_environment
-from common import Budget, Config, GuideError, Paper
-from lune_quota import LuneQuotaStore
-from mcp_client import McpClient, ServerConfig
-from mcp_lune import LuneProvider
-from source import AcademicSource, retained_partial_batch
+from scholarguide.common import Budget, Config, GuideError, Paper
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.mcp_client import McpClient, ServerConfig
+from scholarguide.mcp_lune import LuneProvider
+from scholarguide.source import AcademicSource, retained_partial_batch
 
 
 class CompleteAuditTests(unittest.TestCase):
@@ -45,7 +45,7 @@ class CompleteAuditTests(unittest.TestCase):
                             seen.append(name)
                             return [prior] if name == 'openalex' else original(name, *args)
                         failing = patch.object(quota, 'finish', side_effect=OSError('private')) if failure == 'quota' else patch.object(provider, '_finish', side_effect=OSError('private'))
-                        with failing, patch('mcp_lune.install', return_value=provider), \
+                        with failing, patch('scholarguide.mcp_lune.install', return_value=provider), \
                              patch.object(source, 'available', return_value=True), \
                              patch.object(source, '_wait_for'), patch.object(source, '_search_one', side_effect=search):
                             with self.assertRaises(GuideError) as caught:
@@ -78,7 +78,7 @@ class CompleteAuditTests(unittest.TestCase):
                 client = McpClient(ServerConfig('lune', 'https://fixture.invalid', allow=('search_papers',)), transport=transport, quota_store=quota)
                 provider = LuneProvider(client=client, ledger_path=root / 'ledger.json')
                 source = AcademicSource(Config(source='lune', cache=False), Budget(5))
-                with patch('mcp_lune.install', return_value=provider), patch.object(source, 'available', return_value=True), patch.object(source, '_wait_for'):
+                with patch('scholarguide.mcp_lune.install', return_value=provider), patch.object(source, 'available', return_value=True), patch.object(source, '_wait_for'):
                     batch = source.search_batch('fixture')
                 self.assertEqual(batch.runs[0].status, 'empty')
                 self.assertIsNone(batch.runs[0].audit_status)

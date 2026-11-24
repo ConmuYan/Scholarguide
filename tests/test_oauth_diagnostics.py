@@ -15,12 +15,12 @@ from urllib.error import HTTPError
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from common import Config, GuideError
-from network import BufferedResponse
-import oauth_diagnostics as diagnostics
-from oauth_diagnostics import OpenAIOAuthDiagnostics, OAuthDiagnosticsBusy
-from providers import ProviderProfile, ProviderStore
-from webapp import ChatService, Jobs, create_server
+from scholarguide.common import Config, GuideError
+from scholarguide.network import BufferedResponse
+from scholarguide import oauth_diagnostics as diagnostics
+from scholarguide.oauth_diagnostics import OpenAIOAuthDiagnostics, OAuthDiagnosticsBusy
+from scholarguide.providers import ProviderProfile, ProviderStore
+from scholarguide.webapp import ChatService, Jobs, create_server
 
 PATH = '/api/providers/oauth/openai/test'
 SECRET = 'test-credential-never-public'
@@ -53,10 +53,10 @@ class DiagnosticServiceTests(unittest.TestCase):
         self.providers = Mock()
         self.providers.get.return_value = PROFILE
         self.service = OpenAIOAuthDiagnostics(self.providers, config_factory=lambda: Config(request_timeout=90))
-        self.token = patch('openai_oauth.access_token', return_value=SECRET).start()
-        self.proxy = patch('openai_oauth.proxy_url', return_value='http://127.0.0.1:7890').start()
-        self.catalog_http = patch('network.urlopen', side_effect=lambda *a, **k: catalog()).start()
-        self.probe_http = patch('llm.urlopen', side_effect=lambda *a, **k: stream()).start()
+        self.token = patch('scholarguide.openai_oauth.access_token', return_value=SECRET).start()
+        self.proxy = patch('scholarguide.openai_oauth.proxy_url', return_value='http://127.0.0.1:7890').start()
+        self.catalog_http = patch('scholarguide.network.urlopen', side_effect=lambda *a, **k: catalog()).start()
+        self.probe_http = patch('scholarguide.llm.urlopen', side_effect=lambda *a, **k: stream()).start()
         self.addCleanup(patch.stopall)
 
     def test_fixed_official_urls_proxy_redirect_and_bounded_probe(self):
@@ -273,21 +273,21 @@ class DiagnosticServiceTests(unittest.TestCase):
 
         def slow_catalog(*args, **kwargs):
             observations['catalog_timeout'] = kwargs['timeout']
-            observations['scope_end'] = __import__('network')._scope.get()[0]
+            observations['scope_end'] = __import__('scholarguide.network', fromlist=[''])._scope.get()[0]
             clock[0] += 10
             return catalog()
 
         def factory(config, budget):
             observations['config'] = config
             observations['remaining'] = budget.remaining()
-            observations['probe_scope_end'] = __import__('network')._scope.get()[0]
+            observations['probe_scope_end'] = __import__('scholarguide.network', fromlist=[''])._scope.get()[0]
             fake = Mock(last_http_status=200)
             fake.generate.return_value = {'ok': True}
             return fake
 
         self.catalog_http.side_effect = slow_catalog
         self.service._llm_factory = factory
-        with patch('oauth_diagnostics.time.monotonic', side_effect=lambda: clock[0]):
+        with patch('scholarguide.oauth_diagnostics.time.monotonic', side_effect=lambda: clock[0]):
             result = self.service.test({})
         self.assertTrue(result['probe']['ok'])
         self.assertEqual(observations['catalog_timeout'], 15)
@@ -306,7 +306,7 @@ class DiagnosticServiceTests(unittest.TestCase):
             raise TimeoutError(SECRET)
 
         self.catalog_http.side_effect = exhausted
-        with patch('oauth_diagnostics.time.monotonic', side_effect=lambda: clock[0]):
+        with patch('scholarguide.oauth_diagnostics.time.monotonic', side_effect=lambda: clock[0]):
             result = self.service.test({})
         self.assertFalse(result['catalog']['ok'])
         self.assertFalse(result['probe']['ok'])
@@ -362,10 +362,10 @@ class DiagnosticWebTests(unittest.TestCase):
         cls.tmp.cleanup()
 
     def setUp(self):
-        self.token = patch('openai_oauth.access_token', return_value=SECRET).start()
-        patch('openai_oauth.proxy_url', return_value='').start()
-        self.catalog_http = patch('network.urlopen', side_effect=lambda *a, **k: catalog()).start()
-        self.probe_http = patch('llm.urlopen', side_effect=lambda *a, **k: stream()).start()
+        self.token = patch('scholarguide.openai_oauth.access_token', return_value=SECRET).start()
+        patch('scholarguide.openai_oauth.proxy_url', return_value='').start()
+        self.catalog_http = patch('scholarguide.network.urlopen', side_effect=lambda *a, **k: catalog()).start()
+        self.probe_http = patch('scholarguide.llm.urlopen', side_effect=lambda *a, **k: stream()).start()
         self.addCleanup(patch.stopall)
 
     def request(self, body=b'{}', *, headers=None, method='POST', path=PATH):

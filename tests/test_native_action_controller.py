@@ -6,11 +6,11 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-import controller
-from common import SOURCE_NAMES
-from controller import BudgetView, ControlState, PolicyError, validate_issued_decision
+from scholarguide import controller
+from scholarguide.common import SOURCE_NAMES
+from scholarguide.controller import BudgetView, ControlState, PolicyError, validate_issued_decision
 from scripts.verify_delivery import isolated_environment
-from tool_governance import validate_arguments
+from scholarguide.tool_governance import validate_arguments
 
 
 def state(**changes):

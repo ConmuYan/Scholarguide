@@ -1,0 +1,1 @@
+"""ScholarGuide application package."""

@@ -20,18 +20,18 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Config, GuideError
-from costing import cost_breakdown
-from model_identity import research_model_identity
-from network import execution_context
-from providers import ProviderStore
-from recovery import JobLease
-from report import save_run
-from research_brief import validated_cached_brief
-from research_policy import publication_matches, venue_identity
-from session import ChatSession
-from source import AcademicSource
-from state import StateStore
+from scholarguide.common import Config, GuideError
+from scholarguide.costing import cost_breakdown
+from scholarguide.model_identity import research_model_identity
+from scholarguide.network import execution_context
+from scholarguide.providers import ProviderStore
+from scholarguide.recovery import JobLease
+from scholarguide.report import save_run
+from scholarguide.research_brief import validated_cached_brief
+from scholarguide.research_policy import publication_matches, venue_identity
+from scholarguide.session import ChatSession
+from scholarguide.source import AcademicSource
+from scholarguide.state import StateStore
 from scripts.validate_research_quality import MonetaryGuard, GuardedLLM, atomic, checks, fingerprint
 
 INITIAL_MESSAGE = '请推荐3篇ICLR 2025正式录用为Poster、关于视觉表征学习的论文，比较方法。'
@@ -105,7 +105,7 @@ def bind_chat(config, store, guard, case, *, session_id=None,
     # ChatSession owns the runtime Budget. Both injected clients are rebound to
     # that exact object after construction, so admission/cancellation counters
     # and the persistent phase request guard cannot diverge.
-    from common import Budget
+    from scholarguide.common import Budget
     initial_budget = Budget(config.task_timeout)
     source = source_factory(config, initial_budget)
     llm = llm_factory(config, initial_budget, guard, case)

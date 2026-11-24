@@ -5,9 +5,9 @@ import json
 import unittest
 from unittest.mock import patch
 
-from research_specialist import MAX_FINDINGS, claim_critic, make_ticket
+from scholarguide.research_specialist import MAX_FINDINGS, claim_critic, make_ticket
 from tests.test_research_runtime import ResearchRuntimeTests, paper
-from research_runtime import attach_brief
+from scholarguide.research_runtime import attach_brief
 
 
 class EvidenceRegressionTests(ResearchRuntimeTests):
@@ -17,7 +17,7 @@ class EvidenceRegressionTests(ResearchRuntimeTests):
         self.papers = [paper('P1').to_dict(), paper('P2').to_dict()]
         self.rows = [{'evidence_id': 'E1', 'paper_id': 'P1', 'quote': self.papers[0]['abstract'].split('. ')[0] + '.'},
                      {'evidence_id': 'E2', 'paper_id': 'P2', 'quote': self.papers[1]['abstract'].split('. ')[0] + '.'}]
-        from research_brief import ABSTRACT_LIMIT
+        from scholarguide.research_brief import ABSTRACT_LIMIT
         for row, item in zip(self.rows, self.papers):
             row['abstract_sha256'] = hashlib.sha256(item['abstract'][:ABSTRACT_LIMIT].encode()).hexdigest()
         self.brief = {'status': 'ready', 'reason': 'generated', 'evidence': deepcopy(self.rows),
@@ -26,7 +26,7 @@ class EvidenceRegressionTests(ResearchRuntimeTests):
                       'themes': [], 'open_questions': [], 'research_hypotheses': [], 'gaps': []}
 
     def deliver(self, brief, papers=None):
-        with patch('research_runtime.synthesize', return_value=deepcopy(brief)):
+        with patch('scholarguide.research_runtime.synthesize', return_value=deepcopy(brief)):
             return attach_brief(self.chat_, papers or self.papers)
 
     def test_forged_and_missing_references_are_removed(self):
@@ -65,7 +65,7 @@ class EvidenceRegressionTests(ResearchRuntimeTests):
         self.assertEqual(result['status'], 'partial')
 
     def test_exception_fails_closed_without_logging_private_exception(self):
-        with patch('research_specialist.evidence_critic', side_effect=RuntimeError('private secret text')):
+        with patch('scholarguide.research_specialist.evidence_critic', side_effect=RuntimeError('private secret text')):
             result = self.deliver(self.brief)
         self.assertIsNone(result['paper_notes'][0]['contribution'])
         self.assertEqual(result['status'], 'partial')
@@ -82,7 +82,7 @@ class EvidenceRegressionTests(ResearchRuntimeTests):
     def test_history_is_preserved_when_review_fails(self):
         self.chat_._event('fixture_history', {'value': 'prior'})
         before = deepcopy(self.store.events(self.chat_.session_id))
-        with patch('research_specialist.evidence_critic', side_effect=RuntimeError('private')):
+        with patch('scholarguide.research_specialist.evidence_critic', side_effect=RuntimeError('private')):
             self.deliver(self.brief)
         after = self.store.events(self.chat_.session_id)
         self.assertEqual(after[:len(before)], before)
@@ -95,11 +95,11 @@ class EvidenceRegressionTests(ResearchRuntimeTests):
         self.assertEqual(self.deliver(brief)['themes'], [])
 
     def test_malformed_claim_and_rejected_review_fail_closed(self):
-        from research_specialist import SpecialistResult
+        from scholarguide.research_specialist import SpecialistResult
         brief = deepcopy(self.brief)
         brief['paper_notes'][0]['method'] = 'unsupported factual statement'
         self.assertIsNone(self.deliver(brief)['paper_notes'][0]['method'])
-        with patch('research_specialist.evidence_critic', return_value=SpecialistResult(
+        with patch('scholarguide.research_specialist.evidence_critic', return_value=SpecialistResult(
                 ticket_id='fixture', status='rejected', failure_code='abstract_snapshot_changed')):
             result = self.deliver(self.brief)
         self.assertIsNone(result['paper_notes'][0]['contribution'])
@@ -118,7 +118,7 @@ class EvidenceRegressionTests(ResearchRuntimeTests):
         self.assertIsNone(result['paper_notes'][1]['contribution'])
 
     def test_finding_identity_is_checked_after_deepcopy(self):
-        from research_specialist import evidence_critic, apply_evidence_findings, session_ticket, SpecialistError
+        from scholarguide.research_specialist import evidence_critic, apply_evidence_findings, session_ticket, SpecialistError
         brief = deepcopy(self.brief)
         brief['paper_notes'][0]['contribution']['evidence'][0]['quote'] = 'forged'
         result = evidence_critic(session_ticket('evidence_critic', self.chat_, self.papers), self.papers, brief)
@@ -128,7 +128,7 @@ class EvidenceRegressionTests(ResearchRuntimeTests):
             apply_evidence_findings(brief, result)
 
     def test_quote_beyond_snapshot_and_missing_hash_are_rejected(self):
-        from research_brief import ABSTRACT_LIMIT
+        from scholarguide.research_brief import ABSTRACT_LIMIT
         papers = deepcopy(self.papers)
         papers[0]['abstract'] = 'x' * ABSTRACT_LIMIT + ' hidden quote beyond limit'
         brief = deepcopy(self.brief)
@@ -160,7 +160,7 @@ class EvidenceRegressionTests(ResearchRuntimeTests):
 
     def test_malformed_fallback_preserves_skipped_status(self):
         brief = {'status': 'skipped', 'reason': 'offline_demo', 'paper_notes': 1, 'gaps': 1}
-        with patch('research_specialist.evidence_critic', side_effect=RuntimeError('private')):
+        with patch('scholarguide.research_specialist.evidence_critic', side_effect=RuntimeError('private')):
             result = self.deliver(brief)
         self.assertEqual(result['status'], 'skipped')
         self.assertEqual(result['reason'], 'offline_demo')

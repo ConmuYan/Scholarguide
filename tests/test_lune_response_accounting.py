@@ -9,10 +9,10 @@ from contextlib import ExitStack
 from pathlib import Path
 from unittest.mock import patch
 
-from execution_events import bind_events
-from lune_quota import LuneQuotaStore
-from mcp_client import McpClient, McpError, ServerConfig, _parse_messages
-from mcp_lune import LuneProvider
+from scholarguide.execution_events import bind_events
+from scholarguide.lune_quota import LuneQuotaStore
+from scholarguide.mcp_client import McpClient, McpError, ServerConfig, _parse_messages
+from scholarguide.mcp_lune import LuneProvider
 
 
 class ResponseAccountingTests(unittest.TestCase):
@@ -38,7 +38,7 @@ class ResponseAccountingTests(unittest.TestCase):
             self.assertNotIn('private', repr(events))
 
     def test_audit_event_sink_cannot_erase_received_response(self):
-        from common import RunCancelled
+        from scholarguide.common import RunCancelled
         with tempfile.TemporaryDirectory() as directory, LuneQuotaStore(Path(directory) / 'q.sqlite') as quota:
             quota.confirm(2, time.time() + 60)
             def transport(request, timeout):
@@ -104,8 +104,8 @@ class ResponseAccountingTests(unittest.TestCase):
                 self.assertEqual(quota.status()['remaining_from_snapshot'], 1)
 
     def test_source_store_receives_actual_response_and_failure_event(self):
-        from common import Config
-        from source_store import SourceStore
+        from scholarguide.common import Config
+        from scholarguide.source_store import SourceStore
         with tempfile.TemporaryDirectory() as directory, ExitStack() as stack:
             root = Path(directory)
             path = root / 'q.sqlite'
@@ -124,7 +124,7 @@ class ResponseAccountingTests(unittest.TestCase):
             stack.callback(store.close)
             config = Config(source='lune', source_store=store, cache=False)
             with patch.dict(os.environ, {'SG_LUNE_QUOTA_DB': str(path)}), \
-                 patch('mcp_lune.install', return_value=provider), \
+                 patch('scholarguide.mcp_lune.install', return_value=provider), \
                  patch.object(store, '_ensure_ready', return_value=config), \
                  patch.object(LuneQuotaStore, 'finish', side_effect=OSError('private')), \
                  bind_events(lambda a, p: events.append((a, p))):
@@ -139,8 +139,8 @@ class ResponseAccountingTests(unittest.TestCase):
                 self.assertEqual(quota.status()['remaining_from_snapshot'], 1)
 
     def test_source_skill_finalization_cancel_preserves_redacted_result(self):
-        from common import Budget, BudgetExceeded, Config, RunCancelled
-        from source_store import SourceStore
+        from scholarguide.common import Budget, BudgetExceeded, Config, RunCancelled
+        from scholarguide.source_store import SourceStore
         for error_type in (RunCancelled, BudgetExceeded):
             with self.subTest(error=error_type), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
@@ -161,7 +161,7 @@ class ResponseAccountingTests(unittest.TestCase):
                 config = Config(source='lune', source_store=store, cache=False)
                 try:
                     with patch.dict(os.environ, {'SG_LUNE_QUOTA_DB': str(path)}), \
-                         patch('mcp_lune.install', return_value=provider), \
+                         patch('scholarguide.mcp_lune.install', return_value=provider), \
                          patch.object(store, '_ensure_ready', return_value=config), \
                          patch.object(LuneQuotaStore, 'finish', side_effect=error_type()):
                         with self.assertRaises(error_type) as caught:
@@ -221,8 +221,8 @@ class ResponseAccountingTests(unittest.TestCase):
                 self.assertEqual(len(result), 3 if mode == 'page_limit' else 1)
 
     def test_source_search_reports_nonadvancing_page_as_partial(self):
-        from common import Budget, Config, GuideError
-        from source import AcademicSource, retained_partial_batch
+        from scholarguide.common import Budget, Config, GuideError
+        from scholarguide.source import AcademicSource, retained_partial_batch
         with tempfile.TemporaryDirectory() as directory, LuneQuotaStore(Path(directory) / 'q.sqlite') as quota:
             root = Path(directory)
             quota.confirm(3, time.time() + 60)
@@ -237,7 +237,7 @@ class ResponseAccountingTests(unittest.TestCase):
                                transport=transport, quota_store=quota)
             provider = LuneProvider(client=client, ledger_path=root / 'ledger.json')
             source = AcademicSource(Config(source='lune', cache=False), Budget(5))
-            with patch('mcp_lune.install', return_value=provider), \
+            with patch('scholarguide.mcp_lune.install', return_value=provider), \
                  patch.object(source, 'available', return_value=True), patch.object(source, '_wait_for'):
                 with self.assertRaises(GuideError) as caught:
                     source.search_batch('fixture', limit=10)
@@ -250,8 +250,8 @@ class ResponseAccountingTests(unittest.TestCase):
             self.assertEqual(calls, [1])
 
     def test_invalid_pagination_offset_preserves_partial_without_remote_text(self):
-        from common import Budget, Config, GuideError
-        from source import AcademicSource, retained_partial_batch
+        from scholarguide.common import Budget, Config, GuideError
+        from scholarguide.source import AcademicSource, retained_partial_batch
         for value in ('synthetic-private', True, -1, 10001, {'secret': 'synthetic-private'}):
             with self.subTest(value=type(value).__name__), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
@@ -261,7 +261,7 @@ class ResponseAccountingTests(unittest.TestCase):
                                                       'has_more': True, 'next_offset': value}}
                 provider = LuneProvider(client=Client(), ledger_path=root / 'ledger.json')
                 source = AcademicSource(Config(source='lune', cache=False), Budget(3))
-                with patch('mcp_lune.install', return_value=provider), \
+                with patch('scholarguide.mcp_lune.install', return_value=provider), \
                      patch.object(source, 'available', return_value=True), patch.object(source, '_wait_for'):
                     with self.assertRaises(GuideError) as caught:
                         source.search_batch('fixture', limit=10)

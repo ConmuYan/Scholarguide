@@ -3,8 +3,8 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from demo import ChatDemoLLM
-from webapp import ChatService
+from scholarguide.demo import ChatDemoLLM
+from scholarguide.webapp import ChatService
 
 
 class DemoFeedbackTests(unittest.TestCase):

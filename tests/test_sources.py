@@ -16,8 +16,8 @@ from urllib.error import HTTPError
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Budget, Config, GuideError, Paper
-from source import AcademicSource, PROVIDERS, classify_source_error, merge_papers
+from scholarguide.common import Budget, Config, GuideError, Paper
+from scholarguide.source import AcademicSource, PROVIDERS, classify_source_error, merge_papers
 
 
 def source(source_name='arxiv', **kwargs):
@@ -233,7 +233,7 @@ class TransportTests(unittest.TestCase):
             def read(self, _): return b'{"ok": true}'
         error = HTTPError('https://example.org', 429, 'rate limited',
                           {'Retry-After': '0'}, None)
-        with patch('source.urlopen', side_effect=[error, Response()]) as opener, \
+        with patch('scholarguide.source.urlopen', side_effect=[error, Response()]) as opener, \
              patch.object(src.budget, 'wait'):
             body = src._fetch('https://example.org', provider='semantic_scholar')
         self.assertEqual(body, b'{"ok": true}')
@@ -243,7 +243,7 @@ class TransportTests(unittest.TestCase):
     def test_arxiv_429_pauses_without_an_immediate_retry(self):
         src = source('arxiv')
         error = HTTPError('https://export.arxiv.org', 429, 'Rate exceeded.', {}, None)
-        with patch('source.urlopen', side_effect=[error]) as opener:
+        with patch('scholarguide.source.urlopen', side_effect=[error]) as opener:
             with self.assertRaises(GuideError):
                 src._fetch('https://export.arxiv.org/api/query', provider='arxiv')
         self.assertEqual(opener.call_count, 1)
@@ -263,7 +263,7 @@ class TransportTests(unittest.TestCase):
             def __enter__(self): return self
             def __exit__(self, *args): return False
             def read(self, _): return b'ok'
-        with patch('source.urlopen', side_effect=[TimeoutError('slow'), Response()]) as opener,              patch.object(src.budget, 'wait'):
+        with patch('scholarguide.source.urlopen', side_effect=[TimeoutError('slow'), Response()]) as opener,              patch.object(src.budget, 'wait'):
             body = src._fetch('https://example.org', provider='arxiv')
         self.assertEqual(body, b'ok')
         self.assertEqual(opener.call_count, 2)

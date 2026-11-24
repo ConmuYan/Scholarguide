@@ -5,10 +5,10 @@ from copy import deepcopy
 from unittest.mock import patch
 from urllib.error import HTTPError
 
-from common import Budget, Config
-from model_identity import research_model_identity
-from tools import CostMeter
-from specialist_pilot import run_pilot
+from scholarguide.common import Budget, Config
+from scholarguide.model_identity import research_model_identity
+from scholarguide.tools import CostMeter
+from scholarguide.experimental.specialist_pilot import run_pilot
 
 
 class Response:
@@ -54,7 +54,7 @@ class PilotTests(unittest.TestCase):
                     result = replace(config, **kwargs)
                     setattr(result, field, value)
                     return result
-                with patch('specialist_pilot.replace', side_effect=changed_copy):
+                with patch('scholarguide.experimental.specialist_pilot.replace', side_effect=changed_copy):
                     result = self.run_pilot(enabled=True)
                 self.assertEqual(result.status, 'rejected')
                 self.assertEqual(self.requests, [])
@@ -75,7 +75,7 @@ class PilotTests(unittest.TestCase):
         self.assertEqual(self.requests, [])
 
     def test_snapshot_identity_must_match_actual_backend(self):
-        from model_identity import research_model_identity
+        from scholarguide.model_identity import research_model_identity
         for field, value in (('base_url', 'http://127.0.0.1:2'),
                              ('provider', 'ollama'), ('protocol', 'responses')):
             with self.subTest(field=field):
@@ -179,7 +179,7 @@ class PilotTests(unittest.TestCase):
         args.update(kwargs)
         get_snapshot = args['current']
         args['current'] = lambda: {'snapshot': get_snapshot(), 'claims': self.claims}
-        with patch('llm.urlopen', side_effect=self.transport):
+        with patch('scholarguide.llm.urlopen', side_effect=self.transport):
             return run_pilot(**args)
 
     def test_endpoint_not_in_model_context(self):
@@ -230,7 +230,7 @@ class PilotTests(unittest.TestCase):
                 self.assertEqual(len(self.requests), 1)
 
     def test_model_name_not_in_events(self):
-        from execution_events import bind_events
+        from scholarguide.execution_events import bind_events
         self.config.model = 'free-form-model-private-marker'
         self.config.api_key = 'synthetic-key'
         self.snapshot['model_identity'] = research_model_identity(self.config)
@@ -287,7 +287,7 @@ class PilotTests(unittest.TestCase):
         self.assertEqual(self.requests, [])
 
     def test_provider_usage_cannot_write_text_to_events(self):
-        from execution_events import bind_events
+        from scholarguide.execution_events import bind_events
         events = []
         self.usage = {'prompt_tokens': 'private response text', 'completion_tokens': 3}
         with bind_events(lambda action, payload: events.append((action, payload))):
@@ -299,7 +299,7 @@ class PilotTests(unittest.TestCase):
     def test_current_claims_are_authoritative(self):
         changed = deepcopy(self.claims)
         changed[0]['text'] = 'replacement claim'
-        with patch('llm.urlopen', side_effect=self.transport):
+        with patch('scholarguide.llm.urlopen', side_effect=self.transport):
             result = run_pilot(snapshot=self.snapshot, claims=self.claims, config=self.config,
                                budget=self.budget, meter=self.meter,
                                current=lambda: {'snapshot': self.snapshot, 'claims': changed}, enabled=True)
@@ -363,7 +363,7 @@ class PilotTests(unittest.TestCase):
                 self.assertEqual(self.meter.summary()['settled'], 1)
 
     def test_events_do_not_include_request_or_response_text(self):
-        from execution_events import bind_events
+        from scholarguide.execution_events import bind_events
         events = []
         with bind_events(lambda action, payload: events.append((action, payload))):
             result = self.run_pilot(enabled=True)

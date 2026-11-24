@@ -6,9 +6,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-import mcp_skills
-from common import GuideError
-from agent_tools import ToolRegistry, ToolSpec, SOURCE_INPUT_SCHEMA
+from scholarguide import mcp_skills
+from scholarguide.common import GuideError
+from scholarguide.agent_tools import ToolRegistry, ToolSpec, SOURCE_INPUT_SCHEMA
 from scripts.verify_delivery import isolated_environment
 
 

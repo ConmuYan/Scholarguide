@@ -6,8 +6,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from api_v1 import ProductApi
-from webapp import ChatService, Jobs
+from scholarguide.api_v1 import ProductApi
+from scholarguide.webapp import ChatService, Jobs
 from test_operation_outcomes import OutcomeError, wait
 
 
@@ -79,12 +79,12 @@ class IdentityTests(unittest.TestCase):
             def fail(*a, **kw):
                 raise OutcomeError('original')
             chat.sessions[sid]['chat'].send = fail
-            from webapp import atomic_json
+            from scholarguide.webapp import atomic_json
             def broken(path, value):
                 if value.get('state') == 'failed' and Path(path).name in ('runtime.json', value.get('operation_id', '') + '.json'):
                     raise OSError('disk failure')
                 return atomic_json(path, value)
-            with patch('webapp.atomic_json', side_effect=broken):
+            with patch('scholarguide.webapp.atomic_json', side_effect=broken):
                 second = wait(api, api.submit('chat', {'session_id': sid, 'message': 'next', 'mode': 'demo'})['operation_id'])
             self.assertEqual(second['state'], 'failed')
             self.assertEqual(second['error']['remote_outcome'], 'unknown')

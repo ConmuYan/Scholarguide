@@ -7,9 +7,9 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from common import Budget, Config, Paper
-from retrieval import RetrievalRouter
-from source import AcademicSource
+from scholarguide.common import Budget, Config, Paper
+from scholarguide.retrieval import RetrievalRouter
+from scholarguide.source import AcademicSource
 
 
 class FusionQualityTests(unittest.TestCase):

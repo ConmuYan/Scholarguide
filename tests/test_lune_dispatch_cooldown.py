@@ -6,9 +6,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from common import Budget, BudgetExceeded, Config, RunCancelled
-from source import AcademicSource
-from source_store import SourceStore
+from scholarguide.common import Budget, BudgetExceeded, Config, RunCancelled
+from scholarguide.source import AcademicSource
+from scholarguide.source_store import SourceStore
 
 
 class LuneDispatchCooldownTests(unittest.TestCase):
@@ -34,7 +34,7 @@ class LuneDispatchCooldownTests(unittest.TestCase):
         def wait(name):
             original(name)
             self.other.cooldown('lune', time.time() + 10, errorcode='rate_limited')
-        with patch('mcp_lune.install', return_value=Provider()), patch.object(client, '_wait_for', side_effect=wait):
+        with patch('scholarguide.mcp_lune.install', return_value=Provider()), patch.object(client, '_wait_for', side_effect=wait):
             with self.assertRaises(BudgetExceeded):
                 client._search_one('lune', 'fixture', 1)
         self.assertEqual(called, [])
@@ -60,7 +60,7 @@ class LuneDispatchCooldownTests(unittest.TestCase):
             except BaseException as exc:
                 errors.append(exc)
         client.cooldown['lune'] = time.monotonic() + 2
-        with patch('mcp_lune.install', return_value=Provider()), patch.object(budget, 'wait', side_effect=wait):
+        with patch('scholarguide.mcp_lune.install', return_value=Provider()), patch.object(budget, 'wait', side_effect=wait):
             thread = threading.Thread(target=run)
             thread.start()
             try:
@@ -75,7 +75,7 @@ class LuneDispatchCooldownTests(unittest.TestCase):
                 thread.join(2)
 
     def test_extension_rechecked_and_two_stores_dispatch_spaced(self):
-        import source_store
+        from scholarguide import source_store
         entered, extend = threading.Event(), threading.Event()
         dispatches, errors = [], []
         class Provider:
@@ -108,7 +108,7 @@ class LuneDispatchCooldownTests(unittest.TestCase):
             except BaseException as exc:
                 errors.append(exc)
         threads = [threading.Thread(target=run, args=(client,)) for client in clients]
-        with patch('mcp_lune.install', return_value=provider), patch.dict(source_store._RATE, {'lune': .12}), \
+        with patch('scholarguide.mcp_lune.install', return_value=provider), patch.dict(source_store._RATE, {'lune': .12}), \
              patch.object(clients[0], '_wait_for', side_effect=rate), \
              patch.object(clients[0].budget, 'wait', side_effect=wait):
             threads[0].start()
@@ -130,7 +130,7 @@ class LuneDispatchCooldownTests(unittest.TestCase):
                     if thread.ident is not None: thread.join(3)
 
     def test_invoke_cooldown_during_mcp_lock_wait_blocks_transport(self):
-        import source_store
+        from scholarguide import source_store
         called = []
         class Client:
             def call_tool(self, *args):
@@ -151,7 +151,7 @@ class LuneDispatchCooldownTests(unittest.TestCase):
             except BaseException as exc:
                 errors.append(exc)
         with patch.object(self.store, '_ensure_ready', side_effect=lambda n, c: c), \
-             patch.object(self.store, 'wait_for_rate', side_effect=wait), patch('mcp_lune.install', return_value=Provider()):
+             patch.object(self.store, 'wait_for_rate', side_effect=wait), patch('scholarguide.mcp_lune.install', return_value=Provider()):
             with source_store._MCP_LOCK:
                 thread = threading.Thread(target=run)
                 thread.start()

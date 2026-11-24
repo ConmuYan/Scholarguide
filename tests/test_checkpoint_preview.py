@@ -3,10 +3,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from common import Config
-from demo import demo_run
-from recovery import atomic_json
-from webapp import Jobs
+from scholarguide.common import Config
+from scholarguide.demo import demo_run
+from scholarguide.recovery import atomic_json
+from scholarguide.webapp import Jobs
 
 
 class CheckpointPreviewTests(unittest.TestCase):

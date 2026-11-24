@@ -18,14 +18,14 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'tests'))
 
-import app
-from common import Budget, Config
-from providers import ProviderStore
-from research_runtime import attach_brief
-from session import ChatSession
-from state import StateStore
-from webapp import ChatService
-from workflow import run as workflow_run
+from scholarguide import app
+from scholarguide.common import Budget, Config
+from scholarguide.providers import ProviderStore
+from scholarguide.research_runtime import attach_brief
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
+from scholarguide.webapp import ChatService
+from scholarguide.workflow import run as workflow_run
 from test_research_runtime import OfflineLLM, OfflineSource, TASK, paper
 
 
@@ -72,8 +72,8 @@ class ResearchContinuationTests(unittest.TestCase):
                     return self.run_workflow(actual)
 
                 out = self.root / f'run-{index}'
-                with patch('app.Config.from_env', return_value=config), \
-                        patch('app.run', side_effect=offline_run), \
+                with patch('scholarguide.app.Config.from_env', return_value=config), \
+                        patch('scholarguide.app.run', side_effect=offline_run), \
                         redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
                     code = app.main(['run', '--request-file', str(self.request),
                                      '--method', 'S', '--source', 'arxiv',
@@ -95,8 +95,8 @@ class ResearchContinuationTests(unittest.TestCase):
             return chat
 
         out = self.root / 'cli-chat'
-        with patch('app.Config.from_env', return_value=self.config), \
-                patch('session.ChatSession', side_effect=offline_chat), \
+        with patch('scholarguide.app.Config.from_env', return_value=self.config), \
+                patch('scholarguide.session.ChatSession', side_effect=offline_chat), \
                 redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
             code = app.main(['chat', '--request-file', str(self.request), '--research-mode',
                              '--source', 'arxiv', '--state', str(self.root / 'cli.sqlite3'),
@@ -116,9 +116,9 @@ class ResearchContinuationTests(unittest.TestCase):
             source.budget = llm.budget = chat.budget
             chats.append(chat)
             return chat
-        with patch('app.Config.from_env', return_value=self.config), \
-                patch('session.ChatSession', side_effect=offline_chat), \
-                patch('app.save_run', side_effect=OSError('synthetic export failure')) as save, \
+        with patch('scholarguide.app.Config.from_env', return_value=self.config), \
+                patch('scholarguide.session.ChatSession', side_effect=offline_chat), \
+                patch('scholarguide.app.save_run', side_effect=OSError('synthetic export failure')) as save, \
                 redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
             code = app.main(['chat', '--request-file', str(self.request), '--research-mode',
                              '--source', 'arxiv', '--state', str(self.root / 'failed-cli.sqlite3'),
@@ -222,7 +222,7 @@ class ResearchContinuationTests(unittest.TestCase):
             store.close()
 
     def test_cancel_during_synthesis_retains_papers_and_reconciles_terminal_status(self):
-        from common import RunCancelled
+        from scholarguide.common import RunCancelled
 
         class CancelSynthesis(OfflineLLM):
             def generate(self, stage, *args):
@@ -265,7 +265,7 @@ class ResearchContinuationTests(unittest.TestCase):
             chat._new_phase(first=True)
             raw = {'patch': {'year_from': None, 'year_to': None},
                    'summary': 'Remove the year range.', 'blocking_requirements': [], 'unresolved': []}
-            with patch('session.run_decision', return_value=raw):
+            with patch('scholarguide.session.run_decision', return_value=raw):
                 updated = chat.update_task('Remove the year range, keeping accepted conference papers.')
             self.assertIsNone(updated['year_from'])
             self.assertIsNone(updated['year_to'])

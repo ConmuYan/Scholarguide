@@ -103,7 +103,11 @@ class WebOAuthUiTests(unittest.TestCase):
         self.assertIn('/assets/logos/chatgpt-logo.svg', OAUTH_SECTION)
         self.assertNotIn('>GPT</span>', OAUTH_SECTION)
         self.assertIn('openai-oauth', SETTINGS_JS)
-        self.assertIsNone(re.search(r'<img|https?://', SETTINGS_JS))
+        # The configured OpenAI API endpoint is allowed; images and other
+        # absolute URLs must not be introduced into the script.
+        self.assertNotIn('<img', SETTINGS_JS)
+        self.assertEqual(re.findall(r'https?://[^\s\"\'<>]+', SETTINGS_JS),
+                         ['https://api.openai.com/v1'])
 
     def test_oauth_styles_need_no_new_dependencies(self):
         self.assertIn('.settings-oauth', CSS)

@@ -15,11 +15,11 @@ class MemoryOpenRaceTests(unittest.TestCase):
             code = '''\
 import sys, time
 from unittest.mock import patch
-from memory_store import MemoryStore
+from scholarguide.memory_store import MemoryStore
 def pause(*args, **kwargs):
     print('before publish', flush=True)
     time.sleep(60)
-with patch('memory_store.os.link', side_effect=pause):
+with patch('scholarguide.memory_store.os.link', side_effect=pause):
     MemoryStore(sys.argv[1])
 '''
             child = subprocess.Popen([sys.executable, '-c', code, str(path)],
@@ -32,6 +32,6 @@ with patch('memory_store.os.link', side_effect=pause):
                     child.kill()
                 child.communicate(timeout=10)
             self.assertFalse(path.exists())
-            from memory_store import MemoryStore
+            from scholarguide.memory_store import MemoryStore
             with MemoryStore(path) as store:
                 self.assertEqual(store.list(), {})

@@ -6,7 +6,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from intent import allocate, resolve_goal, mix_text
+from scholarguide.intent import allocate, resolve_goal, mix_text
 
 
 class IntentPolicyTests(unittest.TestCase):

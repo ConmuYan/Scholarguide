@@ -35,12 +35,31 @@ DATA="$HOME/.scholarguide"
 TARGET="$BASE/releases/$VERSION"
 BIN="$HOME/.local/bin"
 mkdir -p "$BASE/releases" "$DATA/runs" "$DATA/cache" "$BIN"
+# A portable mkdir lock serializes pointer and launcher updates across
+# concurrent installers. The trap releases it on normal exit and signals.
+LOCK="$BASE/install.lock"
+LOCK_ATTEMPTS=0
+until mkdir "$LOCK" 2>/dev/null; do
+  LOCK_ATTEMPTS=$((LOCK_ATTEMPTS + 1))
+  if [ "$LOCK_ATTEMPTS" -ge 600 ]; then
+    printf '%s\n' 'Another ScholarGuide installation is still running. Wait for it to finish and rerun.' >&2
+    exit 1
+  fi
+  sleep 1
+done
 WORK=$(mktemp -d "$BASE/.install.XXXXXX")
-trap 'rm -rf "$WORK"' EXIT HUP INT TERM
+INSTALL_ID=$(basename "$WORK")
+FRESH=0
+trap 'rm -rf "$WORK"; rmdir "$LOCK" 2>/dev/null || true' EXIT HUP INT TERM
 
 if [ -e "$TARGET" ]; then
+  if [ -e "$TARGET/.install-incomplete" ]; then
+    printf '%s\n' 'This version has an interrupted installation. Stop any installer and inspect its version directory before retrying.' >&2
+    exit 1
+  fi
   printf 'Version %s is already installed at %s\n' "$VERSION" "$TARGET"
 else
+  FRESH=1
   curl --fail --location --silent --show-error --proto '=https' --tlsv1.2 \
     "$RELEASE_URL/$ARCHIVE" -o "$WORK/$ARCHIVE"
   curl --fail --location --silent --show-error --proto '=https' --tlsv1.2 \
@@ -68,24 +87,36 @@ else
   if [ ! -f "$SOURCE/app.py" ] || [ ! -f "$SOURCE/requirements.txt" ]; then
     printf '%s\n' 'Release archive is missing required files.' >&2; exit 1
   fi
-  "$PYTHON" -m venv "$SOURCE/.venv"
-  if [ -x "$SOURCE/.venv/bin/python" ]; then
-    VENV_PYTHON="$SOURCE/.venv/bin/python"
-  elif [ -x "$SOURCE/.venv/Scripts/python.exe" ]; then
+  # Keep a marker with this installer's identity. A later run must not delete
+  # or trust a directory that another interrupted run left incomplete.
+  printf '%s\n' "$INSTALL_ID" > "$SOURCE/.install-incomplete"
+  mv "$SOURCE" "$TARGET"
+  if [ -e "$TARGET/.install-incomplete" ] && [ "$(cat "$TARGET/.install-incomplete")" != "$INSTALL_ID" ]; then
+    printf '%s\n' 'This version has an interrupted installation. Stop any installer and inspect its version directory before retrying.' >&2
+    exit 1
+  fi
+  rollback() {
+    if [ -e "$TARGET/.install-incomplete" ] && [ "$(cat "$TARGET/.install-incomplete")" = "$INSTALL_ID" ]; then
+      rm -rf "$TARGET"
+    fi
+  }
+  trap 'rollback; rm -rf "$WORK"; rmdir "$LOCK" 2>/dev/null || true' EXIT HUP INT TERM
+  "$PYTHON" -m venv "$TARGET/.venv"
+  if [ -x "$TARGET/.venv/bin/python" ]; then
+    VENV_PYTHON="$TARGET/.venv/bin/python"
+  elif [ -x "$TARGET/.venv/Scripts/python.exe" ]; then
     # Git Bash / MSYS on Windows creates Scripts/ instead of bin/.
-    VENV_PYTHON="$SOURCE/.venv/Scripts/python.exe"
+    VENV_PYTHON="$TARGET/.venv/Scripts/python.exe"
   else
     printf '%s\n' 'Python virtual environment did not produce an interpreter.' >&2; exit 1
   fi
-  "$VENV_PYTHON" -m pip install --disable-pip-version-check -r "$SOURCE/requirements.txt"
-  mv "$SOURCE" "$TARGET"
+  "$VENV_PYTHON" -m pip install --disable-pip-version-check -r "$TARGET/requirements.txt"
+  rm -f "$TARGET/.install-incomplete"
 fi
 
 if [ ! -f "$DATA/.env" ] && [ -f "$TARGET/.env.example" ]; then
   cp "$TARGET/.env.example" "$DATA/.env"
 fi
-printf '%s\n' "$VERSION" > "$BASE/current-version.tmp"
-mv "$BASE/current-version.tmp" "$BASE/current-version"
 cat > "$BIN/scholarguide" <<'LAUNCHER'
 #!/usr/bin/env sh
 set -eu
@@ -105,6 +136,12 @@ if [ ! -x "$PYTHON" ]; then PYTHON="$APP/.venv/Scripts/python.exe"; fi
 exec "$PYTHON" "$APP/app.py" "$@"
 LAUNCHER
 chmod 755 "$BIN/scholarguide"
+# Publish the pointer only after the launcher exists; an interruption before
+# this point leaves any previously selected version usable.
+if [ "$FRESH" = 1 ]; then
+  printf '%s\n' "$VERSION" > "$BASE/current-version.tmp"
+  mv "$BASE/current-version.tmp" "$BASE/current-version"
+fi
 
 printf '\nScholarGuide %s is installed.\n' "$VERSION"
 printf 'Run: %s\n' "$BIN/scholarguide web --open"

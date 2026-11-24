@@ -9,8 +9,8 @@ import time
 import unittest
 from unittest.mock import patch
 
-from memory_store import MemoryStore
-from memory_view import MemoryView
+from scholarguide.memory_store import MemoryStore
+from scholarguide.memory_view import MemoryView
 
 
 class MemoryViewTests(unittest.TestCase):
@@ -32,7 +32,7 @@ class MemoryViewTests(unittest.TestCase):
         return MemoryView(self.path).present(self.papers, enabled=True, selected=True)
 
     def test_opt_in_does_not_read(self):
-        with patch('memory_context._snapshot', side_effect=AssertionError('read')):
+        with patch('scholarguide.memory_context._snapshot', side_effect=AssertionError('read')):
             for enabled, selected in ((False, True), (True, False), (1, True), (True, 1)):
                 result = MemoryView(self.path).present(self.papers, enabled=enabled, selected=selected)
                 self.assertEqual(result['status'], 'not_applied')
@@ -67,7 +67,7 @@ class MemoryViewTests(unittest.TestCase):
             self.assertIs(result['papers'], papers)
 
     def test_mid_operation_changes_fail_closed(self):
-        from memory_context import MemoryContext
+        from scholarguide.memory_context import MemoryContext
         for action in ('update', 'revoke', 'replace', 'expiry', 'consent', 'exception'):
             with self.subTest(action=action), tempfile.TemporaryDirectory() as directory:
                 self.path = Path(directory) / 'prefs.sqlite3'
@@ -107,13 +107,13 @@ class MemoryViewTests(unittest.TestCase):
             with MemoryStore(self.path) as store:
                 store.revoke('prefer_recent', expected_revision=1)
             return ordered
-        with patch('memory_view.sorted', sort_then_revoke, create=True):
+        with patch('scholarguide.memory_view.sorted', sort_then_revoke, create=True):
             result = self.run_view()
         self.assertEqual(result['status'], 'not_applied')
         self.assertIs(result['papers'], self.papers)
 
     def test_conflicts_and_close_failure(self):
-        from memory_context import MemoryContext
+        from scholarguide.memory_context import MemoryContext
         self.grant()
         for fields in ({'year_from'}, {'prefer_recent'}, {'unknown'}, []):
             result = MemoryView(self.path).present(self.papers, enabled=True, selected=True, explicit_fields=fields)

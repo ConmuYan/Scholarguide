@@ -7,12 +7,12 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import Budget, Config, GuideError, Paper, Request
-from demo import DemoLLM, DemoSource, demo_run
-from llm import JsonLLM
-from source import AcademicSource, merge_papers, normalize_doi
+from scholarguide.common import Budget, Config, GuideError, Paper, Request
+from scholarguide.demo import DemoLLM, DemoSource, demo_run
+from scholarguide.llm import JsonLLM
+from scholarguide.source import AcademicSource, merge_papers, normalize_doi
 from vendor.gptr_arxiv import ArxivSearch, arxiv_id
-from workflow import grounded_assessments, run
+from scholarguide.workflow import grounded_assessments, run
 
 
 class WorkflowTests(unittest.TestCase):
@@ -95,7 +95,7 @@ class WorkflowTests(unittest.TestCase):
 
     def test_credential_reference_is_explicit_and_never_serialized(self):
         import os
-        from common import resolve_api_key
+        from scholarguide.common import resolve_api_key
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'auth.json'
             path.write_text(json.dumps({'deepseek': {'type':'api_key','key':'test-secret-value'}}))

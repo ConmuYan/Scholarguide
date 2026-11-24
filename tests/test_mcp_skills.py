@@ -5,9 +5,9 @@ import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 
-import mcp_client
-import mcp_skills
-from common import GuideError
+from scholarguide import mcp_client
+from scholarguide import mcp_skills
+from scholarguide.common import GuideError
 from tests.test_mcp_client import MockMcp, _result
 from tests.lune_quota_fixture import confirmed_quota
 

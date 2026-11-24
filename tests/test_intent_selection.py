@@ -6,8 +6,8 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Paper, Request
-from workflow import coverage, select_papers
+from scholarguide.common import Paper, Request
+from scholarguide.workflow import coverage, select_papers
 
 QUOTE = 'This paper introduces a benchmark for retrieval augmented generation evaluation.'
 

@@ -8,11 +8,8 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from demo import demo_run
-from webapp import ChatService, Jobs
-
-GAD = ROOT / 'examples' / 'live_result.json'
-
+from scholarguide.demo import demo_run
+from scholarguide.webapp import ChatService, Jobs
 
 class SearchSessionTests(unittest.TestCase):
     def setUp(self):
@@ -42,8 +39,12 @@ class SearchSessionTests(unittest.TestCase):
         self.assertEqual(resumed['result']['status'], 'complete')
         self.assertEqual(len(self.chat.snapshot(session_id)['history']), 2)
 
-    def test_gad_live_result_imports_with_candidates_and_assessments(self):
-        result = json.loads(GAD.read_text(encoding='utf-8'))
+    def test_live_result_imports_with_candidates_and_assessments(self):
+        # Use a self-contained fixture rather than unpublished real provider output.
+        result = demo_run('satisfied')
+        result['mode'] = 'live'
+        self.assertTrue(result['candidates'])
+        self.assertTrue(result['assessments'])
         session_id = self.chat.import_run(result, result['run_id'])
         snapshot = self.chat.snapshot(session_id)
         self.assertEqual(snapshot['origin'], 'search')

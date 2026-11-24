@@ -7,11 +7,11 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from common import Config, GuideError
-from demo import ChatDemoLLM, DemoSource
-from session import ChatSession
-from state import StateStore
-from agent_runtime import LangGraphRuntime
+from scholarguide.common import Config, GuideError
+from scholarguide.demo import ChatDemoLLM, DemoSource
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
+from scholarguide.agent_runtime import LangGraphRuntime
 
 
 class GraphRuntimeTests(unittest.TestCase):

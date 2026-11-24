@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from api_v1 import ProductApi
-from webapp import ChatService, Jobs
+from scholarguide.api_v1 import ProductApi
+from scholarguide.webapp import ChatService, Jobs
 from test_operation_outcomes import OutcomeError, wait
 
 
@@ -20,7 +20,7 @@ class ResultPersistenceTests(unittest.TestCase):
             first = wait(api, api.submit('chat', {'message': 'RAG', 'mode': 'demo'})['operation_id'])
             self.assertEqual(first['state'], 'completed')
             sid = first['session_id']
-            with patch('webapp.save_run', side_effect=OSError('synthetic disk failure')) as save:
+            with patch('scholarguide.webapp.save_run', side_effect=OSError('synthetic disk failure')) as save:
                 failed = wait(api, api.submit('chat', {'session_id': sid, 'message': 'second', 'mode': 'demo'})['operation_id'])
                 self.assertEqual(save.call_count, 1)
             self.assertIn(failed['state'], ('failed', 'interrupted'))
@@ -55,7 +55,7 @@ class ResultPersistenceTests(unittest.TestCase):
             def fail_after_mkdir(result, directory):
                 directory.mkdir(parents=True)
                 raise OSError('synthetic disk failure')
-            with patch('webapp.save_run', side_effect=fail_after_mkdir):
+            with patch('scholarguide.webapp.save_run', side_effect=fail_after_mkdir):
                 failed = wait(api, api.submit('chat', {'session_id': sid, 'message': 'second', 'mode': 'demo'})['operation_id'])
             self.assertEqual(failed['state'], 'interrupted')
             later = wait(api, api.submit('chat', {'session_id': sid, 'message': 'third', 'mode': 'demo'})['operation_id'])
@@ -71,7 +71,7 @@ class ResultPersistenceTests(unittest.TestCase):
             self.assertEqual(restored.snapshot(later['operation_id'])['state'], 'completed')
 
     def test_unrepairable_terminal_blocks_new_execution(self):
-        from webapp import atomic_json
+        from scholarguide.webapp import atomic_json
         with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
             root = Path(tmp)
             chat = ChatService(root / 'sessions')
@@ -84,11 +84,11 @@ class ResultPersistenceTests(unittest.TestCase):
                     raise OSError('terminal write failure')
                 return atomic_json(path, value)
             with patch.object(chat.sessions[sid]['chat'], 'send', side_effect=OutcomeError('original')):
-                with patch('webapp.atomic_json', side_effect=broken):
+                with patch('scholarguide.webapp.atomic_json', side_effect=broken):
                     failed = wait(api, api.submit('chat', {'session_id': sid, 'message': 'second', 'mode': 'demo'})['operation_id'])
             before = (root / 'sessions' / sid / 'runtime.json').read_bytes()
             with patch.object(chat.sessions[sid]['chat'], 'send') as send:
-                with patch('webapp.atomic_json', side_effect=broken):
+                with patch('scholarguide.webapp.atomic_json', side_effect=broken):
                     with self.assertRaises(OSError):
                         api.submit('chat', {'session_id': sid, 'message': 'third', 'mode': 'demo'})
                 send.assert_not_called()
@@ -97,7 +97,7 @@ class ResultPersistenceTests(unittest.TestCase):
             chat.close()
 
     def test_terminal_write_failures_keep_classification_and_concurrency(self):
-        from webapp import atomic_json
+        from scholarguide.webapp import atomic_json
         for broken_names in ({'runtime.json'}, {'operation'}, {'runtime.json', 'operation'}):
             with self.subTest(broken_names=broken_names), tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
                 root = Path(tmp)
@@ -115,7 +115,7 @@ class ResultPersistenceTests(unittest.TestCase):
                     if value.get('state') == 'failed' and name in broken_names:
                         raise OSError('terminal write failure')
                     return atomic_json(path, value)
-                with patch('webapp.atomic_json', side_effect=broken):
+                with patch('scholarguide.webapp.atomic_json', side_effect=broken):
                     failed = wait(api, api.submit('chat', {'session_id': sid, 'message': 'second', 'mode': 'demo'})['operation_id'])
                 self.assertEqual(failed['state'], 'failed')
                 self.assertEqual(failed['error']['remote_outcome'], 'unknown')

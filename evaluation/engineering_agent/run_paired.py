@@ -64,7 +64,7 @@ def execution_ok(status, reason, calls, limits):
 
 
 def source_hashes():
-    files = list(ROOT.glob('*.py')) + [Path(__file__).resolve(), ROOT / 'scripts/verify_delivery.py',
+    files = list(ROOT.glob('*.py')) + list((ROOT / 'scholarguide').rglob('*.py')) + [Path(__file__).resolve(), ROOT / 'scripts/verify_delivery.py',
                                       ROOT / 'scripts/offline_test_site/sitecustomize.py']
     return {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
             for p in sorted(set(files))}
@@ -103,9 +103,9 @@ def worker(case, manifest, tmp):
 
 
 def _worker(case, manifest, tmp):
-    from common import Budget, Config, Paper, venue_matches, year_matches
-    from demo import DemoLLM, DemoSource
-    from workflow import run
+    from scholarguide.common import Budget, Config, Paper, venue_matches, year_matches
+    from scholarguide.demo import DemoLLM, DemoSource
+    from scholarguide.workflow import run
 
     before = source_hashes()
     raw = (ROOT / manifest['fixture']).read_bytes()

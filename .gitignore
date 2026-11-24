@@ -28,6 +28,9 @@ Thumbs.db
 *.sqlite3-shm
 *.log
 
+# Windows PowerShell may create this cache when tests run from the repository.
+/Microsoft/
+
 # Agent workspace state and build caches are not release inputs.
 .codebuddy/
 frontierlitbench/cache/

@@ -6,10 +6,10 @@ import time
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import Config, Paper
-from webapp import ChatService
-from session import ChatSession
-from state import StateStore
+from scholarguide.common import Config, Paper
+from scholarguide.webapp import ChatService
+from scholarguide.session import ChatSession
+from scholarguide.state import StateStore
 
 QUOTE = 'This paper introduces a benchmark for retrieval augmented generation evaluation.'
 

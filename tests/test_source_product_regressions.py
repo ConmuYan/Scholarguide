@@ -6,11 +6,11 @@ import time
 import unittest
 from unittest.mock import patch
 
-from common import Budget, Config, Paper
-from execution_events import bind_events, operation
-from retrieval import RetrievalRouter
-from source import AcademicSource, SearchBatch, SourceRun, merge_papers
-from source_store import SourceStore
+from scholarguide.common import Budget, Config, Paper
+from scholarguide.execution_events import bind_events, operation
+from scholarguide.retrieval import RetrievalRouter
+from scholarguide.source import AcademicSource, SearchBatch, SourceRun, merge_papers
+from scholarguide.source_store import SourceStore
 
 
 class SourceProductRegressionTests(unittest.TestCase):
@@ -20,8 +20,8 @@ class SourceProductRegressionTests(unittest.TestCase):
         self.assertEqual(len(merge_papers(rows)), 2)
 
     def test_lune_bibliographic_filters_do_not_invent_acceptance_or_presentation(self):
-        from mcp_lune import to_paper
-        from research_policy import publication_matches
+        from scholarguide.mcp_lune import to_paper
+        from scholarguide.research_policy import publication_matches
         paper = to_paper({'paper_id':'actual-native-id', 'title':'An indexed work',
                           'conference':'ACL', 'year':2025, 'abstract':'A source abstract.',
                           'doi':'10.1234/work'})

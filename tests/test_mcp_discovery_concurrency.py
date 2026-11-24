@@ -8,9 +8,9 @@ from pathlib import Path
 from unittest.mock import patch
 from urllib.error import HTTPError
 
-from common import Budget, RunCancelled
-from mcp_client import McpClient, McpError, ServerConfig
-from lune_quota import LuneQuotaStore
+from scholarguide.common import Budget, RunCancelled
+from scholarguide.mcp_client import McpClient, McpError, ServerConfig
+from scholarguide.lune_quota import LuneQuotaStore
 
 
 def response(request, result):
@@ -115,7 +115,7 @@ class DiscoveryConcurrencyTests(unittest.TestCase):
             return response(request, {'tools': [{'name': 'a', 'inputSchema': True}]} if message['method'] == 'tools/list' else {})
         client = McpClient(self.config(), transport=transport)
         client.list_tools()
-        with patch('mcp_client.validate_remote_schema'):
+        with patch('scholarguide.mcp_client.validate_remote_schema'):
             with self.assertRaises(McpError):
                 client.call_tool('a', {}, _before_send=lambda: client.list_tools(refresh=True))
         self.assertEqual(calls, ['tools/list', 'tools/list'])
@@ -133,7 +133,7 @@ class DiscoveryConcurrencyTests(unittest.TestCase):
             client.list_prompts(refresh=True)
             return 'synthetic'
         client.set_auth_provider(provider)
-        with patch('mcp_client.validate_remote_schema'):
+        with patch('scholarguide.mcp_client.validate_remote_schema'):
             with self.assertRaises(McpError):
                 client.get_prompt('a', {})
         self.assertEqual(calls, ['prompts/list', 'prompts/list'])
@@ -260,7 +260,7 @@ class DiscoveryConcurrencyTests(unittest.TestCase):
 
     def test_raw_list_respects_entry_limit(self):
         client = McpClient(self.config(), transport=lambda req, timeout: response(req, {'tools': [{'name': 'a'}, {'name': 'b'}]}))
-        with patch('mcp_client.MAX_DISCOVERY_ENTRIES', 1), self.assertRaises(McpError):
+        with patch('scholarguide.mcp_client.MAX_DISCOVERY_ENTRIES', 1), self.assertRaises(McpError):
             client.request('tools/list')
 
     def test_raw_bytes_limit_before_redaction(self):
@@ -269,7 +269,7 @@ class DiscoveryConcurrencyTests(unittest.TestCase):
                               headers={'Authorization': 'Bearer ' + secret})
         client = McpClient(config, transport=lambda req, timeout: response(
             req, {'tools': [{'name': 'a', 'description': secret}]}))
-        with patch('mcp_client.MAX_DISCOVERY_BYTES', 200), self.assertRaises(McpError) as caught:
+        with patch('scholarguide.mcp_client.MAX_DISCOVERY_BYTES', 200), self.assertRaises(McpError) as caught:
             client.request('tools/list')
         self.assertNotIn(secret, str(caught.exception))
 

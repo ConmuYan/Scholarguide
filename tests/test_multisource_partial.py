@@ -2,8 +2,8 @@
 import unittest
 from unittest.mock import patch
 
-from common import Budget, BudgetExceeded, Config, GuideError, Paper, RunCancelled
-from source import AcademicSource, retained_partial_batch
+from scholarguide.common import Budget, BudgetExceeded, Config, GuideError, Paper, RunCancelled
+from scholarguide.source import AcademicSource, retained_partial_batch
 
 
 class MultiSourcePartialTests(unittest.TestCase):

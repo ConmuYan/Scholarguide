@@ -17,22 +17,31 @@ import tarfile
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-MODULES = (
-    'activity.py', 'agent_runtime.py', 'agent_tools.py', 'api_schema.py', 'api_v1.py',
-    'app.py', 'app_mcp.py', 'common.py', 'controller.py', 'costing.py', 'demo.py',
-    'diagnosis.py', 'domain_skill_runtime.py', 'execution_events.py', 'intent.py',
-    'llm.py', 'lune_quota.py', 'lune_quota_schedule.py', 'mcp_client.py', 'mcp_lune.py', 'mcp_lune_policy.py',
-    'mcp_plugin.py', 'mcp_skills.py', 'memory_context.py', 'memory_store.py', 'memory_view.py',
-    'model_identity.py', 'model_policy.py', 'native_tool_protocol.py', 'network.py', 'openai_oauth.py',
-    'oauth_diagnostics.py',
-    'preflight.py', 'prompts.py', 'providers.py', 'quantities.py', 'recovery.py',
-    'report.py', 'research_brief.py', 'research_landscape.py', 'research_policy.py',
-    'research_runtime.py', 'research_specialist.py', 'retrieval.py', 'reuse.py',
-    'session.py', 'source.py', 'source_parallel.py', 'source_scheduler.py',
-    'source_store.py', 'state.py', 'tool_governance.py', 'tools.py', 'update_cli.py', 'webapp.py', 'workflow.py',
+# Keep the release allow-list explicit, including lazy imports such as oauth_models.
+RUNTIME_MODULES = (
+    'activity', 'agent_runtime', 'agent_tools', 'api_schema', 'api_v1', 'app', 'app_mcp',
+    'common', 'controller', 'costing', 'demo', 'diagnosis', 'domain_skill_runtime',
+    'execution_events', 'intent', 'llm', 'lune_quota', 'lune_quota_schedule', 'mcp_client',
+    'mcp_lune', 'mcp_lune_policy', 'mcp_plugin', 'mcp_skills', 'memory_context',
+    'memory_store', 'memory_view', 'model_identity', 'model_policy', 'native_tool_protocol',
+    'network', 'oauth_diagnostics', 'oauth_models', 'openai_oauth', 'preflight', 'prompts',
+    'providers', 'quantities', 'recovery', 'report', 'research_brief', 'research_landscape',
+    'research_policy', 'research_runtime', 'research_specialist', 'retrieval', 'reuse',
+    'session', 'source', 'source_parallel', 'source_scheduler', 'source_store', 'state',
+    'tool_governance', 'tools', 'update_cli', 'webapp', 'workflow',
+)
+MODULES = ('app.py', 'app_mcp.py', 'lune_quota_schedule.py', 'mcp_skills.py', 'update_cli.py', 'source.py')
+PACKAGE_FILES = ('scholarguide/__init__.py', 'scholarguide/experimental/__init__.py',
+                 'scholarguide/experimental/deletion_lifecycle.py',
+                 'scholarguide/experimental/specialist_pilot.py') + tuple(
+    f'scholarguide/{name}.py' for name in RUNTIME_MODULES
+)
+COMPAT_MODULES = tuple(f'compat/legacy/{name}.py' for name in RUNTIME_MODULES
+                       if f'{name}.py' not in MODULES) + (
+    'compat/legacy/deletion_lifecycle.py', 'compat/legacy/specialist_pilot.py',
 )
 FILES = ('.gitignore', 'requirements.txt', '.env.example', 'mcp_servers.json', 'mcp_skills_lune.json',
-         'state_schema.sql', 'LICENSE', 'NOTICE.md', 'docs/API.md', 'docs/INSTALL.md', 'examples/papers.json')
+         'state_schema.sql', 'LICENSE', 'NOTICE.md', 'compat/README.md', 'docs/API.md', 'docs/INSTALL.md', 'examples/papers.json')
 REPO_RE = re.compile(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\Z')
 VERSION_RE = re.compile(r'v[0-9]+\.[0-9]+\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?\Z')
 
@@ -70,7 +79,7 @@ def build(version: str, repository: str, output: Path) -> list[Path]:
     with tempfile.TemporaryDirectory(prefix='scholarguide-release-') as temporary:
         stage = Path(temporary) / top
         stage.mkdir()
-        for name in MODULES + FILES:
+        for name in MODULES + PACKAGE_FILES + COMPAT_MODULES + FILES:
             source = ROOT / name
             if not source.is_file() or source.is_symlink():
                 raise FileNotFoundError(f'missing or unsafe release input: {name}')

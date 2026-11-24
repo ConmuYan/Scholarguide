@@ -85,7 +85,7 @@ class PairedEvaluationTests(unittest.TestCase):
         self.assertFalse(check([], papers, papers)['passed'])
 
     def test_swallowed_overrun_and_partial_never_pass(self):
-        import workflow
+        from scholarguide import workflow
         module = self.module()
         manifest = module.load_manifest()
         original = workflow.run

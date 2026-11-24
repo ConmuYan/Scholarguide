@@ -14,9 +14,9 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import Budget
-from lune_quota import LuneQuotaStore, default_quota_path
-from mcp_lune import install, papers_from, structured
+from scholarguide.common import Budget
+from scholarguide.lune_quota import LuneQuotaStore, default_quota_path
+from scholarguide.mcp_lune import install, papers_from, structured
 
 
 def main() -> int:

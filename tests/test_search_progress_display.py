@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'tests'))
 import test_experience_upgrade as harness
-from demo import demo_run
+from scholarguide.demo import demo_run
 from selenium.webdriver.common.by import By
 
 

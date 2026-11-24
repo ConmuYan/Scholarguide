@@ -14,11 +14,11 @@ import unittest
 from unittest.mock import patch
 from urllib.error import URLError
 
-from common import Budget, BudgetExceeded, Config, GuideError, RunCancelled
-from execution_events import bind_events
-from source import AcademicSource, SourceTransportError, classify_source_error
-import source_store
-from source_store import SourceStore
+from scholarguide.common import Budget, BudgetExceeded, Config, GuideError, RunCancelled
+from scholarguide.execution_events import bind_events
+from scholarguide.source import AcademicSource, SourceTransportError, classify_source_error
+from scholarguide import source_store
+from scholarguide.source_store import SourceStore
 
 
 def _hold_process_slot(path, entered, release, errors):
@@ -50,7 +50,7 @@ class SourceInflightTests(unittest.TestCase):
         budget = Budget(3)
         client = AcademicSource(Config(source='dblp', source_store=self.store, cache=False), budget)
         try:
-            with patch('source.urlopen') as transport, ThreadPoolExecutor(max_workers=1) as pool:
+            with patch('scholarguide.source.urlopen') as transport, ThreadPoolExecutor(max_workers=1) as pool:
                 future = pool.submit(client.search_batch, 'fixture')
                 time.sleep(.1)
                 budget.cancel_token.request()
@@ -290,8 +290,8 @@ class SourceInflightTests(unittest.TestCase):
         clients = [AcademicSource(Config(source='openalex', source_store=store, cache=False), Budget(8))
                    for store in stores]
         try:
-            with patch('source.urlopen', side_effect=lambda *a, **kw: Response()), \
-                 patch('source_store._RATE', {'openalex': 0}), \
+            with patch('scholarguide.source.urlopen', side_effect=lambda *a, **kw: Response()), \
+                 patch('scholarguide.source_store._RATE', {'openalex': 0}), \
                  ThreadPoolExecutor(max_workers=8) as pool:
                 futures = [pool.submit(client._fetch, 'https://example.test/works', provider='openalex')
                            for client in clients]
@@ -642,7 +642,7 @@ class SourceInflightTests(unittest.TestCase):
         with self.store._db() as db:
             db.execute("UPDATE source_inflight SET owner_pid=?,owner_instance='unknown'", (123456789,))
         for alive in (None, True):  # Unknown or a potentially reused PID.
-            with self.subTest(alive=alive), patch('lune_quota._process_alive', return_value=alive):
+            with self.subTest(alive=alive), patch('scholarguide.lune_quota._process_alive', return_value=alive):
                 with self.assertRaises(BudgetExceeded):
                     with self.store.request_slot('lune', Budget(.1)):
                         self.fail('unverifiable or live owner was reclaimed')
@@ -838,14 +838,14 @@ class SourceFailureClassificationTests(unittest.TestCase):
                 client = AcademicSource(Config(source='dblp', source_store=store, cache=False), Budget(3))
                 events = []
                 try:
-                    with patch.object(client, '_wait_for'), patch('source.urlopen', side_effect=failure) as transport, \
+                    with patch.object(client, '_wait_for'), patch('scholarguide.source.urlopen', side_effect=failure) as transport, \
                          bind_events(lambda action, payload: events.append((action, payload))):
                         with self.assertRaises(GuideError) as caught:
                             client.search_batch('RAG', providers=['dblp'])
                     self.assertEqual(transport.call_count, 1)
                     self.assertEqual(classify_source_error(str(caught.exception)), expected)
                     self.assertEqual(store.health_snapshot()['dblp']['last_code'], expected)
-                    from diagnosis import diagnose
+                    from scholarguide.diagnosis import diagnose
                     diagnosis = diagnose(request={'topic':'RAG','target_count':1},
                         gaps=[{'requirement':'paper_count','required':1,'found':0,'missing':1}],
                         trace=[{'action':'search','error':str(caught.exception),
@@ -873,7 +873,7 @@ class SourceFailureClassificationTests(unittest.TestCase):
             with patch.object(store, 'cooldown', side_effect=cooldown), \
                  patch.object(store, 'record_run', side_effect=sqlite3.OperationalError('database is locked')), \
                  patch.object(client, '_wait_for'), \
-                 patch('source.urlopen', side_effect=URLError(socket.gaierror('remote private detail'))):
+                 patch('scholarguide.source.urlopen', side_effect=URLError(socket.gaierror('remote private detail'))):
                 with self.assertRaises(GuideError) as caught:
                     client.search_batch('fixture')
             self.assertEqual(caught.exception.code, 'dns_error')

@@ -8,8 +8,8 @@ import threading
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from activity import ActivityFeed
-from webapp import ChatService, create_server
+from scholarguide.activity import ActivityFeed
+from scholarguide.webapp import ChatService, create_server
 
 
 class ActivityFeedTests(unittest.TestCase):

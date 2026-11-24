@@ -5,8 +5,8 @@ import os
 import unittest
 from unittest.mock import patch
 
-from common import Config, GuideError
-from providers import ProviderProfile
+from scholarguide.common import Config, GuideError
+from scholarguide.providers import ProviderProfile
 
 
 class NativeActionConfigTests(unittest.TestCase):
