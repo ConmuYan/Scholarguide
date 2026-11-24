@@ -137,8 +137,11 @@ set "SG_RUNS_DIR=%SG_DATA_DIR%\runs"
 set "SG_CACHE_DIR=%SG_DATA_DIR%\cache"
 set "SG_MCP_RUN_DIR=%SG_DATA_DIR%\runs\mcp"
 set "SG_ENV_FILE=%SG_DATA_DIR%\.env"
-if "%*"=="" set "ARGS=web --open" else set "ARGS=%*"
-"%APP%\.venv\Scripts\python.exe" "%APP%\app.py" %ARGS%
+if "%*"=="" (
+  "%APP%\.venv\Scripts\python.exe" "%APP%\app.py" web --open
+) else (
+  "%APP%\.venv\Scripts\python.exe" "%APP%\app.py" %*
+)
 '@
     Set-Content -LiteralPath (Join-Path $Bin 'scholarguide.cmd') -Value $Launcher -Encoding ascii
     # Publish the pointer only after the launcher exists. The same-directory

@@ -24,7 +24,7 @@ def make_release(folder: Path, version: str, requirements: bytes = b'') -> None:
     top = f'scholarguide-{version}'
     archive = folder / f'{top}.tar.gz'
     with tarfile.open(archive, 'w:gz') as tar:
-        for name, body in ((f'{top}/app.py', b'print("stub")\n'),
+        for name, body in ((f'{top}/app.py', b'import sys\nprint("stub", *sys.argv[1:])\n'),
                            (f'{top}/requirements.txt', requirements),
                            (f'{top}/.env.example', b'SG_PROVIDER=openai\n')):
             info = tarfile.TarInfo(name)
@@ -96,8 +96,17 @@ class WindowsInstallerTests(unittest.TestCase):
                              capture_output=True, text=True, timeout=20)
         self.assertEqual(pip.returncode, 0, pip.stderr)
         self.assertTrue((self.local / 'ScholarGuide' / 'current-version').is_file())
-        self.assertTrue((self.local / 'ScholarGuide' / 'bin' / 'scholarguide.cmd').is_file())
+        launcher = self.local / 'ScholarGuide' / 'bin' / 'scholarguide.cmd'
+        self.assertTrue(launcher.is_file())
         self.assertTrue((self.home / '.scholarguide' / '.env').is_file())
+        # The installed launcher must forward explicit arguments, not replace
+        # them with the default web command.
+        invoked = subprocess.run([str(launcher), 'doctor'],
+                                 env=dict(os.environ, LOCALAPPDATA=str(self.local),
+                                          USERPROFILE=str(self.home)),
+                                 capture_output=True, text=True, timeout=60)
+        self.assertEqual(invoked.returncode, 0, invoked.stdout + invoked.stderr)
+        self.assertIn('stub doctor', invoked.stdout)
 
     def test_existing_user_config_survives_install(self):
         data = self.home / '.scholarguide'
